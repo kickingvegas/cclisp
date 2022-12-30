@@ -99,4 +99,3 @@
 
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
-
