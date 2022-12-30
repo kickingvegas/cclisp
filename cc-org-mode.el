@@ -88,7 +88,11 @@
    (shell . t)
    (sql . t)
    (restclient . t)
-   (plantuml . t)))
+   (plantuml . t)
+   (swift . t)))
+
+;; (require 'ob-swiftui)
+;; (ob-swiftui-setup)
 
 (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
 
