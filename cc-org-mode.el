@@ -91,8 +91,9 @@
    (plantuml . t)
    (swift . t)))
 
-;; (require 'ob-swiftui)
-;; (ob-swiftui-setup)
+(when (string-equal (system-name) "bingsu.local")
+  (require 'ob-swiftui)
+  (ob-swiftui-setup))
 
 (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
 
