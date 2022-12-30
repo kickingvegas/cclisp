@@ -1,3 +1,22 @@
+(defun datestamp ()
+  (interactive)
+  (insert (format-time-string "*** %a %h %d %H:%M:%S %Z %Y")))
+
+(defun datestamp2 ()
+  "Datestamp string using format used by 'date' utility."
+  (format-time-string "*** %a %h %d %H:%M:%S %Z %Y"))
+
+;; Scrolling
+(defun scroll-one-line-up (&optional arg)
+  "Scroll the selected window up (forward in the text) one line (or N lines)."
+  (interactive "p")
+  (scroll-up (or arg 1)))
+
+(defun scroll-one-line-down (&optional arg)
+  "Scroll the selected window down (backward in the text) one line (or N)."
+  (interactive "p")
+  (scroll-down (or arg 1)))
+
 (defun shell-new()
   "Same as \\[shell], but starts new shell whether or not there
 already exists one, giving it a unique name.
@@ -228,3 +247,66 @@ A new frame will be created if pop-up-frames is t"
 
 (add-hook 'ediff-before-setup-hook #'my-store-pre-ediff-winconfig)
 (add-hook 'ediff-quit-hook #'my-restore-pre-ediff-winconfig)
+
+
+;; See `trash-directory' as it requires defining `system-move-file-to-trash'.
+(defun system-move-file-to-trash (file)
+  "Use \"trash\" to move FILE to the system trash."
+  (cl-assert (executable-find "trash") nil "'trash' must be installed. Needs \"port install trash\"")
+  (call-process "trash" nil 0 nil "-F"  file))
+
+(defvar my/re-builder-positions nil
+  "Store point and region bounds before calling re-builder")
+(advice-add 're-builder
+            :before
+            (defun my/re-builder-save-state (&rest _)
+              "Save into `my/re-builder-positions' the point and region positions before calling `re-builder'."
+              (setq my/re-builder-positions
+                    (cons (point)
+                          (when (region-active-p)
+                            (list (region-beginning)
+                                  (region-end)))))))
+
+
+(defun reb-replace-regexp (&optional delimited)
+  "Run `query-replace-regexp' with the contents of re-builder. With
+non-nil optional argument DELIMITED, only replace matches
+surrounded by word boundaries."
+  (interactive "P")
+  (reb-update-regexp)
+  (let* ((re (reb-target-binding reb-regexp))
+         (replacement (query-replace-read-to
+                       re
+                       (concat "Query replace"
+                               (if current-prefix-arg
+                                   (if (eq current-prefix-arg '-) " backward" " word")
+                                 "")
+                               " regexp"
+                               (if (with-selected-window reb-target-window
+                                     (region-active-p)) " in region" ""))
+                       t))
+         (pnt (car my/re-builder-positions))
+         (beg (cadr my/re-builder-positions))
+         (end (caddr my/re-builder-positions)))
+    (with-selected-window reb-target-window
+      (goto-char pnt) ; replace with (goto-char (match-beginning 0)) if you want
+                                        ; to control where in the buffer the replacement starts
+                                        ; with re-builder
+      (setq my/re-builder-positions nil)
+      (reb-quit)
+      (query-replace-regexp re replacement delimited beg end))))
+
+
+;(define-key reb-mode-map (kbd "RET") #'reb-replace-regexp)
+;(define-key reb-lisp-mode-map (kbd "RET") #'reb-replace-regexp)
+
+(defun arrayify (start end quote)
+    "Turn strings on newlines into a QUOTEd, comma-separated one-liner."
+    (interactive "r\nMQuote: ")
+    (let ((insertion
+           (mapconcat
+            (lambda (x) (format "%s%s%s" quote x quote))
+            (split-string (buffer-substring start end)) ", ")))
+      (delete-region start end)
+      (insert insertion)))
+
