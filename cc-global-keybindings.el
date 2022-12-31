@@ -28,7 +28,7 @@
 
 (global-set-key (kbd "<f13>") 'neotree-toggle)
 (global-set-key (kbd "M-<f13>") 'treemacs)
-(global-set-key (kbd "<f14>") 'shell)
+(global-set-key (kbd "<f14>") 'eshell)
 (global-set-key (kbd "<f15>") 'ediff-revision)
 
 ;; Terminal 
