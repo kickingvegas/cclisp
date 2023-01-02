@@ -88,7 +88,7 @@ A new frame will be created if pop-up-frames is t"
 
 (defun year ()
   (interactive)
-  (shell-command "open ~/org/2022.pdf"))
+  (shell-command (format-time-string "open ~/org/%Y.pdf"))
 
 (defun make-year ()
   (interactive)
@@ -220,6 +220,65 @@ A new frame will be created if pop-up-frames is t"
   (interactive "e")
   (ediff-revision buffer-file-name))
 
+(defun cc/org-emphasize-bold ()
+  (interactive)
+  (org-emphasize ?*))
+
+(defun cc/org-emphasize-italic ()
+  (interactive)
+  (org-emphasize ?/))
+
+(defun cc/org-emphasize-code ()
+  (interactive)
+  (org-emphasize ?~))
+
+(defun cc/org-emphasize-underline ()
+  (interactive)
+  (org-emphasize ?_))
+
+(defun cc/org-emphasize-verbatim ()
+  (interactive)
+  (org-emphasize ?=))
+
+(defun cc/org-emphasize-strike-through ()
+  (interactive)
+  (org-emphasize ?+))
+
+(defun cc/org-emphasize-reset ()
+  ;; this won't work when org-hide-emphasis-markers is turned on.
+  (interactive)
+  (org-emphasize ?\s))
+
+(defvar cc/org-emphasize-menu (make-sparse-keymap "Org Emphasize"))
+
+(define-key cc/org-emphasize-menu [org-emphasize-bold]
+  '(menu-item "Bold" cc/org-emphasize-bold
+              :help "Bold"))
+
+(define-key-after cc/org-emphasize-menu [org-emphasize-italic]
+  '(menu-item "Italic" cc/org-emphasize-italic
+              :help "Italic"))
+
+(define-key-after cc/org-emphasize-menu [org-emphasize-code]
+  '(menu-item "Code" cc/org-emphasize-code
+              :help "Code"))
+
+(define-key-after cc/org-emphasize-menu [org-emphasize-underline]
+  '(menu-item "Underline" cc/org-emphasize-underline
+              :help "Underline"))
+
+(define-key-after cc/org-emphasize-menu [org-emphasize-verbatim]
+  '(menu-item "Verbatim" cc/org-emphasize-verbatim
+              :help "Verbatim"))
+
+(define-key-after cc/org-emphasize-menu [org-emphasize-strike-through]
+  '(menu-item "Strike Through" cc/org-emphasize-strike-through
+              :help "Strike through"))
+
+(define-key-after cc/org-emphasize-menu [org-emphasize-reset]
+  '(menu-item "Reset" cc/org-emphasize-reset
+              :help "Remove emphasis"))
+
 (defun cc/context-menu-addons (menu click)
   "CC context menu additions"
   (save-excursion
@@ -232,7 +291,20 @@ A new frame will be created if pop-up-frames is t"
                (vc-registered (buffer-file-name)))
       (define-key-after menu [ediff-revision]
         '(menu-item "Ediff revision…" cc/ediff-revision
-                    :help "Ediff this file with revision"))))
+                    :help "Ediff this file with revision")))
+    
+    (when (derived-mode-p 'org-mode)    
+      (define-key-after menu [org-emphasize]
+        (list 'menu-item "Org Emphasize" cc/org-emphasize-menu))
+
+      (define-key-after menu [org-export-to-slack]
+        '(menu-item "Export to Slack" org-slack-export-to-clipboard-as-slack
+                    :help "Export to Slack"))
+      
+      (define-key-after menu [copy-as-rtf]
+        '(menu-item "Copy as RTF" dm/copy-as-rtf
+                    :help "Copy as RTF"))))
+      
   menu)
 
 (add-hook 'context-menu-functions #'cc/context-menu-addons)
