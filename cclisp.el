@@ -249,6 +249,22 @@ A new frame will be created if pop-up-frames is t"
   (interactive)
   (org-emphasize ?\s))
 
+;; Transform Text
+(defvar cc/transform-text-menu (make-sparse-keymap "Transform Text"))
+
+(define-key cc/transform-text-menu [tranform-text-uppercase]
+  '(menu-item "Make Upper Case" upcase-region
+              :help "Upper case region"))
+
+(define-key-after cc/transform-text-menu [tranform-text-lowercase]
+  '(menu-item "Make Lower Case" downcase-region
+              :help "Lower case region"))
+
+(define-key-after cc/transform-text-menu [tranform-text-capitalize]
+  '(menu-item "Capitalize" capitalize-region
+              :help "Capitalize region"))
+
+;; Org Emphasize
 (defvar cc/org-emphasize-menu (make-sparse-keymap "Org Emphasize"))
 
 (define-key cc/org-emphasize-menu [org-emphasize-bold]
@@ -284,26 +300,42 @@ A new frame will be created if pop-up-frames is t"
   (save-excursion
     (mouse-set-point click)
     (define-key-after menu [open-in-finder]
-      '(menu-item "Open in Finder…" reveal-in-folder-this-buffer
+      '(menu-item "Open in Finder" reveal-in-folder-this-buffer
                   :help "Open file (buffer) in Finder"))
+
+    (when (region-active-p)
+      (define-key-after menu [osx-dictionary-lookup]
+        '(menu-item "Look up…" osx-dictionary-search-input
+                    :help "Look up in dictionary"))
+
+      (define-key-after menu [occur-word-at-mouse]
+        '(menu-item "Occur" occur-word-at-mouse
+                    :help "Occur")))
     
     (when (and (bound-and-true-p buffer-file-name)
                (vc-registered (buffer-file-name)))
+      (define-key-after menu [magit-status]
+        '(menu-item "Magit Status" magit-status
+                    :help "Magit Status"))
       (define-key-after menu [ediff-revision]
         '(menu-item "Ediff revision…" cc/ediff-revision
                     :help "Ediff this file with revision")))
     
-    (when (derived-mode-p 'org-mode)    
+    (when (region-active-p)
+      (define-key-after menu [tranform-text]
+        (list 'menu-item "Transform" cc/transform-text-menu)))
+        
+    (when (and (derived-mode-p 'org-mode) (region-active-p))
       (define-key-after menu [org-emphasize]
         (list 'menu-item "Org Emphasize" cc/org-emphasize-menu))
 
       (define-key-after menu [org-export-to-slack]
-        '(menu-item "Export to Slack" org-slack-export-to-clipboard-as-slack
-                    :help "Export to Slack"))
+        '(menu-item "Copy as Slack" org-slack-export-to-clipboard-as-slack
+                    :help "Copy as Slack to clipboard"))
       
       (define-key-after menu [copy-as-rtf]
         '(menu-item "Copy as RTF" dm/copy-as-rtf
-                    :help "Copy as RTF"))))
+                    :help "Copy as RTF to clipboard"))))
       
   menu)
 
