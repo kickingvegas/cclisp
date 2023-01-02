@@ -249,6 +249,10 @@ A new frame will be created if pop-up-frames is t"
   (interactive)
   (org-emphasize ?\s))
 
+(defun cc/google-this ()
+  (interactive)
+  (google-this nil t))
+
 ;; Transform Text
 (defvar cc/transform-text-menu (make-sparse-keymap "Transform Text"))
 
@@ -324,7 +328,7 @@ A new frame will be created if pop-up-frames is t"
     (when (region-active-p)
       (define-key-after menu [tranform-text]
         (list 'menu-item "Transform" cc/transform-text-menu)))
-        
+    
     (when (and (derived-mode-p 'org-mode) (region-active-p))
       (define-key-after menu [org-emphasize]
         (list 'menu-item "Org Emphasize" cc/org-emphasize-menu))
@@ -335,7 +339,12 @@ A new frame will be created if pop-up-frames is t"
       
       (define-key-after menu [copy-as-rtf]
         '(menu-item "Copy as RTF" dm/copy-as-rtf
-                    :help "Copy as RTF to clipboard"))))
+                    :help "Copy as RTF to clipboard")))
+
+    (when (region-active-p)
+      (define-key-after menu [google-search]
+        '(menu-item "Search with Google" cc/google-this
+                    :help "Search Google with region"))))
       
   menu)
 
