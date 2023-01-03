@@ -88,7 +88,7 @@ A new frame will be created if pop-up-frames is t"
 
 (defun year ()
   (interactive)
-  (shell-command (format-time-string "open ~/org/%Y.pdf"))
+  (shell-command (format-time-string "open ~/org/%Y.pdf")))
 
 (defun make-year ()
   (interactive)
@@ -318,6 +318,9 @@ A new frame will be created if pop-up-frames is t"
     
     (when (and (bound-and-true-p buffer-file-name)
                (vc-registered (buffer-file-name)))
+      (define-key-after menu [vc-separator]
+        '(menu-item "--single-line"))
+      
       (define-key-after menu [magit-status]
         '(menu-item "Magit Status" magit-status
                     :help "Magit Status"))
@@ -326,6 +329,8 @@ A new frame will be created if pop-up-frames is t"
                     :help "Ediff this file with revision")))
     
     (when (region-active-p)
+      (define-key-after menu [transform-text-separator]
+        '(menu-item "--single-line"))
       (define-key-after menu [tranform-text]
         (list 'menu-item "Transform" cc/transform-text-menu)))
     
