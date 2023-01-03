@@ -309,7 +309,7 @@ A new frame will be created if pop-up-frames is t"
 
     (when (region-active-p)
       (define-key-after menu [osx-dictionary-lookup]
-        '(menu-item "Look up…" osx-dictionary-search-input
+        '(menu-item "Look up" osx-dictionary-search-word-at-point
                     :help "Look up in dictionary"))
 
       (define-key-after menu [occur-word-at-mouse]
