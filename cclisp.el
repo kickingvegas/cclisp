@@ -249,10 +249,6 @@ A new frame will be created if pop-up-frames is t"
   (interactive)
   (org-emphasize ?\s))
 
-(defun cc/google-this ()
-  (interactive)
-  (google-this nil t))
-
 ;; Transform Text
 (defvar cc/transform-text-menu (make-sparse-keymap "Transform Text"))
 
@@ -348,7 +344,7 @@ A new frame will be created if pop-up-frames is t"
 
     (when (region-active-p)
       (define-key-after menu [google-search]
-        '(menu-item "Search with Google" cc/google-this
+        '(menu-item "Search with Google" google-this-noconfirm
                     :help "Search Google with region"))))
       
   menu)
