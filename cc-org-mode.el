@@ -1,4 +1,5 @@
-;; Org Mode
+;; org-mode
+
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cc" 'org-capture)
@@ -52,33 +53,33 @@
   (org-shiftright)
   (end-of-line))
 
-(setq org-mode-hook
-      '((lambda ()
-	  (local-set-key (kbd "<f8>") 'datestamp)
-	  (local-set-key (kbd "<f9>") 'cc-todo-item)
-	  (local-set-key (kbd "M-<f6>") 'org-toggle-inline-images)
-          (local-set-key (kbd "C-c t") 'cc/org-time-stamp-inactive)
-          (local-set-key (kbd "<home>") 'org-beginning-of-line)
-          (local-set-key (kbd "<end>") 'org-end-of-line)
-          (local-set-key (kbd "A-<left>") 'org-backward-sentence)
-          (local-set-key (kbd "A-<right>") 'org-forward-sentence)
-          (local-set-key (kbd "A-M-<left>") 'org-backward-paragraph)
-          (local-set-key (kbd "A-M-<right>") 'org-forward-paragraph)
-          (local-set-key (kbd "C-<up>") 'org-previous-visible-heading)
-          (local-set-key (kbd "C-<down>") 'org-next-visible-heading)
-	  (org-superstar-mode 1)
-	  (variable-pitch-mode 1)
-	  (org-indent-mode 1)
-	  (flyspell-mode 1)
-          (company-mode 1)
-          (context-menu-mode 1)
-          (add-to-list (make-local-variable 'company-backends)
-                       'company-org-block)
-	  )))
+(add-hook 'org-mode-hook 'org-superstar-mode)
+(add-hook 'org-mode-hook 'variable-pitch-mode)
+(add-hook 'org-mode-hook 'org-indent-mode)
+(add-hook 'org-mode-hook 'flyspell-mode)
+(add-hook 'org-mode-hook 'company-mode)
 
-(setq org-agenda-finalize-hook
-      '((lambda ()
-	  (hl-line-mode 1))))
+(add-hook 'org-mode-hook (lambda ()
+			   (define-key org-mode-map (kbd "<f8>") 'datestamp)
+			   (define-key org-mode-map (kbd "<f9>") 'cc-todo-item)
+			   (define-key org-mode-map (kbd "M-<f6>") 'org-toggle-inline-images)
+			   (define-key org-mode-map (kbd "C-c t") 'cc/org-time-stamp-inactive)
+			   (define-key org-mode-map (kbd "<home>") 'org-beginning-of-line)
+			   (define-key org-mode-map (kbd "<end>") 'org-end-of-line)
+			   (define-key org-mode-map (kbd "A-<left>") 'org-backward-sentence)
+			   (define-key org-mode-map (kbd "A-<right>") 'org-forward-sentence)
+			   (define-key org-mode-map (kbd "A-M-<left>") 'org-backward-paragraph)
+			   (define-key org-mode-map (kbd "A-M-<right>") 'org-forward-paragraph)
+			   (define-key org-mode-map (kbd "C-<up>") 'org-previous-visible-heading)
+			   (define-key org-mode-map (kbd "C-<down>") 'org-next-visible-heading)
+                           (add-to-list (make-local-variable 'company-backends)
+                                        'company-org-block)))
+
+(add-hook 'org-agenda-finalize-hook 'hl-line-mode)
+
+;; (setq org-agenda-finalize-hook
+;;       '((lambda ()
+;; 	  (hl-line-mode 1))))
 
 (org-babel-do-load-languages
  'org-babel-load-languages

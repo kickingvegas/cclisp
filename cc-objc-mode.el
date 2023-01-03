@@ -5,8 +5,8 @@
 (setq auto-mode-alist
       (cons '("\\.mm$" . objc-mode) auto-mode-alist))
 
-(setq objc-mode-hook
-      '((lambda ()
-          (setq c-basic-offset 4)
-          (setq-default indent-tabs-mode nil))))
+
+(add-hook 'objc-mode-hook (lambda()
+                            (setq c-basic-offset 4)
+                            (setq-default indent-tabs-mode nil)))
 

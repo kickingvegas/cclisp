@@ -1,14 +1,16 @@
-(setq prog-mode-hook
-      '((lambda ()
-          (local-set-key (kbd "<home>") 'back-to-indentation)
-	  (display-line-numbers-mode 1)
-          (electric-pair-mode 1)
-          (company-mode 1)
-          (context-menu-mode 1)
-          (rainbow-mode 1)
-          (display-fill-column-indicator-mode 1)
-	  (define-key company-mode-map [remap indent-for-tab-command] #'company-indent-or-complete-common)
-	  )))
+;; prog-mode
+
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'electric-pair-mode)
+(add-hook 'prog-mode-hook 'company-mode)
+(add-hook 'prog-mode-hook 'context-menu-mode)
+(add-hook 'prog-mode-hook 'rainbow-mode)
+(add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
+
+(define-key prog-mode-map [remap indent-for-tab-command]
+  #'company-indent-or-complete-common)
+
+(define-key prog-mode-map (kbd "<home>") 'back-to-indentation)
 
 ;; GUD - mode preferences
 (setq gud-mode-hook
