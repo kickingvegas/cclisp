@@ -295,6 +295,25 @@ A new frame will be created if pop-up-frames is t"
   '(menu-item "Reset" cc/org-emphasize-reset
               :help "Remove emphasis"))
 
+;; Markdown Emphasize
+(defvar cc/markdown-emphasize-menu (make-sparse-keymap "Markdown Emphasize"))
+
+(define-key cc/markdown-emphasize-menu [markdown-emphasize-bold]
+  '(menu-item "Bold" markdown-insert-bold
+              :help "Bold"))
+
+(define-key-after cc/markdown-emphasize-menu [markdown-emphasize-italic]
+  '(menu-item "Italic" markdown-insert-italic
+              :help "Italic"))
+
+(define-key-after cc/markdown-emphasize-menu [markdown-emphasize-code]
+  '(menu-item "Code" markdown-insert-code
+              :help "Code"))
+
+(define-key-after cc/markdown-emphasize-menu [markdown-emphasize-strike-through]
+  '(menu-item "Strike Through" markdown-insert-strike-through
+              :help "Strike through"))
+
 (defun cc/context-menu-addons (menu click)
   "CC context menu additions"
   (save-excursion
@@ -329,10 +348,14 @@ A new frame will be created if pop-up-frames is t"
         '(menu-item "--single-line"))
       (define-key-after menu [tranform-text]
         (list 'menu-item "Transform" cc/transform-text-menu)))
+
+    (when (and (derived-mode-p 'markdown-mode) (region-active-p))
+      (define-key-after menu [markdown-emphasize]
+        (list 'menu-item "Style" cc/markdown-emphasize-menu)))
     
     (when (and (derived-mode-p 'org-mode) (region-active-p))
       (define-key-after menu [org-emphasize]
-        (list 'menu-item "Org Emphasize" cc/org-emphasize-menu))
+        (list 'menu-item "Style" cc/org-emphasize-menu))
 
       (define-key-after menu [org-export-to-slack]
         '(menu-item "Copy as Slack" org-slack-export-to-clipboard-as-slack
