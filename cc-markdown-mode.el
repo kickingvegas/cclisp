@@ -15,7 +15,4 @@
                                 (define-key markdown-mode-map (kbd "M-<f6>") 'markdown-toggle-inline-images)
                                 (define-key markdown-mode-map [f13] 'markdown-preview)))
 
-(add-to-list 'auto-mode-alist '("\\.txt\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+

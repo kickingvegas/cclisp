@@ -22,3 +22,16 @@
 (setq mac-mouse-wheel-mode t)
 (setq mac-mouse-wheel-smooth-scroll t)
 
+
+(load "cclisp")
+(load "cc-global-keybindings")
+(load "cc-prog-mode")
+(load "cc-text-mode")
+(load "cc-org-mode")
+(load "cc-markdown-mode")
+(load "cc-objc-mode")
+(load "cc-dired-mode")
+(load "cc-js-mode")
+(load "cc-tetris-mode")
+(load "cc-eshell-mode")
+
