@@ -10,7 +10,7 @@
 (global-set-key (kbd "<f1>") 'save-buffer)
 (global-set-key (kbd "<f2>") 'other-window)
 (global-set-key (kbd "A-<return>") 'other-window)
-(global-set-key (kbd "<f3>") 'shell-command)
+(global-set-key (kbd "<f3>") 'save-buffers-kill-emacs)
 (global-set-key (kbd "<f4>") 'helm-bookmarks)
 (global-set-key (kbd "<f5>") 'status-report)
 (global-set-key (kbd "S-<f5>") 'cc/select-journal-file)
@@ -22,7 +22,6 @@
 
 (global-set-key (kbd "M-<f1>") 'cc/open-url)
 (global-set-key (kbd "M-<f2>") 'google-this)
-(global-set-key (kbd "M-<f3>") 'save-buffers-kill-emacs)
 (global-set-key (kbd "C-c C-;") 'shell-command)
 (global-set-key (kbd "M-<f4>") 'helm-buffers-list)
 

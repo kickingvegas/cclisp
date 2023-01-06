@@ -22,7 +22,6 @@
 (setq mac-mouse-wheel-mode t)
 (setq mac-mouse-wheel-smooth-scroll t)
 
-
 (load "cclisp")
 (load "cc-global-keybindings")
 (load "cc-prog-mode")
@@ -34,4 +33,7 @@
 (load "cc-js-mode")
 (load "cc-tetris-mode")
 (load "cc-eshell-mode")
+
+(when (string= (system-name) "bingsu.local")
+  (server-start))
 

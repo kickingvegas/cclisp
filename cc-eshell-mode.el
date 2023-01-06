@@ -13,3 +13,5 @@
                 "\n┗━━ "
                 (if (= (user-uid) 0) "# " "$ "))))
 
+(add-hook 'eshell-mode-hook (lambda ()
+                              (push "gdu-go" eshell-visual-commands)))
