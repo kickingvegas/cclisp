@@ -8,8 +8,8 @@
 ;; default for dev5
 (setq cc/org-daily-header-template "CC Notes - %a %b %d %Y")
 
-(when (string-equal (system-name) "bingsu.local")
-  (setq cc/org-daily-header-template "Charles Choi Notes - %a %b %d %Y"))
+;(when (string-equal (system-name) "bingsu.local")
+;  (setq cc/org-daily-header-template "Charles Choi Notes - %a %b %d %Y"))
 
 (setf cc-org-daily-header (format-time-string cc/org-daily-header-template))
 (setf org-default-notes-file (format-time-string "~/org/%Y_%m_%d.org"))
