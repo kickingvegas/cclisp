@@ -13,5 +13,9 @@
                 "\n┗━━ "
                 (if (= (user-uid) 0) "# " "$ "))))
 
+(add-hook 'eshell-mode-hook 'company-mode)
 (add-hook 'eshell-mode-hook (lambda ()
+			      (define-key eshell-mode-map (kbd "<tab>") 'company-complete)
+			      (define-key eshell-mode-map (kbd "C-r") 'helm-eshell-history)
                               (push "gdu-go" eshell-visual-commands)))
+

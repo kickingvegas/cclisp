@@ -1,5 +1,7 @@
 ;; Charles Choi Emacs Initialization File
 
+(setenv "CDPATH" ".:..:~")
+
 (require 'use-package)
 (require 'expand-region)
 (require 'wgrep)
