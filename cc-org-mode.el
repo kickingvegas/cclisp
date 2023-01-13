@@ -9,20 +9,25 @@
 (setq cc/org-daily-header-template "CC Notes - %a %b %d %Y")
 
 ;(when (string-equal (system-name) "bingsu.local")
-;  (setq cc/org-daily-header-template "Charles Choi Notes - %a %b %d %Y"))
+                                        ;  (setq cc/org-daily-header-template "Charles Choi Notes - %a %b %d %Y"))
 
-(setf cc-org-daily-header (format-time-string cc/org-daily-header-template))
-(setf org-default-notes-file (format-time-string "~/org/%Y_%m_%d.org"))
+(defun cc/refresh-header-timestamps ()
+  (interactive)
 
-(setq org-capture-templates
-      `(
-        ("b" "BeOrg TODO" entry (file "~/org/refile-beorg.org")
-         "* TODO [#B] %^{description}\nSCHEDULED: %^T\n%?" :empty-lines 1)
-        ("t" "TODO" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	 "* TODO [#B] %^{description}\nSCHEDULED: %^T\n%?" :empty-lines 1)
-        ("j" "Journal" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	 "%(datestamp2)\n%?" :empty-lines 1)
-        ))
+  (setf cc-org-daily-header (format-time-string cc/org-daily-header-template))
+  (setf org-default-notes-file (format-time-string "~/org/%Y_%m_%d.org"))
+
+  (setq org-capture-templates
+        `(
+          ("b" "BeOrg TODO" entry (file "~/org/refile-beorg.org")
+           "* TODO [#B] %^{description}\nSCHEDULED: %^T\n%?" :empty-lines 1)
+          ("t" "TODO" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
+	   "* TODO [#B] %^{description}\nSCHEDULED: %^T\n%?" :empty-lines 1)
+          ("j" "Journal" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
+	   "%(datestamp2)\n%?" :empty-lines 1)
+          )))
+
+(cc/refresh-header-timestamps)
 
 (setq org-todo-keywords
            '((sequence "TODO(t)" "IN_PROGRESS(i)" "WAITING(w)" "|" "DONE(d)")
