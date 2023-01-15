@@ -86,6 +86,6 @@
 
 (define-key global-map
   [menu-bar tools open-in-finder]
-  '("Open in Finder…" . reveal-in-folder-this-buffer))
+  '("Open in Finder" . reveal-in-folder-this-buffer))
 
 (global-set-key [vertical-scroll-bar down-mouse-1] 'scroll-bar-drag)

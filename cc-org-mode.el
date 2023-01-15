@@ -103,5 +103,9 @@
 
 (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
 
+;; (define-key org-mode-map
+;;   [menu-bar table table-field-info]
+;;   '("Table Field Info" . org-table-field-info))
+
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
