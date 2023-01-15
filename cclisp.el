@@ -365,12 +365,29 @@ A new frame will be created if pop-up-frames is t"
         '(menu-item "Copy as RTF" dm/copy-as-rtf
                     :help "Copy as RTF to clipboard")))
 
+    (when (org-at-table-p)
+      (define-key-after menu [org-table-separator]
+        '(menu-item "--single-line"))
+      (define-key-after menu [org-table-field-info]
+        '(menu-item (format "@%d$%d"
+                            (org-table-current-dline)
+                            (org-table-current-column))
+                    cc/kill-org-table-reference
+                    :help "Table field/cell information")))
+
     (when (region-active-p)
       (define-key-after menu [google-search]
         '(menu-item "Search with Google" google-this-noconfirm
                     :help "Search Google with region"))))
       
   menu)
+
+
+(defun cc/kill-org-table-reference (e)
+  (interactive "e")
+  (kill-new (format "@%d$%d"
+                    (org-table-current-dline)
+                    (org-table-current-column))))
 
 (add-hook 'context-menu-functions #'cc/context-menu-addons)
 
