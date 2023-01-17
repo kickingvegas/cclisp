@@ -2,6 +2,10 @@
 
 (setenv "CDPATH" ".:..:~")
 
+(when (eq window-system 'mac)
+  (setenv "PATH" (concat "/opt/local/libexec/gnubin:" (getenv "PATH")))
+  (setq exec-path (push '"/opt/local/libexec/gnubin" exec-path)))
+
 (require 'use-package)
 (require 'expand-region)
 (require 'wgrep)
