@@ -388,7 +388,7 @@ A new frame will be created if pop-up-frames is t"
 
     (when (region-active-p)
       (define-key-after menu [google-search]
-        '(menu-item "Search with Google" google-this-noconfirm
+        '(menu-item (cc/context-menu-label "Search with Google") google-this-noconfirm
                     :help "Search Google with region"))
       (define-key-after menu [webpaste-paste-region]
         '(menu-item (cc/context-menu-label "Webpaste") webpaste-paste-region
