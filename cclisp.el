@@ -314,6 +314,17 @@ A new frame will be created if pop-up-frames is t"
   '(menu-item "Strike Through" markdown-insert-strike-through
               :help "Strike through"))
 
+(defun cc/context-menu-label (prefix)
+  (let ((start (region-beginning))
+        (end (region-end))
+        (buf "")
+        (max 25)
+        (size (abs (- (region-end) (region-beginning)))))
+    (if (> size max)
+        (setq buf (concat prefix " “"(buffer-substring start (+ max start)) "…"))
+      (setq buf (concat prefix " “" (buffer-substring start end) "”")))
+    buf))
+
 (defun cc/context-menu-addons (menu click)
   "CC context menu additions"
   (save-excursion
@@ -324,11 +335,11 @@ A new frame will be created if pop-up-frames is t"
 
     (when (region-active-p)
       (define-key-after menu [osx-dictionary-lookup]
-        '(menu-item "Look up" osx-dictionary-search-word-at-point
+        '(menu-item (cc/context-menu-label "Look Up") osx-dictionary-search-word-at-point
                     :help "Look up in dictionary"))
 
       (define-key-after menu [occur-word-at-mouse]
-        '(menu-item "Occur" occur-word-at-mouse
+        '(menu-item (cc/context-menu-label "Occur") occur-word-at-mouse
                     :help "Occur")))
     
     (when (and (bound-and-true-p buffer-file-name)
@@ -378,7 +389,10 @@ A new frame will be created if pop-up-frames is t"
     (when (region-active-p)
       (define-key-after menu [google-search]
         '(menu-item "Search with Google" google-this-noconfirm
-                    :help "Search Google with region"))))
+                    :help "Search Google with region"))
+      (define-key-after menu [webpaste-paste-region]
+        '(menu-item (cc/context-menu-label "Webpaste") webpaste-paste-region
+                    :help "Webpaste region"))))
       
   menu)
 
