@@ -129,7 +129,7 @@ A new frame will be created if pop-up-frames is t"
   (declare (pure t) (side-effect-free t))
   (replace-regexp-in-string (regexp-quote old) new s t t))
 
-(defun pelican-timestamp ()
+(defun cc/pelican-timestamp ()
    (interactive)
    (insert (format-time-string "%Y-%m-%d %H:%M")))
 
