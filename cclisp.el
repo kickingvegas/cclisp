@@ -40,27 +40,9 @@ A new frame will be created if pop-up-frames is t"
       (switch-to-buffer-other-frame new-shell-name)
       (switch-to-buffer new-shell-name))))
 
-(defvar journalFile "~/Dropbox/Documents/journal/journal.txt")
 (defun journal()
   (interactive)
-  (shell-command "echo '**' `date`  >> $HOME/Dropbox/Documents/journal/journal.txt")
-  (find-file journalFile)
-  (end-of-buffer)
-  )
-
-(defvar notesFile "~/Documents/journal/notes.txt")
-(defun notes()
-  (interactive)
-  (shell-command "echo '* ' >> $HOME/Documents/journal/notes.txt")
-  (find-file notesFile)
-  (hide-body)
-  (end-of-buffer)
-  (backward-char)
-  )
-
-(defun tn()
-  (interactive)
-  (dired "~/Projects/Tile/Documents/Notes"))
+  (status-report))
 
 (defun status-report()
   (interactive)
@@ -72,18 +54,14 @@ A new frame will be created if pop-up-frames is t"
    (interactive)
    (shell-command "open ~/Documents/Dictation.txt"))
 
-
-(fset 'gh-pr-link
-      (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("[1;5DOD[OC](https://github.com/TileCorporation/tileapp_ios./pull/)" 0 "%d")) arg)))
-
-
 (load-file (concat user-emacs-directory "url-bookmarks.el"))
 
 (defun alist-keys (alist)
   (mapcar 'car alist))
 
 (defun cc/open-url (key)
-  (interactive (list (completing-read-default "Open URL: " (alist-keys cc/url-bookmarks))))
+  (interactive (list (completing-read-default "Open URL: "
+                                              (alist-keys cc/url-bookmarks))))
   (browse-url (cdr (assoc key cc/url-bookmarks))))
 
 (defun year ()
@@ -108,7 +86,7 @@ A new frame will be created if pop-up-frames is t"
   (message (if (<= (* 100 (cl-random 1.0)) (read-number "Chance (%): ")) win lose))
   )
 
-(fset 'ccstart
+(fset 'cc/start
       (kmacro-lambda-form [f5 ?\C-c ?a ?a ?\C-x ?+ ?\C-x ?o] 0 "%d"))
 
 (defun cc/org-time-stamp-inactive ()
