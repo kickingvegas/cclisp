@@ -89,11 +89,16 @@
       (define-key-after menu [google-search]
         '(menu-item (cc/context-menu-label "Search with Google") google-this-noconfirm
                     :help "Search Google with region"))
+
+      (define-key-after menu [google-translate]
+        '(menu-item (cc/context-menu-label "Translate") google-translate-smooth-translate
+                    :help "Translate using Google Translate"))
+      
       (define-key-after menu [webpaste-paste-region]
         '(menu-item (cc/context-menu-label "Upload to Webpaste") webpaste-paste-region
                     :help "Upload region to Webpaste"))))
   
-    (define-key-after menu [world-clock-separator]
+  (define-key-after menu [world-clock-separator]
     '(menu-item "--single-line"))
 
   (define-key-after menu [calendar]
