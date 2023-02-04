@@ -92,7 +92,17 @@
       (define-key-after menu [webpaste-paste-region]
         '(menu-item (cc/context-menu-label "Upload to Webpaste") webpaste-paste-region
                     :help "Upload region to Webpaste"))))
-      
+  
+    (define-key-after menu [world-clock-separator]
+    '(menu-item "--single-line"))
+
+  (define-key-after menu [calendar]
+    '(menu-item "Calendar" calendar
+                :help "Display calendar"))
+  (define-key-after menu [world-clock]
+    '(menu-item "World Clock" world-clock
+                :help "Display world clock"))
+  
   menu)
 
 
