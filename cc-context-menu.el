@@ -107,7 +107,15 @@
   (define-key-after menu [world-clock]
     '(menu-item "World Clock" world-clock
                 :help "Display world clock"))
-  
+
+  (when (region-active-p)
+    (define-key-after menu [speech-separator]
+      '(menu-item "--single-line"))
+    
+    (define-key-after menu [google-translate]
+      '(menu-item "Start Speaking" cc/say-region
+                  :help "Start speaking region")))
+    
   menu)
 
 
