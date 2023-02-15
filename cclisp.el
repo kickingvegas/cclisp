@@ -274,3 +274,8 @@ surrounded by word boundaries."
       (delete-region start end)
       (insert insertion)))
 
+
+(defun cc/say-region (&optional b e)
+  (interactive "r")
+  (shell-command-on-region b e "say"))
+
