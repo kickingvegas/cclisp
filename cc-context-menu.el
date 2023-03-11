@@ -50,6 +50,7 @@
       (define-key-after menu [tranform-text]
         (list 'menu-item "Transform" cc/transform-text-menu)))
 
+
     (when (and (derived-mode-p 'markdown-mode) (region-active-p))
       (define-key-after menu [markdown-emphasize]
         (list 'menu-item "Style" cc/markdown-emphasize-menu)))
@@ -66,6 +67,22 @@
         '(menu-item "Copy as RTF" dm/copy-as-rtf
                     :help "Copy as RTF to clipboard")))
 
+    (when (derived-mode-p 'org-mode)
+      (define-key-after menu [org-visible-mode-separator]
+        '(menu-item "--single-line"))
+      
+      (define-key-after menu [org-visible-mode]
+        '(menu-item "Toggle reveal markup" visible-mode
+                    :help "Toggle reveal markup")))
+
+    (when (derived-mode-p 'markdown-mode)
+      (define-key-after menu [markdown-visible-mode-separator]
+        '(menu-item "--single-line"))
+      
+      (define-key-after menu [markdown-visible-mode]
+        '(menu-item "Toggle reveal markup" markdown-toggle-markup-hiding
+                    :help "Toggle reveal markup")))
+    
     (when (org-at-table-p)
       (define-key-after menu [org-table-separator]
         '(menu-item "--single-line"))
