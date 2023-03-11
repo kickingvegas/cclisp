@@ -25,7 +25,9 @@
 	   "* TODO [#B] %^{description}\nSCHEDULED: %^T\n%?" :empty-lines 1)
           ("j" "Journal" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
 	   "%(datestamp2)\n%?" :empty-lines 1)
-          ("c" "TODO" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
+          ("c" "Captee Capture" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
+	   "* %:description\n%:annotation\n%i\n%?" :empty-lines 1)
+          ("i" "Issue Capture" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
 	   "* TODO [#B] %:description\n%:annotation\n%i\n%?" :empty-lines 1)
           )))
 
