@@ -29,6 +29,7 @@
 (global-set-key (kbd "M-<f13>") 'treemacs)
 (global-set-key (kbd "<f14>") 'eshell)
 (global-set-key (kbd "<f15>") 'ediff-revision)
+(global-set-key (kbd "<f16>") 'calc)
 
 ;; Terminal 
 (global-set-key (kbd "M-SPC") 'set-mark-command)

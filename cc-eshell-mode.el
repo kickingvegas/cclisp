@@ -18,6 +18,8 @@
 			      (define-key eshell-mode-map (kbd "<tab>") 'company-complete)
 			      (define-key eshell-mode-map (kbd "C-r") 'helm-eshell-history)
 			      (add-to-list 'eshell-visual-options '("git" "--help" "--paginate"))
+			      (add-to-list 'eshell-visual-options '("gh" "help"))
 			      (add-to-list 'eshell-visual-subcommands '("git" "log" "diff" "show"))
-                              (push "gdu-go" eshell-visual-commands)))
+                              (push "gdu-go" eshell-visual-commands)
+                              (push "gh" eshell-visual-commands)))
 
