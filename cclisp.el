@@ -40,27 +40,9 @@ A new frame will be created if pop-up-frames is t"
       (switch-to-buffer-other-frame new-shell-name)
       (switch-to-buffer new-shell-name))))
 
-(defvar journalFile "~/Dropbox/Documents/journal/journal.txt")
 (defun journal()
   (interactive)
-  (shell-command "echo '**' `date`  >> $HOME/Dropbox/Documents/journal/journal.txt")
-  (find-file journalFile)
-  (end-of-buffer)
-  )
-
-(defvar notesFile "~/Documents/journal/notes.txt")
-(defun notes()
-  (interactive)
-  (shell-command "echo '* ' >> $HOME/Documents/journal/notes.txt")
-  (find-file notesFile)
-  (hide-body)
-  (end-of-buffer)
-  (backward-char)
-  )
-
-(defun tn()
-  (interactive)
-  (dired "~/Projects/Tile/Documents/Notes"))
+  (status-report))
 
 (defun status-report()
   (interactive)
@@ -72,18 +54,14 @@ A new frame will be created if pop-up-frames is t"
    (interactive)
    (shell-command "open ~/Documents/Dictation.txt"))
 
-
-(fset 'gh-pr-link
-      (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("[1;5DOD[OC](https://github.com/TileCorporation/tileapp_ios./pull/)" 0 "%d")) arg)))
-
-
 (load-file (concat user-emacs-directory "url-bookmarks.el"))
 
 (defun alist-keys (alist)
   (mapcar 'car alist))
 
 (defun cc/open-url (key)
-  (interactive (list (completing-read-default "Open URL: " (alist-keys cc/url-bookmarks))))
+  (interactive (list (completing-read-default "Open URL: "
+                                              (alist-keys cc/url-bookmarks))))
   (browse-url (cdr (assoc key cc/url-bookmarks))))
 
 (defun year ()
@@ -108,7 +86,7 @@ A new frame will be created if pop-up-frames is t"
   (message (if (<= (* 100 (cl-random 1.0)) (read-number "Chance (%): ")) win lose))
   )
 
-(fset 'ccstart
+(fset 'cc/start
       (kmacro-lambda-form [f5 ?\C-c ?a ?a ?\C-x ?+ ?\C-x ?o] 0 "%d"))
 
 (defun cc/org-time-stamp-inactive ()
@@ -165,6 +143,24 @@ A new frame will be created if pop-up-frames is t"
          ))
   )
 
+(defun cc/web-captee()
+  (interactive)
+  (cond ((get-buffer "*pelican*")
+         (switch-to-buffer "*pelican*"))
+        (t
+         (shell-new)
+         (rename-buffer "*pelican*")
+         (process-send-string (get-buffer-process "*pelican*") "cd ~/Projects/pelican\n")
+         (process-send-string (get-buffer-process "*pelican*") "source .venv/bin/activate\n")
+         (process-send-string (get-buffer-process "*pelican*") "cd ~/Projects/pelican/captee\n")
+         ()
+         (if (display-graphic-p)
+             (cc/launch-pelican)
+           )
+         ))
+  )
+
+
 (defun cc/slugify (start end)
   (interactive "r")
   (if (use-region-p)
@@ -220,190 +216,8 @@ A new frame will be created if pop-up-frames is t"
   (interactive "e")
   (ediff-revision buffer-file-name))
 
-(defun cc/org-emphasize-bold ()
-  (interactive)
-  (org-emphasize ?*))
 
-(defun cc/org-emphasize-italic ()
-  (interactive)
-  (org-emphasize ?/))
-
-(defun cc/org-emphasize-code ()
-  (interactive)
-  (org-emphasize ?~))
-
-(defun cc/org-emphasize-underline ()
-  (interactive)
-  (org-emphasize ?_))
-
-(defun cc/org-emphasize-verbatim ()
-  (interactive)
-  (org-emphasize ?=))
-
-(defun cc/org-emphasize-strike-through ()
-  (interactive)
-  (org-emphasize ?+))
-
-(defun cc/org-emphasize-reset ()
-  ;; this won't work when org-hide-emphasis-markers is turned on.
-  (interactive)
-  (org-emphasize ?\s))
-
-;; Transform Text
-(defvar cc/transform-text-menu (make-sparse-keymap "Transform Text"))
-
-(define-key cc/transform-text-menu [tranform-text-uppercase]
-  '(menu-item "Make Upper Case" upcase-region
-              :help "Upper case region"))
-
-(define-key-after cc/transform-text-menu [tranform-text-lowercase]
-  '(menu-item "Make Lower Case" downcase-region
-              :help "Lower case region"))
-
-(define-key-after cc/transform-text-menu [tranform-text-capitalize]
-  '(menu-item "Capitalize" capitalize-region
-              :help "Capitalize region"))
-
-;; Org Emphasize
-(defvar cc/org-emphasize-menu (make-sparse-keymap "Org Emphasize"))
-
-(define-key cc/org-emphasize-menu [org-emphasize-bold]
-  '(menu-item "Bold" cc/org-emphasize-bold
-              :help "Bold"))
-
-(define-key-after cc/org-emphasize-menu [org-emphasize-italic]
-  '(menu-item "Italic" cc/org-emphasize-italic
-              :help "Italic"))
-
-(define-key-after cc/org-emphasize-menu [org-emphasize-code]
-  '(menu-item "Code" cc/org-emphasize-code
-              :help "Code"))
-
-(define-key-after cc/org-emphasize-menu [org-emphasize-underline]
-  '(menu-item "Underline" cc/org-emphasize-underline
-              :help "Underline"))
-
-(define-key-after cc/org-emphasize-menu [org-emphasize-verbatim]
-  '(menu-item "Verbatim" cc/org-emphasize-verbatim
-              :help "Verbatim"))
-
-(define-key-after cc/org-emphasize-menu [org-emphasize-strike-through]
-  '(menu-item "Strike Through" cc/org-emphasize-strike-through
-              :help "Strike through"))
-
-(define-key-after cc/org-emphasize-menu [org-emphasize-reset]
-  '(menu-item "Reset" cc/org-emphasize-reset
-              :help "Remove emphasis"))
-
-;; Markdown Emphasize
-(defvar cc/markdown-emphasize-menu (make-sparse-keymap "Markdown Emphasize"))
-
-(define-key cc/markdown-emphasize-menu [markdown-emphasize-bold]
-  '(menu-item "Bold" markdown-insert-bold
-              :help "Bold"))
-
-(define-key-after cc/markdown-emphasize-menu [markdown-emphasize-italic]
-  '(menu-item "Italic" markdown-insert-italic
-              :help "Italic"))
-
-(define-key-after cc/markdown-emphasize-menu [markdown-emphasize-code]
-  '(menu-item "Code" markdown-insert-code
-              :help "Code"))
-
-(define-key-after cc/markdown-emphasize-menu [markdown-emphasize-strike-through]
-  '(menu-item "Strike Through" markdown-insert-strike-through
-              :help "Strike through"))
-
-(defun cc/context-menu-label (prefix)
-  (let ((start (region-beginning))
-        (end (region-end))
-        (buf "")
-        (max 25)
-        (size (abs (- (region-end) (region-beginning)))))
-    (if (> size max)
-        (setq buf (concat prefix " “"(buffer-substring start (+ max start)) "…"))
-      (setq buf (concat prefix " “" (buffer-substring start end) "”")))
-    buf))
-
-(defun cc/context-menu-addons (menu click)
-  "CC context menu additions"
-  (save-excursion
-    (mouse-set-point click)
-    (define-key-after menu [open-in-finder]
-      '(menu-item "Open in Finder" reveal-in-folder-this-buffer
-                  :help "Open file (buffer) in Finder"))
-
-    (when (region-active-p)
-      (define-key-after menu [osx-dictionary-lookup]
-        '(menu-item (cc/context-menu-label "Look Up") osx-dictionary-search-word-at-point
-                    :help "Look up in dictionary"))
-
-      (define-key-after menu [occur-word-at-mouse]
-        '(menu-item (cc/context-menu-label "Occur") occur-word-at-mouse
-                    :help "Occur")))
-    
-    (when (and (bound-and-true-p buffer-file-name)
-               (vc-registered (buffer-file-name)))
-      (define-key-after menu [vc-separator]
-        '(menu-item "--single-line"))
-      
-      (define-key-after menu [magit-status]
-        '(menu-item "Magit Status" magit-status
-                    :help "Magit Status"))
-      (define-key-after menu [ediff-revision]
-        '(menu-item "Ediff revision…" cc/ediff-revision
-                    :help "Ediff this file with revision")))
-    
-    (when (region-active-p)
-      (define-key-after menu [transform-text-separator]
-        '(menu-item "--single-line"))
-      (define-key-after menu [tranform-text]
-        (list 'menu-item "Transform" cc/transform-text-menu)))
-
-    (when (and (derived-mode-p 'markdown-mode) (region-active-p))
-      (define-key-after menu [markdown-emphasize]
-        (list 'menu-item "Style" cc/markdown-emphasize-menu)))
-    
-    (when (and (derived-mode-p 'org-mode) (region-active-p))
-      (define-key-after menu [org-emphasize]
-        (list 'menu-item "Style" cc/org-emphasize-menu))
-
-      (define-key-after menu [org-export-to-slack]
-        '(menu-item "Copy as Slack" org-slack-export-to-clipboard-as-slack
-                    :help "Copy as Slack to clipboard"))
-      
-      (define-key-after menu [copy-as-rtf]
-        '(menu-item "Copy as RTF" dm/copy-as-rtf
-                    :help "Copy as RTF to clipboard")))
-
-    (when (org-at-table-p)
-      (define-key-after menu [org-table-separator]
-        '(menu-item "--single-line"))
-      (define-key-after menu [org-table-field-info]
-        '(menu-item (format "@%d$%d"
-                            (org-table-current-dline)
-                            (org-table-current-column))
-                    cc/kill-org-table-reference
-                    :help "Table field/cell information")))
-
-    (when (region-active-p)
-      (define-key-after menu [google-search]
-        '(menu-item (cc/context-menu-label "Search with Google") google-this-noconfirm
-                    :help "Search Google with region"))
-      (define-key-after menu [webpaste-paste-region]
-        '(menu-item (cc/context-menu-label "Webpaste") webpaste-paste-region
-                    :help "Webpaste region"))))
-      
-  menu)
-
-
-(defun cc/kill-org-table-reference (e)
-  (interactive "e")
-  (kill-new (format "@%d$%d"
-                    (org-table-current-dline)
-                    (org-table-current-column))))
-
-(add-hook 'context-menu-functions #'cc/context-menu-addons)
+(load "cc-context-menu")
 
 (defvar my-ediff-last-windows nil)
 
@@ -477,4 +291,52 @@ surrounded by word boundaries."
             (split-string (buffer-substring start end)) ", ")))
       (delete-region start end)
       (insert insertion)))
+
+
+(defun cc/say-region (&optional b e)
+  (interactive "r")
+  (shell-command-on-region b e "say"))
+
+
+(defun cc/dark-mode ()
+    (interactive)
+    (set-face-attribute 'minibuffer-prompt nil
+                        :foreground "orange")
+    
+    (set-face-attribute 'org-table nil
+                        :foreground "#00ff22")
+
+    (set-face-attribute 'org-scheduled-previously nil
+                        :foreground "light sky blue")
+
+    (set-face-attribute 'Man-overstrike nil
+                        :foreground "white")
+
+    (set-face-attribute 'Man-underline nil
+                        :foreground "chartreuse")
+    
+    (set-face-attribute 'org-hide nil
+                        :foreground "black"))
+
+
+(defun cc/light-mode ()
+    (interactive)
+    (set-face-attribute 'minibuffer-prompt nil
+                        :foreground "dark magenta")
+    
+    (set-face-attribute 'org-table nil
+                        :foreground "Blue1")
+
+    (set-face-attribute 'org-scheduled-previously nil
+                        :foreground "#2255ff")
+
+    (set-face-attribute 'Man-overstrike nil
+                        :foreground "dark slate blue")
+
+    (set-face-attribute 'Man-underline nil
+                        :foreground "MediumBlue")
+
+    (set-face-attribute 'org-hide nil
+                        :foreground "white"))
+
 
