@@ -143,6 +143,24 @@ A new frame will be created if pop-up-frames is t"
          ))
   )
 
+(defun cc/web-captee()
+  (interactive)
+  (cond ((get-buffer "*pelican*")
+         (switch-to-buffer "*pelican*"))
+        (t
+         (shell-new)
+         (rename-buffer "*pelican*")
+         (process-send-string (get-buffer-process "*pelican*") "cd ~/Projects/pelican\n")
+         (process-send-string (get-buffer-process "*pelican*") "source .venv/bin/activate\n")
+         (process-send-string (get-buffer-process "*pelican*") "cd ~/Projects/pelican/captee\n")
+         ()
+         (if (display-graphic-p)
+             (cc/launch-pelican)
+           )
+         ))
+  )
+
+
 (defun cc/slugify (start end)
   (interactive "r")
   (if (use-region-p)
@@ -278,4 +296,47 @@ surrounded by word boundaries."
 (defun cc/say-region (&optional b e)
   (interactive "r")
   (shell-command-on-region b e "say"))
+
+
+(defun cc/dark-mode ()
+    (interactive)
+    (set-face-attribute 'minibuffer-prompt nil
+                        :foreground "orange")
+    
+    (set-face-attribute 'org-table nil
+                        :foreground "#00ff22")
+
+    (set-face-attribute 'org-scheduled-previously nil
+                        :foreground "light sky blue")
+
+    (set-face-attribute 'Man-overstrike nil
+                        :foreground "white")
+
+    (set-face-attribute 'Man-underline nil
+                        :foreground "chartreuse")
+    
+    (set-face-attribute 'org-hide nil
+                        :foreground "black"))
+
+
+(defun cc/light-mode ()
+    (interactive)
+    (set-face-attribute 'minibuffer-prompt nil
+                        :foreground "dark magenta")
+    
+    (set-face-attribute 'org-table nil
+                        :foreground "Blue1")
+
+    (set-face-attribute 'org-scheduled-previously nil
+                        :foreground "#2255ff")
+
+    (set-face-attribute 'Man-overstrike nil
+                        :foreground "dark slate blue")
+
+    (set-face-attribute 'Man-underline nil
+                        :foreground "MediumBlue")
+
+    (set-face-attribute 'org-hide nil
+                        :foreground "white"))
+
 

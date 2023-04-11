@@ -9,7 +9,7 @@
                                 "~"
                               (replace-regexp-in-string
                                (concat "^" (getenv "HOME")) "~" (eshell/pwd)))
-                            'face `(:foreground "blue"))
+                            'face `(:foreground "orange red"))
                 "\n┗━━ "
                 (if (= (user-uid) 0) "# " "$ "))))
 
