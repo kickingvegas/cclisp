@@ -314,7 +314,13 @@ surrounded by word boundaries."
 
     (set-face-attribute 'Man-underline nil
                         :foreground "chartreuse")
-    
+
+    (set-face-attribute 'org-document-title nil
+                        :foreground "chartreuse")
+
+    (set-face-attribute 'org-document-info nil
+                        :foreground "chartreuse")
+        
     (set-face-attribute 'org-hide nil
                         :foreground "black"))
 
@@ -336,6 +342,12 @@ surrounded by word boundaries."
     (set-face-attribute 'Man-underline nil
                         :foreground "MediumBlue")
 
+    (set-face-attribute 'org-document-title nil
+                        :foreground "midnight blue")
+
+    (set-face-attribute 'org-document-info nil
+                        :foreground "midnight blue")
+    
     (set-face-attribute 'org-hide nil
                         :foreground "white"))
 
