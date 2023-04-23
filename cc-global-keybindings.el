@@ -55,6 +55,9 @@
 
 (when (string-equal (window-system) "mac")
   (global-set-key (kbd "C-<tab>") 'mac-next-tab)
+  ;; this binding breaks terminal behavior
+  ;(global-set-key (kbd "M-]") 'mac-next-tab)
+  ;(global-set-key (kbd "M-[") 'mac-previous-tab)    
   (define-key-after global-map
     [menu-bar file mac-toggle]
     '("Toggle Tab Bar" . mac-toggle-tab-bar) 'close-tab))
