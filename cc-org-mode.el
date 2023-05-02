@@ -111,6 +111,27 @@
 ;;   [menu-bar table table-field-info]
 ;;   '("Table Field Info" . org-table-field-info))
 
+
+(require 'ox-publish)
+
+(setq org-publish-project-alist
+      `(("pages"
+         :base-directory "~/Projects/Captee/Development/Captee/docs/help"
+         :base-extension "org"
+         :recursive t
+         :publishing-directory "~/Projects/Captee/Development/Captee/Captee.help/Contents/Resources/en.lproj"
+         :publishing-function org-html-publish-to-html)
+
+        ("static"
+         :base-directory "~/Projects/Captee/Development/Captee/docs/help"
+         :base-extension "css\\|txt\\|jpg\\|gif\\|png\\|svg\\|helpindex\\|cshelpindex"
+         :recursive t
+         :publishing-directory "~/Projects/Captee/Development/Captee/Captee.help/Contents/Resources/en.lproj"
+         :publishing-function org-publish-attachment)
+        
+        ("captee-help-book"
+         :components ("pages" "static"))))
+
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
 

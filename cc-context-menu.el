@@ -19,6 +19,14 @@
   "CC context menu additions"
   (save-excursion
     (mouse-set-point click)
+    
+    (define-key-after menu [capture-flow]
+      '(menu-item "Capture Flow" org-capture
+                  :help "Use Org Capture to make a flow"))
+
+    (define-key-after menu [capture-flow-separator]
+      '(menu-item "--single-line"))
+        
     (define-key-after menu [open-in-finder]
       '(menu-item "Open in Finder" reveal-in-folder-this-buffer
                   :help "Open file (buffer) in Finder"))
