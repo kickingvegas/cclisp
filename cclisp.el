@@ -315,6 +315,9 @@ surrounded by word boundaries."
     (set-face-attribute 'Man-underline nil
                         :foreground "chartreuse")
 
+    (set-face-attribute 'comint-highlight-prompt nil
+                        :foreground "cyan")
+
     (set-face-attribute 'org-document-title nil
                         :foreground "chartreuse")
 
@@ -342,6 +345,9 @@ surrounded by word boundaries."
     (set-face-attribute 'Man-underline nil
                         :foreground "MediumBlue")
 
+    (set-face-attribute 'comint-highlight-prompt nil
+                        :foreground "dark magenta")
+    
     (set-face-attribute 'org-document-title nil
                         :foreground "midnight blue")
 

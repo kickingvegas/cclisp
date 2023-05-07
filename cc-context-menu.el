@@ -81,8 +81,12 @@
       
       (define-key-after menu [org-visible-mode]
         '(menu-item "Toggle reveal markup" visible-mode
-                    :help "Toggle reveal markup")))
+                    :help "Toggle reveal markup"))
 
+      (define-key-after menu [org-insert-last-stored-link]
+        '(menu-item "Insert last Org link" org-insert-last-stored-link
+                    :help "Insert last stored Org link")))
+    
     (when (derived-mode-p 'markdown-mode)
       (define-key-after menu [markdown-visible-mode-separator]
         '(menu-item "--single-line"))
