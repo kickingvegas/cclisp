@@ -40,6 +40,7 @@
 (load "cc-tetris-mode")
 (load "cc-eshell-mode")
 (load "cc-google-translate")
+(load "cc-appearance")
 
 (when (string= (system-name) "bingsu.local")
   (server-start))
