@@ -50,7 +50,11 @@
                     :help "Magit Status"))
       (define-key-after menu [ediff-revision]
         '(menu-item "Ediff revision…" cc/ediff-revision
-                    :help "Ediff this file with revision")))
+                    :help "Ediff this file with revision"))
+
+      (define-key-after menu [magit-history]
+        '(menu-item "Git history" magit-log-buffer-file
+                    :help "History")))
     
     (when (region-active-p)
       (define-key-after menu [transform-text-separator]

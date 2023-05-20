@@ -30,7 +30,9 @@
 
 (load "cclisp")
 (load "cc-global-keybindings")
+
 (load "cc-prog-mode")
+(load "cc-emacs-lisp-mode")
 (load "cc-text-mode")
 (load "cc-org-mode")
 (load "cc-markdown-mode")
