@@ -63,3 +63,13 @@
   (set-face-attribute 'Man-underline nil
                       :foreground "chartreuse"))
   
+
+(defun cc/morning ()
+  (interactive)
+  (cc/light-mode)
+  (cc/refresh-header-timestamps)
+  (cc/start))
+
+(defun cc/night ()
+  (interactive)
+  (cc/dark-mode))
