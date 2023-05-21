@@ -47,3 +47,21 @@
 (when (string= (system-name) "bingsu.local")
   (server-start))
 
+(eval-after-load "flyspell"
+  '(progn
+     (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
+     (define-key flyspell-mouse-map [mouse-3] #'undefined)))
+
+;; Miscellaneous Stuff
+(fset 'yes-or-no-p 'y-or-n-p)           ; set yes-or-no to y-or-n
+
+;; (setq tab-bar-mode-hook
+;;       '((lambda ()
+;;           (if (display-graphic-p)
+;;               (progn
+;; 	        (local-set-key (kbd "M-]") 'tab-bar-switch-to-next-tab)
+;; 	        (local-set-key (kbd "M-[") 'tab-bar-switch-to-prev-tab)))
+;; 	  )))
+
+(add-to-list 'auto-mode-alist '("\\.msc\\'" . graphviz-dot-mode))
+(add-to-list 'auto-mode-alist '("\\.xcconfig\\'" . conf-mode))
