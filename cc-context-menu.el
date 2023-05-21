@@ -19,6 +19,18 @@
   "CC context menu additions"
   (save-excursion
     (mouse-set-point click)
+
+    (define-key-after menu [next-buffer]
+      '(menu-item "Next Buffer" next-buffer
+                  :help "Go to next buffer"))
+
+    (define-key-after menu [previous-buffer]
+      '(menu-item "Previous Buffer" previous-buffer
+                  :help "Go to previous buffer"))
+    
+    (define-key-after menu [buffer-navigation-separator]
+      '(menu-item "--single-line"))
+    
     
     (define-key-after menu [capture-flow]
       '(menu-item "Capture Flow" org-capture
