@@ -1,0 +1,8 @@
+* Charles Choi Emacs Configuration Files
+
+This directory contains Elisp files used by Charles Choi to customize his usage of Emacs.
+
+The entry point from ~init.el~ is ~ccinit.el~. From there all other Elisp files in this directory are loaded.
+
+
+
