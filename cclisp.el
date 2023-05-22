@@ -1,4 +1,12 @@
+;;; cclisp.el --- Utility functions used by Charles Choi
+
+;;; Commentary:
+;; 
+
+;;; Code:
+
 (defun datestamp ()
+  "Insert datestamp intended for Charles Choi org notes."
   (interactive)
   (insert (format-time-string "*** %a %h %d %H:%M:%S %Z %Y")))
 
@@ -8,20 +16,19 @@
 
 ;; Scrolling
 (defun scroll-one-line-up (&optional arg)
-  "Scroll the selected window up (forward in the text) one line (or N lines)."
+  "Scroll the selected window up (forward in the text) one line (or ARG lines)."
   (interactive "p")
   (scroll-up (or arg 1)))
 
 (defun scroll-one-line-down (&optional arg)
-  "Scroll the selected window down (backward in the text) one line (or N)."
+  "Scroll the selected window down (backward in the text) one line (or ARG lines)."
   (interactive "p")
   (scroll-down (or arg 1)))
 
 (defun shell-new()
-  "Same as \\[shell], but starts new shell whether or not there
-already exists one, giving it a unique name.
+  "Create a new instance of `shell' but with a unique name.
 The current directory will be used.
-A new frame will be created if pop-up-frames is t"
+A new frame will be created if `pop-up-frames' is t."
   (interactive)
   (let ((new-shell-name (generate-new-buffer-name "*shell*"))
         (curr-buf (current-buffer)))
@@ -41,47 +48,55 @@ A new frame will be created if pop-up-frames is t"
       (switch-to-buffer new-shell-name))))
 
 (defun journal()
+  "Alias to invoke `status-report' for Charles Choi."
   (interactive)
   (status-report))
 
 (defun status-report()
+  "Open the daily journal file for Charles Choi and go to the end of buffer."
   (interactive)
   (find-file (format-time-string "~/org/%Y_%m_%d.org"))
   (end-of-buffer))
 
 (defun dictate()
-   "dictate"
+   "Open a default text file to dictate into using macOS open."
    (interactive)
    (shell-command "open ~/Documents/Dictation.txt"))
 
 (load-file (concat user-emacs-directory "url-bookmarks.el"))
 
 (defun alist-keys (alist)
+  "Return keys of an ALIST."
   (mapcar 'car alist))
 
 (defun cc/open-url (key)
+  "Open a URL referenced by KEY defined in `cc/url-bookmarks'."
   (interactive (list (completing-read-default "Open URL: "
                                               (alist-keys cc/url-bookmarks))))
   (browse-url (cdr (assoc key cc/url-bookmarks))))
 
 (defun year ()
+  "Open daily generated current year pdf file using macOS open."
   (interactive)
   (shell-command (format-time-string "open ~/org/%Y.pdf")))
 
 (defun make-year ()
+  "Invoke makefile target to generate daily current year pdf file."
   (interactive)
   (shell-command "cd ~/org; make year"))
 
 (defun ia-writer-timestamp-to-org (beginning end)
+  "Convert iA Writer timestamp in region demarked by BEGINNING and END to Org."
   (interactive "r")
   (if (use-region-p)
       (let ((regionp (buffer-substring beginning end)))
 	(delete-region beginning end)
 	(insert (format-time-string "<%Y-%m-%d %a %H:%M>" (encode-time (parse-time-string regionp)))))
-    (message "The region is still there (from % d to %d), but it is inactive" 
+    (message "The region is still there (from % d to %d), but it is inactive"
              beginning end)))
 
 (cl-defun chance (&key (win "You win.") &key (lose "You lose."))
+  "Tell me my chances from 0 to 100 with either the WIN or LOSE string."
   (interactive)
   (message (if (<= (* 100 (cl-random 1.0)) (read-number "Chance (%): ")) win lose))
   )
@@ -90,10 +105,12 @@ A new frame will be created if pop-up-frames is t"
       (kmacro-lambda-form [f5 ?\C-c ?a ?a ?\C-x ?+ ?\C-x ?o] 0 "%d"))
 
 (defun cc/org-time-stamp-inactive ()
+  "Insert an inactive Org timestamp."
   (interactive)
   (org-time-stamp-inactive '(16)))
 
 (defun cc/select-journal-file ()
+  "Select one of Charles Choi's journal files to open in a buffer."
   (interactive)
   (find-file
    (concat "~/org/"
@@ -103,22 +120,25 @@ A new frame will be created if pop-up-frames is t"
 
 ;; This is a copy from s.el to enable early loading
 (defun s-replace (old new s)
-  "Replaces OLD with NEW in S."
+  "Replace OLD with NEW in S."
   (declare (pure t) (side-effect-free t))
   (replace-regexp-in-string (regexp-quote old) new s t t))
 
 (defun cc/pelican-timestamp ()
-   (interactive)
-   (insert (format-time-string "%Y-%m-%d %H:%M")))
+  "Insert a timestamp recognized by the Pelican static site generator."
+  (interactive)
+  (insert (format-time-string "%Y-%m-%d %H:%M")))
 
 (defun cc/new-blog-post ()
+  "Create a new blog post in a buffer for “notes from /dev/null”."
   (interactive)
     (cd "~/Projects/devnull/content")
     (find-file (format-time-string "nfdn_%Y_%m_%d_%H%M%S.md"))
-    (yas-insert-snippet)
-    )
+    (yas-insert-snippet))
 
 (defun cc/launch-pelican ()
+  "Launch a local instance of the Pelican static site server.
+This function presumes that the buffer *pelican* is in the correct directory."
   (interactive)
   (process-send-string (get-buffer-process "*pelican*") "make devserver\n")
   (sleep-for 3)
@@ -126,6 +146,7 @@ A new frame will be created if pop-up-frames is t"
   )
 
 (defun cc/blog ()
+  "One-step operation to develop a blog post for “notes from /dev/null”."
   (interactive)
   (cond ((get-buffer "*pelican*")
          (switch-to-buffer "*pelican*"))
@@ -144,6 +165,7 @@ A new frame will be created if pop-up-frames is t"
   )
 
 (defun cc/web-captee()
+  "One-step operation to startup a devserver for the Captee website."
   (interactive)
   (cond ((get-buffer "*pelican*")
          (switch-to-buffer "*pelican*"))
@@ -162,6 +184,7 @@ A new frame will be created if pop-up-frames is t"
 
 
 (defun cc/slugify (start end)
+  "Slugify the region bounded by START and END."
   (interactive "r")
   (if (use-region-p)
       (let ((regionp (buffer-substring start end)))
@@ -176,6 +199,7 @@ A new frame will be created if pop-up-frames is t"
              )))))))
 
 (defun cc/posix-timestamp-to-human (start end)
+  "Convert a POSIX timestamp bounded by START and END to RFC 822 and ISO 8601 timestamps."
   (interactive "r")
   (if (use-region-p)
       (let ((regionp (buffer-substring start end)))
@@ -190,6 +214,7 @@ A new frame will be created if pop-up-frames is t"
           ))))
 
 (defun cc/human-timestamp-to-posix (start end)
+  "Convert a human timestamp bounded by START and END to POSIX."
   (interactive "r")
   (if (use-region-p)
       (let ((regionp (buffer-substring start end)))
@@ -212,7 +237,7 @@ A new frame will be created if pop-up-frames is t"
       (kill-buffer buf))))
 
 (defun cc/ediff-revision (e)
-  "Invoke ediff-revision with buffer-file-name."
+  "Invoke `ediff-revision' on E with variable `buffer-file-name'."
   (interactive "e")
   (ediff-revision buffer-file-name))
 
@@ -222,9 +247,11 @@ A new frame will be created if pop-up-frames is t"
 (defvar my-ediff-last-windows nil)
 
 (defun my-store-pre-ediff-winconfig ()
+  "Store `current-window-configuration' in variable `my-ediff-last-windows'."
   (setq my-ediff-last-windows (current-window-configuration)))
 
 (defun my-restore-pre-ediff-winconfig ()
+  "Restore window configuration to stored value in `my-ediff-last-windows'."
   (set-window-configuration my-ediff-last-windows))
 
 (add-hook 'ediff-before-setup-hook #'my-store-pre-ediff-winconfig)
@@ -238,7 +265,7 @@ A new frame will be created if pop-up-frames is t"
   (call-process "trash" nil 0 nil "-F"  file))
 
 (defvar my/re-builder-positions nil
-  "Store point and region bounds before calling re-builder")
+  "Store point and region bounds before calling `re-builder'.")
 (advice-add 're-builder
             :before
             (defun my/re-builder-save-state (&rest _)
@@ -251,8 +278,8 @@ A new frame will be created if pop-up-frames is t"
 
 
 (defun reb-replace-regexp (&optional delimited)
-  "Run `query-replace-regexp' with the contents of re-builder. With
-non-nil optional argument DELIMITED, only replace matches
+  "Run `query-replace-regexp' with the contents of `re-builder'.
+With non-nil optional argument DELIMITED, only replace matches
 surrounded by word boundaries."
   (interactive "P")
   (reb-update-regexp)
@@ -283,7 +310,7 @@ surrounded by word boundaries."
 ;(define-key reb-lisp-mode-map (kbd "RET") #'reb-replace-regexp)
 
 (defun arrayify (start end quote)
-    "Turn strings on newlines into a QUOTEd, comma-separated one-liner."
+    "Turn multi-line region bounded by START and END to a single line list with each prior line delimited by QUOTE."
     (interactive "r\nMQuote: ")
     (let ((insertion
            (mapconcat
@@ -293,7 +320,12 @@ surrounded by word boundaries."
       (insert insertion)))
 
 
-(defun cc/say-region (&optional b e)
+(defun cc/say-region (&optional start end)
+  "Pass region bounded by START and END to macOS say command."
   (interactive "r")
-  (shell-command-on-region b e "say"))
+  (shell-command-on-region start end "say"))
 
+
+(provide 'cclisp)
+
+;;; cclisp.el ends here
