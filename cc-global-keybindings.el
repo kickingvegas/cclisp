@@ -25,11 +25,11 @@
 (global-set-key (kbd "C-c C-;") 'shell-command)
 (global-set-key (kbd "M-<f4>") 'helm-buffers-list)
 
-(global-set-key (kbd "<f13>") 'neotree-toggle)
+(global-set-key (kbd "<f13>") 'repeat)
 (global-set-key (kbd "M-<f13>") 'treemacs)
 (global-set-key (kbd "<f14>") 'eshell)
 (global-set-key (kbd "<f15>") 'ediff-revision)
-(global-set-key (kbd "<f16>") 'calc)
+(global-set-key (kbd "<f16>") 'neotree-toggle)
 
 ;; Terminal 
 (global-set-key (kbd "M-SPC") 'set-mark-command)
