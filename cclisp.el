@@ -56,7 +56,7 @@ A new frame will be created if `pop-up-frames' is t."
   "Open the daily journal file for Charles Choi and go to the end of buffer."
   (interactive)
   (find-file (format-time-string "~/org/%Y_%m_%d.org"))
-  (end-of-buffer))
+  (goto-char (point-max)))
 
 (defun dictate()
    "Open a default text file to dictate into using macOS open."
