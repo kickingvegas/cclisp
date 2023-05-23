@@ -27,11 +27,14 @@
     (define-key-after menu [previous-buffer]
       '(menu-item "Previous Buffer" previous-buffer
                   :help "Go to previous buffer"))
+
+    (define-key-after menu [list-all-buffers]
+      '(menu-item "List All Buffers" list-buffers
+                  :help "List all buffers"))
     
     (define-key-after menu [buffer-navigation-separator]
       '(menu-item "--single-line"))
-    
-    
+        
     (define-key-after menu [capture-flow]
       '(menu-item "Capture Flow" org-capture
                   :help "Use Org Capture to make a flow"))
@@ -100,8 +103,8 @@
                     :help "Toggle reveal markup"))
 
       (define-key-after menu [org-insert-last-stored-link]
-        '(menu-item "Insert last Org link" org-insert-last-stored-link
-                    :help "Insert last stored Org link")))
+        '(menu-item "Paste last Org link" org-insert-last-stored-link
+                    :help "Paste last stored Org link")))
     
     (when (derived-mode-p 'markdown-mode)
       (define-key-after menu [markdown-visible-mode-separator]
