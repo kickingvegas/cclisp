@@ -15,7 +15,7 @@
 (global-set-key (kbd "<f5>") 'status-report)
 (global-set-key (kbd "S-<f5>") 'cc/select-journal-file)
 (global-set-key (kbd "<f6>") 'osx-dictionary-search-input)
-(global-set-key (kbd "<f7>") 'call-last-kbd-macro)
+(global-set-key (kbd "<f7>") 'repeat)
 (global-set-key (kbd "<f8>") 'indent-region)
 (global-set-key (kbd "<f9>") 'compile)
 (global-set-key (kbd "<f11>") 'bookmark-set)
@@ -25,11 +25,12 @@
 (global-set-key (kbd "C-c C-;") 'shell-command)
 (global-set-key (kbd "M-<f4>") 'helm-buffers-list)
 
-(global-set-key (kbd "<f13>") 'repeat)
+(global-set-key (kbd "<f13>") 'neotree-toggle)
 (global-set-key (kbd "M-<f13>") 'treemacs)
 (global-set-key (kbd "<f14>") 'eshell)
 (global-set-key (kbd "<f15>") 'ediff-revision)
-(global-set-key (kbd "<f16>") 'neotree-toggle)
+(global-set-key (kbd "<f16>") 'run-python)
+(global-set-key (kbd "M-<f16>") 'cc/switch-to-scratch)
 
 ;; Terminal 
 (global-set-key (kbd "M-SPC") 'set-mark-command)

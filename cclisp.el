@@ -326,6 +326,11 @@ surrounded by word boundaries."
   (shell-command-on-region start end "say"))
 
 
+(defun cc/switch-to-scratch ()
+  (interactive)
+  (switch-to-buffer "*scratch*"))
+
+
 (provide 'cclisp)
 
 ;;; cclisp.el ends here

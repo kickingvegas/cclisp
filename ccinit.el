@@ -43,6 +43,7 @@
 (load "cc-eshell-mode")
 (load "cc-google-translate")
 (load "cc-appearance")
+(load "cc-repeat-mode")
 
 (when (string= (system-name) "bingsu.local")
   (server-start))
