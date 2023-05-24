@@ -20,13 +20,14 @@
   (save-excursion
     (mouse-set-point click)
 
-    (define-key-after menu [next-buffer]
-      '(menu-item "Next Buffer" next-buffer
-                  :help "Go to next buffer"))
-
     (define-key-after menu [previous-buffer]
       '(menu-item "Previous Buffer" previous-buffer
                   :help "Go to previous buffer"))
+
+    (define-key-after menu [next-buffer]
+      '(menu-item "Next Buffer" next-buffer
+                  :help "Go to next buffer"))
+    
 
     (define-key-after menu [list-all-buffers]
       '(menu-item "List All Buffers" list-buffers
