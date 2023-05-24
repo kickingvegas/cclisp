@@ -80,6 +80,10 @@
 (global-set-key (kbd "M-<kp-enter>") 'switch-to-buffer)
 (global-set-key (kbd "C-<return>") 'other-window)
 
+;; Mouse Button Bindings
+(global-set-key (kbd "<mouse-5>") 'next-buffer)
+(global-set-key (kbd "<mouse-4>") 'previous-buffer)
+
 ;; Magit
 (global-set-key (kbd "C-x g") 'magit-status)
 
