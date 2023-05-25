@@ -100,11 +100,11 @@
         '(menu-item "--single-line"))
       
       (define-key-after menu [org-visible-mode]
-        '(menu-item "Toggle reveal markup" visible-mode
+        '(menu-item "Toggle Reveal Markup" visible-mode
                     :help "Toggle reveal markup"))
 
       (define-key-after menu [org-insert-last-stored-link]
-        '(menu-item "Paste last Org link" org-insert-last-stored-link
+        '(menu-item "Paste Last Org Link" org-insert-last-stored-link
                     :help "Paste last stored Org link")))
     
     (when (derived-mode-p 'markdown-mode)
@@ -112,7 +112,7 @@
         '(menu-item "--single-line"))
       
       (define-key-after menu [markdown-visible-mode]
-        '(menu-item "Toggle reveal markup" markdown-toggle-markup-hiding
+        '(menu-item "Toggle Reveal Markup" markdown-toggle-markup-hiding
                     :help "Toggle reveal markup")))
     
     (when (org-at-table-p)
