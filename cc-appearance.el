@@ -66,10 +66,18 @@
 
 (defun cc/morning ()
   (interactive)
-  (cc/light-mode)
   (cc/refresh-header-timestamps)
   (cc/start))
 
 (defun cc/night ()
   (interactive)
   (cc/dark-mode))
+
+(defun cc/reconfigure-nsappearance ()
+  (let ((appearance (plist-get (mac-application-state) :appearance)))
+    (if (string-equal appearance "NSAppearanceNameDarkAqua")
+        (cc/dark-mode)
+      (cc/light-mode))))
+
+(add-hook 'mac-effective-appearance-change-hook 'cc/reconfigure-nsappearance)
+
