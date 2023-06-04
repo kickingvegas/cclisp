@@ -47,6 +47,10 @@
       '(menu-item "Open in Finder" reveal-in-folder-this-buffer
                   :help "Open file (buffer) in Finder"))
 
+    (define-key-after menu [open-in-dired]
+      '(menu-item "Open in Dired" dired-jump-other-window
+                  :help "Open file in dired"))
+
     (when (region-active-p)
       (define-key-after menu [osx-dictionary-lookup]
         '(menu-item (cc/context-menu-label "Look Up") osx-dictionary-search-word-at-point
