@@ -327,9 +327,15 @@ surrounded by word boundaries."
 
 
 (defun cc/switch-to-scratch ()
+  "Switch to *scratch* buffer"
   (interactive)
   (switch-to-buffer "*scratch*"))
 
+
+(defun cc/ellipsis()
+  "Insert an ellipsis."
+  (interactive)
+  (insert "…"))
 
 (provide 'cclisp)
 
