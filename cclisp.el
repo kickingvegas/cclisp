@@ -325,17 +325,22 @@ surrounded by word boundaries."
   (interactive "r")
   (shell-command-on-region start end "say"))
 
-
 (defun cc/switch-to-scratch ()
   "Switch to *scratch* buffer"
   (interactive)
   (switch-to-buffer "*scratch*"))
 
-
 (defun cc/ellipsis()
   "Insert an ellipsis."
   (interactive)
   (insert "…"))
+
+(defun cc/search-apple-maps (search)
+  "Open search query in Apple Maps"
+  (interactive "MMap Search: ")
+  (let ((mapURL (concat "maps://?q=" (url-encode-url search))))
+    (message "Searching for %s" search)
+    (browse-url mapURL)))
 
 (provide 'cclisp)
 

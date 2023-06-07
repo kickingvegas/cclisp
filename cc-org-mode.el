@@ -29,6 +29,8 @@
 	   "* %:description\n%:annotation\n%i\n%?" :empty-lines 1)
           ("i" "Issue Capture" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
 	   "* TODO [#B] %:description\n%:annotation\n%i\n%?" :empty-lines 1)
+          ("w" "WWDC Capture" entry (file+headline ,"~/org/wwdc23.org" ,"WWDC 23 Notes")
+	   "* TODO [#B] %:description\n%:annotation\n%i\n%?" :empty-lines 1)
           )))
 
 (cc/refresh-header-timestamps)
