@@ -44,6 +44,7 @@
 (load "cc-google-translate")
 (load "cc-appearance")
 (load "cc-repeat-mode")
+(load "cc-context-menu")
 
 (when (string= (system-name) "bingsu.local")
   (server-start))

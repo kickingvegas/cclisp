@@ -241,9 +241,6 @@ This function presumes that the buffer *pelican* is in the correct directory."
   (interactive "e")
   (ediff-revision buffer-file-name))
 
-
-(load "cc-context-menu")
-
 (defvar my-ediff-last-windows nil)
 
 (defun my-store-pre-ediff-winconfig ()

@@ -1,14 +1,20 @@
 ;; Transform Text
-(defvar cc/transform-text-menu (make-sparse-keymap "Transform Text"))
+(defvar cc/transform-text-menu (make-sparse-keymap "Transform Text")
+  "Keymap for Transform Text submenu.")
 
-(define-key cc/transform-text-menu [tranform-text-uppercase]
-  '(menu-item "Make Upper Case" upcase-region
-              :help "Upper case region"))
+(cc/add-first-context-menu-item cc/transform-text-menu
+                                upcase-region
+                                "Make Upper Case"
+                                "Convert selected region to upper case")
 
-(define-key-after cc/transform-text-menu [tranform-text-lowercase]
-  '(menu-item "Make Lower Case" downcase-region
-              :help "Lower case region"))
+(cc/add-context-menu-item cc/transform-text-menu
+                          downcase-region
+                          "Make Lower Case"
+                          "Convert selected region to lower case")
 
-(define-key-after cc/transform-text-menu [tranform-text-capitalize]
-  '(menu-item "Capitalize" capitalize-region
-              :help "Capitalize region"))
+(cc/add-context-menu-item cc/transform-text-menu
+                          capitalize-region
+                          "Capitalize"
+                          "Convert the selected region to capitalized form")
+
+(provide 'cc-transform-text-menu)
