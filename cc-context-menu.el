@@ -39,7 +39,7 @@
       
       (define-key-after menu [narrow-to-region]
         '(menu-item (cc/context-menu-label "Narrow region") narrow-to-region
-                    :help "Narrow to region")))
+                    :help "Restrict editing in this buffer to the current region")))
 
     (when (buffer-narrowed-p)
       (define-key-after menu [widen-separator]
@@ -47,7 +47,7 @@
       
       (define-key-after menu [widen]
         '(menu-item (cc/context-menu-label "Widen buffer") widen
-                    :help "Widen buffer")))
+                    :help "Remove narrowing restrictions from current buffer")))
     
     (define-key-after menu [buffer-navigation-separator]
       '(menu-item "--single-line"))
