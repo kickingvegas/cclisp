@@ -32,6 +32,22 @@
     (define-key-after menu [list-all-buffers]
       '(menu-item "List All Buffers" list-buffers
                   :help "List all buffers"))
+
+    (when (region-active-p)
+      (define-key-after menu [narrow-to-region-separator]
+        '(menu-item "--single-line"))
+      
+      (define-key-after menu [narrow-to-region]
+        '(menu-item (cc/context-menu-label "Narrow region") narrow-to-region
+                    :help "Narrow to region")))
+
+    (when (buffer-narrowed-p)
+      (define-key-after menu [widen-separator]
+        '(menu-item "--single-line"))
+      
+      (define-key-after menu [widen]
+        '(menu-item (cc/context-menu-label "Widen buffer") widen
+                    :help "Widen buffer")))
     
     (define-key-after menu [buffer-navigation-separator]
       '(menu-item "--single-line"))
@@ -170,7 +186,6 @@
                   :help "Start speaking region")))
     
   menu)
-
 
 (defun cc/kill-org-table-reference (e)
   (interactive "e")
