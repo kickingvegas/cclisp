@@ -6,19 +6,19 @@
      '(menu-item "--single-line")))
 
 (defmacro cc/add-context-menu-item (menu command label help)
-  "Add COMMAND to MENU with KEY annotated with LABEL and HELP."
+  "Add COMMAND to MENU annotated with LABEL and HELP."
   `(define-key-after ,menu [,command]
      '(menu-item ,label ,command
                  :help ,help)))
 
 (defmacro cc/add-first-context-menu-item (menu command label help)
-  "Add first COMMAND to MENU with KEY annotated with LABEL and HELP."
+  "Add first COMMAND to MENU annotated with LABEL and HELP."
   `(define-key ,menu [,command]
      '(menu-item ,label ,command
                  :help ,help)))
 
 (defmacro cc/add-context-menu-submenu (menu submenu label)
-  "Add SUBMENU to MENU with KEY annotated with LABEL.\n\n\
+  "Add SUBMENU to MENU annotated with LABEL.\n\n\
 SUBMENU is a keymap. "
   `(define-key-after ,menu [,submenu]
      (list 'menu-item ,label ,submenu)))
@@ -82,10 +82,12 @@ SUBMENU is a keymap. "
                               reveal-in-folder-this-buffer
                               "Open in Finder"
                               "Open file (buffer) in Finder")
-    (cc/add-context-menu-item menu
-                              dired-jump-other-window
-                              "Open in Dired"
-                              "Open file in Dired")
+
+    (when (not (derived-mode-p 'dired-mode))
+      (cc/add-context-menu-item menu
+                                dired-jump-other-window
+                                "Open in Dired"
+                                "Open file in Dired"))
 
     (when (region-active-p)
       (cc/context-menu-item-separator menu region-operations-separator)
@@ -122,6 +124,12 @@ the current buffer"))
       (cc/add-context-menu-submenu menu
                                    cc/transform-text-menu
                                    "Transform")
+
+      (when (derived-mode-p 'prog-mode)
+        (cc/add-context-menu-item menu
+                                  comment-region
+                                  "Toggle Comment"
+                                  "Toggle comment on selected region"))
 
       (when (derived-mode-p 'markdown-mode)
         (cc/add-context-menu-submenu menu
