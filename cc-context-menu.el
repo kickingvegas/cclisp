@@ -37,6 +37,7 @@ SUBMENU is a keymap. "
 (load "cc-transform-text-menu")
 (load "cc-style-text-menu")
 (load "cc-insert-org-plot")
+(load "cc-find-menu")
 
 (defun cc/context-menu-addons (menu click)
   "CC context menu additions"
@@ -90,17 +91,29 @@ SUBMENU is a keymap. "
                                 "Open file in Dired"))
 
     (when (region-active-p)
-      (cc/context-menu-item-separator menu region-operations-separator)
+      (cc/context-menu-item-separator menu dictionary-operations-separator)
       (cc/add-context-menu-item menu
                                 osx-dictionary-search-word-at-point
                                 (cc/context-menu-label "Look Up")
-                                "Look up selected region in macOS dictionary")
-      (cc/add-context-menu-item menu
-                                occur-word-at-mouse
-                                (cc/context-menu-label "Occur")
-                                "Show all lines in the current buffer containing \
-a match for selected region"))
+                                "Look up selected region in macOS dictionary"))
 
+    (cc/context-menu-item-separator menu find-operations-separator)
+    (if (region-active-p)
+        (cc/add-context-menu-item menu
+                                  occur-word-at-mouse
+                                  (cc/context-menu-label "Find word in buffer (occur)")
+                                  "Show all lines in the current buffer containing \
+a match for selected word")
+      (cc/add-context-menu-item menu
+                                occur
+                                "Find in buffer (occur)"
+                                "Show all lines in the current buffer \
+containing a match for regex"))
+    
+    (cc/add-context-menu-submenu menu
+                                 cc/find-menu
+                                 "Find and/or replace")
+            
     (when (and (bound-and-true-p buffer-file-name)
                (vc-registered (buffer-file-name)))
       (cc/context-menu-item-separator menu vc-separator)
@@ -186,7 +199,7 @@ temporarily visible (Visible mode)")
                                 "Plot table using gnuplot"))
     
     (when (region-active-p)
-      (cc/context-menu-item-separator menu search-separator)
+      (cc/context-menu-item-separator menu external-operations-separator)
       (cc/add-context-menu-item menu
                                 google-this-noconfirm
                                 (cc/context-menu-label "Search with Google")
