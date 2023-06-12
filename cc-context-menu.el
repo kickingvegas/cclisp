@@ -75,8 +75,8 @@ SUBMENU is a keymap. "
     (cc/context-menu-item-separator menu capture-flow-separator)
     (cc/add-context-menu-item menu
                               org-capture
-                              "Capture Flow…"
-                              "Use Org Capture to make a flow")
+                              "New Workflow…"
+                              "Create new task or workflow via org-capture")
 
     (cc/context-menu-item-separator menu open-in-separator)
     (cc/add-context-menu-item menu
@@ -222,8 +222,7 @@ link in the clipboard")))
   (cc/add-context-menu-item menu
                             world-clock
                             "World Clock"
-                            "Display a world clock buffer with times in various \
-time zones")
+                            "Display times from around the world")
   
   (when (region-active-p)
     (cc/context-menu-item-separator menu speech-separator)
