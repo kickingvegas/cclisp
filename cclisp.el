@@ -342,11 +342,11 @@ surrounded by word boundaries."
 (defun cc/phone-number-to-url (phone)
   "Convert PHONE number string to url \"tel:\"."
   (let (
-        (pat-standard-international "+\\([0-9]+\\)[\\. -]\
+        (pat-standard-international "^+\\([0-9]+\\)[\\. -]\
 [(]*\\([0-9]\\{3\\}\\)[)]*\
-[\\. -]\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)")
-        (pat-standard "[(]*\\([0-9]\\{3\\}\\)[)]*[\\. -]\
-\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)")
+[\\. -]\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$")
+        (pat-standard "^[(]*\\([0-9]\\{3\\}\\)[)]*[\\. -]\
+\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$")
         )
 
     (cond
@@ -363,16 +363,21 @@ bounded between START and END"
   (let ((phone-buf (buffer-substring start end)))
     (browse-url (cc/phone-number-to-url phone-buf))))
 
-(defun cc/phone-number-p (&optional start end)
+;; (defun cc/menu-phone-call ()
+;;   (interactive)
+;;   (let ((phone (buffer-substring (region-beginning) (region-end))))
+;;     (message phone)
+;;     (browse-url (cc/phone-number-to-url phone))))
+
+(defun cc/phone-number-p ()
   "Predicate for PHONE number from the selected number (region) \
 bounded between START and END."
-  (interactive "r")
-  (let ((phone (buffer-substring start end))
-        (pat-standard-international "+\\([0-9]+\\)[\\. -]\
+  (let ((phone (buffer-substring (region-beginning) (region-end)))
+        (pat-standard-international "^+\\([0-9]+\\)[\\. -]\
 [(]*\\([0-9]\\{3\\}\\)[)]*\
-[\\. -]\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)")
-        (pat-standard "[(]*\\([0-9]\\{3\\}\\)[)]*[\\. -]\
-\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)")
+[\\. -]\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$")
+        (pat-standard "^[(]*\\([0-9]\\{3\\}\\)[)]*[\\. -]\
+\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$")
         )
     
     (cond

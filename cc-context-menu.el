@@ -43,6 +43,14 @@ SUBMENU is a keymap. "
   "CC context menu additions"
   (save-excursion
     (mouse-set-point click)
+
+    (cc/add-context-menu-item menu
+                              status-report
+                              "Status Report"
+                              "Go to current day journal")
+
+    (cc/context-menu-item-separator menu buffer-navigation-separator)
+    
     (cc/add-context-menu-item menu
                               previous-buffer                          
                               "Previous Buffer"
@@ -200,6 +208,11 @@ temporarily visible (Visible mode)")
     
     (when (region-active-p)
       (cc/context-menu-item-separator menu external-operations-separator)
+      (when (cc/phone-number-p)
+        (cc/add-context-menu-item menu
+                                  cc/make-phone-call
+                                  (cc/context-menu-label "Call")
+                                  "Make phone call"))
       (cc/add-context-menu-item menu
                                 google-this-noconfirm
                                 (cc/context-menu-label "Search with Google")
@@ -212,7 +225,9 @@ temporarily visible (Visible mode)")
                                 webpaste-paste-region
                                 (cc/context-menu-label "Upload to Webpaste")
                                 "Upload selected region to paste service leaving \
-link in the clipboard")))
+link in the clipboard"))
+
+    )
 
   (cc/context-menu-item-separator menu world-clock-separator)
   (cc/add-context-menu-item menu
