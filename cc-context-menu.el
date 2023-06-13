@@ -210,7 +210,7 @@ temporarily visible (Visible mode)")
       (cc/context-menu-item-separator menu external-operations-separator)
       (when (cc/phone-number-p)
         (cc/add-context-menu-item menu
-                                  cc/make-phone-call
+                                  cc/call-phone-number
                                   (cc/context-menu-label "Call")
                                   "Make phone call"))
       (cc/add-context-menu-item menu

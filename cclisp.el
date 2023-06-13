@@ -356,18 +356,12 @@ surrounded by word boundaries."
      ((string-match pat-standard phone)
       (replace-regexp-in-string pat-standard "tel:1-\\1-\\2-\\3" phone)))))
 
-(defun cc/make-phone-call (&optional start end)
+(defun cc/call-phone-number (&optional start end)
   "Make a phone call from the selected number (region) \
 bounded between START and END"
   (interactive "r")
   (let ((phone-buf (buffer-substring start end)))
     (browse-url (cc/phone-number-to-url phone-buf))))
-
-;; (defun cc/menu-phone-call ()
-;;   (interactive)
-;;   (let ((phone (buffer-substring (region-beginning) (region-end))))
-;;     (message phone)
-;;     (browse-url (cc/phone-number-to-url phone))))
 
 (defun cc/phone-number-p ()
   "Predicate for PHONE number from the selected number (region) \
