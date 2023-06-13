@@ -333,7 +333,7 @@ surrounded by word boundaries."
   (insert "…"))
 
 (defun cc/search-apple-maps (search)
-  "Open search query in Apple Maps"
+  "Open SEARCH query in Apple Maps"
   (interactive "MMap Search: ")
   (let ((mapURL (concat "maps://?q=" (url-encode-url search))))
     (message "Searching for %s" search)
