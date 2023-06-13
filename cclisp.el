@@ -339,6 +339,50 @@ surrounded by word boundaries."
     (message "Searching for %s" search)
     (browse-url mapURL)))
 
+(defun cc/phone-number-to-url (phone)
+  "Convert PHONE number string to url \"tel:\"."
+  (let (
+        (pat-standard-international "+\\([0-9]+\\)[\\. -]\
+[(]*\\([0-9]\\{3\\}\\)[)]*\
+[\\. -]\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)")
+        (pat-standard "[(]*\\([0-9]\\{3\\}\\)[)]*[\\. -]\
+\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)")
+        )
+
+    (cond
+     ((string-match pat-standard-international phone)
+      (replace-regexp-in-string pat-standard-international
+                                "tel:\\1-\\2-\\3-\\4" phone))
+     ((string-match pat-standard phone)
+      (replace-regexp-in-string pat-standard "tel:1-\\1-\\2-\\3" phone)))))
+
+(defun cc/make-phone-call (&optional start end)
+  "Make a phone call from the selected number (region) \
+bounded between START and END"
+  (interactive "r")
+  (let ((phone-buf (buffer-substring start end)))
+    (browse-url (cc/phone-number-to-url phone-buf))))
+
+(defun cc/phone-number-p (&optional start end)
+  "Predicate for PHONE number from the selected number (region) \
+bounded between START and END."
+  (interactive "r")
+  (let ((phone (buffer-substring start end))
+        (pat-standard-international "+\\([0-9]+\\)[\\. -]\
+[(]*\\([0-9]\\{3\\}\\)[)]*\
+[\\. -]\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)")
+        (pat-standard "[(]*\\([0-9]\\{3\\}\\)[)]*[\\. -]\
+\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)")
+        )
+    
+    (cond
+     ((string-match pat-standard-international phone)
+      t)
+     ((string-match pat-standard phone)
+      t)
+     (t
+      nil))))
+
 (provide 'cclisp)
 
 ;;; cclisp.el ends here
