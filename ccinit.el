@@ -41,6 +41,7 @@
 (load "cc-js-mode")
 (load "cc-tetris-mode")
 (load "cc-eshell-mode")
+(load "cc-elfeed-mode")
 (load "cc-google-translate")
 (load "cc-appearance")
 (load "cc-repeat-mode")
