@@ -5,6 +5,8 @@
 
 ;;; Code:
 
+(require 'cc-context-menu-macros)
+
 (defmacro cc/insert-org-plot-snippet (snippet-name)
   `(lambda ()
      (if (org-at-table-p)
@@ -12,7 +14,6 @@
            (org-backward-paragraph)
            (yas-expand-snippet (yas-lookup-snippet ,snippet-name)))
        (message "Error: not in org-table"))))
-
 
 (defun cc/org-plot-insert-snippet (name)
   "Insert NAME snippet at top of the table.

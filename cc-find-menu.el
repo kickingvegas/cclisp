@@ -1,4 +1,7 @@
 ;; Find Menu
+
+(require 'cc-context-menu-macros)
+
 (defvar cc/find-menu (make-sparse-keymap "Find")
   "Keymap for Find submenu.")
 

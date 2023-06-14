@@ -3,7 +3,6 @@
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
 
-
 (add-hook 'markdown-mode-hook 'variable-pitch-mode)
 (add-hook 'markdown-mode-hook 'company-mode)
 (add-hook 'markdown-mode-hook 'flyspell-mode)
@@ -15,4 +14,4 @@
                                 (define-key markdown-mode-map (kbd "M-<f6>") 'markdown-toggle-inline-images)
                                 (define-key markdown-mode-map [f13] 'markdown-preview)))
 
-
+(provide 'cc-markdown-mode)

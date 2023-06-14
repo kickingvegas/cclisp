@@ -86,3 +86,4 @@
 
 (add-hook 'mac-effective-appearance-change-hook 'cc/reconfigure-nsappearance)
 
+(provide 'cc-appearance)

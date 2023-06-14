@@ -13,3 +13,4 @@
 ;;(setq auto-mode-alist (cons (cons "\\.text$" 'text-mode) auto-mode-alist))
 ;;(setq auto-mode-alist (cons (cons "\\.mml$" 'text-mode) auto-mode-alist))
 
+(provide 'cc-text-mode)

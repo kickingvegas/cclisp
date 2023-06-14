@@ -1,4 +1,7 @@
 ;; Transform Text
+
+(require 'cc-context-menu-macros)
+
 (defvar cc/transform-text-menu (make-sparse-keymap "Transform Text")
   "Keymap for Transform Text submenu.")
 

@@ -98,3 +98,5 @@
   '("Open in Finder" . reveal-in-folder-this-buffer))
 
 (global-set-key [vertical-scroll-bar down-mouse-1] 'scroll-bar-drag)
+
+(provide 'cc-global-keybindings)

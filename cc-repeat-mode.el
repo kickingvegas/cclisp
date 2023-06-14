@@ -28,3 +28,5 @@
 (repeatize 'cc/org-header-navigation-repeat-map)
 
 (repeat-mode)
+
+(provide 'cc-repeat-mode)

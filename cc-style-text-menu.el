@@ -1,3 +1,7 @@
+;;
+
+(require 'cc-context-menu-macros)
+
 (defun cc/org-emphasize-bold ()
   (interactive)
   (org-emphasize ?*))
@@ -91,4 +95,4 @@
 			  "Strike through"
 			  "Strike through selected region")
 
-(provide 'cc/style-text-menu)
+(provide 'cc-style-text-menu)

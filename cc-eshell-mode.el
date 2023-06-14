@@ -24,3 +24,4 @@
                               (push "gdu-go" eshell-visual-commands)
                               (push "gh" eshell-visual-commands)))
 
+(provide 'cc-eshell-mode)
