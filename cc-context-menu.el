@@ -1,190 +1,220 @@
 ;; context-menu addons
 
-(load "cc-transform-text-menu")
-(load "cc-style-text-menu")
-(load "cc-insert-org-plot")
-
-(defun cc/context-menu-label (prefix)
-  (let ((start (region-beginning))
-        (end (region-end))
-        (buf "")
-        (max 25)
-        (size (abs (- (region-end) (region-beginning)))))
-    (if (> size max)
-        (setq buf (concat prefix " “"(buffer-substring start (+ max start)) "…"))
-      (setq buf (concat prefix " “" (buffer-substring start end) "”")))
-    buf))
+(require 'cc-context-menu-macros)
+(require 'cc-transform-text-menu)
+(require 'cc-style-text-menu)
+(require 'cc-insert-org-plot)
+(require 'cc-find-menu)
 
 (defun cc/context-menu-addons (menu click)
   "CC context menu additions"
   (save-excursion
     (mouse-set-point click)
 
-    (define-key-after menu [previous-buffer]
-      '(menu-item "Previous Buffer" previous-buffer
-                  :help "Go to previous buffer"))
+    (cc/add-context-menu-item menu
+                              status-report
+                              "Status Report"
+                              "Go to current day journal")
 
-    (define-key-after menu [next-buffer]
-      '(menu-item "Next Buffer" next-buffer
-                  :help "Go to next buffer"))
+    (cc/context-menu-item-separator menu buffer-navigation-separator)
     
+    (cc/add-context-menu-item menu
+                              previous-buffer                          
+                              "Previous Buffer"
+                              "Go to previous buffer")
 
-    (define-key-after menu [list-all-buffers]
-      '(menu-item "List All Buffers" list-buffers
-                  :help "List all buffers"))
+    (cc/add-context-menu-item menu
+                              next-buffer
+                              "Next Buffer"
+                              "Go to next buffer")
+    
+    (cc/add-context-menu-item menu
+                              list-buffers
+                              "List All Buffers"
+                              "List all buffers")
 
-    (when (region-active-p)
-      (define-key-after menu [narrow-to-region-separator]
-        '(menu-item "--single-line"))
-      
-      (define-key-after menu [narrow-to-region]
-        '(menu-item (cc/context-menu-label "Narrow region") narrow-to-region
-                    :help "Restrict editing in this buffer to the current region")))
-
+    (when (use-region-p)
+      (cc/context-menu-item-separator menu narrow-to-region-separator)
+      (cc/add-context-menu-item menu
+                                narrow-to-region
+                                (cc/context-menu-label "Narrow region")
+                                "Restrict editing in this buffer to the current region"))
+    
     (when (buffer-narrowed-p)
-      (define-key-after menu [widen-separator]
-        '(menu-item "--single-line"))
-      
-      (define-key-after menu [widen]
-        '(menu-item (cc/context-menu-label "Widen buffer") widen
-                    :help "Remove narrowing restrictions from current buffer")))
+      (cc/context-menu-item-separator menu widen-separator)
+      (cc/add-context-menu-item menu
+                                widen
+                                "Widen buffer"
+                                "Remove narrowing restrictions from current buffer"))
     
-    (define-key-after menu [buffer-navigation-separator]
-      '(menu-item "--single-line"))
-        
-    (define-key-after menu [capture-flow]
-      '(menu-item "Capture Flow" org-capture
-                  :help "Use Org Capture to make a flow"))
+    (cc/context-menu-item-separator menu capture-flow-separator)
+    (cc/add-context-menu-item menu
+                              org-capture
+                              "New Workflow…"
+                              "Create new task or workflow via org-capture")
 
-    (define-key-after menu [capture-flow-separator]
-      '(menu-item "--single-line"))
-        
-    (define-key-after menu [open-in-finder]
-      '(menu-item "Open in Finder" reveal-in-folder-this-buffer
-                  :help "Open file (buffer) in Finder"))
+    (cc/context-menu-item-separator menu open-in-separator)
+    (cc/add-context-menu-item menu
+                              reveal-in-folder-this-buffer
+                              "Open in Finder"
+                              "Open file (buffer) in Finder")
 
-    (define-key-after menu [open-in-dired]
-      '(menu-item "Open in Dired" dired-jump-other-window
-                  :help "Open file in dired"))
+    (when (not (derived-mode-p 'dired-mode))
+      (cc/add-context-menu-item menu
+                                dired-jump-other-window
+                                "Open in Dired"
+                                "Open file in Dired"))
 
-    (when (region-active-p)
-      (define-key-after menu [osx-dictionary-lookup]
-        '(menu-item (cc/context-menu-label "Look Up") osx-dictionary-search-word-at-point
-                    :help "Look up in dictionary"))
+    (when (use-region-p)
+      (cc/context-menu-item-separator menu dictionary-operations-separator)
+      (cc/add-context-menu-item menu
+                                osx-dictionary-search-word-at-point
+                                (cc/context-menu-label "Look Up")
+                                "Look up selected region in macOS dictionary"))
 
-      (define-key-after menu [occur-word-at-mouse]
-        '(menu-item (cc/context-menu-label "Occur") occur-word-at-mouse
-                    :help "Occur")))
+    (cc/context-menu-item-separator menu find-operations-separator)
+    (if (use-region-p)
+        (cc/add-context-menu-item menu
+                                  occur-word-at-mouse
+                                  (cc/context-menu-label "Find word in buffer (occur)")
+                                  "Show all lines in the current buffer containing \
+a match for selected word")
+      (cc/add-context-menu-item menu
+                                occur
+                                "Find in buffer (occur)"
+                                "Show all lines in the current buffer \
+containing a match for regex"))
     
+    (cc/add-context-menu-submenu menu
+                                 cc/find-menu
+                                 "Find and/or replace")
+            
     (when (and (bound-and-true-p buffer-file-name)
                (vc-registered (buffer-file-name)))
-      (define-key-after menu [vc-separator]
-        '(menu-item "--single-line"))
-      
-      (define-key-after menu [magit-status]
-        '(menu-item "Magit Status" magit-status
-                    :help "Magit Status"))
-      (define-key-after menu [ediff-revision]
-        '(menu-item "Ediff revision…" cc/ediff-revision
-                    :help "Ediff this file with revision"))
-
-      (define-key-after menu [magit-history]
-        '(menu-item "Git history" magit-log-buffer-file
-                    :help "History")))
+      (cc/context-menu-item-separator menu vc-separator)
+      (cc/add-context-menu-item menu
+                                magit-status
+                                "Magit Status"
+                                "Show the status of the current Git repository \
+in a buffer")
+      (cc/add-context-menu-item menu
+                                cc/ediff-revision
+                                "Ediff revision…"
+                                "Ediff this file with revision")
+      (cc/add-context-menu-item menu
+                                magit-log-buffer-file
+                                "Git History"
+                                "Show log for the blob or file visited in \
+the current buffer"))
     
-    (when (region-active-p)
-      (define-key-after menu [transform-text-separator]
-        '(menu-item "--single-line"))
-      (define-key-after menu [tranform-text]
-        (list 'menu-item "Transform" cc/transform-text-menu)))
+    (when (use-region-p)
+      (cc/context-menu-item-separator menu transform-text-separator)
+      (cc/add-context-menu-submenu menu
+                                   cc/transform-text-menu
+                                   "Transform")
 
+      (when (derived-mode-p 'prog-mode)
+        (cc/add-context-menu-item menu
+                                  comment-region
+                                  "Toggle Comment"
+                                  "Toggle comment on selected region"))
 
-    (when (and (derived-mode-p 'markdown-mode) (region-active-p))
-      (define-key-after menu [markdown-emphasize]
-        (list 'menu-item "Style" cc/markdown-emphasize-menu)))
-    
-    (when (and (derived-mode-p 'org-mode) (region-active-p))
-      (define-key-after menu [org-emphasize]
-        (list 'menu-item "Style" cc/org-emphasize-menu))
+      (when (derived-mode-p 'markdown-mode)
+        (cc/add-context-menu-submenu menu
+                                     cc/markdown-emphasize-menu
+                                     "Style"))
 
-      (define-key-after menu [org-export-to-slack]
-        '(menu-item "Copy as Slack" org-slack-export-to-clipboard-as-slack
-                    :help "Copy as Slack to clipboard"))
-      
-      (define-key-after menu [copy-as-rtf]
-        '(menu-item "Copy as RTF" dm/copy-as-rtf
-                    :help "Copy as RTF to clipboard")))
+      (when (derived-mode-p 'org-mode)
+        (cc/add-context-menu-submenu menu
+                                     cc/org-emphasize-menu
+                                     "Style")
+
+        (cc/add-context-menu-item menu
+                                  org-slack-export-to-clipboard-as-slack
+                                  "Copy as Slack"
+                                  "Copy as Slack to clipboard")
+        (cc/add-context-menu-item menu
+                                  dm/copy-as-rtf
+                                  "Copy as RTF"
+                                  "Copy as RTF to clipboard")))
 
     (when (derived-mode-p 'org-mode)
-      (define-key-after menu [org-visible-mode-separator]
-        '(menu-item "--single-line"))
-      
-      (define-key-after menu [org-visible-mode]
-        '(menu-item "Toggle Reveal Markup" visible-mode
-                    :help "Toggle reveal markup"))
-
-      (define-key-after menu [org-insert-last-stored-link]
-        '(menu-item "Paste Last Org Link" org-insert-last-stored-link
-                    :help "Paste last stored Org link")))
+      (cc/context-menu-item-separator menu org-mode-operations-separator)
+      (cc/add-context-menu-item menu
+                                visible-mode
+                                "Toggle Reveal Markup"
+                                "Toggle making all invisible text \
+temporarily visible (Visible mode)")
+      (cc/add-context-menu-item menu
+                                org-insert-last-stored-link
+                                "Paste Last Org Link"
+                                "Insert the last link stored in org-stored-links"))
     
     (when (derived-mode-p 'markdown-mode)
-      (define-key-after menu [markdown-visible-mode-separator]
-        '(menu-item "--single-line"))
-      
-      (define-key-after menu [markdown-visible-mode]
-        '(menu-item "Toggle Reveal Markup" markdown-toggle-markup-hiding
-                    :help "Toggle reveal markup")))
+      (cc/context-menu-item-separator menu org-mode-operations-separator)
+      (cc/add-context-menu-item menu
+                                markdown-toggle-markup-hiding
+                                "Toggle Reveal Markup"
+                                "Toggle the display or hiding of markup"))
     
     (when (org-at-table-p)
-      (define-key-after menu [org-table-separator]
-        '(menu-item "--single-line"))
-      (define-key-after menu [org-table-field-info]
-        '(menu-item (format "@%d$%d"
-                            (org-table-current-dline)
-                            (org-table-current-column))
-                    cc/kill-org-table-reference
-                    :help "Table field/cell information"))
-      (define-key-after menu [org-table-insert-plot]
-        (list 'menu-item "Insert Plot" cc/insert-org-plot-menu))
-      
-      (define-key-after menu [org-plot-gnuplot]
-        '(menu-item "Run gnuplot" org-plot/gnuplot
-                    :help "Run gnuplot")))
-    
-    (when (region-active-p)
-      (define-key-after menu [search-separator]
-        '(menu-item "--single-line"))
-      
-      (define-key-after menu [google-search]
-        '(menu-item (cc/context-menu-label "Search with Google") google-this-noconfirm
-                    :help "Search Google with region"))
+      (cc/context-menu-item-separator menu org-table-separator)
+      (cc/add-context-menu-item menu
+                                cc/kill-org-table-reference
+                                (format "@%d$%d"
+                                        (org-table-current-dline)
+                                        (org-table-current-column))
+                                "Table field/cell information")
+      (cc/add-context-menu-submenu menu
+                                   cc/insert-org-plot-menu
+                                   "Insert Plot")
+      (cc/add-context-menu-item menu
+                                org-plot/gnuplot
+                                "Run gnuplot"
+                                "Plot table using gnuplot"))
 
-      (define-key-after menu [google-translate]
-        '(menu-item (cc/context-menu-label "Translate") google-translate-smooth-translate
-                    :help "Translate using Google Translate"))
+    (when (and (use-region-p) (cc/phone-number-p))
+      (cc/context-menu-item-separator menu phone-separator)
+      (cc/add-context-menu-item menu
+                                cc/call-phone-number
+                                (cc/context-menu-label "Call")
+                                "Make phone call"))
+    (when (use-region-p)
+      (cc/context-menu-item-separator menu external-operations-separator)
       
-      (define-key-after menu [webpaste-paste-region]
-        '(menu-item (cc/context-menu-label "Upload to Webpaste") webpaste-paste-region
-                    :help "Upload region to Webpaste"))))
+      (cc/add-context-menu-item menu
+                                google-this-noconfirm
+                                (cc/context-menu-label "Search with Google")
+                                "Search Google with selected region")
+      (cc/add-context-menu-item menu
+                                google-translate-smooth-translate
+                                (concat (cc/context-menu-label "Translate") "…")
+                                "Translate selected region with Google Translate")
+      (cc/add-context-menu-item menu
+                                webpaste-paste-region
+                                (cc/context-menu-label "Upload to Webpaste")
+                                "Upload selected region to paste service leaving \
+link in the clipboard"))
+
+    )
+
+  (cc/context-menu-item-separator menu world-clock-separator)
+  (cc/add-context-menu-item menu
+                            calendar
+                            "Calendar"
+                            "Display a three-month Gregorian calendar")
+  (cc/add-context-menu-item menu
+                            world-clock
+                            "World Clock"
+                            "Display times from around the world")
   
-  (define-key-after menu [world-clock-separator]
-    '(menu-item "--single-line"))
-
-  (define-key-after menu [calendar]
-    '(menu-item "Calendar" calendar
-                :help "Display calendar"))
-  (define-key-after menu [world-clock]
-    '(menu-item "World Clock" world-clock
-                :help "Display world clock"))
-
-  (when (region-active-p)
-    (define-key-after menu [speech-separator]
-      '(menu-item "--single-line"))
-    
-    (define-key-after menu [google-translate]
-      '(menu-item "Start Speaking" cc/say-region
-                  :help "Start speaking region")))
-    
+  (when (use-region-p)
+    (cc/context-menu-item-separator menu speech-separator)
+    (cc/add-context-menu-item menu
+                              cc/say-region
+                              "Start Speaking"
+                              "Start speaking selected region"))
+  
   menu)
 
 (defun cc/kill-org-table-reference (e)
@@ -194,3 +224,5 @@
                     (org-table-current-column))))
 
 (add-hook 'context-menu-functions #'cc/context-menu-addons)
+
+(provide 'cc-context-menu)

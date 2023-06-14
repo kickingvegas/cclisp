@@ -1,3 +1,7 @@
+;;
+
+(require 'cc-context-menu-macros)
+
 (defun cc/org-emphasize-bold ()
   (interactive)
   (org-emphasize ?*))
@@ -28,51 +32,67 @@
   (org-emphasize ?\s))
 
 ;; Org Emphasize
-(defvar cc/org-emphasize-menu (make-sparse-keymap "Org Emphasize"))
+(defvar cc/org-emphasize-menu (make-sparse-keymap "Org Emphasize")
+  "Keymap for Org Emphasize submenu.")
 
-(define-key cc/org-emphasize-menu [org-emphasize-bold]
-  '(menu-item "Bold" cc/org-emphasize-bold
-              :help "Bold"))
+(cc/add-first-context-menu-item cc/org-emphasize-menu
+				cc/org-emphasize-bold
+				"Bold"
+				"Bold selected region")
 
-(define-key-after cc/org-emphasize-menu [org-emphasize-italic]
-  '(menu-item "Italic" cc/org-emphasize-italic
-              :help "Italic"))
+(cc/add-context-menu-item cc/org-emphasize-menu
+			  cc/org-emphasize-italic
+			  "Italic"
+			  "Italic selected region")
 
-(define-key-after cc/org-emphasize-menu [org-emphasize-code]
-  '(menu-item "Code" cc/org-emphasize-code
-              :help "Code"))
+(cc/add-context-menu-item cc/org-emphasize-menu
+			  cc/org-emphasize-code
+			  "Code"
+			  "Code selected region")
 
-(define-key-after cc/org-emphasize-menu [org-emphasize-underline]
-  '(menu-item "Underline" cc/org-emphasize-underline
-              :help "Underline"))
+(cc/add-context-menu-item cc/org-emphasize-menu
+			  cc/org-emphasize-underline
+			  "Underline"
+			  "Underline selected region")
 
-(define-key-after cc/org-emphasize-menu [org-emphasize-verbatim]
-  '(menu-item "Verbatim" cc/org-emphasize-verbatim
-              :help "Verbatim"))
+(cc/add-context-menu-item cc/org-emphasize-menu
+			  cc/org-emphasize-verbatim
+			  "Verbatim"
+			  "Verbatim selected region")
 
-(define-key-after cc/org-emphasize-menu [org-emphasize-strike-through]
-  '(menu-item "Strike Through" cc/org-emphasize-strike-through
-              :help "Strike through"))
+(cc/add-context-menu-item cc/org-emphasize-menu
+			  cc/org-emphasize-strike-through
+			  "Strike through"
+			  "Strike through selected region")
 
-(define-key-after cc/org-emphasize-menu [org-emphasize-reset]
-  '(menu-item "Reset" cc/org-emphasize-reset
-              :help "Remove emphasis"))
+;; (cc/add-context-menu-item cc/org-emphasize-menu
+;;                       org-emphasize-reset
+;;                       cc/org-emphasize-reset
+;;                       "Reset"
+;;                       "Remove emphasis on selected region")
 
 ;; Markdown Emphasize
-(defvar cc/markdown-emphasize-menu (make-sparse-keymap "Markdown Emphasize"))
+(defvar cc/markdown-emphasize-menu (make-sparse-keymap "Markdown Emphasize")
+  "Keymap for Markdown Emphasize submenu.")
 
-(define-key cc/markdown-emphasize-menu [markdown-emphasize-bold]
-  '(menu-item "Bold" markdown-insert-bold
-              :help "Bold"))
+(cc/add-first-context-menu-item cc/markdown-emphasize-menu
+				markdown-insert-bold
+				"Bold"
+				"Bold selected region")
 
-(define-key-after cc/markdown-emphasize-menu [markdown-emphasize-italic]
-  '(menu-item "Italic" markdown-insert-italic
-              :help "Italic"))
+(cc/add-context-menu-item cc/markdown-emphasize-menu
+			  markdown-insert-italic
+			  "Italic"
+			  "Italic selected region")
 
-(define-key-after cc/markdown-emphasize-menu [markdown-emphasize-code]
-  '(menu-item "Code" markdown-insert-code
-              :help "Code"))
+(cc/add-context-menu-item cc/markdown-emphasize-menu
+			  markdown-insert-code
+			  "Code"
+			  "Code selected region")
 
-(define-key-after cc/markdown-emphasize-menu [markdown-emphasize-strike-through]
-  '(menu-item "Strike Through" markdown-insert-strike-through
-              :help "Strike through"))
+(cc/add-context-menu-item cc/markdown-emphasize-menu
+			  markdown-insert-strike-through
+			  "Strike through"
+			  "Strike through selected region")
+
+(provide 'cc-style-text-menu)

@@ -1,4 +1,10 @@
 ;; eshell-mode
+(require 'eshell)
+(defvar eshell-mode-map)
+(defvar eshell-visual-options)
+(defvar eshell-visual-commands)
+(defvar eshell-visual-subcommands)
+(declare-function eshell/pwd "pwd" ())
 
 (setq eshell-prompt-regexp "┗━━ \\$ "
       eshell-prompt-function
@@ -24,3 +30,4 @@
                               (push "gdu-go" eshell-visual-commands)
                               (push "gh" eshell-visual-commands)))
 
+(provide 'cc-eshell-mode)

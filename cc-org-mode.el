@@ -21,10 +21,20 @@
         `(
           ("b" "BeOrg TODO" entry (file "~/org/refile-beorg.org")
            "* TODO [#B] %^{description}\nSCHEDULED: %^T\n%?" :empty-lines 1)
-          ("t" "TODO" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
+          ("s" "TODO: Scheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
 	   "* TODO [#B] %^{description}\nSCHEDULED: %^T\n%?" :empty-lines 1)
-          ("i" "Issue" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO [#B] %^{description}\n\n** Title\n%?\n** Description\n\n** Environment\n\n** Steps to Reproduct\n\n** Expected Result\n\n** Actual Result\n" :empty-lines 1)
+          ("t" "TODO: Unscheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
+	   "* TODO [#B] %^{description}\n%?" :empty-lines 1)
+          ("p" "TODO: Blog Post" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
+	   "* TODO [#B] Post: %^{description}\n%?" :empty-lines 1)
+          ("i" "TODO: Issue" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
+	   "* TODO [#B] %^{description}\n\n\
+** Title\n%?\n\
+** Description\n\n\
+** Environment\n\n\
+** Steps to Reproduce\n\n\
+** Expected Result\n\n\
+** Actual Result\n" :empty-lines 1)
           ("j" "Journal" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
 	   "%(datestamp2)\n%?" :empty-lines 1)
           ("c" "Captee Capture" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
@@ -36,7 +46,6 @@
           )))
 
 (cc/refresh-header-timestamps)
-
 (setq org-todo-keywords
            '((sequence "TODO(t)" "IN_PROGRESS(i)" "WAITING(w)" "|" "DONE(d)")
              (sequence "|" "CANCELED(c)")))
@@ -139,3 +148,4 @@
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
 
+(provide 'cc-org-mode)

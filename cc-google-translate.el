@@ -4,3 +4,5 @@
 
 (setq google-translate-translation-directions-alist
       '(("ko" . "en") ("en" . "ko")))
+
+(provide 'cc-google-translate)

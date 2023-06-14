@@ -18,3 +18,5 @@
 	  (local-set-key [f7] 'gud-step)
 	  (local-set-key [f8] 'gud-next)
 	  (local-set-key [f9] 'gud-cont))))
+
+(provide 'cc-prog-mode)

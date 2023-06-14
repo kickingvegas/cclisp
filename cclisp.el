@@ -199,14 +199,15 @@ This function presumes that the buffer *pelican* is in the correct directory."
              )))))))
 
 (defun cc/posix-timestamp-to-human (start end)
-  "Convert a POSIX timestamp bounded by START and END to RFC 822 and ISO 8601 timestamps."
+  "Convert a POSIX timestamp bounded by START and END to RFC 822 and \
+ISO 8601."
   (interactive "r")
   (if (use-region-p)
-      (let ((regionp (buffer-substring start end)))
-        (set 'inputTime (time-convert (string-to-number regionp)))
-        (set 'inputBuf (number-to-string (string-to-number regionp)))
-        (set 'rfcBuf (format-time-string "%a, %e %b %Y %H:%M:%S %z" inputTime))
-        (set 'isoBuf (format-time-string "%Y-%m-%dT%H:%M:%S%z" inputTime))
+      (let* ((regionp (buffer-substring start end))
+             (inputTime (time-convert (string-to-number regionp)))
+             (inputBuf (number-to-string (string-to-number regionp)))
+             (rfcBuf (format-time-string "%a, %e %b %Y %H:%M:%S %z" inputTime))
+             (isoBuf (format-time-string "%Y-%m-%dT%H:%M:%S%z" inputTime)))
         (with-output-to-temp-buffer "*timestamps*"
           (princ (concat "| POSIX | " inputBuf " |\n"))
           (princ (concat "| RFC 822 | " rfcBuf " |\n"))
@@ -217,8 +218,8 @@ This function presumes that the buffer *pelican* is in the correct directory."
   "Convert a human timestamp bounded by START and END to POSIX."
   (interactive "r")
   (if (use-region-p)
-      (let ((regionp (buffer-substring start end)))
-        (set 'result (number-to-string (time-to-seconds (date-to-time regionp))))
+      (let* ((regionp (buffer-substring start end))
+             (result (number-to-string (time-to-seconds (date-to-time regionp)))))
         (kill-new result)
         (with-output-to-temp-buffer "*timestamps*"
           (princ result)))))
@@ -241,9 +242,6 @@ This function presumes that the buffer *pelican* is in the correct directory."
   (interactive "e")
   (ediff-revision buffer-file-name))
 
-
-(load "cc-context-menu")
-
 (defvar my-ediff-last-windows nil)
 
 (defun my-store-pre-ediff-winconfig ()
@@ -264,53 +262,53 @@ This function presumes that the buffer *pelican* is in the correct directory."
   (cl-assert (executable-find "trash") nil "'trash' must be installed. Needs \"port install trash\"")
   (call-process "trash" nil 0 nil "-F"  file))
 
-(defvar my/re-builder-positions nil
-  "Store point and region bounds before calling `re-builder'.")
-(advice-add 're-builder
-            :before
-            (defun my/re-builder-save-state (&rest _)
-              "Save into `my/re-builder-positions' the point and region positions before calling `re-builder'."
-              (setq my/re-builder-positions
-                    (cons (point)
-                          (when (region-active-p)
-                            (list (region-beginning)
-                                  (region-end)))))))
+;; (defvar my/re-builder-positions nil
+;;   "Store point and region bounds before calling `re-builder'.")
+;; (advice-add 're-builder
+;;             :before
+;;             (defun my/re-builder-save-state (&rest _)
+;;               "Save into `my/re-builder-positions' the point and region positions \
+;; before calling `re-builder'."
+;;               (setq my/re-builder-positions
+;;                     (cons (point)
+;;                           (when (region-active-p)
+;;                             (list (region-beginning)
+;;                                   (region-end)))))))
 
 
-(defun reb-replace-regexp (&optional delimited)
-  "Run `query-replace-regexp' with the contents of `re-builder'.
-With non-nil optional argument DELIMITED, only replace matches
-surrounded by word boundaries."
-  (interactive "P")
-  (reb-update-regexp)
-  (let* ((re (reb-target-binding reb-regexp))
-         (replacement (query-replace-read-to
-                       re
-                       (concat "Query replace"
-                               (if current-prefix-arg
-                                   (if (eq current-prefix-arg '-) " backward" " word")
-                                 "")
-                               " regexp"
-                               (if (with-selected-window reb-target-window
-                                     (region-active-p)) " in region" ""))
-                       t))
-         (pnt (car my/re-builder-positions))
-         (beg (cadr my/re-builder-positions))
-         (end (caddr my/re-builder-positions)))
-    (with-selected-window reb-target-window
-      (goto-char pnt) ; replace with (goto-char (match-beginning 0)) if you want
-                                        ; to control where in the buffer the replacement starts
-                                        ; with re-builder
-      (setq my/re-builder-positions nil)
-      (reb-quit)
-      (query-replace-regexp re replacement delimited beg end))))
-
+;; (defun reb-replace-regexp (&optional delimited)
+;;   "Run `query-replace-regexp' with the contents of `re-builder'.
+;; With non-nil optional argument DELIMITED, only replace matches
+;; surrounded by word boundaries."
+;;   (interactive "P")
+;;   (reb-update-regexp)
+;;   (let* ((re (reb-target-binding reb-regexp))
+;;          (replacement (query-replace-read-to
+;;                        re
+;;                        (concat "Query replace"
+;;                                (if current-prefix-arg
+;;                                    (if (eq current-prefix-arg '-) " backward" " word")
+;;                                  "")
+;;                                " regexp"
+;;                                (if (with-selected-window reb-target-window
+;;                                      (region-active-p)) " in region" ""))
+;;                        t))
+;;          (pnt (car my/re-builder-positions))
+;;          (beg (cadr my/re-builder-positions))
+;;          (end (caddr my/re-builder-positions)))
+;;     (with-selected-window reb-target-window
+;;       (goto-char pnt) ; replace with (goto-char (match-beginning 0)) if you want
+;;                                         ; to control where in the buffer the replacement starts
+;;                                         ; with re-builder
+;;       (setq my/re-builder-positions nil)
+;;       (reb-quit)
+;;       (query-replace-regexp re replacement delimited beg end))))
 
 ;(define-key reb-mode-map (kbd "RET") #'reb-replace-regexp)
 ;(define-key reb-lisp-mode-map (kbd "RET") #'reb-replace-regexp)
 
 (defun arrayify (start end quote)
-    "Turn multi-line region bounded by START and END to a single line list with each prior line delimited by QUOTE."
+  "Turn multi-line region bounded by START and END to one line delimited by QUOTE."
     (interactive "r\nMQuote: ")
     (let ((insertion
            (mapconcat
@@ -318,7 +316,6 @@ surrounded by word boundaries."
             (split-string (buffer-substring start end)) ", ")))
       (delete-region start end)
       (insert insertion)))
-
 
 (defun cc/say-region (&optional start end)
   "Pass region bounded by START and END to macOS say command."
@@ -336,11 +333,51 @@ surrounded by word boundaries."
   (insert "…"))
 
 (defun cc/search-apple-maps (search)
-  "Open search query in Apple Maps"
+  "Open SEARCH query in Apple Maps"
   (interactive "MMap Search: ")
   (let ((mapURL (concat "maps://?q=" (url-encode-url search))))
     (message "Searching for %s" search)
     (browse-url mapURL)))
+
+(defun cc/phone-number-to-url (phone)
+  "Convert PHONE number string to url \"tel:\"."
+  (let (
+        (pat-standard-international "^+\\([0-9]+\\)[\\. -]\
+[(]*\\([0-9]\\{3\\}\\)[)]*\
+[\\. -]\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$")
+        (pat-standard "^[(]*\\([0-9]\\{3\\}\\)[)]*[\\. -]\
+\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$")
+        )
+
+    (cond
+     ((string-match pat-standard-international phone)
+      (replace-regexp-in-string pat-standard-international
+                                "tel:\\1-\\2-\\3-\\4" phone))
+     ((string-match pat-standard phone)
+      (replace-regexp-in-string pat-standard "tel:1-\\1-\\2-\\3" phone)))))
+
+(defun cc/call-phone-number (&optional start end)
+  "Phone call the selected number (region) bounded between START and END"
+  (interactive "r")
+  (let ((phone-buf (buffer-substring start end)))
+    (browse-url (cc/phone-number-to-url phone-buf))))
+
+(defun cc/phone-number-p ()
+  "Predicate for PHONE number."
+  (let ((phone (buffer-substring (region-beginning) (region-end)))
+        (pat-standard-international "^+\\([0-9]+\\)[\\. -]\
+[(]*\\([0-9]\\{3\\}\\)[)]*\
+[\\. -]\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$")
+        (pat-standard "^[(]*\\([0-9]\\{3\\}\\)[)]*[\\. -]\
+\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$"))
+    
+    (cond
+     ((string-match pat-standard-international phone)
+      t)
+     ((string-match pat-standard phone)
+      t)
+     (t
+      nil))))
 
 (provide 'cclisp)
 

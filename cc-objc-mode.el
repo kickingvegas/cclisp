@@ -10,3 +10,4 @@
                             (setq c-basic-offset 4)
                             (setq-default indent-tabs-mode nil)))
 
+(provide 'cc-objc-mode)

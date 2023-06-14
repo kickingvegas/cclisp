@@ -18,6 +18,9 @@
 
     (set-face-attribute 'org-document-info nil
                         :foreground "midnight blue")
+
+    (set-face-attribute 'org-date nil
+                        :foreground "purple")
     
     (set-face-attribute 'org-hide nil
                         :foreground "white"))
@@ -51,6 +54,9 @@
 
     (set-face-attribute 'org-document-info nil
                         :foreground "chartreuse")
+
+    (set-face-attribute 'org-date nil
+                        :foreground "dark gray")
         
     (set-face-attribute 'org-hide nil
                         :foreground "black"))
@@ -62,7 +68,6 @@
 
   (set-face-attribute 'Man-underline nil
                       :foreground "chartreuse"))
-  
 
 (defun cc/morning ()
   (interactive)
@@ -81,3 +86,4 @@
 
 (add-hook 'mac-effective-appearance-change-hook 'cc/reconfigure-nsappearance)
 
+(provide 'cc-appearance)
