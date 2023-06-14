@@ -66,7 +66,7 @@ SUBMENU is a keymap. "
                               "List All Buffers"
                               "List all buffers")
 
-    (when (region-active-p)
+    (when (use-region-p)
       (cc/context-menu-item-separator menu narrow-to-region-separator)
       (cc/add-context-menu-item menu
                                 narrow-to-region
@@ -98,7 +98,7 @@ SUBMENU is a keymap. "
                                 "Open in Dired"
                                 "Open file in Dired"))
 
-    (when (region-active-p)
+    (when (use-region-p)
       (cc/context-menu-item-separator menu dictionary-operations-separator)
       (cc/add-context-menu-item menu
                                 osx-dictionary-search-word-at-point
@@ -106,7 +106,7 @@ SUBMENU is a keymap. "
                                 "Look up selected region in macOS dictionary"))
 
     (cc/context-menu-item-separator menu find-operations-separator)
-    (if (region-active-p)
+    (if (use-region-p)
         (cc/add-context-menu-item menu
                                   occur-word-at-mouse
                                   (cc/context-menu-label "Find word in buffer (occur)")
@@ -140,7 +140,7 @@ in a buffer")
                                 "Show log for the blob or file visited in \
 the current buffer"))
     
-    (when (region-active-p)
+    (when (use-region-p)
       (cc/context-menu-item-separator menu transform-text-separator)
       (cc/add-context-menu-submenu menu
                                    cc/transform-text-menu
@@ -205,14 +205,16 @@ temporarily visible (Visible mode)")
                                 org-plot/gnuplot
                                 "Run gnuplot"
                                 "Plot table using gnuplot"))
-    
-    (when (region-active-p)
+
+    (when (and (use-region-p) (cc/phone-number-p))
+      (cc/context-menu-item-separator menu phone-separator)
+      (cc/add-context-menu-item menu
+                                cc/call-phone-number
+                                (cc/context-menu-label "Call")
+                                "Make phone call"))
+    (when (use-region-p)
       (cc/context-menu-item-separator menu external-operations-separator)
-      (when (cc/phone-number-p)
-        (cc/add-context-menu-item menu
-                                  cc/call-phone-number
-                                  (cc/context-menu-label "Call")
-                                  "Make phone call"))
+      
       (cc/add-context-menu-item menu
                                 google-this-noconfirm
                                 (cc/context-menu-label "Search with Google")
@@ -239,7 +241,7 @@ link in the clipboard"))
                             "World Clock"
                             "Display times from around the world")
   
-  (when (region-active-p)
+  (when (use-region-p)
     (cc/context-menu-item-separator menu speech-separator)
     (cc/add-context-menu-item menu
                               cc/say-region
