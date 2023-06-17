@@ -29,7 +29,6 @@
 (setq mac-mouse-wheel-smooth-scroll t)
 
 (require 'cclisp)
-(require 'cc-global-keybindings)
 (require 'cc-prog-mode)
 (require 'cc-emacs-lisp-mode)
 (require 'cc-text-mode)
@@ -46,6 +45,7 @@
 (require 'cc-repeat-mode)
 (require 'cc-context-menu)
 (require 'flyspell)
+(require 'cc-global-keybindings)
 
 (when (string= (system-name) "bingsu.local")
   (server-start))

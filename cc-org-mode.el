@@ -20,15 +20,15 @@
   (setq org-capture-templates
         `(
           ("b" "BeOrg TODO" entry (file "~/org/refile-beorg.org")
-           "* TODO [#B] %^{description}\nSCHEDULED: %^T\n%?" :empty-lines 1)
+           "* TODO %^{description}\nSCHEDULED: %^T\n%?" :empty-lines 1)
           ("s" "TODO: Scheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO [#B] %^{description}\nSCHEDULED: %^T\n%?" :empty-lines 1)
+	   "* TODO %^{description} [/]\nSCHEDULED: %^T\n%?" :empty-lines 1)
           ("t" "TODO: Unscheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO [#B] %^{description}\n%?" :empty-lines 1)
+	   "* TODO %^{description} [/]\n%?" :empty-lines 1)
           ("p" "TODO: Blog Post" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO [#B] Post: %^{description}\n%?" :empty-lines 1)
+	   "* TODO Post: %^{description}\n%?" :empty-lines 1)
           ("i" "TODO: Issue" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO [#B] %^{description}\n\n\
+	   "* TODO %^{description} [/]\n\n\
 ** Title\n%?\n\
 ** Description\n\n\
 ** Environment\n\n\
@@ -40,9 +40,9 @@
           ("c" "Captee Capture" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
 	   "* %:description\n%:annotation\n%i\n%?" :empty-lines 1)
           ("I" "Captee Issue Capture" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO [#B] %:description\n%:annotation\n%i\n%?" :empty-lines 1)
+	   "* TODO %:description [/]\n%:annotation\n%i\n%?" :empty-lines 1)
           ("w" "WWDC Capture" entry (file+headline ,"~/org/wwdc23.org" ,"WWDC 23 Notes")
-	   "* TODO [#B] %:description\n%:annotation\n%i\n%?" :empty-lines 1)
+	   "* TODO %:description\n%:annotation\n%i\n%?" :empty-lines 1)
           )))
 
 (cc/refresh-header-timestamps)

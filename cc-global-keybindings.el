@@ -31,6 +31,7 @@
 (global-set-key (kbd "<f15>") 'ediff-revision)
 (global-set-key (kbd "<f16>") 'run-python)
 (global-set-key (kbd "M-<f16>") 'cc/switch-to-scratch)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; Terminal 
 (global-set-key (kbd "M-SPC") 'set-mark-command)

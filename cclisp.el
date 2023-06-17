@@ -159,10 +159,7 @@ This function presumes that the buffer *pelican* is in the correct directory."
          ()
          (if (display-graphic-p)
              (cc/launch-pelican)
-           )
-         (cc/new-blog-post)
-         ))
-  )
+           ))))
 
 (defun cc/web-captee()
   "One-step operation to startup a devserver for the Captee website."
