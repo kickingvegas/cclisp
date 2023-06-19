@@ -118,18 +118,14 @@ the current buffer"))
                                    cc/transform-text-menu
                                    "Transform")
 
-      (when (derived-mode-p 'prog-mode)
+      (cond
+       ((derived-mode-p 'prog-mode)
         (cc/add-context-menu-item menu
                                   comment-region
                                   "Toggle Comment"
                                   "Toggle comment on selected region"))
 
-      (when (derived-mode-p 'markdown-mode)
-        (cc/add-context-menu-submenu menu
-                                     cc/markdown-emphasize-menu
-                                     "Style"))
-
-      (when (derived-mode-p 'org-mode)
+       ((derived-mode-p 'org-mode)
         (cc/add-context-menu-submenu menu
                                      cc/org-emphasize-menu
                                      "Style")
@@ -141,9 +137,15 @@ the current buffer"))
         (cc/add-context-menu-item menu
                                   dm/copy-as-rtf
                                   "Copy as RTF"
-                                  "Copy as RTF to clipboard")))
+                                  "Copy as RTF to clipboard"))
 
-    (when (derived-mode-p 'org-mode)
+       ((derived-mode-p 'markdown-mode)
+        (cc/add-context-menu-submenu menu
+                                     cc/markdown-emphasize-menu
+                                     "Style"))))
+
+    (cond
+     ((derived-mode-p 'org-mode)
       (cc/context-menu-item-separator menu org-mode-operations-separator)
       (cc/add-context-menu-item menu
                                 visible-mode
@@ -154,14 +156,14 @@ temporarily visible (Visible mode)")
                                 org-insert-last-stored-link
                                 "Paste Last Org Link"
                                 "Insert the last link stored in org-stored-links"))
-    
-    (when (derived-mode-p 'markdown-mode)
-      (cc/context-menu-item-separator menu org-mode-operations-separator)
+
+     ((derived-mode-p 'markdown-mode)
+      (cc/context-menu-item-separator menu markdown-mode-operations-separator)
       (cc/add-context-menu-item menu
                                 markdown-toggle-markup-hiding
                                 "Toggle Reveal Markup"
-                                "Toggle the display or hiding of markup"))
-    
+                                "Toggle the display or hiding of markup")))
+     
     (when (org-at-table-p)
       (cc/context-menu-item-separator menu org-table-separator)
       (cc/add-context-menu-item menu
