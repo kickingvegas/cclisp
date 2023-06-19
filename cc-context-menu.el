@@ -3,6 +3,7 @@
 (require 'cc-context-menu-macros)
 (require 'cc-transform-text-menu)
 (require 'cc-style-text-menu)
+(require 'cc-region-operations-menu)
 (require 'cc-insert-org-plot)
 (require 'cc-find-menu)
 
@@ -13,20 +14,10 @@
 
     (cc/add-context-menu-item menu
                               status-report
-                              "Status Report"
+                              "Journal"
                               "Go to current day journal")
 
     (cc/context-menu-item-separator menu buffer-navigation-separator)
-    
-    (cc/add-context-menu-item menu
-                              previous-buffer                          
-                              "Previous Buffer"
-                              "Go to previous buffer")
-
-    (cc/add-context-menu-item menu
-                              next-buffer
-                              "Next Buffer"
-                              "Go to next buffer")
     
     (cc/add-context-menu-item menu
                               list-buffers
@@ -69,14 +60,14 @@
       (cc/context-menu-item-separator menu dictionary-operations-separator)
       (cc/add-context-menu-item menu
                                 osx-dictionary-search-word-at-point
-                                (cc/context-menu-label "Look Up")
+                                (cc/context-menu-last-word-in-region "Look Up")
                                 "Look up selected region in macOS dictionary"))
 
     (cc/context-menu-item-separator menu find-operations-separator)
     (if (use-region-p)
         (cc/add-context-menu-item menu
                                   occur-word-at-mouse
-                                  (cc/context-menu-label "Find word in buffer (occur)")
+                                  (cc/context-menu-last-word-in-region "Find word in buffer (occur)")
                                   "Show all lines in the current buffer containing \
 a match for selected word")
       (cc/add-context-menu-item menu
@@ -173,49 +164,35 @@ temporarily visible (Visible mode)")
                                 "Run gnuplot"
                                 "Plot table using gnuplot"))
 
-    (when (and (use-region-p) (cc/phone-number-p))
-      (cc/context-menu-item-separator menu phone-separator)
-      (cc/add-context-menu-item menu
-                                cc/call-phone-number
-                                (cc/context-menu-label "Call")
-                                "Make phone call"))
     (when (use-region-p)
-      (cc/context-menu-item-separator menu external-operations-separator)
-      
-      (cc/add-context-menu-item menu
-                                google-this-noconfirm
-                                (cc/context-menu-label "Search with Google")
-                                "Search Google with selected region")
-      (cc/add-context-menu-item menu
-                                google-translate-smooth-translate
-                                (concat (cc/context-menu-label "Translate") "…")
-                                "Translate selected region with Google Translate")
-      (cc/add-context-menu-item menu
-                                webpaste-paste-region
-                                (cc/context-menu-label "Upload to Webpaste")
-                                "Upload selected region to paste service leaving \
-link in the clipboard"))
+      (cc/context-menu-item-separator menu region-operations-separator)
+      (cc/add-context-menu-submenu menu
+                                   cc/region-operations-menu
+                                   "Operate on Region"))
 
-    )
-
-  (cc/context-menu-item-separator menu world-clock-separator)
-  (cc/add-context-menu-item menu
-                            calendar
-                            "Calendar"
-                            "Display a three-month Gregorian calendar")
-  (cc/add-context-menu-item menu
-                            world-clock
-                            "World Clock"
-                            "Display times from around the world")
-  
-  (when (use-region-p)
-    (cc/context-menu-item-separator menu speech-separator)
+    (cc/context-menu-item-separator menu world-clock-separator)
     (cc/add-context-menu-item menu
-                              cc/say-region
-                              "Start Speaking"
-                              "Start speaking selected region"))
-  
-  menu)
+                              calendar
+                              "Calendar"
+                              "Display a three-month Gregorian calendar")
+    (cc/add-context-menu-item menu
+                              world-clock
+                              "World Clock"
+                              "Display times from around the world")
+
+    (cc/context-menu-item-separator menu count-words-separator)
+    (if (use-region-p)
+        (cc/add-context-menu-item menu
+                                  count-words
+                                  "Count Words in Region"
+                                  "Count words in region")
+    
+      (cc/add-context-menu-item menu
+                                count-words
+                                "Count Words in Buffer"
+                                "Count words in buffer"))
+
+  menu))
 
 (defun cc/kill-org-table-reference (e)
   (interactive "e")
