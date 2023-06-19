@@ -24,12 +24,26 @@
                               "List All Buffers"
                               "List all buffers")
 
-    (when (use-region-p)
-      (cc/context-menu-item-separator menu narrow-to-region-separator)
-      (cc/add-context-menu-item menu
-                                narrow-to-region
-                                (cc/context-menu-label "Narrow region")
-                                "Restrict editing in this buffer to the current region"))
+    (cond ((use-region-p)
+           (cc/context-menu-item-separator menu narrow-separator)
+           (cc/add-context-menu-item menu
+                                     narrow-to-region
+                                     (cc/context-menu-label "Narrow Region")
+                                     "Restrict editing in this buffer to the current region"))
+          
+          ((and (not (buffer-narrowed-p)) (derived-mode-p 'org-mode))
+           (cc/context-menu-item-separator menu narrow-separator)
+           (cc/add-context-menu-item menu
+                                     org-narrow-to-subtree
+                                     "Narrow to Subtree"
+                                     "Restrict editing in this buffer to the current subtree"))
+          
+          ((and (not (buffer-narrowed-p)) (derived-mode-p 'markdown-mode))
+           (cc/context-menu-item-separator menu narrow-separator)
+           (cc/add-context-menu-item menu
+                                     markdown-narrow-to-subtree
+                                     "Narrow to Subtree"
+                                     "Restrict editing in this buffer to the current subtree")))
     
     (when (buffer-narrowed-p)
       (cc/context-menu-item-separator menu widen-separator)
