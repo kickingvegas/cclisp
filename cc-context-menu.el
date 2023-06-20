@@ -3,6 +3,7 @@
 (require 'cc-context-menu-macros)
 (require 'cc-transform-text-menu)
 (require 'cc-style-text-menu)
+(require 'cc-region-operations-menu)
 (require 'cc-insert-org-plot)
 (require 'cc-find-menu)
 
@@ -13,32 +14,36 @@
 
     (cc/add-context-menu-item menu
                               status-report
-                              "Status Report"
+                              "Journal"
                               "Go to current day journal")
 
     (cc/context-menu-item-separator menu buffer-navigation-separator)
-    
-    (cc/add-context-menu-item menu
-                              previous-buffer                          
-                              "Previous Buffer"
-                              "Go to previous buffer")
-
-    (cc/add-context-menu-item menu
-                              next-buffer
-                              "Next Buffer"
-                              "Go to next buffer")
     
     (cc/add-context-menu-item menu
                               list-buffers
                               "List All Buffers"
                               "List all buffers")
 
-    (when (use-region-p)
-      (cc/context-menu-item-separator menu narrow-to-region-separator)
-      (cc/add-context-menu-item menu
-                                narrow-to-region
-                                (cc/context-menu-label "Narrow region")
-                                "Restrict editing in this buffer to the current region"))
+    (cond ((use-region-p)
+           (cc/context-menu-item-separator menu narrow-separator)
+           (cc/add-context-menu-item menu
+                                     narrow-to-region
+                                     (cc/context-menu-label "Narrow Region")
+                                     "Restrict editing in this buffer to the current region"))
+          
+          ((and (not (buffer-narrowed-p)) (derived-mode-p 'org-mode))
+           (cc/context-menu-item-separator menu narrow-separator)
+           (cc/add-context-menu-item menu
+                                     org-narrow-to-subtree
+                                     "Narrow to Subtree"
+                                     "Restrict editing in this buffer to the current subtree"))
+          
+          ((and (not (buffer-narrowed-p)) (derived-mode-p 'markdown-mode))
+           (cc/context-menu-item-separator menu narrow-separator)
+           (cc/add-context-menu-item menu
+                                     markdown-narrow-to-subtree
+                                     "Narrow to Subtree"
+                                     "Restrict editing in this buffer to the current subtree")))
     
     (when (buffer-narrowed-p)
       (cc/context-menu-item-separator menu widen-separator)
@@ -69,14 +74,14 @@
       (cc/context-menu-item-separator menu dictionary-operations-separator)
       (cc/add-context-menu-item menu
                                 osx-dictionary-search-word-at-point
-                                (cc/context-menu-label "Look Up")
+                                (cc/context-menu-last-word-in-region "Look Up")
                                 "Look up selected region in macOS dictionary"))
 
     (cc/context-menu-item-separator menu find-operations-separator)
     (if (use-region-p)
         (cc/add-context-menu-item menu
                                   occur-word-at-mouse
-                                  (cc/context-menu-label "Find word in buffer (occur)")
+                                  (cc/context-menu-last-word-in-region "Find word in buffer (occur)")
                                   "Show all lines in the current buffer containing \
 a match for selected word")
       (cc/add-context-menu-item menu
@@ -113,18 +118,14 @@ the current buffer"))
                                    cc/transform-text-menu
                                    "Transform")
 
-      (when (derived-mode-p 'prog-mode)
+      (cond
+       ((derived-mode-p 'prog-mode)
         (cc/add-context-menu-item menu
                                   comment-region
                                   "Toggle Comment"
                                   "Toggle comment on selected region"))
 
-      (when (derived-mode-p 'markdown-mode)
-        (cc/add-context-menu-submenu menu
-                                     cc/markdown-emphasize-menu
-                                     "Style"))
-
-      (when (derived-mode-p 'org-mode)
+       ((derived-mode-p 'org-mode)
         (cc/add-context-menu-submenu menu
                                      cc/org-emphasize-menu
                                      "Style")
@@ -136,9 +137,15 @@ the current buffer"))
         (cc/add-context-menu-item menu
                                   dm/copy-as-rtf
                                   "Copy as RTF"
-                                  "Copy as RTF to clipboard")))
+                                  "Copy as RTF to clipboard"))
 
-    (when (derived-mode-p 'org-mode)
+       ((derived-mode-p 'markdown-mode)
+        (cc/add-context-menu-submenu menu
+                                     cc/markdown-emphasize-menu
+                                     "Style"))))
+
+    (cond
+     ((derived-mode-p 'org-mode)
       (cc/context-menu-item-separator menu org-mode-operations-separator)
       (cc/add-context-menu-item menu
                                 visible-mode
@@ -149,14 +156,14 @@ temporarily visible (Visible mode)")
                                 org-insert-last-stored-link
                                 "Paste Last Org Link"
                                 "Insert the last link stored in org-stored-links"))
-    
-    (when (derived-mode-p 'markdown-mode)
-      (cc/context-menu-item-separator menu org-mode-operations-separator)
+
+     ((derived-mode-p 'markdown-mode)
+      (cc/context-menu-item-separator menu markdown-mode-operations-separator)
       (cc/add-context-menu-item menu
                                 markdown-toggle-markup-hiding
                                 "Toggle Reveal Markup"
-                                "Toggle the display or hiding of markup"))
-    
+                                "Toggle the display or hiding of markup")))
+     
     (when (org-at-table-p)
       (cc/context-menu-item-separator menu org-table-separator)
       (cc/add-context-menu-item menu
@@ -173,49 +180,35 @@ temporarily visible (Visible mode)")
                                 "Run gnuplot"
                                 "Plot table using gnuplot"))
 
-    (when (and (use-region-p) (cc/phone-number-p))
-      (cc/context-menu-item-separator menu phone-separator)
-      (cc/add-context-menu-item menu
-                                cc/call-phone-number
-                                (cc/context-menu-label "Call")
-                                "Make phone call"))
     (when (use-region-p)
-      (cc/context-menu-item-separator menu external-operations-separator)
-      
-      (cc/add-context-menu-item menu
-                                google-this-noconfirm
-                                (cc/context-menu-label "Search with Google")
-                                "Search Google with selected region")
-      (cc/add-context-menu-item menu
-                                google-translate-smooth-translate
-                                (concat (cc/context-menu-label "Translate") "…")
-                                "Translate selected region with Google Translate")
-      (cc/add-context-menu-item menu
-                                webpaste-paste-region
-                                (cc/context-menu-label "Upload to Webpaste")
-                                "Upload selected region to paste service leaving \
-link in the clipboard"))
+      (cc/context-menu-item-separator menu region-operations-separator)
+      (cc/add-context-menu-submenu menu
+                                   cc/region-operations-menu
+                                   "Operate on Region"))
 
-    )
-
-  (cc/context-menu-item-separator menu world-clock-separator)
-  (cc/add-context-menu-item menu
-                            calendar
-                            "Calendar"
-                            "Display a three-month Gregorian calendar")
-  (cc/add-context-menu-item menu
-                            world-clock
-                            "World Clock"
-                            "Display times from around the world")
-  
-  (when (use-region-p)
-    (cc/context-menu-item-separator menu speech-separator)
+    (cc/context-menu-item-separator menu world-clock-separator)
     (cc/add-context-menu-item menu
-                              cc/say-region
-                              "Start Speaking"
-                              "Start speaking selected region"))
-  
-  menu)
+                              calendar
+                              "Calendar"
+                              "Display a three-month Gregorian calendar")
+    (cc/add-context-menu-item menu
+                              world-clock
+                              "World Clock"
+                              "Display times from around the world")
+
+    (cc/context-menu-item-separator menu count-words-separator)
+    (if (use-region-p)
+        (cc/add-context-menu-item menu
+                                  count-words
+                                  "Count Words in Region"
+                                  "Count words in region")
+    
+      (cc/add-context-menu-item menu
+                                count-words
+                                "Count Words in Buffer"
+                                "Count words in buffer"))
+
+  menu))
 
 (defun cc/kill-org-table-reference (e)
   (interactive "e")

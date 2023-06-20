@@ -6,10 +6,17 @@
      '(menu-item "--single-line")))
 
 (defmacro cc/add-context-menu-item (menu command label help)
-  "Add COMMAND to MENU annotated with LABEL and HELP."
+  "Add COMMAND to MENU annotated with LABEL and property HELP."
   `(define-key-after ,menu [,command]
      '(menu-item ,label ,command
                  :help ,help)))
+
+(defmacro cc/add-context-menu-item-visible (menu command label help visible)
+  "Add COMMAND to MENU annotated with LABEL and properties HELP, VISIBLE."
+  `(define-key-after ,menu [,command]
+     '(menu-item ,label ,command
+                 :help ,help
+                 :visible ,visible)))
 
 (defmacro cc/add-first-context-menu-item (menu command label help)
   "Add first COMMAND to MENU annotated with LABEL and HELP."
@@ -24,14 +31,22 @@ SUBMENU is a keymap. "
      (list 'menu-item ,label ,submenu)))
 
 (defun cc/context-menu-label (prefix)
-  (let ((start (region-beginning))
+  (let* ((start (region-beginning))
         (end (region-end))
         (buf "")
         (max 25)
-        (size (abs (- (region-end) (region-beginning)))))
+        (size (abs (- start end))))
     (if (> size max)
         (setq buf (concat prefix " “"(buffer-substring start (+ max start)) "…”"))
       (setq buf (concat prefix " “" (buffer-substring start end) "”")))
     buf))
+
+(defun cc/context-menu-last-word-in-region (prefix)
+  (let*  ((start (region-beginning))
+         (end (region-end))
+         (buf (buffer-substring start end))
+         (last-word (car (last (split-string buf " ")))))
+    (concat prefix " “" last-word "”")))
+
 
 (provide 'cc-context-menu-macros)
