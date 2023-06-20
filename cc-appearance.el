@@ -31,7 +31,7 @@
                         :foreground "orange")
     
     (set-face-attribute 'org-table nil
-                        :foreground "#00ff22")
+                        :foreground "chartreuse")
 
     (set-face-attribute 'org-scheduled-previously nil
                         :foreground "light sky blue")
