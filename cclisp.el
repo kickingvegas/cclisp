@@ -344,42 +344,37 @@ ISO 8601."
     (message "Searching for %s" query-buf)
     (browse-url mapURL)))
 
-(defun cc/phone-number-to-url (phone)
-  "Convert PHONE number string to url \"tel:\"."
-  (let (
-        (pat-standard-international "^+\\([0-9]+\\)[\\. -]\
+(defvar cc/pat-nanp-international "^+1 \
 [(]*\\([0-9]\\{3\\}\\)[)]*\
-[\\. -]\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$")
-        (pat-standard "^[(]*\\([0-9]\\{3\\}\\)[)]*[\\. -]\
-\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$")
-        )
+[\\. -]\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$"
+  "Regexp for North American Numbering Plan phone number including +1.")
 
-    (cond
-     ((string-match pat-standard-international phone)
-      (replace-regexp-in-string pat-standard-international
-                                "tel:\\1-\\2-\\3-\\4" phone))
-     ((string-match pat-standard phone)
-      (replace-regexp-in-string pat-standard "tel:1-\\1-\\2-\\3" phone)))))
+(defvar cc/pat-nanp "^[(]*\\([0-9]\\{3\\}\\)[)]*[\\. -]\
+\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$"
+  "Regexp for North American Numbering Plan phone number without +1.")
 
-(defun cc/call-phone-number (&optional start end)
+(defun cc/nanp-phone-number-to-url (phone)
+  "Convert PHONE number string to url \"tel:\"."
+  (cond
+   ((string-match cc/pat-nanp-international phone)
+    (replace-regexp-in-string cc/pat-nanp-international
+                              "tel:+1-\\1-\\2-\\3" phone))
+   ((string-match cc/pat-nanp phone)
+    (replace-regexp-in-string cc/pat-nanp "tel:+1-\\1-\\2-\\3" phone))))
+
+(defun cc/call-nanp-phone-number (&optional start end)
   "Phone call the selected number (region) bounded between START and END"
   (interactive "r")
   (let ((phone-buf (buffer-substring start end)))
-    (browse-url (cc/phone-number-to-url phone-buf))))
+    (browse-url (cc/nanp-phone-number-to-url phone-buf))))
 
-(defun cc/phone-number-p ()
+(defun cc/nanp-phone-number-p ()
   "Predicate for PHONE number."
-  (let ((phone (buffer-substring (region-beginning) (region-end)))
-        (pat-standard-international "^+\\([0-9]+\\)[\\. -]\
-[(]*\\([0-9]\\{3\\}\\)[)]*\
-[\\. -]\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$")
-        (pat-standard "^[(]*\\([0-9]\\{3\\}\\)[)]*[\\. -]\
-\\([0-9]\\{3\\}\\)[\\. -]\\([0-9]\\{4\\}\\)$"))
-    
+  (let ((phone (buffer-substring (region-beginning) (region-end))))
     (cond
-     ((string-match pat-standard-international phone)
+     ((string-match cc/pat-nanp-international phone)
       t)
-     ((string-match pat-standard phone)
+     ((string-match cc/pat-nanp phone)
       t)
      (t
       nil))))

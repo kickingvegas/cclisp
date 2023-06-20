@@ -27,16 +27,16 @@ link in the clipboard")
                           "Start speaking selected region")
 
 (cc/add-context-menu-item-visible cc/region-operations-menu
-                                  cc/call-phone-number
+                                  cc/call-nanp-phone-number
                                   (cc/context-menu-label "Call")
                                   "Call phone number"
-                                  (cc/phone-number-p))
+                                  (cc/nanp-phone-number-p))
 
 (cc/add-context-menu-item-visible cc/region-operations-menu
                                   cc/open-region-in-apple-maps                                  
                                   (cc/context-menu-label "Open in Apple Maps")
                                   "Open in Apple Maps"
-                                  (not (cc/phone-number-p)))
+                                  (not (cc/nanp-phone-number-p)))
 
 (provide 'cc-region-operations-menu)
 
