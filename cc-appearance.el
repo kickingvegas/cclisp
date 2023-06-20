@@ -25,15 +25,6 @@
     (set-face-attribute 'org-hide nil
                         :foreground "white"))
 
-
-(defun cc/light-mode-man ()
-  (interactive)
-  (set-face-attribute 'Man-overstrike nil
-                      :foreground "dark slate blue")
-  
-  (set-face-attribute 'Man-underline nil
-                      :foreground "MediumBlue"))
-
 (defun cc/dark-mode ()
     (interactive)
     (set-face-attribute 'minibuffer-prompt nil
@@ -61,6 +52,14 @@
     (set-face-attribute 'org-hide nil
                         :foreground "black"))
 
+(defun cc/light-mode-man ()
+  (interactive)
+  (set-face-attribute 'Man-overstrike nil
+                      :foreground "dark slate blue")
+  
+  (set-face-attribute 'Man-underline nil
+                      :foreground "MediumBlue"))
+
 (defun cc/dark-mode-man ()
   (interactive)
   (set-face-attribute 'Man-overstrike nil
@@ -68,6 +67,35 @@
 
   (set-face-attribute 'Man-underline nil
                       :foreground "chartreuse"))
+
+(defun cc/light-mode-elfeed ()
+  (interactive)
+  (set-face-attribute 'elfeed-search-unread-title-face nil
+                      :foreground "blue")
+  
+  (set-face-attribute 'elfeed-search-title-face nil
+                      :foreground "black")
+
+  (set-face-attribute 'message-header-subject nil
+                      :foreground "navy blue")
+
+  (set-face-attribute 'message-header-to nil
+                      :foreground "MidnightBlue"))
+
+(defun cc/dark-mode-elfeed ()
+  (interactive)
+  (set-face-attribute 'elfeed-search-unread-title-face nil
+                      :foreground "deep sky blue")
+  
+  (set-face-attribute 'elfeed-search-title-face nil
+                      :foreground "white")
+
+  (set-face-attribute 'message-header-subject nil
+                      :foreground "green yellow")
+
+  (set-face-attribute 'message-header-to nil
+                      :foreground "cyan"))
+
 
 (defun cc/morning ()
   (interactive)
