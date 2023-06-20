@@ -26,12 +26,30 @@ link in the clipboard")
                           "Start Speaking"
                           "Start speaking selected region")
 
+(cc/add-context-menu-item-visible cc/region-operations-menu
+                                  cc/call-phone-number
+                                  (cc/context-menu-label "Call")
+                                  "Call phone number"
+                                  (cc/phone-number-p))
 
-(define-key-after cc/region-operations-menu [cc/call-phone-number]
-  '(menu-item (cc/context-menu-label "Call")
-              cc/call-phone-number
-              :help "Call phone number"
-              :visible (cc/phone-number-p)))
+(cc/add-context-menu-item-visible cc/region-operations-menu
+                                  cc/open-region-in-apple-maps                                  
+                                  (cc/context-menu-label "Open in Apple Maps")
+                                  "Open in Apple Maps"
+                                  (not (cc/phone-number-p)))
+
+
+;; (define-key-after cc/region-operations-menu [cc/call-phone-number]
+;;   '(menu-item (cc/context-menu-label "Call")
+;;               cc/call-phone-number
+;;               :help "Call phone number"
+;; ;;               :visible (cc/phone-number-p)))
+
+;; (define-key-after cc/region-operations-menu [cc/open-region-in-apple-maps]
+;;   '(menu-item (cc/context-menu-label "Open in Apple Maps")
+;;               cc/open-region-in-apple-maps
+;;               :help "Call phone number"
+;;               :visible (not (cc/phone-number-p))))
 
 (provide 'cc-region-operations-menu)
 

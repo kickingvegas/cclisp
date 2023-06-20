@@ -336,6 +336,14 @@ ISO 8601."
     (message "Searching for %s" search)
     (browse-url mapURL)))
 
+(defun cc/open-region-in-apple-maps (&optional start end)
+  "Open region from START to END in Apple Maps"
+  (interactive "r")
+  (let* ((query-buf (buffer-substring start end))
+         (mapURL (concat "maps://?q=" (url-encode-url query-buf))))
+    (message "Searching for %s" query-buf)
+    (browse-url mapURL)))
+
 (defun cc/phone-number-to-url (phone)
   "Convert PHONE number string to url \"tel:\"."
   (let (

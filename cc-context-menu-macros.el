@@ -6,10 +6,17 @@
      '(menu-item "--single-line")))
 
 (defmacro cc/add-context-menu-item (menu command label help)
-  "Add COMMAND to MENU annotated with LABEL and HELP."
+  "Add COMMAND to MENU annotated with LABEL and property HELP."
   `(define-key-after ,menu [,command]
      '(menu-item ,label ,command
                  :help ,help)))
+
+(defmacro cc/add-context-menu-item-visible (menu command label help visible)
+  "Add COMMAND to MENU annotated with LABEL and properties HELP, VISIBLE."
+  `(define-key-after ,menu [,command]
+     '(menu-item ,label ,command
+                 :help ,help
+                 :visible ,visible)))
 
 (defmacro cc/add-first-context-menu-item (menu command label help)
   "Add first COMMAND to MENU annotated with LABEL and HELP."
