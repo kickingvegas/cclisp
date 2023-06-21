@@ -152,10 +152,11 @@ the current buffer"))
                                 "Toggle Reveal Markup"
                                 "Toggle making all invisible text \
 temporarily visible (Visible mode)")
-      (cc/add-context-menu-item menu
-                                org-insert-last-stored-link
-                                "Paste Last Org Link"
-                                "Insert the last link stored in org-stored-links"))
+      (cc/add-context-menu-item-enable menu
+                                       org-insert-last-stored-link
+                                       "Paste Last Org Link"
+                                       "Insert the last link stored in org-stored-links"
+                                       (cc/org-stored-links-p)))
 
      ((derived-mode-p 'markdown-mode)
       (cc/context-menu-item-separator menu markdown-mode-operations-separator)

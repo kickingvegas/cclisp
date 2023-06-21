@@ -18,6 +18,13 @@
                  :help ,help
                  :visible ,visible)))
 
+(defmacro cc/add-context-menu-item-enable (menu command label help enable)
+  "Add COMMAND to MENU annotated with LABEL and properties HELP, ENABLE."
+  `(define-key-after ,menu [,command]
+     '(menu-item ,label ,command
+                 :help ,help
+                 :enable ,enable)))
+
 (defmacro cc/add-first-context-menu-item (menu command label help)
   "Add first COMMAND to MENU annotated with LABEL and HELP."
   `(define-key ,menu [,command]
@@ -31,6 +38,7 @@ SUBMENU is a keymap. "
      (list 'menu-item ,label ,submenu)))
 
 (defun cc/context-menu-label (prefix)
+  "Generate context menu label with region string prepended by PREFIX."
   (let* ((start (region-beginning))
         (end (region-end))
         (buf "")
@@ -42,11 +50,18 @@ SUBMENU is a keymap. "
     buf))
 
 (defun cc/context-menu-last-word-in-region (prefix)
+  "Generate context menu label with last word in region prepended by PREFIX."
   (let*  ((start (region-beginning))
          (end (region-end))
          (buf (buffer-substring start end))
          (last-word (car (last (split-string buf " ")))))
     (concat prefix " “" last-word "”")))
 
+(defun cc/org-stored-links-p ()
+  "Predicate if `org-stored-links' is populated.\n\n
+Return t if populated, nil otherwise."
+  (if (> (length org-stored-links) 0)
+      t
+    nil))
 
 (provide 'cc-context-menu-macros)
