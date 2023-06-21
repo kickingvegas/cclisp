@@ -198,18 +198,20 @@ temporarily visible (Visible mode)")
                               "Display times from around the world")
 
     (cc/context-menu-item-separator menu count-words-separator)
-    (if (use-region-p)
+
+    (when (derived-mode-p 'text-mode)
+      (if (use-region-p)
+          (cc/add-context-menu-item menu
+                                    count-words
+                                    "Count Words in Region"
+                                    "Count words in region")
+    
         (cc/add-context-menu-item menu
                                   count-words
-                                  "Count Words in Region"
-                                  "Count words in region")
-    
-      (cc/add-context-menu-item menu
-                                count-words
-                                "Count Words in Buffer"
-                                "Count words in buffer"))
+                                  "Count Words in Buffer"
+                                  "Count words in buffer")))
 
-  menu))
+    menu))
 
 (defun cc/kill-org-table-reference (e)
   (interactive "e")
