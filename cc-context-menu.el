@@ -24,33 +24,34 @@
                               "List All Buffers"
                               "List all buffers")
 
-    (cond ((use-region-p)
-           (cc/context-menu-item-separator menu narrow-separator)
-           (cc/add-context-menu-item menu
-                                     narrow-to-region
-                                     (cc/context-menu-label "Narrow Region")
-                                     "Restrict editing in this buffer to the current region"))
-          
-          ((and (not (buffer-narrowed-p)) (derived-mode-p 'org-mode))
-           (cc/context-menu-item-separator menu narrow-separator)
-           (cc/add-context-menu-item menu
-                                     org-narrow-to-subtree
-                                     "Narrow to Subtree"
-                                     "Restrict editing in this buffer to the current subtree"))
-          
-          ((and (not (buffer-narrowed-p)) (derived-mode-p 'markdown-mode))
-           (cc/context-menu-item-separator menu narrow-separator)
-           (cc/add-context-menu-item menu
-                                     markdown-narrow-to-subtree
-                                     "Narrow to Subtree"
-                                     "Restrict editing in this buffer to the current subtree")))
-    
-    (when (buffer-narrowed-p)
-      (cc/context-menu-item-separator menu widen-separator)
-      (cc/add-context-menu-item menu
-                                widen
-                                "Widen buffer"
-                                "Remove narrowing restrictions from current buffer"))
+    (when buffer-file-name
+      (cond ((use-region-p)
+             (cc/context-menu-item-separator menu narrow-separator)
+             (cc/add-context-menu-item menu
+                                       narrow-to-region
+                                       (cc/context-menu-label "Narrow Region")
+                                       "Restrict editing in this buffer to the current region"))
+            
+            ((and (not (buffer-narrowed-p)) (derived-mode-p 'org-mode))
+             (cc/context-menu-item-separator menu narrow-separator)
+             (cc/add-context-menu-item menu
+                                       org-narrow-to-subtree
+                                       "Narrow to Subtree"
+                                       "Restrict editing in this buffer to the current subtree"))
+            
+            ((and (not (buffer-narrowed-p)) (derived-mode-p 'markdown-mode))
+             (cc/context-menu-item-separator menu narrow-separator)
+             (cc/add-context-menu-item menu
+                                       markdown-narrow-to-subtree
+                                       "Narrow to Subtree"
+                                       "Restrict editing in this buffer to the current subtree")))
+      
+      (when (buffer-narrowed-p)
+        (cc/context-menu-item-separator menu widen-separator)
+        (cc/add-context-menu-item menu
+                                  widen
+                                  "Widen buffer"
+                                  "Remove narrowing restrictions from current buffer")))
     
     (cc/context-menu-item-separator menu capture-flow-separator)
     (cc/add-context-menu-item menu
@@ -59,16 +60,29 @@
                               "Create new task or workflow via org-capture")
 
     (cc/context-menu-item-separator menu open-in-separator)
-    (cc/add-context-menu-item menu
-                              reveal-in-folder-this-buffer
-                              "Open in Finder"
-                              "Open file (buffer) in Finder")
 
-    (when (not (derived-mode-p 'dired-mode))
+    (when buffer-file-name
       (cc/add-context-menu-item menu
-                                dired-jump-other-window
-                                "Open in Dired"
-                                "Open file in Dired"))
+                                reveal-in-folder-this-buffer
+                                "Open in Finder"
+                                "Open file (buffer) in Finder")
+
+      (when (not (derived-mode-p 'dired-mode))
+        (cc/add-context-menu-item menu
+                                  dired-jump-other-window
+                                  "Open in Dired"
+                                  "Open file in Dired")))
+    
+    (when (derived-mode-p 'dired-mode)
+      (cc/add-context-menu-item menu
+                                cc/dired-duplicate-file
+                                (concat "Duplicate"
+                                        " “"
+                                        (file-name-base (dired-get-filename))
+                                        "."
+                                        (file-name-extension (dired-get-filename))
+                                        "”")
+                                "Duplicate selected item"))
 
     (when (use-region-p)
       (cc/context-menu-item-separator menu dictionary-operations-separator)

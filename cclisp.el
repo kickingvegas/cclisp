@@ -379,6 +379,19 @@ ISO 8601."
      (t
       nil))))
 
+(defun cc/dired-duplicate-file ()
+  "Duplicate the current file in Dired"
+  (interactive)
+  (when (derived-mode-p 'dired-mode)
+    (let* ((filename (dired-get-filename))
+           (target (concat (file-name-sans-extension filename)
+                           " copy"
+                           (file-name-extension filename t))))
+      (message target)
+      (if (file-directory-p filename)
+          (copy-directory filename target)
+        (copy-file filename target)))))
+
 (provide 'cclisp)
 
 ;;; cclisp.el ends here
