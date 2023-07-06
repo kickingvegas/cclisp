@@ -280,11 +280,9 @@ delete this buffer in another session as well."
         (ediff-dispose-of-variant-according-to-user
          ediff-ancestor-buffer 'Ancestor ask keep-variants)
       (ediff-dispose-of-variant-according-to-user
-       ediff-buffer-C 'C ask keep-variants)
-      )
+       ediff-buffer-C 'C ask keep-variants))
     (if (boundp 'cc/ediff-revision-session-p)
-        (setq cc/ediff-revision-session-p nil))
-    ))
+        (setq cc/ediff-revision-session-p nil))))
 
 (defvar my-ediff-last-windows nil)
 
