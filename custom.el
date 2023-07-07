@@ -164,6 +164,7 @@
  '(reb-re-syntax 'string)
  '(require-final-newline t)
  '(safe-local-variable-values '((vc-git-annotate-switches . "-w")))
+ '(savehist-mode t)
  '(scroll-bar-mode nil)
  '(scroll-step 4)
  '(sentence-end-double-space nil)
