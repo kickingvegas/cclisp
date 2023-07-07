@@ -235,68 +235,6 @@ ISO 8601."
          "textutil -stdin -format html -convert rtf -stdout | pbcopy"))
       (kill-buffer buf))))
 
-(defvar cc/ediff-revision-session-p nil
-  "If t then cc/ediff-revision has been called.")
-
-(defun cc/ediff-revision (e)
-  "Invoke `ediff-revision' on E with variable `buffer-file-name'."
-  (interactive "e")
-  (setq cc/ediff-revision-session-p t)
-
-  (if (and (buffer-modified-p)
-	   (y-or-n-p (format "Buffer %s is modified.  Save buffer? "
-                             (buffer-name))))
-      (save-buffer (current-buffer)))
-  (let ((rev1 "")
-        (rev2 ""))
-    (ediff-load-version-control)
-    (funcall
-     (intern (format "ediff-%S-internal" ediff-version-control-package))
-     rev1 rev2 nil)))
-
-(defun ediff-janitor (ask keep-variants)
-  "Kill buffers A, B, and, possibly, C, if these buffers aren't modified.
-In merge jobs, buffer C is not deleted here, but rather according to
-`ediff-quit-merge-hook'.
-ASK non-nil means ask the user whether to keep each unmodified buffer, unless
-KEEP-VARIANTS is non-nil, in which case buffers are never killed.
-A side effect of cleaning up may be that you should be careful when comparing
-the same buffer in two separate Ediff sessions: quitting one of them might
-delete this buffer in another session as well."
-  (let ((ask (if (and (boundp 'cc/ediff-revision-session-p)
-                      cc/ediff-revision-session-p)
-                 nil
-               ask)))
-    (ediff-dispose-of-variant-according-to-user
-     ediff-buffer-A 'A ask keep-variants)
-
-    (if (and (boundp 'cc/ediff-revision-session-p)
-             cc/ediff-revision-session-p)
-        (ediff-dispose-of-variant-according-to-user
-         ediff-buffer-B 'B t t)
-      (ediff-dispose-of-variant-according-to-user
-       ediff-buffer-B 'B ask keep-variants))
-    (if ediff-merge-job  ; don't del buf C if merging--del ancestor buf instead
-        (ediff-dispose-of-variant-according-to-user
-         ediff-ancestor-buffer 'Ancestor ask keep-variants)
-      (ediff-dispose-of-variant-according-to-user
-       ediff-buffer-C 'C ask keep-variants))
-    (if (boundp 'cc/ediff-revision-session-p)
-        (setq cc/ediff-revision-session-p nil))))
-
-(defvar my-ediff-last-windows nil)
-
-(defun my-store-pre-ediff-winconfig ()
-  "Store `current-window-configuration' in variable `my-ediff-last-windows'."
-  (setq my-ediff-last-windows (current-window-configuration)))
-
-(defun my-restore-pre-ediff-winconfig ()
-  "Restore window configuration to stored value in `my-ediff-last-windows'."
-  (set-window-configuration my-ediff-last-windows))
-
-(add-hook 'ediff-before-setup-hook #'my-store-pre-ediff-winconfig)
-(add-hook 'ediff-quit-hook #'my-restore-pre-ediff-winconfig)
-
 
 ;; See `trash-directory' as it requires defining `system-move-file-to-trash'.
 (defun system-move-file-to-trash (file)

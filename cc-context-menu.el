@@ -117,7 +117,7 @@ containing a match for regex"))
                                 "Show the status of the current Git repository \
 in a buffer")
       (cc/add-context-menu-item menu
-                                cc/ediff-revision
+                                cc/ediff-revision-from-menu
                                 "Ediff revision…"
                                 "Ediff this file with revision")
       (cc/add-context-menu-item menu

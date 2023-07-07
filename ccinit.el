@@ -43,6 +43,8 @@
 (require 'cc-google-translate)
 (require 'cc-appearance)
 (require 'cc-repeat-mode)
+(require 'cc-info-mode)
+(require 'cc-ediff-mode)
 (require 'cc-context-menu)
 (require 'flyspell)
 (require 'cc-global-keybindings)
