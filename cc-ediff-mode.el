@@ -100,45 +100,6 @@ CC MODIFICATION: This method overrides the original Ediff function."
              cc/ediff-revision-session-p)
         (setq cc/ediff-revision-session-p nil))))
 
-(defun ediff-quit (reverse-default-keep-variants)
-  "Finish an Ediff session and exit Ediff.
-Unselects the selected difference, if any, restores the read-only and modified
-flags of the compared file buffers, kills Ediff buffers for this session
-\(but not buffers A, B, C).
-
-If `ediff-keep-variants' is nil, the user will be asked whether the buffers
-containing the variants should be removed (if they haven't been modified).
-If it is t, they will be preserved unconditionally.
-
-With prefix argument REVERSE-DEFAULT-KEEP-VARIANTS, temporarily
-reverse the meaning of this variable.
-
-CC MODIFICATION: This method overrides the original Ediff function."
-  (interactive "P")
-  (ediff-barf-if-not-control-buffer)
-  (let ((ctl-buf (current-buffer))
-	(ctl-frm (selected-frame))
-	(minibuffer-auto-raise t))
-    (if (y-or-n-p (format "Quit this Ediff session%s? "
-			  (if (ediff-buffer-live-p ediff-meta-buffer)
-			      " & show containing session group" "")))
-	(progn
-	  (message "")
-	  (setq this-command 'ediff-quit) ; bug#38219
-	  (set-buffer ctl-buf)
-	  (ediff-really-quit reverse-default-keep-variants))
-      (select-frame ctl-frm)
-      (raise-frame ctl-frm)
-      (message ""))
-    ;; !!!: CC Note: Unfortunately `ediff-quit-hook' is called too soon to make
-    ;; restoring the window configuration useful. 
-    ;; Explicitly calling `cc/restore-window-configuration-for-ediff' here
-    ;; will avoid breaking the existing Ediff logic to cleanup a number of
-    ;; ancillary buffers related to the diff.
-    ;; Informally tested to see if there are any side-effects and have found
-    ;; none so far. YOLO though.
-    (cc/restore-window-configuration-for-ediff)))
-
 (defun cc/stash-window-configuration-for-ediff ()
   "Store window configuration to register 🧊.
 Use of emoji is to avoid potential use of keyboard character to reference
@@ -152,6 +113,7 @@ the register."
   (jump-to-register ?🧊))
 
 (add-hook 'ediff-before-setup-hook #'cc/stash-window-configuration-for-ediff)
+(add-hook 'ediff-after-quit-hook-internal #'cc/restore-window-configuration-for-ediff)
 
 (provide 'cc-ediff-mode)
 
