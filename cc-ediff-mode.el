@@ -113,6 +113,8 @@ the register."
   (jump-to-register ?🧊))
 
 (add-hook 'ediff-before-setup-hook #'cc/stash-window-configuration-for-ediff)
+;; !!!: CC Note: Why this is not `ediff-quit-hook' I do not know. But this works
+;; for cleaning up ancillary buffers on quitting an Ediff session.
 (add-hook 'ediff-after-quit-hook-internal #'cc/restore-window-configuration-for-ediff)
 
 (provide 'cc-ediff-mode)
