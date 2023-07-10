@@ -28,7 +28,7 @@
 (global-set-key (kbd "<f13>") 'neotree-toggle)
 (global-set-key (kbd "M-<f13>") 'treemacs)
 (global-set-key (kbd "<f14>") 'eshell)
-(global-set-key (kbd "<f15>") 'ediff-revision)
+(global-set-key (kbd "<f15>") 'cc/ediff-revision)
 (global-set-key (kbd "<f16>") 'run-python)
 (global-set-key (kbd "M-<f16>") 'cc/switch-to-scratch)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
