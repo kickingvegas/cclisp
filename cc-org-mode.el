@@ -145,7 +145,11 @@
         ("captee-help-book"
          :components ("pages" "static"))))
 
-(eval-after-load "org"
-  '(require 'ox-gfm nil t))
+;; (eval-after-load "org"
+;;   '(require 'ox-gfm nil t))
+
+(use-package ox-gfm
+  :defer 3
+  :after org)
 
 (provide 'cc-org-mode)
