@@ -46,6 +46,7 @@
 (require 'cc-info-mode)
 (require 'cc-ediff-mode)
 (require 'cc-context-menu)
+(require 'cc-diff-hl-mode)
 (require 'flyspell)
 (require 'cc-global-keybindings)
 
