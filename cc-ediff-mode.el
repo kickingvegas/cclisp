@@ -7,6 +7,7 @@
 (require 'ediff)
 ;;; Code:
 
+;; these defvars are here to let cc-ediff-mode.el compile clean
 (defvar ediff-buffer-A)
 (defvar ediff-buffer-B)
 (defvar ediff-buffer-C)
