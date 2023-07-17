@@ -1,98 +1,84 @@
 ;;
 
 (require 'cc-context-menu-macros)
+(require 'markdown-mode)
 
-(defun cc/org-emphasize-bold ()
+;; (defun cc/org-emphasize-reset ()
+;;   ;; this won't work when org-hide-emphasis-markers is turned on.
+;;   (interactive)
+;;   (org-emphasize ?\s))
+
+(defun cc/emphasize-bold ()
   (interactive)
-  (org-emphasize ?*))
+  (cond ((derived-mode-p 'org-mode)
+         (org-emphasize ?*))
+        ((derived-mode-p 'markdown-mode)
+         (markdown-insert-bold))
+        (t nil)))
 
-(defun cc/org-emphasize-italic ()
+(defun cc/emphasize-italic ()
+  (interactive)  
+  (cond ((derived-mode-p 'org-mode)
+         (org-emphasize ?/))
+        ((derived-mode-p 'markdown-mode)
+         (markdown-insert-italic))
+        (t nil)))
+
+(defun cc/emphasize-code ()
+  (interactive)  
+  (cond ((derived-mode-p 'org-mode)
+         (org-emphasize ?~))
+        ((derived-mode-p 'markdown-mode)
+         (markdown-insert-code))
+        (t nil)))
+
+(defun cc/emphasize-underline ()
+  (interactive)  
+  (cond ((derived-mode-p 'org-mode)
+         (org-emphasize ?_))
+        (t nil)))
+
+(defun cc/emphasize-verbatim ()
   (interactive)
-  (org-emphasize ?/))
+  (cond ((derived-mode-p 'org-mode)
+         (org-emphasize ?=))
+        (t nil)))
 
-(defun cc/org-emphasize-code ()
-  (interactive)
-  (org-emphasize ?~))
+(defun cc/emphasize-strike-through ()
+  (interactive)  
+  (cond ((derived-mode-p 'org-mode)
+         (org-emphasize ?+))
+        ((derived-mode-p 'markdown-mode)
+         (markdown-insert-strike-through))
+        (t nil)))
 
-(defun cc/org-emphasize-underline ()
-  (interactive)
-  (org-emphasize ?_))
-
-(defun cc/org-emphasize-verbatim ()
-  (interactive)
-  (org-emphasize ?=))
-
-(defun cc/org-emphasize-strike-through ()
-  (interactive)
-  (org-emphasize ?+))
-
-(defun cc/org-emphasize-reset ()
-  ;; this won't work when org-hide-emphasis-markers is turned on.
-  (interactive)
-  (org-emphasize ?\s))
-
-;; Org Emphasize
-(defvar cc/org-emphasize-menu (make-sparse-keymap "Org Emphasize")
-  "Keymap for Org Emphasize submenu.")
-
-(cc/add-first-context-menu-item cc/org-emphasize-menu
-				cc/org-emphasize-bold
-				"Bold"
-				"Bold selected region")
-
-(cc/add-context-menu-item cc/org-emphasize-menu
-			  cc/org-emphasize-italic
-			  "Italic"
-			  "Italic selected region")
-
-(cc/add-context-menu-item cc/org-emphasize-menu
-			  cc/org-emphasize-code
-			  "Code"
-			  "Code selected region")
-
-(cc/add-context-menu-item cc/org-emphasize-menu
-			  cc/org-emphasize-underline
-			  "Underline"
-			  "Underline selected region")
-
-(cc/add-context-menu-item cc/org-emphasize-menu
-			  cc/org-emphasize-verbatim
-			  "Verbatim"
-			  "Verbatim selected region")
-
-(cc/add-context-menu-item cc/org-emphasize-menu
-			  cc/org-emphasize-strike-through
-			  "Strike through"
-			  "Strike through selected region")
-
-;; (cc/add-context-menu-item cc/org-emphasize-menu
-;;                       org-emphasize-reset
-;;                       cc/org-emphasize-reset
-;;                       "Reset"
-;;                       "Remove emphasis on selected region")
-
-;; Markdown Emphasize
-(defvar cc/markdown-emphasize-menu (make-sparse-keymap "Markdown Emphasize")
-  "Keymap for Markdown Emphasize submenu.")
-
-(cc/add-first-context-menu-item cc/markdown-emphasize-menu
-				markdown-insert-bold
-				"Bold"
-				"Bold selected region")
-
-(cc/add-context-menu-item cc/markdown-emphasize-menu
-			  markdown-insert-italic
-			  "Italic"
-			  "Italic selected region")
-
-(cc/add-context-menu-item cc/markdown-emphasize-menu
-			  markdown-insert-code
-			  "Code"
-			  "Code selected region")
-
-(cc/add-context-menu-item cc/markdown-emphasize-menu
-			  markdown-insert-strike-through
-			  "Strike through"
-			  "Strike through selected region")
+(easy-menu-define cc/emphasize-menu nil
+  "Keymap for Emphasize Menu"
+  '("Style"
+    :visible (region-active-p)
+    ["Bold" cc/emphasize-bold
+     :enable (region-active-p)
+     :visible (or (derived-mode-p 'org-mode) (derived-mode-p 'markdown-mode))
+     :help "Bold selected region"]
+    ["Italic" cc/emphasize-italic
+     :enable (region-active-p)
+     :visible (or (derived-mode-p 'org-mode) (derived-mode-p 'markdown-mode))     
+     :help "Italic selected region"]
+    ["Code" cc/emphasize-code
+     :enable (region-active-p)
+     :visible (or (derived-mode-p 'org-mode) (derived-mode-p 'markdown-mode))     
+     :help "Code selected region"]
+    ["Underline" cc/emphasize-underline
+     :enable (region-active-p)
+     :visible (derived-mode-p 'org-mode)     
+     :help "Underline selected region"]
+    ["Verbatim" cc/emphasize-verbatim
+     :enable (region-active-p)
+     :visible (derived-mode-p 'org-mode)
+     :help "Verbatim selected region"]
+    ["Strike Through" cc/emphasize-strike-through
+     :enable (region-active-p)
+     :visible (or (derived-mode-p 'org-mode) (derived-mode-p 'markdown-mode))     
+     :help "Strike-through selected region"]))
 
 (provide 'cc-style-text-menu)

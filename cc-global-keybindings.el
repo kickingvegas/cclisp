@@ -90,14 +90,5 @@
 
 (global-unset-key (kbd "C-x f"))
 
-(define-key global-map
-  [menu-bar tools find-name]
-  '("Find File…" . find-name-dired))
-
-(define-key global-map
-  [menu-bar tools open-in-finder]
-  '("Open in Finder" . reveal-in-folder-this-buffer))
-
-(global-set-key [vertical-scroll-bar down-mouse-1] 'scroll-bar-drag)
 
 (provide 'cc-global-keybindings)

@@ -49,6 +49,7 @@
 (require 'cc-diff-hl-mode)
 (require 'flyspell)
 (require 'cc-global-keybindings)
+(require 'cc-menu-reconfig)
 
 (when (string= (system-name) "bingsu.local")
   (server-start))
