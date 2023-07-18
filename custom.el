@@ -5,6 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(Info-scroll-prefer-subnodes t)
  '(Man-notify-method 'aggressive)
+ '(apropos-do-all t)
  '(bibtex-completion-bibliography '("~/org/bib/references.bib"))
  '(bookmark-save-flag 1)
  '(calendar-latitude 37.7643)

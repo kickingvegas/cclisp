@@ -10,6 +10,7 @@
 (easy-menu-define cc/transpose-menu nil
   "Keymap for Transpose submenu"
   '("Transpose"
+    :visible (bound-and-true-p buffer-file-name)
     ["Characters" transpose-chars
      :help "Interchange characters around point, moving forward one character."]
     
@@ -241,6 +242,7 @@ temporarily visible (Visible mode)"])
     (easy-menu-add-item menu nil cc/transpose-menu)
     (easy-menu-add-item menu nil ["Join Line"
                                   join-line
+                                  :visible (bound-and-true-p buffer-file-name)
                                   :help "Join this line to previous and fix up \
 whitespace at join"])
     

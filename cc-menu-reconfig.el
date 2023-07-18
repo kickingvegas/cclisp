@@ -40,6 +40,7 @@
 (easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
                     ["Join Line"
                      join-line
+                     :visible (bound-and-true-p buffer-file-name)
                      :help "Join this line to previous and fix up \
 whitespace at join"]
                     "Fill")
@@ -47,12 +48,14 @@ whitespace at join"]
 (easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
                     ["Delete Horizontal Space"
                      delete-horizontal-space
+                     :visible (bound-and-true-p buffer-file-name)
                      :help "Delete all spaces and tabs around point."]
                     "Fill")
 
 (easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
                     ["Delete Blank Lines"
                      delete-blank-lines
+                     :visible (bound-and-true-p buffer-file-name)
                      :help "On blank line, delete all surrounding blank lines, \
 leaving just one."]
                     "Fill")
