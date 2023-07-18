@@ -179,6 +179,7 @@
  '(vc-make-backup-files nil)
  '(warning-suppress-types '((comp)))
  '(wdired-allow-to-change-permissions t)
+ '(wgrep-auto-save-buffer t)
  '(world-clock-list
    '(("America/Los_Angeles" "San Francisco")
      ("America/Denver" "Denver")

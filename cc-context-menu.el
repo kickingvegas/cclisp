@@ -6,28 +6,8 @@
 (require 'cc-region-operations-menu)
 (require 'cc-insert-org-plot)
 (require 'cc-find-menu)
-
-(easy-menu-define cc/transpose-menu nil
-  "Keymap for Transpose submenu"
-  '("Transpose"
-    :visible (bound-and-true-p buffer-file-name)
-    ["Characters" transpose-chars
-     :help "Interchange characters around point, moving forward one character."]
-    
-    ["Words" transpose-words
-     :help "Interchange words around point, leaving point at end of them."]
-     
-    ["Lines" transpose-lines
-     :help "Exchange current line and previous line, leaving point after both."]
-  
-    ["Sentences" transpose-sentences
-     :help "Interchange the current sentence with the next one."]
-     
-    ["Paragraphs" transpose-paragraphs
-     :help "Interchange the current paragraph with the next one."]
-
-    ["Regions" transpose-regions
-     :help "region STARTR1 to ENDR1 with STARTR2 to ENDR2."]))
+(require 'cc-edit-text-menu)
+(require 'cc-wgrep-mode)
 
 (defun cc/context-menu-addons (menu click)
   "CC context menu additions"
@@ -240,11 +220,9 @@ temporarily visible (Visible mode)"])
 
     
     (easy-menu-add-item menu nil cc/transpose-menu)
-    (easy-menu-add-item menu nil ["Join Line"
-                                  join-line
-                                  :visible (bound-and-true-p buffer-file-name)
-                                  :help "Join this line to previous and fix up \
-whitespace at join"])
+    (easy-menu-add-item menu nil cc/move-text-menu)
+    (easy-menu-add-item menu nil cc/delete-space-menu)
+    (easy-menu-add-item menu nil cc/wgrep-menu)
     
     menu))
 
