@@ -56,47 +56,40 @@ will be displayed."
   (interactive)
   (cc/org-plot-insert-snippet "org-plot histogram image"))
 
-(defvar cc/insert-org-plot-menu (make-sparse-keymap "Insert Org Plot")
-  "Keymap for Org plot submenu.")
+(easy-menu-define cc/insert-org-plot-menu nil
+  "Kaymap for Org Plot submenu"
+  '("Org Plot"
+    ["Lines - GUI"
+     cc/org-plot-insert-lines-plot
+     :help "Insert lines, linespoints, or impulses \
+style chart for GUI interaction"]
 
-(cc/add-first-context-menu-item cc/insert-org-plot-menu
-                                cc/org-plot-insert-lines-plot
-                                "Lines - GUI"
-                                "Insert lines, linespoints, or impulses \
-style chart for GUI interaction")
+    ["Lines Timestamp - GUI"
+     cc/org-plot-insert-lines-timestamp-plot
+     :help "Insert lines, linespoints, or impulses style \
+chart with timestamps for GUI interaction"]
 
-(cc/add-context-menu-item cc/insert-org-plot-menu
-                      cc/org-plot-insert-lines-timestamp-plot
-                      "Lines Timestamp - GUI"
-                      "Insert lines, linespoints, or impulses style \
-chart with timestamps for GUI interaction")
+    ["Histogram - GUI"
+     cc/org-plot-insert-histogram-plot
+     :help "Insert histogram (column) style chart for GUI interaction"]
 
-(cc/add-context-menu-item cc/insert-org-plot-menu
-                      cc/org-plot-insert-histogram-plot
-                      "Histogram - GUI"
-                      "Insert histogram (column) style chart for GUI interaction")
+    "---"
 
-(cc/context-menu-item-separator cc/insert-org-plot-menu
-                                org-plot-menu-single-separator)
+    ["Lines - Image"
+     cc/org-plot-insert-lines-plot-image
+     :help "Insert lines, linespoints, or impulses style chart for \
+image creation"]
 
+    ["Lines Timestamp - Image"
+     cc/org-plot-insert-lines-timestamp-plot-image
+     :help "Insert lines, linespoints, or impulses style chart \
+with timestamps for image creation"]
 
-(cc/add-context-menu-item cc/insert-org-plot-menu
-                      cc/org-plot-insert-lines-plot-image
-                      "Lines - Image"
-                      "Insert lines, linespoints, or impulses style chart for \
-image creation")
-
-(cc/add-context-menu-item cc/insert-org-plot-menu
-                      cc/org-plot-insert-lines-timestamp-plot-image
-                      "Lines Timestamp - Image"
-                      "Insert lines, linespoints, or impulses style chart \
-with timestamps for image creation")
-
-(cc/add-context-menu-item cc/insert-org-plot-menu
-                      cc/org-plot-insert-histogram-plot-image
-                      "Histogram - Image"
-                      "Insert histogram (column) style chart for image creation")
-
+    
+    ["Histogram - Image"
+     cc/org-plot-insert-histogram-plot-image
+     :help "Insert histogram (column) style chart for image creation"]))
+    
 (provide 'cc-insert-org-plot)
 
 ;;; cc-insert-org-plot.el ends here
