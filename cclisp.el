@@ -375,6 +375,52 @@ ISO 8601."
           (copy-directory filename target)
         (copy-file filename target)))))
 
+
+(defun cc/move-word-backward ()
+  "Move word to the right of point backward one word.
+Point must be at the beginning of word."
+  (interactive)
+  (transpose-words 1)
+  (forward-word -2))
+
+(defun cc/move-word-forward ()
+  "Move word to the right of point forward one word.
+Point must be at the beginning of word."
+  (interactive)
+  (forward-word 1)
+  (transpose-words 1)
+  (forward-word -1))
+
+(defun cc/move-sentence-backward ()
+  "Move sentence to the right of point backward one sentence.
+Point must be at the beginning of sentence."
+  (interactive)
+  (transpose-sentences 1)
+  (forward-sentence -2))
+
+(defun cc/move-sentence-forward ()
+  "Move sentence to the right of point forward one sentence.
+Point must be at the beginning of sentence."
+  (interactive)
+  (forward-sentence 1)
+  (transpose-sentences 1)
+  (forward-sentence -1))
+
+(defun cc/move-sexp-backward ()
+  "Move balanced expression (sexp) to the right of point backward one sexp.
+Point must be at the beginning of balanced expression (sexp)."
+  (interactive)
+  (transpose-sexps 1)
+  (forward-sexp -2))
+
+(defun cc/move-sexp-forward ()
+  "Move balanced expression (sexp) to the right of point forward one sexp.
+Point must be at the beginning of balanced expression (sexp)."
+  (interactive)
+  (forward-sexp 1)
+  (transpose-sexps 1)
+  (forward-sexp -1))
+
 (provide 'cclisp)
 
 ;;; cclisp.el ends here
