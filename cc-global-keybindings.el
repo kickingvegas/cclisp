@@ -1,6 +1,6 @@
 ;; Global Keyboard Mappings
 (global-set-key (kbd "C-=") 'er/expand-region)
-(global-set-key (kbd "M-g") 'goto-line)
+;(global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-x v") 'view-file)
 (global-set-key (kbd "M-q") 'query-replace)
 (global-set-key (kbd "M-j") 'fill-paragraph)
@@ -32,6 +32,13 @@
 (global-set-key (kbd "<f16>") 'run-python)
 (global-set-key (kbd "M-<f16>") 'cc/switch-to-scratch)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+;; Avy
+(global-set-key (kbd "M-g g") 'avy-goto-word-1)
+(global-set-key (kbd "M-g l") 'avy-goto-line)
+(global-set-key (kbd "M-g t") 'avy-goto-char-timer)
+(global-set-key (kbd "M-g c") 'avy-copy-line)
+(global-set-key (kbd "M-g m") 'avy-move-line)
 
 ;; Terminal 
 (global-set-key (kbd "M-SPC") 'set-mark-command)
@@ -90,5 +97,6 @@
 
 (global-unset-key (kbd "C-x f"))
 
+(global-set-key [vertical-scroll-bar down-mouse-1] 'scroll-bar-drag)
 
 (provide 'cc-global-keybindings)

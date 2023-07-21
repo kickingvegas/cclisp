@@ -8,19 +8,13 @@
 (require 'cc-style-text-menu)
 (require 'text-mode)
 
-(define-key global-map
-  [menu-bar tools find-in-files]
-  '("Find in Files (rgrep)…" . rgrep))
-
-(define-key global-map
-  [menu-bar tools find-name]
-  '("Find File…" . find-name-dired))
-
-(define-key global-map
-  [menu-bar tools open-in-finder]
-  '("Open in Finder" . reveal-in-folder-this-buffer))
-
-(global-set-key [vertical-scroll-bar down-mouse-1] 'scroll-bar-drag)
+(easy-menu-add-item (lookup-key global-map [menu-bar file]) nil
+                    ["Swap Windows"
+                     window-swap-states
+                     :visible (> (count-windows) 1)
+                     :help "Swap the states of live windows WINDOW-1 and \
+WINDOW-2."]
+                    "New Window Below")
 
 ;;; Reconfigure Text Mode Menu
 
@@ -44,6 +38,29 @@
                     cc/delete-space-menu "Fill")
 
 ;;; Reconfigure Tools Menu
+
+(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
+                    ["Open in Finder"
+                     reveal-in-folder-this-buffer
+                     :help "Reveal the current buffer in folder."]
+                    "Shell Commands")
+
+(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
+                    ["Find File…"
+                     find-name-dired
+                     :help "Search DIR recursively for files matching the \
+globbing PATTERN, and run Dired on those files."]
+                    "Shell Commands")
+
+
+(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
+                    ["Find in Files (rgrep)…"
+                     rgrep
+                     :help "Recursively grep for REGEXP in FILES in directory \
+tree rooted at DIR."]
+                    "Shell Commands")
+
+
 (define-key global-map [menu-bar tools grep] nil)
 (define-key global-map [menu-bar tools rgrep] nil)
 (define-key global-map [menu-bar tools ede] nil)
@@ -79,16 +96,17 @@
                     "Calendar")
 
 (easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
+                    ["--"
+                     separator-re]
+                    "Calendar")
+
+(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
                     ["World Clock"
                      world-clock
                      :help "Display a world clock buffer with times in \
 various time zones."]
-                    "Calendar")
+                    "Programmable Calculator")
 
-(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
-                    ["--"
-                     separator-re]
-                    "Calendar")
 
 (provide 'cc-menu-reconfig)
 

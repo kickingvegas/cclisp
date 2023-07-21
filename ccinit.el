@@ -28,6 +28,7 @@
 (setq mac-mouse-wheel-mode t)
 (setq mac-mouse-wheel-smooth-scroll t)
 
+(require 'avy)
 (require 'cclisp)
 (require 'cc-prog-mode)
 (require 'cc-emacs-lisp-mode)
