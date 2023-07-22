@@ -20,15 +20,15 @@
   (setq org-capture-templates
         `(
           ("b" "BeOrg TODO" entry (file "~/org/refile-beorg.org")
-           "* TODO %^{description}\nSCHEDULED: %^T\n%?" :empty-lines 1)
-          ("s" "TODO: Scheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO %^{description} [/]\nSCHEDULED: %^T\n%?" :empty-lines 1)
+           "* TODO %^{description}\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
+          ("sp" "TODO: Scheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
+	   "* TODO %^{description} [/]\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("t" "TODO: Unscheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO %^{description} [/]\n%?" :empty-lines 1)
+	   "* TODO %^{description} [/]\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("p" "TODO: Blog Post" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO Post: %^{description}\n%?" :empty-lines 1)
+	   "* TODO Post: %^{description}\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("i" "TODO: Issue" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO %^{description} [/]\n\n\
+	   "* TODO %^{description} [/]\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n\
 ** Title\n%?\n\
 ** Description\n\n\
 ** Environment\n\n\
@@ -38,9 +38,9 @@
           ("j" "Journal" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
 	   "%(datestamp2)\n%?" :empty-lines 1)
           ("c" "Captee Capture" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* %:description\n%:annotation\n%i\n%?" :empty-lines 1)
+	   "* %:description\n\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:annotation\n%i\n%?" :empty-lines 1)
           ("I" "Captee Issue Capture" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO %:description [/]\n%:annotation\n%i\n%?" :empty-lines 1)
+	   "* TODO %:description [/]\n\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:annotation\n%i\n%?" :empty-lines 1)
           ("w" "WWDC Capture" entry (file+headline ,"~/org/wwdc23.org" ,"WWDC 23 Notes")
 	   "* TODO %:description\n%:annotation\n%i\n%?" :empty-lines 1)
           )))
