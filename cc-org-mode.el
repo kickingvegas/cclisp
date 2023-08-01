@@ -21,7 +21,7 @@
         `(
           ("b" "BeOrg TODO" entry (file "~/org/refile-beorg.org")
            "* TODO %^{description}\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
-          ("sp" "TODO: Scheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
+          ("s" "TODO: Scheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
 	   "* TODO %^{description} [/]\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("t" "TODO: Unscheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
 	   "* TODO %^{description} [/]\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
