@@ -416,6 +416,7 @@ The document was typeset with
  '(markdown-header-scaling nil)
  '(org-agenda-files '("/Users/cchoi/org"))
  '(org-agenda-include-diary t)
+ '(org-agenda-window-setup 'other-window)
  '(org-babel-python-command "python3")
  '(org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
  '(org-clock-sound "/System/Library/Sounds/Glass.aiff")
@@ -428,7 +429,6 @@ The document was typeset with
  '(org-hide-emphasis-markers t)
  '(org-hide-leading-stars nil)
  '(org-html-postamble nil)
- '(org-indent-mode-turns-on-hiding-stars nil)
  '(org-latex-classes
    '(("article" "\\documentclass[11pt]{article}"
       ("\\section{%s}" . "\\section*{%s}")
