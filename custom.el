@@ -557,7 +557,7 @@ The document was typeset with
  '(org-scheduled-today ((t (:foreground "#cc4499"))))
  '(org-special-keyword ((t (:inherit font-lock-keyword-face :height 0.8))))
  '(org-table ((t (:foreground "Blue1" :inherit fixed-pitch))))
- '(outline-1 ((t (:height 1.2 :family "Futura"))))
+ '(outline-1 ((t (:height 1.1 :family "Futura"))))
  '(outline-2 ((t (:inherit outline-1))))
  '(outline-3 ((t (:inherit outline-1))))
  '(outline-4 ((t (:inherit outline-1))))
