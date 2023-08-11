@@ -5,8 +5,6 @@
   "Major mode for editing Markdown files" t)
 
 (add-hook 'markdown-mode-hook 'variable-pitch-mode)
-(add-hook 'markdown-mode-hook 'company-mode)
-(add-hook 'markdown-mode-hook 'flyspell-mode)
 (add-hook 'markdown-mode-hook 'markdown-toggle-markup-hiding)
 (add-hook 'markdown-mode-hook (lambda ()
                                 (turn-on-orgtbl)

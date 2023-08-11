@@ -2,6 +2,12 @@
 
 (add-hook 'text-mode-hook 'visual-line-mode)
 (add-hook 'text-mode-hook 'context-menu-mode)
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'text-mode-hook 'company-mode)
+
+(add-hook 'text-mode-hook (lambda ()
+                            (setq-local line-spacing 0.1)))
+
 (define-key text-mode-map (kbd "<home>") 'beginning-of-visual-line)
 (define-key text-mode-map (kbd "<end>") 'end-of-visual-line)
 (define-key text-mode-map (kbd "A-<left>") 'backward-sentence)
