@@ -537,7 +537,7 @@ The document was typeset with
  '(font-lock-comment-face ((t (:foreground "Firebrick"))))
  '(font-lock-constant-face ((t (:height 1.0))))
  '(markdown-code-face ((t (:inherit fixed-pitch))))
- '(markdown-header-face ((t (:weight semi-light :family "Futura"))))
+ '(markdown-header-face ((t (:height 1.1 :family "Futura"))))
  '(markdown-language-keyword-face ((t (:inherit font-lock-type-face))))
  '(markdown-markup-face ((t (:inherit shadow :slant normal :weight normal))))
  '(minibuffer-prompt ((t (:foreground "dark magenta"))))
