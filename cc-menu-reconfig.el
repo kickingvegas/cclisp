@@ -78,6 +78,12 @@ tree rooted at DIR."]
 (define-key global-map [menu-bar tools Table] nil)
 
 (easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
+                    ["Count Words"
+                     count-words
+                     :help "Count words in buffer or region if active."]
+                    "Calendar")
+
+(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
                     ["Eshell"
                      eshell
                      :help "Create an interactive Eshell buffer."]
