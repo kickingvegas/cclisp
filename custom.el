@@ -427,8 +427,10 @@ The document was typeset with
  '(org-export-with-sub-superscripts '{})
  '(org-export-with-toc nil)
  '(org-hide-emphasis-markers t)
- '(org-hide-leading-stars nil)
+ '(org-hide-leading-stars t)
  '(org-html-postamble nil)
+ '(org-icalendar-include-todo t)
+ '(org-icalendar-use-scheduled '(event-if-todo event-if-todo-not-done todo-start))
  '(org-latex-classes
    '(("article" "\\documentclass[11pt]{article}"
       ("\\section{%s}" . "\\section*{%s}")
