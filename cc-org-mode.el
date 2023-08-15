@@ -96,10 +96,10 @@
                                         'company-org-block)))
 
 (add-hook 'org-agenda-finalize-hook 'hl-line-mode)
-
-;; (setq org-agenda-finalize-hook
-;;       '((lambda ()
-;; 	  (hl-line-mode 1))))
+(add-hook 'org-agenda-finalize-hook
+          (lambda ()
+            (define-key org-agenda-mode-map
+              [(double-mouse-1)] 'org-agenda-goto-mouse)))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
