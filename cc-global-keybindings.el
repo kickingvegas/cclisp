@@ -35,6 +35,7 @@
 
 ;; Avy
 (global-set-key (kbd "M-g g") 'avy-goto-word-1)
+(global-set-key (kbd "M-g SPC") 'avy-goto-word-1)
 (global-set-key (kbd "M-g l") 'avy-goto-line)
 (global-set-key (kbd "M-g t") 'avy-goto-char-timer)
 (global-set-key (kbd "M-g c") 'avy-copy-line)
