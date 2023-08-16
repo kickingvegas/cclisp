@@ -392,6 +392,8 @@ The document was typeset with
      ("https://sf.eater.com/rss/index.xml" sf food)
      ("https://missionlocal.org/feed" sf)
      ("https://sfstandard.com/feed/" sf)))
+ '(eshell-modules-list
+   '(eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix))
  '(eshell-scroll-to-bottom-on-input 'this)
  '(eshell-scroll-to-bottom-on-output 'this)
  '(fill-column 80)
