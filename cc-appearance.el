@@ -9,6 +9,9 @@
     (set-face-attribute 'org-scheduled-previously nil
                         :foreground "#2255ff")
 
+    (set-face-attribute 'org-block-begin-line nil
+                        :foreground "gray50"
+                        :background "gray90")
   
     (set-face-attribute 'comint-highlight-prompt nil
                         :foreground "dark magenta")
@@ -36,6 +39,9 @@
     (set-face-attribute 'org-scheduled-previously nil
                         :foreground "light sky blue")
 
+    (set-face-attribute 'org-block-begin-line nil
+                        :foreground "tomato"
+                        :background "gray23")
 
     (set-face-attribute 'comint-highlight-prompt nil
                         :foreground "cyan")
