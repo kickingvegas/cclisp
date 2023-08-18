@@ -424,6 +424,7 @@ The document was typeset with
  '(org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
  '(org-clock-sound "/System/Library/Sounds/Glass.aiff")
  '(org-confirm-babel-evaluate nil)
+ '(org-display-remote-inline-images 'cache)
  '(org-export-allow-bind-keywords t)
  '(org-export-backends '(ascii html icalendar latex md odt))
  '(org-export-with-smart-quotes t)
