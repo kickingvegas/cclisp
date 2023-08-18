@@ -18,6 +18,10 @@
                                   status-report
                                   :help "Go to current day journal"])
 
+    (easy-menu-add-item menu nil ["Agenda - All TODOs"
+                                  (lambda () (interactive)(org-agenda nil "n"))
+                                  :help "Show Org agenda with all TODO tasks."])
+
     (cc/context-menu-item-separator menu buffer-navigation-separator)
         
     (easy-menu-add-item menu nil ["List All Buffers"

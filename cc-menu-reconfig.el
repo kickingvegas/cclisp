@@ -28,6 +28,8 @@ WINDOW-2."]
 (easy-menu-add-item text-mode-menu nil cc/emphasize-menu "Auto Fill")
 (easy-menu-add-item text-mode-menu nil cc/region-operations-menu "Auto Fill")
 
+;;; Reconfigure Edit Menu
+
 (easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
                     cc/transpose-menu "Fill")
 
@@ -39,27 +41,31 @@ WINDOW-2."]
 
 ;;; Reconfigure Tools Menu
 
-(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
+(easy-menu-add-item global-map '(menu-bar tools)
+                    ["Agenda - All TODOs"
+                     (lambda () (interactive)(org-agenda nil "n"))
+                     :help "Show Org agenda with all TODO tasks."]
+                    "Shell Commands")
+
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["Open in Finder"
                      reveal-in-folder-this-buffer
                      :help "Reveal the current buffer in folder."]
                     "Shell Commands")
 
-(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["Find File…"
                      find-name-dired
                      :help "Search DIR recursively for files matching the \
 globbing PATTERN, and run Dired on those files."]
                     "Shell Commands")
 
-
-(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["Find in Files (rgrep)…"
                      rgrep
                      :help "Recursively grep for REGEXP in FILES in directory \
 tree rooted at DIR."]
                     "Shell Commands")
-
 
 (define-key global-map [menu-bar tools grep] nil)
 (define-key global-map [menu-bar tools rgrep] nil)
@@ -77,36 +83,35 @@ tree rooted at DIR."]
 (define-key global-map [menu-bar tools separator-encryption-decryption] nil)
 (define-key global-map [menu-bar tools Table] nil)
 
-(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["Count Words"
                      count-words
                      :help "Count words in buffer or region if active."]
                     "Calendar")
 
-(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["Eshell"
                      eshell
                      :help "Create an interactive Eshell buffer."]
                     "Calendar")
 
-(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["Python Shell"
                      run-python
                      :help "Run an inferior Python process."]
                     "Calendar")
 
-(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["RE-Builder"
                      re-builder
                      :help "Construct a regexp interactively."]
                     "Calendar")
 
-(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
-                    ["--"
-                     separator-re]
+(easy-menu-add-item global-map '(menu-bar tools)
+                    ["---" separator-re]
                     "Calendar")
 
-(easy-menu-add-item (lookup-key global-map [menu-bar tools]) nil
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["World Clock"
                      world-clock
                      :help "Display a world clock buffer with times in \
