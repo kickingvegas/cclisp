@@ -54,6 +54,10 @@ WINDOW-2."]
                     "Shell Commands")
 
 (easy-menu-add-item global-map '(menu-bar tools)
+                    ["---" separator-org]
+                    "Open in Finder")
+
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["Find File…"
                      find-name-dired
                      :help "Search DIR recursively for files matching the \
@@ -66,6 +70,11 @@ globbing PATTERN, and run Dired on those files."]
                      :help "Recursively grep for REGEXP in FILES in directory \
 tree rooted at DIR."]
                     "Shell Commands")
+
+(easy-menu-add-item global-map '(menu-bar tools)
+                    ["----" separator-shell]
+                    "Shell Commands")
+
 
 (define-key global-map [menu-bar tools grep] nil)
 (define-key global-map [menu-bar tools rgrep] nil)
@@ -108,7 +117,7 @@ tree rooted at DIR."]
                     "Calendar")
 
 (easy-menu-add-item global-map '(menu-bar tools)
-                    ["---" separator-re]
+                    ["-----" separator-re]
                     "Calendar")
 
 (easy-menu-add-item global-map '(menu-bar tools)
