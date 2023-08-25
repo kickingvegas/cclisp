@@ -19,6 +19,8 @@
 
   (setq org-capture-templates
         `(
+          ("a" "Appointment" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
+	   "* %^{description}\n%^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("b" "BeOrg TODO" entry (file "~/org/refile-beorg.org")
            "* TODO %^{description}\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("s" "TODO: Scheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
@@ -78,6 +80,7 @@
 (add-hook 'org-mode-hook 'org-superstar-mode)
 (add-hook 'org-mode-hook 'variable-pitch-mode)
 (add-hook 'org-mode-hook 'org-indent-mode)
+(add-hook 'org-mode-hook 'org-clock-persistence-insinuate)
 
 (add-hook 'org-mode-hook (lambda ()
 			   (define-key org-mode-map (kbd "<f8>") 'datestamp)
@@ -100,6 +103,17 @@
           (lambda ()
             (define-key org-agenda-mode-map
               [(double-mouse-1)] 'org-agenda-goto-mouse)))
+
+(defun cc/org-agenda-goto-now ()
+  (interactive)
+  (beginning-of-buffer)
+  ;; (org-agenda-goto-today)               
+  (search-forward "now"))
+
+(add-hook 'org-agenda-mode-hook
+          (lambda ()
+            (define-key org-agenda-mode-map (kbd "<f1>") 'org-save-all-org-buffers)
+            (define-key org-agenda-mode-map (kbd "<f8>") 'cc/org-agenda-goto-now)))
 
 (org-babel-do-load-languages
  'org-babel-load-languages

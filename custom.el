@@ -422,6 +422,7 @@ The document was typeset with
  '(org-agenda-window-setup 'other-window)
  '(org-babel-python-command "python3")
  '(org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
+ '(org-clock-persist t)
  '(org-clock-sound "/System/Library/Sounds/Glass.aiff")
  '(org-confirm-babel-evaluate nil)
  '(org-display-remote-inline-images 'cache)
