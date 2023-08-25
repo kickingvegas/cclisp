@@ -105,10 +105,11 @@
               [(double-mouse-1)] 'org-agenda-goto-mouse)))
 
 (defun cc/org-agenda-goto-now ()
+  "Redo agenda view and move point to current time '← now'"
   (interactive)
-  (goto-char (point-min))
-  ;; (org-agenda-goto-today)               
-  (search-forward "now"))
+  (org-agenda-redo)
+  (org-agenda-goto-today)               
+  (search-forward "← now ─"))
 
 (add-hook 'org-agenda-mode-hook
           (lambda ()
