@@ -106,14 +106,14 @@
 
 (defun cc/org-agenda-goto-now ()
   (interactive)
-  (beginning-of-buffer)
+  (goto-char (point-min))
   ;; (org-agenda-goto-today)               
   (search-forward "now"))
 
 (add-hook 'org-agenda-mode-hook
           (lambda ()
             (define-key org-agenda-mode-map (kbd "<f1>") 'org-save-all-org-buffers)
-            (define-key org-agenda-mode-map (kbd "<f8>") 'cc/org-agenda-goto-now)))
+            (define-key org-agenda-mode-map (kbd ".") 'cc/org-agenda-goto-now)))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
