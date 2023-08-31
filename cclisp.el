@@ -421,6 +421,23 @@ Point must be at the beginning of balanced expression (sexp)."
   (transpose-sexps 1)
   (forward-sexp -1))
 
+(defun cc/display-notification (msg &optional title subtitle)
+  "Display macOS notification via osascript with MSG, and maybe TITLE, SUBTITLE
+MSG - notification message
+TITLE - notification title (optional)
+SUBTITLE - notification subtitle (optional)"
+  (message msg)
+  (let ((cmd "display notification"))
+    (setq cmd (concat cmd " \"" msg "\""))
+    (if title
+        (setq cmd (concat cmd " with title \"" title "\"")))
+    (if subtitle
+        (setq cmd (concat cmd " subtitle \"" subtitle "\"")))
+
+    (setq cmd (concat "osascript -e '" cmd "'"))
+    (message cmd)
+    (shell-command cmd)))
+
 (provide 'cclisp)
 
 ;;; cclisp.el ends here
