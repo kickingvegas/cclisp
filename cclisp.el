@@ -435,7 +435,7 @@ SUBTITLE - notification subtitle (optional)"
         (setq cmd (concat cmd " subtitle \"" subtitle "\"")))
 
     (setq cmd (concat "osascript -e '" cmd "'"))
-    (message cmd)
+    ;; (message cmd)
     (shell-command cmd)))
 
 (provide 'cclisp)

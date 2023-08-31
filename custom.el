@@ -465,6 +465,7 @@ The document was typeset with
  '(org-latex-prefer-user-labels t)
  '(org-plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar")
  '(org-re-reveal-theme "moon")
+ '(org-show-notification-handler 'cc/display-notification)
  '(org-src-lang-modes
    '(("ocaml" . tuareg)
      ("elisp" . emacs-lisp)
