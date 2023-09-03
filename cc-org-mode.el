@@ -84,7 +84,7 @@
 
 (add-hook 'org-mode-hook (lambda ()
 			   (define-key org-mode-map (kbd "<f8>") 'datestamp)
-			   (define-key org-mode-map (kbd "<f9>") 'cc-todo-item)
+			   ;; (define-key org-mode-map (kbd "<f9>") 'avy-goto-word-1)
 			   (define-key org-mode-map (kbd "M-<f6>") 'org-toggle-inline-images)
 			   (define-key org-mode-map (kbd "C-c t") 'cc/org-time-stamp-inactive)
 			   (define-key org-mode-map (kbd "<home>") 'org-beginning-of-line)

@@ -419,6 +419,7 @@ The document was typeset with
  '(markdown-header-scaling nil)
  '(org-agenda-files '("/Users/cchoi/org"))
  '(org-agenda-include-diary t)
+ '(org-agenda-start-with-log-mode '(closed clock))
  '(org-agenda-window-setup 'other-window)
  '(org-babel-python-command "python3")
  '(org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))

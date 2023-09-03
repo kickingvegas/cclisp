@@ -17,7 +17,7 @@
 (global-set-key (kbd "<f6>") 'osx-dictionary-search-input)
 (global-set-key (kbd "<f7>") 'repeat)
 (global-set-key (kbd "<f8>") 'indent-region)
-(global-set-key (kbd "<f9>") 'compile)
+(global-set-key (kbd "<f9>") 'avy-goto-word-1)
 (global-set-key (kbd "<f11>") 'bookmark-set)
 
 (global-set-key (kbd "M-<f1>") 'cc/open-url)

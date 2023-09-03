@@ -14,6 +14,7 @@
 (define-key text-mode-map (kbd "A-<right>") 'forward-sentence)
 (define-key text-mode-map (kbd "A-M-<left>") 'backward-paragraph)
 (define-key text-mode-map (kbd "A-M-<right>") 'forward-paragraph)
+(define-key text-mode-map (kbd "M-/") 'hippie-expand)
 
 ;;(setq auto-mode-alist (cons (cons "\\.txt$" 'text-mode) auto-mode-alist))
 ;;(setq auto-mode-alist (cons (cons "\\.text$" 'text-mode) auto-mode-alist))
