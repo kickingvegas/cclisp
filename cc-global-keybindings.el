@@ -16,9 +16,9 @@
 (global-set-key (kbd "S-<f5>") 'cc/select-journal-file)
 (global-set-key (kbd "<f6>") 'osx-dictionary-search-input)
 (global-set-key (kbd "<f7>") 'repeat)
-(global-set-key (kbd "<f8>") 'indent-region)
+(global-set-key (kbd "<f8>") 'org-capture)
 (global-set-key (kbd "<f9>") 'avy-goto-word-1)
-(global-set-key (kbd "<f11>") 'bookmark-set)
+(global-set-key (kbd "<f11>") 'bookmark-set-no-overwrite)
 
 (global-set-key (kbd "M-<f1>") 'cc/open-url)
 (global-set-key (kbd "M-<f2>") 'google-this)
@@ -92,6 +92,8 @@
 ;; Mouse Button Bindings
 (global-set-key (kbd "<mouse-5>") 'next-buffer)
 (global-set-key (kbd "<mouse-4>") 'previous-buffer)
+
+(global-set-key (kbd "<mode-line> <mouse-2>") 'transpose-frame)
 
 ;; Magit
 (global-set-key (kbd "C-x g") 'magit-status)

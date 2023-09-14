@@ -134,7 +134,7 @@ various time zones."]
     ["Edit Bookmarks" list-bookmarks
      :help "Display a list of existing bookmarks."]
     ["--" nil]
-    ["Add Boomark…" bookmark-set-no-overwrite
+    ["Add Bookmark…" bookmark-set-no-overwrite
      :help "Set a bookmark named NAME at the current location."]
     ["---" nil]
     ["Jump to Bookmark…" bookmark-jump

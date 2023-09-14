@@ -19,4 +19,8 @@
 	  (local-set-key [f8] 'gud-next)
 	  (local-set-key [f9] 'gud-cont))))
 
+
+(add-hook 'makefile-mode-hook (lambda ()
+                                (local-set-key (kbd "<f9>") 'compile)))
+
 (provide 'cc-prog-mode)
