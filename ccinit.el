@@ -49,6 +49,7 @@
 (require 'cc-context-menu)
 (require 'cc-diff-hl-mode)
 (require 'flyspell)
+(require 'cc-view-mode)
 (require 'cc-global-keybindings)
 (require 'cc-menu-reconfig)
 
