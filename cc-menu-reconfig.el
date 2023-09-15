@@ -95,9 +95,11 @@ tree rooted at DIR."]
 (easy-menu-add-item global-map '(menu-bar tools)
                     ["Magit Status"
                      magit-status
-                     :visible (or (vc-registered (buffer-file-name))
-                                  (and (file-exists-p ".git")
-                                       (derived-mode-p 'dired-mode)))
+                     :visible (cond ((string= (derived-mode-p 'dired-mode)
+                                              "dired-mode")
+                                     (file-directory-p ".git"))
+                                    ((bound-and-true-p buffer-file-name)
+                                     (vc-registered (buffer-file-name))))
                      :help "Show the status of the current Git repository \
 in a buffer"]
                     "Version Control")
