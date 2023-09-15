@@ -421,14 +421,20 @@ Point must be at the beginning of balanced expression (sexp)."
   (transpose-sexps 1)
   (forward-sexp -1))
 
-(defun cc/display-notification (msg &optional title subtitle)
-  "Display macOS notification via osascript with MSG, and maybe TITLE, SUBTITLE
+(defun cc/display-notification (msg &optional title subtitle sound)
+  "Display macOS notification via osascript with MSG, TITLE, SUBTITLE, SOUND
 MSG - notification message
 TITLE - notification title (optional)
-SUBTITLE - notification subtitle (optional)"
+SUBTITLE - notification subtitle (optional)
+SOUND - sound file (optional)"
+  
   (message msg)
   (let ((cmd "display notification"))
     (setq cmd (concat cmd " \"" msg "\""))
+
+    (if sound
+        (setq cmd (concat cmd " sound name \"" sound "\""))
+      (setq cmd (concat cmd " sound name \"" "Blow.aiff" "\"")))
     (if title
         (setq cmd (concat cmd " with title \"" title "\"")))
     (if subtitle
