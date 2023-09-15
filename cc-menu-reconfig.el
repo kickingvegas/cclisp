@@ -93,6 +93,16 @@ tree rooted at DIR."]
 (define-key global-map [menu-bar tools Table] nil)
 
 (easy-menu-add-item global-map '(menu-bar tools)
+                    ["Magit Status"
+                     magit-status
+                     :visible (or (vc-registered (buffer-file-name))
+                                  (and (file-exists-p ".git")
+                                       (derived-mode-p 'dired-mode)))
+                     :help "Show the status of the current Git repository \
+in a buffer"]
+                    "Version Control")
+
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["Count Words"
                      count-words
                      :help "Count words in buffer or region if active."]
