@@ -3,6 +3,9 @@
 ;;; Commentary:
 
 ;;; Code:
+
+(require 'view)
+
 (add-hook 'view-mode-hook 'hl-line-mode)
 
 (defun cc/view-exit ()
