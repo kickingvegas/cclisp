@@ -83,7 +83,7 @@
 (add-hook 'org-mode-hook 'org-clock-persistence-insinuate)
 
 (add-hook 'org-mode-hook (lambda ()
-			   ;; (define-key org-mode-map (kbd "<f8>") 'datestamp)
+			   (define-key org-mode-map (kbd "M-<f8>") 'datestamp)
 			   ;; (define-key org-mode-map (kbd "<f9>") 'avy-goto-word-1)
 			   (define-key org-mode-map (kbd "M-<f6>") 'org-toggle-inline-images)
 			   (define-key org-mode-map (kbd "C-c t") 'cc/org-time-stamp-inactive)
@@ -95,6 +95,8 @@
 			   (define-key org-mode-map (kbd "A-M-<right>") 'org-forward-paragraph)
 			   (define-key org-mode-map (kbd "C-<up>") 'org-previous-visible-heading)
 			   (define-key org-mode-map (kbd "C-<down>") 'org-next-visible-heading)
+			   (define-key org-mode-map (kbd "M-v") 'org-previous-visible-heading)
+			   (define-key org-mode-map (kbd "C-v") 'org-next-visible-heading)
                            (add-to-list (make-local-variable 'company-backends)
                                         'company-org-block)))
 
