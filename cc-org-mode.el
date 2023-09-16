@@ -20,17 +20,17 @@
   (setq org-capture-templates
         `(
           ("a" "Appointment" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* %^{description}\n%^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
+	   "* %^{description} %^G\n%^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("b" "BeOrg TODO" entry (file "~/org/refile-beorg.org")
            "* TODO %^{description}\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("s" "TODO: Scheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO %^{description} [/]\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
+	   "* TODO %^{description} [/] %^G\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("t" "TODO: Unscheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO %^{description} [/]\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
+	   "* TODO %^{description} [/] %^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("p" "TODO: Blog Post" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO Post: %^{description}\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
+	   "* TODO Post: %^{description} %^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("i" "TODO: Issue" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO %^{description} [/]\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n\
+	   "* TODO %^{description} [/] %^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n\
 ** Title\n%?\n\
 ** Description\n\n\
 ** Environment\n\n\
