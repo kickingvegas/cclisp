@@ -548,6 +548,7 @@ The document was typeset with
  '(fixed-pitch ((t (:family "Menlo" :height 150))))
  '(font-lock-comment-face ((t (:foreground "Firebrick"))))
  '(font-lock-constant-face ((t (:height 1.0))))
+ '(hl-line ((t (:inherit highlight :extend t :foreground "navy"))))
  '(markdown-code-face ((t (:inherit fixed-pitch))))
  '(markdown-header-delimiter-face ((t (:height 1.1 :family "Futura"))))
  '(markdown-header-face ((t (:height 1.1 :family "Futura"))))
