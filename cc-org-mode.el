@@ -169,4 +169,9 @@
 ;;   :defer 3
 ;;   :after org)
 
+(defun cc/journal-entry ()
+  "Capture journal entry in Org."
+  (interactive)
+  (org-capture nil "j"))
+
 (provide 'cc-org-mode)
