@@ -9,6 +9,7 @@
 (add-hook 'view-mode-hook 'hl-line-mode)
 
 (defun cc/view-exit ()
+  "Advice function to disable highlighting upon exiting view-mode."
   (hl-line-mode -1))
 
 (advice-add 'View-exit :after #'cc/view-exit)
