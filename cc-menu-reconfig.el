@@ -72,6 +72,12 @@ tree rooted at DIR."]
                     "Shell Commands")
 
 (easy-menu-add-item global-map '(menu-bar tools)
+                    ["Search Org Notes…"
+                     cc/org-search
+                     :help "Search Org Notes in ~/org."]
+                    "Shell Commands")
+
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["----" separator-shell]
                     "Shell Commands")
 

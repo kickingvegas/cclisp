@@ -444,6 +444,13 @@ SOUND - sound file (optional)"
     ;; (message cmd)
     (shell-command cmd)))
 
+(defun cc/org-search (query)
+  "Search Org notes in ~/org with REGEXP with rgrep."
+  (interactive "MSearch Org Notes (regexp): ")
+  (grep-compute-defaults)
+  (rgrep query "*.org" "~/org/" nil)
+  (switch-to-buffer-other-window "*grep*"))
+
 (provide 'cclisp)
 
 ;;; cclisp.el ends here

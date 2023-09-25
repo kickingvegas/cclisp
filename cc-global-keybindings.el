@@ -14,6 +14,7 @@
 (global-set-key (kbd "<f4>") 'bookmark-jump)
 (global-set-key (kbd "<f5>") 'status-report)
 (global-set-key (kbd "S-<f5>") 'cc/select-journal-file)
+(global-set-key (kbd "A-<f5>") 'cc/org-search)
 (global-set-key (kbd "<f6>") 'osx-dictionary-search-input)
 (global-set-key (kbd "<f7>") 'repeat)
 (global-set-key (kbd "<f8>") 'org-capture)

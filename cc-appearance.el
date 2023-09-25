@@ -2,7 +2,13 @@
     (interactive)
     (set-face-attribute 'minibuffer-prompt nil
                         :foreground "dark magenta")
-    
+
+    (set-face-attribute 'hl-line nil
+                        :foreground "black")
+
+    (set-face-attribute 'highlight nil
+                        :background "darkseagreen2")
+        
     (set-face-attribute 'org-table nil
                         :foreground "Blue1")
 
@@ -32,6 +38,12 @@
     (interactive)
     (set-face-attribute 'minibuffer-prompt nil
                         :foreground "orange")
+
+    (set-face-attribute 'hl-line nil
+                        :foreground "#0000FF")
+
+    (set-face-attribute 'highlight nil
+                        :background "cyan")
     
     (set-face-attribute 'org-table nil
                         :foreground "chartreuse")
