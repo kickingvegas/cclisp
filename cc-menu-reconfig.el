@@ -30,14 +30,28 @@ WINDOW-2."]
 
 ;;; Reconfigure Edit Menu
 
-(easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
+(easy-menu-add-item global-map '(menu-bar edit)
                     cc/transpose-menu "Fill")
 
-(easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
+(easy-menu-add-item global-map '(menu-bar edit)
                     cc/move-text-menu "Fill")
 
-(easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
+(easy-menu-add-item global-map '(menu-bar edit)
                     cc/delete-space-menu "Fill")
+
+(easy-menu-add-item global-map '(menu-bar edit)
+                    ["Flush Lines…"
+                     flush-lines
+                     :help "Delete lines containing matches for REGEXP."
+                     :enable (region-active-p)]
+                    "Fill")
+
+(easy-menu-add-item global-map '(menu-bar edit)
+                    ["Keep Lines…"
+                     keep-lines
+                     :help "Delete all lines except those containing matches for REGEXP."
+                     :enable (region-active-p)]
+                    "Fill")
 
 ;;; Reconfigure Tools Menu
 

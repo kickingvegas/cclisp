@@ -312,6 +312,11 @@ ISO 8601."
   (interactive)
   (insert "…"))
 
+(defun cc/triangular-bullet ()
+  "Insert a triangular bullet."
+  (interactive)
+  (insert "‣"))
+
 (defun cc/search-apple-maps (search)
   "Open SEARCH query in Apple Maps"
   (interactive "MMap Search: ")
