@@ -30,13 +30,13 @@ WINDOW-2."]
 
 ;;; Reconfigure Edit Menu
 
-(easy-menu-add-item global-map '(menu-bar edit)
+(easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
                     cc/transpose-menu "Fill")
 
-(easy-menu-add-item global-map '(menu-bar edit)
+(easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
                     cc/move-text-menu "Fill")
 
-(easy-menu-add-item global-map '(menu-bar edit)
+(easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
                     cc/delete-space-menu "Fill")
 
 (easy-menu-add-item global-map '(menu-bar edit)
