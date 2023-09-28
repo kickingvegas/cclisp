@@ -106,6 +106,7 @@ from current buffer"])))
         (easy-menu-add-item menu nil
                             ["Find word in buffer (occur)"
                              occur-word-at-mouse
+                             :visible (not buffer-read-only)
                              :label (cc/context-menu-last-word-in-region
                                      "Find word in buffer (occur)")
                              :help "Show all lines in the current buffer containing \
@@ -113,6 +114,7 @@ a match for selected word"])
       (easy-menu-add-item menu nil
                           ["Find in buffer (occur)"
                            occur
+                           :visible (not buffer-read-only)                           
                            :help "Show all lines in the current buffer \
 containing a match for regex"]))
     

@@ -43,6 +43,7 @@ WINDOW-2."]
                     ["Flush Lines…"
                      flush-lines
                      :help "Delete lines containing matches for REGEXP."
+                     :visible (not buffer-read-only)
                      :enable (region-active-p)]
                     "Fill")
 
@@ -50,6 +51,7 @@ WINDOW-2."]
                     ["Keep Lines…"
                      keep-lines
                      :help "Delete all lines except those containing matches for REGEXP."
+                     :visible (not buffer-read-only)                     
                      :enable (region-active-p)]
                     "Fill")
 
