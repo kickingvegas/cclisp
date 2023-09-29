@@ -13,11 +13,7 @@
                                 (string-replace "+" "P"
                                                 (upcase
                                                  (file-name-nondirectory buffer-file-name))))
-      "#ifndef " str n "#define " str "
-
-" _ "
-
-#endif")
+      "#ifndef " str n "#define " str "\12\12" _ "\12\12#endif")
      (("\\.\\([Cc]\\|cc\\|cpp\\|cxx\\|c\\+\\+\\)\\'" . "C / C++ program")
       nil "#include \""
       (let
@@ -43,16 +39,11 @@
      (bibtex-mode . "tex-insert.tex")
      (latex-mode "options, RET: " "\\documentclass[" str & 93 | -1 123
                  (read-string "class: ")
-                 "}
-"
+                 "}\12"
                  ("package, %s: " "\\usepackage["
                   (read-string "options, RET: ")
-                  & 93 | -1 123 str "}
-")
-                 _ "
-\\begin{document}
-" _ "
-\\end{document}")
+                  & 93 | -1 123 str "}\12")
+                 _ "\12\\begin{document}\12" _ "\12\\end{document}")
      (("/bin/.*[^/]\\'" . "Shell-Script mode magic number")
       lambda nil
       (if
@@ -67,10 +58,7 @@
       (getenv "ORGANIZATION")
       |
       (progn user-full-name)
-      "
-.\\\" You may distribute this file under the terms of the GNU Free
-.\\\" Documentation License.
-.TH "
+      "\12.\\\" You may distribute this file under the terms of the GNU Free\12.\\\" Documentation License.\12.TH "
       (file-name-base
        (buffer-file-name))
       " "
@@ -78,25 +66,13 @@
        (buffer-file-name))
       " "
       (format-time-string "%Y-%m-%d ")
-      "
-.SH NAME
-"
+      "\12.SH NAME\12"
       (file-name-base
        (buffer-file-name))
-      " \\- " str "
-.SH SYNOPSIS
-.B "
+      " \\- " str "\12.SH SYNOPSIS\12.B "
       (file-name-base
        (buffer-file-name))
-      "
-" _ "
-.SH DESCRIPTION
-.SH OPTIONS
-.SH FILES
-.SH \"SEE ALSO\"
-.SH BUGS
-.SH AUTHOR
-"
+      "\12" _ "\12.SH DESCRIPTION\12.SH OPTIONS\12.SH FILES\12.SH \"SEE ALSO\"\12.SH BUGS\12.SH AUTHOR\12"
       (user-full-name)
       '(if
            (search-backward "&"
@@ -109,40 +85,35 @@
       '(end-of-line 1)
       " <"
       (progn user-mail-address)
-      ">
-")
-     (".dir-locals.el" nil ";;; Directory Local Variables
-" ";;; For more information see (info \"(emacs) Directory Variables\")
-
-" "(("
-'(setq v1
-       (let
-           (modes)
-         (mapatoms
-          (lambda
-            (mode)
-            (let
-                ((name
-                  (symbol-name mode)))
-              (when
-                  (string-match "-mode$" name)
-                (push name modes)))))
-         (sort modes 'string<)))
-(completing-read "Local variables for mode: " v1 nil t)
-" . (("
-(let
-    ((all-variables
-      (apropos-internal ".*"
-                        (lambda
-                          (symbol)
-                          (and
-                           (boundp symbol)
-                           (get symbol 'variable-documentation))))))
-  (completing-read "Variable to set: " all-variables))
-" . "
-(completing-read "Value to set it to: " nil)
-"))))
-")
+      ">\12")
+     (".dir-locals.el" nil ";;; Directory Local Variables\12" ";;; For more information see (info \"(emacs) Directory Variables\")\12\12" "(("
+      '(setq v1
+             (let
+                 (modes)
+               (mapatoms
+                (lambda
+                  (mode)
+                  (let
+                      ((name
+                        (symbol-name mode)))
+                    (when
+                        (string-match "-mode$" name)
+                      (push name modes)))))
+               (sort modes 'string<)))
+      (completing-read "Local variables for mode: " v1 nil t)
+      " . (("
+      (let
+          ((all-variables
+            (apropos-internal ".*"
+                              (lambda
+                                (symbol)
+                                (and
+                                 (boundp symbol)
+                                 (get symbol 'variable-documentation))))))
+        (completing-read "Variable to set: " all-variables))
+      " . "
+      (completing-read "Value to set it to: " nil)
+      "))))\12")
      (("\\.el\\'" . "Emacs Lisp header")
       "Short description: " ";;; "
       (file-name-nondirectory
@@ -156,17 +127,13 @@
        32)
       "-*- lexical-binding: t; -*-"
       '(setq lexical-binding t)
-      "
-
-;; Copyright (C) "
+      "\12\12;; Copyright (C) "
       (format-time-string "%Y")
       "  "
       (getenv "ORGANIZATION")
       |
       (progn user-full-name)
-      "
-
-;; Author: "
+      "\12\12;; Author: "
       (user-full-name)
       '(if
            (search-backward "&"
@@ -179,8 +146,7 @@
       '(end-of-line 1)
       " <"
       (progn user-mail-address)
-      ">
-;; Keywords: "
+      ">\12;; Keywords: "
       '(require 'finder)
       '(setq v1
              (mapcar
@@ -197,138 +163,38 @@
                 (format "%12s:  %s"
                         (car x)
                         (cdr x)))
-              finder-known-keywords "
-"))
+              finder-known-keywords "\12"))
       ((let
            ((minibuffer-help-form v2))
          (completing-read "Keyword, C-h: " v1 nil t))
        str ", ")
-      & -2 "
-
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-
-;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-;;; Commentary:
-
-;; " _ "
-
-;;; Code:
-
-
-
-(provide '"
+      & -2 "\12\12;; This program is free software; you can redistribute it and/or modify\12;; it under the terms of the GNU General Public License as published by\12;; the Free Software Foundation, either version 3 of the License, or\12;; (at your option) any later version.\12\12;; This program is distributed in the hope that it will be useful,\12;; but WITHOUT ANY WARRANTY; without even the implied warranty of\12;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\12;; GNU General Public License for more details.\12\12;; You should have received a copy of the GNU General Public License\12;; along with this program.  If not, see <https://www.gnu.org/licenses/>.\12\12;;; Commentary:\12\12;; " _ "\12\12;;; Code:\12\12\12\12(provide '"
       (file-name-base
        (buffer-file-name))
-      ")
-;;; "
+      ")\12;;; "
       (file-name-nondirectory
        (buffer-file-name))
-      " ends here
-")
+      " ends here\12")
      (("\\.texi\\(nfo\\)?\\'" . "Texinfo file skeleton")
-      "Title: " "\\input texinfo   @c -*-texinfo-*-
-@c %**start of header
-@setfilename "
+      "Title: " "\\input texinfo   @c -*-texinfo-*-\12@c %**start of header\12@setfilename "
       (file-name-base
        (buffer-file-name))
-      ".info
-" "@settitle " str "
-@c %**end of header
-@copying
-"
+      ".info\12" "@settitle " str "\12@c %**end of header\12@copying\12"
       (setq short-description
             (read-string "Short description: "))
-      ".
-
-" "Copyright @copyright{} "
+      ".\12\12" "Copyright @copyright{} "
       (format-time-string "%Y")
       "  "
       (getenv "ORGANIZATION")
       |
       (progn user-full-name)
-      "
-
-@quotation
-Permission is granted to copy, distribute and/or modify this document
-under the terms of the GNU Free Documentation License, Version 1.3
-or any later version published by the Free Software Foundation;
-with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
-A copy of the license is included in the section entitled ``GNU
-Free Documentation License''.
-
-A copy of the license is also available from the Free Software
-Foundation Web site at @url{https://www.gnu.org/licenses/fdl.html}.
-
-@end quotation
-
-The document was typeset with
-@uref{https://www.gnu.org/software/texinfo/, GNU Texinfo}.
-
-@end copying
-
-@titlepage
-@title " str "
-@subtitle " short-description "
-@author "
+      "\12\12@quotation\12Permission is granted to copy, distribute and/or modify this document\12under the terms of the GNU Free Documentation License, Version 1.3\12or any later version published by the Free Software Foundation;\12with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.\12A copy of the license is included in the section entitled ``GNU\12Free Documentation License''.\12\12A copy of the license is also available from the Free Software\12Foundation Web site at @url{https://www.gnu.org/licenses/fdl.html}.\12\12@end quotation\12\12The document was typeset with\12@uref{https://www.gnu.org/software/texinfo/, GNU Texinfo}.\12\12@end copying\12\12@titlepage\12@title " str "\12@subtitle " short-description "\12@author "
       (getenv "ORGANIZATION")
       |
       (progn user-full-name)
       " <"
       (progn user-mail-address)
-      ">
-@page
-@vskip 0pt plus 1filll
-@insertcopying
-@end titlepage
-
-@c Output the table of the contents at the beginning.
-@contents
-
-@ifnottex
-@node Top
-@top " str "
-
-@insertcopying
-@end ifnottex
-
-@c Generate the nodes for this menu with `C-c C-u C-m'.
-@menu
-@end menu
-
-@c Update all node entries with `C-c C-u C-n'.
-@c Insert new nodes with `C-c C-c n'.
-@node Chapter One
-@chapter Chapter One
-
-" _ "
-
-@node Copying This Manual
-@appendix Copying This Manual
-
-@menu
-* GNU Free Documentation License::  License for copying this manual.
-@end menu
-
-@c Get fdl.texi from https://www.gnu.org/licenses/fdl.html
-@include fdl.texi
-
-@node Index
-@unnumbered Index
-
-@printindex cp
-
-@bye
-")
+      ">\12@page\12@vskip 0pt plus 1filll\12@insertcopying\12@end titlepage\12\12@c Output the table of the contents at the beginning.\12@contents\12\12@ifnottex\12@node Top\12@top " str "\12\12@insertcopying\12@end ifnottex\12\12@c Generate the nodes for this menu with `C-c C-u C-m'.\12@menu\12@end menu\12\12@c Update all node entries with `C-c C-u C-n'.\12@c Insert new nodes with `C-c C-c n'.\12@node Chapter One\12@chapter Chapter One\12\12" _ "\12\12@node Copying This Manual\12@appendix Copying This Manual\12\12@menu\12* GNU Free Documentation License::  License for copying this manual.\12@end menu\12\12@c Get fdl.texi from https://www.gnu.org/licenses/fdl.html\12@include fdl.texi\12\12@node Index\12@unnumbered Index\12\12@printindex cp\12\12@bye\12")
      (("\\.py\\'" . "Python")
       . "python3_script_skeleton_2023.py")
      (("\\.sh\\'" . "Shell Script")
@@ -555,8 +421,8 @@ The document was typeset with
  '(markdown-language-keyword-face ((t (:inherit font-lock-type-face))))
  '(markdown-markup-face ((t (:inherit shadow :slant normal :weight normal))))
  '(minibuffer-prompt ((t (:foreground "dark magenta"))))
- '(mode-line ((t (:background "#ff7700" :foreground "gray20" :box (:line-width (5 . 5) :color "grey75" :style flat-button) :height 1.0 :family "SF Compact Rounded"))))
- '(mode-line-inactive ((t (:inherit mode-line :background "gray"))))
+ '(mode-line ((t (:background "#ff7700" :foreground "gray20" :box (:line-width (5 . 5) :color "#ff7700" :style flat-button) :height 1.0 :family "SF Compact Rounded"))))
+ '(mode-line-inactive ((t (:inherit mode-line :background "gray" :box (:line-width (5 . 5) :color "gray" :style flat-button)))))
  '(org-agenda-done ((t (:foreground "#00bb00"))))
  '(org-block ((t (:inherit fixed-pitch))))
  '(org-block-begin-line ((t (:background "gray90" :foreground "gray50" :underline t :inherit fixed-pitch))))
