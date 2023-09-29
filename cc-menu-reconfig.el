@@ -16,6 +16,13 @@
 WINDOW-2."]
                     "New Window Below")
 
+(easy-menu-add-item (lookup-key global-map [menu-bar file]) nil
+                    ["Transpose Windows"
+                     transpose-frame
+                     :visible (> (count-windows) 1)
+                     :help "Transpose windows arrangement at FRAME."]
+                    "New Window Below")
+
 ;;; Reconfigure Text Mode Menu
 
 (easy-menu-remove-item text-mode-menu nil "Center Line")
