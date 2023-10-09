@@ -111,7 +111,7 @@
   (interactive)
   (org-agenda-redo)
   (org-agenda-goto-today)               
-  (search-forward "← now ─"))
+  (search-forward " now "))
 
 (add-hook 'org-agenda-mode-hook
           (lambda ()
