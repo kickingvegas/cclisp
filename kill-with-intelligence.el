@@ -17,9 +17,9 @@ parameter is the buffer, which is the `car' or ARGS."
           (read-multiple-choice
            (format "Buffer %s modified."
                    (buffer-name))
-           '((?s "Save and kill buffer" "save the buffer and then kill it")
-             (?d "Discard and kill buffer without saving" "kill buffer without saving")
-             (?c "Cancel" "Exit without doing anything"))
+           '((?s "save" "save then kill buffer")
+             (?d "discard" "kill buffer without saving")
+             (?c "cancel" "exit without doing anything"))
            nil nil (and (not use-short-answers)
                         (not (use-dialog-box-p)))))))
     (cond ((= response ?s)

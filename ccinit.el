@@ -52,6 +52,7 @@
 (require 'cc-view-mode)
 (require 'cc-global-keybindings)
 (require 'cc-menu-reconfig)
+(require 'kill-with-intelligence)
 
 (when (string= (system-name) "bingsu.local")
   (server-start))
