@@ -358,6 +358,7 @@
  '(org-startup-with-inline-images t)
  '(org-superstar-headline-bullets-list '(10687 10070 10040 10047))
  '(org-superstar-leading-bullet 32)
+ '(org-support-shift-select t)
  '(org-use-speed-commands t)
  '(package-archives
    '(("gnu" . "http://elpa.gnu.org/packages/")
