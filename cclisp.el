@@ -13,7 +13,7 @@
   (insert (format-time-string "*** %a %h %d %H:%M:%S %Z %Y")))
 
 (defun datestamp2 ()
-  "Datestamp string using format used by 'date' utility."
+  "Datestamp string using format used by date utility."
   (format-time-string "*** %a %h %d %H:%M:%S %Z %Y"))
 
 ;; Scrolling
@@ -104,7 +104,7 @@ A new frame will be created if `pop-up-frames' is t."
   )
 
 (fset 'cc/start
-      (kmacro-lambda-form [f5 ?\C-c ?a ?a ?\C-x ?+ ?\C-x ?o] 0 "%d"))
+      (kmacro [f5 ?\C-c ?a ?a ?\C-x ?+ ?\C-x ?o] 0 "%d"))
 
 (defun cc/org-time-stamp-inactive ()
   "Insert an inactive Org timestamp."
@@ -202,7 +202,7 @@ ISO 8601."
   (interactive "r")
   (if (use-region-p)
       (let* ((regionp (buffer-substring start end))
-             (inputTime (time-convert (string-to-number regionp)))
+             (inputTime (time-convert (string-to-number regionp) "list"))
              (inputBuf (number-to-string (string-to-number regionp)))
              (rfcBuf (format-time-string "%a, %e %b %Y %H:%M:%S %z" inputTime))
              (isoBuf (format-time-string "%Y-%m-%dT%H:%M:%S%z" inputTime)))
@@ -455,6 +455,12 @@ SOUND - sound file (optional)"
   (grep-compute-defaults)
   (rgrep query "*.org" "~/org/" nil)
   (switch-to-buffer-other-window "*grep*"))
+
+(defun cc/morning ()
+  "Custom function to refresh Emacs state for cchoi."
+  (interactive)
+  (cc/refresh-header-timestamps)
+  (cc/start))
 
 (provide 'cclisp)
 
