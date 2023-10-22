@@ -20,7 +20,7 @@
   (setq org-capture-templates
         `(
           ("a" "Appointment" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* %^{description} %^G\n%^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
+	   "* %^{description}\n%^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("b" "BeOrg TODO" entry (file "~/org/refile-beorg.org")
            "* TODO %^{description}\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("s" "TODO: Scheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
