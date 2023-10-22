@@ -6,6 +6,7 @@
 ;;; Code:
 
 (require 'ediff)
+(require 'map)
 
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
@@ -67,15 +68,10 @@ A new frame will be created if `pop-up-frames' is t."
 
 (load-file (concat user-emacs-directory "url-bookmarks.el"))
 
-(defun alist-keys (alist)
-  "Return keys of an ALIST."
-  (mapcar 'car alist))
-
-(defun cc/open-url (key)
-  "Open a URL referenced by KEY defined in `cc/url-bookmarks'."
-  (interactive (list (completing-read-default "Open URL: "
-                                              (alist-keys cc/url-bookmarks))))
-  (browse-url (cdr (assoc key cc/url-bookmarks))))
+(defun cc/open-url ()
+  (interactive)
+  (let ((choice (car (completing-read-multiple "Select URL: " (map-keys cc/url-bookmarks)))))
+    (browse-url (cdr (assoc choice cc/url-bookmarks)))))
 
 (defun year ()
   "Open daily generated current year pdf file using macOS open."
@@ -317,11 +313,12 @@ ISO 8601."
   (interactive)
   (insert "‣"))
 
-(defun cc/search-apple-maps (search)
-  "Open SEARCH query in Apple Maps"
-  (interactive "MMap Search: ")
-  (let ((mapURL (concat "maps://?q=" (url-encode-url search))))
-    (message "Searching for %s" search)
+(defun cc/search-apple-maps ()
+  "Open search query in Apple Maps"
+  (interactive)
+  (let* ((query (read-string "Map Search: "))
+        (mapURL (concat "maps://?q=" (url-encode-url query))))
+    (message "Searching for %s" query)
     (browse-url mapURL)))
 
 (defun cc/open-region-in-apple-maps (&optional start end)
@@ -449,18 +446,41 @@ SOUND - sound file (optional)"
     ;; (message cmd)
     (shell-command cmd)))
 
-(defun cc/org-search (query)
+(defun cc/org-search ()
   "Search Org notes in ~/org with REGEXP with rgrep."
-  (interactive "MSearch Org Notes (regexp): ")
-  (grep-compute-defaults)
-  (rgrep query "*.org" "~/org/" nil)
-  (switch-to-buffer-other-window "*grep*"))
+  (interactive)
+  (let ((query (read-string "Search Org Notes (regexp): ")))
+    (grep-compute-defaults)
+    (rgrep query "*.org" "~/org/" nil)
+    (switch-to-buffer-other-window "*grep*")))
 
 (defun cc/morning ()
   "Custom function to refresh Emacs state for cchoi."
   (interactive)
   (cc/refresh-header-timestamps)
   (cc/start))
+
+(defvar cc/meta-search-menu
+      '(
+	("url" . cc/open-url)
+        ("maps" . cc/search-apple-maps)
+        ("org" . cc/org-search)
+        ("google" . (lambda () (call-interactively 'google-this)))
+        ("bookmarks" . list-bookmarks))
+      "alist containing map of search or access functions.")
+
+(defun cc/meta-search ()
+  "Meta search or open different objects defined in alist `cc/meta-search-menu'."
+  (interactive)
+  (let ((choice (car (completing-read-multiple
+                      "Search or open (tab to complete): "
+                      (map-keys cc/meta-search-menu)))))
+    (cond ((assoc choice cc/meta-search-menu)
+           (let ((ftn (cdr (assoc choice cc/meta-search-menu))))
+             (funcall-interactively ftn)))
+          
+          (t
+           (message "unknown")))))
 
 (provide 'cclisp)
 
