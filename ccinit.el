@@ -42,7 +42,6 @@
 (require 'cc-eshell-mode)
 (require 'cc-elfeed-mode)
 (require 'cc-google-translate)
-(require 'cc-appearance)
 (require 'cc-repeat-mode)
 (require 'cc-info-mode)
 (require 'cc-ediff-mode)
@@ -54,7 +53,7 @@
 (require 'cc-menu-reconfig)
 (require 'kill-with-intelligence)
 
-(when (string= (system-name) "bingsu.local")
+(when (and (string= (system-name) "bingsu.local") (display-graphic-p))
   (server-start))
 
 (eval-after-load "flyspell"
