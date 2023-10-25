@@ -70,17 +70,17 @@ from current buffer"])))
 
     (cc/context-menu-item-separator menu open-in-separator)
 
-    (when buffer-file-name
-      (easy-menu-add-item menu nil
-                          ["Open in Finder"
-                           reveal-in-folder-this-buffer
-                           :help "Open file (buffer) in Finder"])
+    (easy-menu-add-item menu nil
+                        ["Open in Finder"
+                         reveal-in-folder-this-buffer
+                         :visible (or (buffer-file-name) (derived-mode-p 'dired-mode))
+                         :help "Open file (buffer) in Finder"])
 
-      (when (not (derived-mode-p 'dired-mode))
-        (easy-menu-add-item menu nil
-                            ["Open in Dired"
-                             dired-jump-other-window
-                             :help "Open file in Dired"])))
+    (easy-menu-add-item menu nil
+                        ["Open in Dired"
+                         dired-jump-other-window
+                         :visible (and (buffer-file-name) (not (derived-mode-p 'dired-mode)))
+                         :help "Open file in Dired"])    
     
     (when (derived-mode-p 'dired-mode)
       (easy-menu-add-item menu nil
@@ -119,22 +119,32 @@ a match for selected word"])
 containing a match for regex"]))
     
     (easy-menu-add-item menu nil cc/find-menu)
-            
-    (when (and (bound-and-true-p buffer-file-name)
-               (vc-registered (buffer-file-name)))
-      (cc/context-menu-item-separator menu vc-separator)
-      (easy-menu-add-item menu nil
-                          ["Magit Status"
-                           magit-status
-                           :help "Show the status of the current Git repository \
+
+    (keymap-set-after menu
+      "<vc-separator>"
+      '(menu-item "--"
+                  :visible (vc-responsible-backend default-directory))
+      'Find\ and/or\ Replace)
+
+    (easy-menu-add-item menu nil
+                        ["Magit Status"
+                         magit-status
+                         :visible (vc-responsible-backend default-directory)
+                         :help "Show the status of the current Git repository \
 in a buffer"])
-      (easy-menu-add-item menu nil ["Ediff revision…"
-                                    cc/ediff-revision-from-menu
-                                    :help "Ediff this file with revision"])
-      (easy-menu-add-item menu nil ["Git History"
-                                    magit-log-buffer-file
-                                    :help "Show log for the blob or file visited in \
-the current buffer"]))
+
+    (easy-menu-add-item menu nil ["Ediff revision…"
+                                  cc/ediff-revision-from-menu
+                                  :visible (and (bound-and-true-p buffer-file-name)
+                                                (vc-registered (buffer-file-name)))
+                                  :help "Ediff this file with revision"])
+    (easy-menu-add-item menu nil ["Git History"
+                                  magit-log-buffer-file
+                                  :visible (and (bound-and-true-p buffer-file-name)
+                                                (vc-registered (buffer-file-name)))
+                                  :help "Show log for the blob or file visited in \
+the current buffer"])
+
     
     (when (use-region-p)
       (cc/context-menu-item-separator menu transform-text-separator)
