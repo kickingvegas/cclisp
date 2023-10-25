@@ -220,6 +220,11 @@
  '(dired-guess-shell-alist-user '(("" "open")))
  '(dired-listing-switches "-alh --time-style=long-iso")
  '(dired-use-ls-dired nil)
+ '(display-buffer-alist
+   '(("\\*eshell\\*" display-buffer-at-bottom
+      (window-height . 0.15))
+     ("\\*Org Agenda\\*" display-buffer-at-bottom
+      (window-height . 0.35))))
  '(display-time-day-and-date t)
  '(display-time-mode t)
  '(ebib-bibtex-dialect 'biblatex)
@@ -285,7 +290,7 @@
  '(mark-ring-max 6)
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
- '(mouse-autoselect-window nil)
+ '(mouse-autoselect-window 0.5)
  '(org-agenda-files '("/Users/cchoi/org"))
  '(org-agenda-include-diary t)
  '(org-agenda-start-with-log-mode '(closed clock))
@@ -381,6 +386,7 @@
  '(set-mark-command-repeat-pop t)
  '(speedbar-show-unknown-files t)
  '(split-width-threshold nil)
+ '(switch-to-buffer-obey-display-actions t)
  '(tramp-terminal-type "tramp")
  '(trash-directory "~/.Trash")
  '(use-file-dialog nil)
