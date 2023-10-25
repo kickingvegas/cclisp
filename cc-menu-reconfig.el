@@ -73,13 +73,14 @@ for REGEXP."
 (easy-menu-add-item global-map '(menu-bar tools)
                     ["Open in Finder"
                      reveal-in-folder-this-buffer
+                     :visible (or (buffer-file-name) (derived-mode-p 'dired-mode))
                      :help "Reveal the current buffer in folder."]
                     "Shell Commands")
 
 (keymap-set-after (lookup-key global-map [menu-bar tools])
   "<separator-org>"
   '(menu-item "--")
-  'Open\ in\ Finder)
+  'Agenda\ -\ All\ TODOs)
 
 (easy-menu-add-item global-map '(menu-bar tools)
                     ["Find File…"
@@ -101,10 +102,11 @@ tree rooted at DIR."]
                      :help "Search Org Notes in ~/org."]
                     "Shell Commands")
 
+
 (keymap-set-after (lookup-key global-map [menu-bar tools])
   "<separator-shell>"
   '(menu-item "--")
-  'Shell\ Commands)
+  'Search\ Org\ Notes…)
 
 (define-key global-map [menu-bar tools grep] nil t)
 (define-key global-map [menu-bar tools rgrep] nil t)
@@ -172,10 +174,10 @@ various time zones."]
   '("Bookmarks"
     ["Edit Bookmarks" list-bookmarks
      :help "Display a list of existing bookmarks."]
-    ["--" nil]
+    "---"
     ["Add Bookmark…" bookmark-set-no-overwrite
      :help "Set a bookmark named NAME at the current location."]
-    ["---" nil]
+    "---" 
     ["Jump to Bookmark…" bookmark-jump
      :help "Jump to bookmark"]))
 
