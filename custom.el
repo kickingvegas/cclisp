@@ -219,6 +219,7 @@
  '(dired-dwim-target 'dired-dwim-target-next)
  '(dired-guess-shell-alist-user '(("" "open")))
  '(dired-listing-switches "-alh --time-style=long-iso")
+ '(dired-mouse-drag-files t)
  '(dired-use-ls-dired nil)
  '(display-buffer-alist
    '(("\\*eshell\\*" display-buffer-at-bottom
