@@ -7,6 +7,7 @@
 (require 'cc-transform-text-menu)
 (require 'cc-style-text-menu)
 (require 'text-mode)
+(require 'vc)
 
 (easy-menu-add-item (lookup-key global-map [menu-bar file]) nil
                     ["Swap Windows"
@@ -50,16 +51,15 @@ WINDOW-2."]
                     ["Flush Lines…"
                      flush-lines
                      :help "Delete lines containing matches for REGEXP."
-                     :visible (not buffer-read-only)
-                     :enable (region-active-p)]
+                     :visible (not buffer-read-only)]
                     "Fill")
 
 (easy-menu-add-item global-map '(menu-bar edit)
                     ["Keep Lines…"
                      keep-lines
-                     :help "Delete all lines except those containing matches for REGEXP."
-                     :visible (not buffer-read-only)                     
-                     :enable (region-active-p)]
+                     :help "Delete all lines except those containing matches \
+for REGEXP."
+                     :visible (not buffer-read-only)]
                     "Fill")
 
 ;;; Reconfigure Tools Menu
@@ -76,9 +76,10 @@ WINDOW-2."]
                      :help "Reveal the current buffer in folder."]
                     "Shell Commands")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["---" separator-org]
-                    "Open in Finder")
+(keymap-set-after (lookup-key global-map [menu-bar tools])
+  "<separator-org>"
+  '(menu-item "--")
+  'Open\ in\ Finder)
 
 (easy-menu-add-item global-map '(menu-bar tools)
                     ["Find File…"
@@ -100,35 +101,31 @@ tree rooted at DIR."]
                      :help "Search Org Notes in ~/org."]
                     "Shell Commands")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["----" separator-shell]
-                    "Shell Commands")
+(keymap-set-after (lookup-key global-map [menu-bar tools])
+  "<separator-shell>"
+  '(menu-item "--")
+  'Shell\ Commands)
 
-
-(define-key global-map [menu-bar tools grep] nil)
-(define-key global-map [menu-bar tools rgrep] nil)
-(define-key global-map [menu-bar tools ede] nil)
-(define-key global-map [menu-bar tools semantic] nil)
-(define-key global-map [menu-bar tools compile] nil)
-(define-key global-map [menu-bar tools gdb] nil)
-(define-key global-map [menu-bar tools gnus] nil)
-(define-key global-map [menu-bar tools rmail] nil)
-(define-key global-map [menu-bar tools compose-mail] nil)
-(define-key global-map [menu-bar tools directory-search] nil)
-(define-key global-map [menu-bar tools browse-web] nil)
-(define-key global-map [menu-bar tools separator-net] nil)
-(define-key global-map [menu-bar tools encryption-decryption] nil)
-(define-key global-map [menu-bar tools separator-encryption-decryption] nil)
-(define-key global-map [menu-bar tools Table] nil)
+(define-key global-map [menu-bar tools grep] nil t)
+(define-key global-map [menu-bar tools rgrep] nil t)
+(define-key global-map [menu-bar tools ede] nil t)
+(define-key global-map [menu-bar tools semantic] nil t)
+(define-key global-map [menu-bar tools compile] nil t)
+(define-key global-map [menu-bar tools gdb] nil t)
+(define-key global-map [menu-bar tools gnus] nil t)
+(define-key global-map [menu-bar tools rmail] nil t)
+(define-key global-map [menu-bar tools compose-mail] nil t)
+(define-key global-map [menu-bar tools directory-search] nil t)
+(define-key global-map [menu-bar tools browse-web] nil t)
+(define-key global-map [menu-bar tools separator-net] nil t)
+(define-key global-map [menu-bar tools encryption-decryption] nil t)
+(define-key global-map [menu-bar tools separator-encryption-decryption] nil t)
+(define-key global-map [menu-bar tools Table] nil t)
 
 (easy-menu-add-item global-map '(menu-bar tools)
                     ["Magit Status"
                      magit-status
-                     :visible (cond ((string= (derived-mode-p 'dired-mode)
-                                              "dired-mode")
-                                     (file-directory-p ".git"))
-                                    ((bound-and-true-p buffer-file-name)
-                                     (vc-registered (buffer-file-name))))
+                     :visible (vc-responsible-backend default-directory)
                      :help "Show the status of the current Git repository \
 in a buffer"]
                     "Version Control")
@@ -157,9 +154,10 @@ in a buffer"]
                      :help "Construct a regexp interactively."]
                     "Calendar")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["-----" separator-re]
-                    "Calendar")
+(keymap-set-after (lookup-key global-map [menu-bar tools])
+  "<separator-re>"
+  '(menu-item "--")
+  'RE-Builder)
 
 (easy-menu-add-item global-map '(menu-bar tools)
                     ["World Clock"
@@ -185,7 +183,7 @@ various time zones."]
                     cc/bookmarks-menu
                     "Tools")
 
-(define-key global-map [menu-bar edit bookmark] nil)
+(define-key global-map [menu-bar edit bookmark] nil t)
 
 (provide 'cc-menu-reconfig)
 
