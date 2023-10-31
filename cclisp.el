@@ -235,8 +235,8 @@ ISO 8601."
 ;; See `trash-directory' as it requires defining `system-move-file-to-trash'.
 (defun system-move-file-to-trash (file)
   "Use \"trash\" to move FILE to the system trash."
-  (cl-assert (executable-find "trash") nil "'trash' must be installed. Needs \"port install trash\"")
-  (call-process "trash" nil 0 nil "-F"  file))
+  (cl-assert (executable-find "trash") nil "'trash' must be installed. Needs \"https://github.com/sindresorhus/macos-trash\"")
+  (call-process "trash" nil 0 nil file))
 
 ;; (defvar my/re-builder-positions nil
 ;;   "Store point and region bounds before calling `re-builder'.")
