@@ -123,13 +123,13 @@ containing a match for regex"]))
     (keymap-set-after menu
       "<vc-separator>"
       '(menu-item "--"
-                  :visible (vc-responsible-backend default-directory))
+                  :visible (vc-responsible-backend default-directory t))
       'Find\ and/or\ Replace)
 
     (easy-menu-add-item menu nil
                         ["Magit Status"
                          magit-status
-                         :visible (vc-responsible-backend default-directory)
+                         :visible (vc-responsible-backend default-directory t)
                          :help "Show the status of the current Git repository \
 in a buffer"])
 
