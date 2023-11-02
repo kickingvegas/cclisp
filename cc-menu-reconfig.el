@@ -127,7 +127,7 @@ tree rooted at DIR."]
 (easy-menu-add-item global-map '(menu-bar tools)
                     ["Magit Status"
                      magit-status
-                     :visible (vc-responsible-backend default-directory)
+                     :visible (vc-responsible-backend default-directory t)
                      :help "Show the status of the current Git repository \
 in a buffer"]
                     "Version Control")
