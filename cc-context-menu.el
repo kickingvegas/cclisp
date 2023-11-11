@@ -126,12 +126,12 @@ containing a match for regex"]))
                   :visible (vc-responsible-backend default-directory t))
       'Find\ and/or\ Replace)
 
-    (easy-menu-add-item menu nil
-                        ["Magit Status"
-                         magit-status
-                         :visible (vc-responsible-backend default-directory t)
-                         :help "Show the status of the current Git repository \
-in a buffer"])
+    (if (vc-responsible-backend default-directory t)
+        (easy-menu-add-item menu nil
+                            ["Magit Status"
+                             magit-status
+                             :help "Show the status of the current Git repository \
+in a buffer"]))
 
     (easy-menu-add-item menu nil ["Ediff revision…"
                                   cc/ediff-revision-from-menu
