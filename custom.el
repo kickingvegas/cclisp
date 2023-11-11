@@ -291,7 +291,7 @@
  '(mark-ring-max 6)
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
- '(mouse-autoselect-window 0.5)
+ '(mouse-autoselect-window 0.3)
  '(org-agenda-files '("/Users/cchoi/org"))
  '(org-agenda-include-diary t)
  '(org-agenda-start-with-log-mode '(closed clock))
