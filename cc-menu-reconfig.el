@@ -71,6 +71,13 @@ for REGEXP."
                     "Shell Commands")
 
 (easy-menu-add-item global-map '(menu-bar tools)
+                    ["Set Input Method - Korean"
+                     (lambda () (interactive)(set-input-method 'korean-hangul))
+                     :enable (not current-input-method)
+                     :help "Set input method to Korean"]
+                    "Shell Commands")
+
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["Open in Finder"
                      reveal-in-folder-this-buffer
                      :visible (or (buffer-file-name) (derived-mode-p 'dired-mode))
