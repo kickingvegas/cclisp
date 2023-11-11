@@ -482,6 +482,36 @@ SOUND - sound file (optional)"
           (t
            (message "unknown")))))
 
+(defun cc/html-quote-entities-to-utf8 ()
+  "Convert HTML quote entities to UTF8 in buffer."
+  (interactive)
+  (let ((quote-dict '(("&lsquo;" . "‘")
+                      ("&rsquo;" . "’")
+                      ("&ldquo;" . "“")                   
+                      ("&rdquo;" . "”")
+                      ("&apos;" . "'")
+                      ("&quot;" . "\""))))
+    (save-excursion
+      (dolist (e quote-dict)
+        (beginning-of-buffer)      
+        (while (search-forward (car e) nil t)
+          (replace-match (cdr e) nil t))))))
+
+(defun cc/utf8-to-html-quote-entities ()
+  "Convert UTF8 quote characters to HTML quote entities in buffer."
+  (interactive)
+  (let ((quote-dict '(("‘" . "&lsquo;")
+                      ("’" . "&rsquo;")
+                      ("“" . "&ldquo;")                   
+                      ("”" . "&rdquo;")
+                      ("'" . "&apos;")
+                      ("\"" . "&quot;"))))
+    (save-excursion
+      (dolist (e quote-dict)
+        (beginning-of-buffer)      
+        (while (search-forward (car e) nil t)
+          (replace-match (cdr e) nil t))))))
+
 (provide 'cclisp)
 
 ;;; cclisp.el ends here
