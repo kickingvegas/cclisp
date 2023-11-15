@@ -1,7 +1,7 @@
 ;;; cclisp.el --- Utility functions used by Charles Choi
 
 ;;; Commentary:
-;; 
+;;
 
 ;;; Code:
 
@@ -88,8 +88,8 @@ A new frame will be created if `pop-up-frames' is t."
   (interactive "r")
   (if (use-region-p)
       (let ((regionp (buffer-substring beginning end)))
-	(delete-region beginning end)
-	(insert (format-time-string "<%Y-%m-%d %a %H:%M>" (encode-time (parse-time-string regionp)))))
+        (delete-region beginning end)
+        (insert (format-time-string "<%Y-%m-%d %a %H:%M>" (encode-time (parse-time-string regionp)))))
     (message "The region is still there (from % d to %d), but it is inactive"
              beginning end)))
 
@@ -429,7 +429,7 @@ MSG - notification message
 TITLE - notification title (optional)
 SUBTITLE - notification subtitle (optional)
 SOUND - sound file (optional)"
-  
+
   (message msg)
   (let ((cmd "display notification"))
     (setq cmd (concat cmd " \"" msg "\""))
@@ -462,7 +462,7 @@ SOUND - sound file (optional)"
 
 (defvar cc/meta-search-menu
       '(
-	("url" . cc/open-url)
+        ("url" . cc/open-url)
         ("maps" . cc/search-apple-maps)
         ("org" . cc/org-search)
         ("google" . (lambda () (call-interactively 'google-this)))
@@ -478,7 +478,7 @@ SOUND - sound file (optional)"
     (cond ((assoc choice cc/meta-search-menu)
            (let ((ftn (cdr (assoc choice cc/meta-search-menu))))
              (funcall-interactively ftn)))
-          
+
           (t
            (message "unknown")))))
 
@@ -487,13 +487,13 @@ SOUND - sound file (optional)"
   (interactive)
   (let ((quote-dict '(("&lsquo;" . "‘")
                       ("&rsquo;" . "’")
-                      ("&ldquo;" . "“")                   
+                      ("&ldquo;" . "“")
                       ("&rdquo;" . "”")
                       ("&apos;" . "'")
                       ("&quot;" . "\""))))
     (save-excursion
       (dolist (e quote-dict)
-        (beginning-of-buffer)      
+        (goto-char (point-min))
         (while (search-forward (car e) nil t)
           (replace-match (cdr e) nil t))))))
 
@@ -502,13 +502,13 @@ SOUND - sound file (optional)"
   (interactive)
   (let ((quote-dict '(("‘" . "&lsquo;")
                       ("’" . "&rsquo;")
-                      ("“" . "&ldquo;")                   
+                      ("“" . "&ldquo;")
                       ("”" . "&rdquo;")
                       ("'" . "&apos;")
                       ("\"" . "&quot;"))))
     (save-excursion
       (dolist (e quote-dict)
-        (beginning-of-buffer)      
+        (goto-char (point-min))
         (while (search-forward (car e) nil t)
           (replace-match (cdr e) nil t))))))
 
