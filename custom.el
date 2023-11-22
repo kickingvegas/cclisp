@@ -218,9 +218,9 @@
  '(dired-auto-revert-buffer t)
  '(dired-dwim-target 'dired-dwim-target-next)
  '(dired-guess-shell-alist-user '(("" "open")))
- '(dired-listing-switches "-alh --time-style=long-iso")
+ '(dired-listing-switches "-alh --time-style=long-iso --sort=version")
  '(dired-mouse-drag-files t)
- '(dired-use-ls-dired nil)
+ '(dired-use-ls-dired 'unspecified)
  '(display-buffer-alist
    '(("\\*eshell\\*" display-buffer-at-bottom
       (window-height . 0.15))

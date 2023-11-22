@@ -125,6 +125,7 @@
    (python . t)
    (shell . t)
    (sql . t)
+   (sqlite . t)
    (restclient . t)
    (plantuml . t)
    (swift . t)))
