@@ -441,7 +441,7 @@
  '(org-block-begin-line ((((type x mac ns) (class color) (background light)) (:inherit fixed-pitch :extend t :background "gray90" :foreground "gray50" :underline t)) (((type x mac ns) (class color) (background dark)) (:inherit fixed-pitch :extend t :background "grey23" :foreground "tomato" :underline t)) (((type tty)) (:background "grey23" :foreground "tomato"))))
  '(org-block-end-line ((t (:inherit org-block-begin-line :overline t :underline nil))))
  '(org-code ((((type x mac ns) (class color)) (:inherit fixed-pitch)) (((type tty) (class color)) (:inherit fixed-pitch :background "color-238"))))
- '(org-date ((((type x mac ns) (background light)) (:foreground "dark violet" :underline t)) (((type x mac ns) (class color) (background dark)) (:foreground "dark turquoise")) (((type tty) (class color)) (:foreground "dark turquoise"))))
+ '(org-date ((((type x mac) (class color) (background light)) (:inherit fixed-pitch :foreground "dark violet" :underline t)) (((type mac ns) (class color) (background dark)) (:inherit fixed-pitch :foreground "dark turquoise" :underline t)) (((type tty) (class color)) (:foreground "dark turquoise" :underline t))))
  '(org-document-info ((((class color) (background light)) (:foreground "midnight blue")) (((class color) (background dark)) (:foreground "pale turquoise")) (t nil) (((type tty) (class color)) (:foreground "pale turquoise"))))
  '(org-document-info-keyword ((t (:inherit fixed-pitch))))
  '(org-document-title ((((type x mac ns) (class color) (background light)) (:foreground "midnight blue" :weight bold)) (((type x mac ns) (class color) (background dark)) (:foreground "pale turquoise" :weight bold)) (t (:weight bold)) (((type tty) (class color)) (:foreground "pale turquoise"))))

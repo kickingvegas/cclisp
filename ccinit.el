@@ -75,3 +75,8 @@
 
 (add-to-list 'auto-mode-alist '("\\.msc\\'" . graphviz-dot-mode))
 (add-to-list 'auto-mode-alist '("\\.xcconfig\\'" . conf-mode))
+
+(unless (display-graphic-p)
+  (xterm-mouse-mode 1)
+  (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+  (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
