@@ -20,17 +20,17 @@
   (setq org-capture-templates
         `(
           ("a" "Appointment" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* %^{description}\n%^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
+           "* %^{description}\n%^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("b" "BeOrg TODO" entry (file "~/org/refile-beorg.org")
            "* TODO %^{description}\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("s" "TODO: Scheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO %^{description} %^G\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
+           "* TODO %^{description} %^G\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("t" "TODO: Unscheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO %^{description} %^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
+           "* TODO %^{description} %^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("p" "TODO: Blog Post" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO Post: %^{description} %^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
+           "* TODO Post: %^{description} %^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
           ("i" "TODO: Issue" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO %^{description} %^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n\
+           "* TODO %^{description} %^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n\
 ** Title\n%?\n\
 ** Description\n\n\
 ** Environment\n\n\
@@ -38,13 +38,13 @@
 ** Expected Result\n\n\
 ** Actual Result\n" :empty-lines 1)
           ("j" "Journal" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "%(datestamp2)\n%?" :empty-lines 1)
+           "%(datestamp2)\n%?" :empty-lines 1)
           ("c" "Captee Capture" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* %:description\n\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:annotation\n%i\n%?" :empty-lines 1)
+           "* %:description\n\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:annotation\n%i\n%?" :empty-lines 1)
           ("I" "Captee Issue Capture" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-	   "* TODO %:description [/]\n\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:annotation\n%i\n%?" :empty-lines 1)
+           "* TODO %:description [/]\n\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:annotation\n%i\n%?" :empty-lines 1)
           ("w" "WWDC Capture" entry (file+headline ,"~/org/wwdc23.org" ,"WWDC 23 Notes")
-	   "* TODO %:description\n%:annotation\n%i\n%?" :empty-lines 1)
+           "* TODO %:description\n%:annotation\n%i\n%?" :empty-lines 1)
           )))
 
 (cc/refresh-header-timestamps)
@@ -54,11 +54,10 @@
 
 (setq org-todo-keyword-faces
       '(("TODO" . "red")
-	("IN_PROGRESS" . "dark orange")
-	("WAITING" . "dark orange")
-	("DONE" . "sea green")
-        ("CANCELED" . (:foreground "blue" :weight bold))
-	))
+        ("IN_PROGRESS" . "dark orange")
+        ("WAITING" . "dark orange")
+        ("DONE" . "sea green")
+        ("CANCELED" . (:foreground "blue" :weight bold))))
 
 (setq org-agenda-files
       (list "~/org/"))
@@ -83,20 +82,21 @@
 (add-hook 'org-mode-hook 'org-clock-persistence-insinuate)
 
 (add-hook 'org-mode-hook (lambda ()
-			   (define-key org-mode-map (kbd "M-<f8>") 'datestamp)
-			   ;; (define-key org-mode-map (kbd "<f9>") 'avy-goto-word-1)
-			   (define-key org-mode-map (kbd "M-<f6>") 'org-toggle-inline-images)
-			   (define-key org-mode-map (kbd "C-c t") 'cc/org-time-stamp-inactive)
-			   (define-key org-mode-map (kbd "<home>") 'org-beginning-of-line)
-			   (define-key org-mode-map (kbd "<end>") 'org-end-of-line)
-			   (define-key org-mode-map (kbd "A-<left>") 'org-backward-sentence)
-			   (define-key org-mode-map (kbd "A-<right>") 'org-forward-sentence)
-			   (define-key org-mode-map (kbd "A-M-<left>") 'org-backward-paragraph)
-			   (define-key org-mode-map (kbd "A-M-<right>") 'org-forward-paragraph)
-			   (define-key org-mode-map (kbd "C-<up>") 'org-previous-visible-heading)
-			   (define-key org-mode-map (kbd "C-<down>") 'org-next-visible-heading)
-			   (define-key org-mode-map (kbd "M-v") 'org-previous-visible-heading)
-			   (define-key org-mode-map (kbd "C-v") 'org-next-visible-heading)
+                           (define-key org-mode-map (kbd "M-<f8>") 'datestamp)
+                           ;; (define-key org-mode-map (kbd "<f9>") 'avy-goto-word-1)
+                           (define-key org-mode-map (kbd "M-<f6>") 'org-toggle-inline-images)
+                           (define-key org-mode-map (kbd "C-c t") 'cc/org-time-stamp-inactive)
+                           (define-key org-mode-map (kbd "<home>") 'org-beginning-of-line)
+                           (define-key org-mode-map (kbd "<end>") 'org-end-of-line)
+                           (define-key org-mode-map (kbd "A-<left>") 'org-backward-sentence)
+                           (define-key org-mode-map (kbd "A-<right>") 'org-forward-sentence)
+                           (define-key org-mode-map (kbd "A-M-<left>") 'org-backward-paragraph)
+                           (define-key org-mode-map (kbd "A-M-<right>") 'org-forward-paragraph)
+                           (define-key org-mode-map (kbd "C-<up>") 'org-previous-visible-heading)
+                           (define-key org-mode-map (kbd "C-<down>") 'org-next-visible-heading)
+                           (define-key org-mode-map (kbd "M-v") 'org-previous-visible-heading)
+                           (define-key org-mode-map (kbd "C-v") 'org-next-visible-heading)
+                           (org-babel-lob-ingest "~/org/babel/cc-org-table-to-sql.org")
                            (add-to-list (make-local-variable 'company-backends)
                                         'company-org-block)))
 
@@ -110,7 +110,7 @@
   "Redo agenda view and move point to current time '← now'"
   (interactive)
   (org-agenda-redo)
-  (org-agenda-goto-today)               
+  (org-agenda-goto-today)
   (search-forward " now "))
 
 (add-hook 'org-agenda-mode-hook
@@ -157,7 +157,7 @@
          :recursive t
          :publishing-directory "~/Projects/Captee/Development/Captee/Captee.help/Contents/Resources/en.lproj"
          :publishing-function org-publish-attachment)
-        
+
         ("captee-help-book"
          :components ("pages" "static"))))
 
