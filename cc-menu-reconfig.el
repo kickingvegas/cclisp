@@ -175,6 +175,17 @@ in a buffer"]
 various time zones."]
                     "Programmable Calculator")
 
+(easy-menu-add-item global-map '(menu-bar tools)
+                    ["Babel Ingest - Org Table To SQL"
+                     (org-babel-lob-ingest "~/org/babel/cc-org-table-to-sql.org")
+                     :help "Ingest code block to convert Org Table to SQLite."]
+                    "Games")
+
+(keymap-set-after (lookup-key global-map [menu-bar tools])
+  "<separator-babel>"
+  '(menu-item "--")
+  'Babel\ Ingest\ -\ Org\ Table\ To\ SQL)
+
 ;; Streamlined Bookmarks Menu
 (easy-menu-define cc/bookmarks-menu nil
   "Keymap for CC Bookmarks Menu"
