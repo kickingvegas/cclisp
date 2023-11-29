@@ -425,7 +425,7 @@
  '(font-lock-comment-face ((((type x mac ns) (class color) (background light)) (:foreground "dim gray")) (((type x mac ns) (class color) (background dark)) (:foreground "dark gray")) (((type tty) (class color)) (:foreground "dark gray"))))
  '(font-lock-constant-face ((t (:height 1.0))))
  '(font-lock-function-name-face ((((type x mac ns) (class color) (background light)) (:foreground "Blue1")) (((type x mac ns) (class color) (background dark)) (:foreground "LightSkyBlue")) (((type tty) (class color)) (:foreground "yellow")) (t (:weight bold))))
- '(highlight ((((type x mac ns) (class color) (background light)) (:background "darkseagreen2")) (((type x mac ns) (class color) (background dark)) (:background "cyan")) (((type tty) (class color)) (:background "green" :foreground "black")) (t (:inverse-video t))))
+ '(highlight ((((type x mac ns) (class color) (background light)) (:background "darkseagreen2")) (((type x mac ns) (class color) (background dark)) (:background "cyan" :foreground "black")) (((type tty) (class color)) (:background "green" :foreground "black")) (t (:inverse-video t))))
  '(hl-line ((t (:inherit highlight :extend t :foreground "black"))))
  '(markdown-code-face ((t (:inherit fixed-pitch))))
  '(markdown-header-delimiter-face ((t (:height 1.1 :family "Futura"))))
