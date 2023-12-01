@@ -225,6 +225,8 @@
    '(("\\*eshell\\*" display-buffer-at-bottom
       (window-height . 0.15))
      ("\\*Org Agenda\\*" display-buffer-at-bottom
+      (window-height . 0.35))
+     ("\\*Help\\*" display-buffer-below-selected
       (window-height . 0.35))))
  '(display-time-day-and-date t)
  '(display-time-mode t)
@@ -383,6 +385,7 @@
  '(savehist-mode t)
  '(scroll-bar-mode nil)
  '(scroll-step 4)
+ '(search-whitespace-regexp ".*?")
  '(sentence-end-double-space nil)
  '(set-mark-command-repeat-pop t)
  '(speedbar-show-unknown-files t)
@@ -461,7 +464,7 @@
  '(outline-6 ((t (:inherit outline-1))))
  '(outline-7 ((t (:inherit outline-1))))
  '(outline-8 ((t (:inherit outline-1))))
- '(region ((t (:extend t :background "light sky blue"))))
+ '(region ((((type x mac ns) (class color) (background dark)) (:extend t :background "light sky blue" :foreground "black")) (((type x mac ns) (class color) (background light)) (:extend t :background "light sky blue")) (((type tty) (class color)) (:extend t :background "light sky blue" :foreground "black"))))
  '(tab-bar ((t (:inherit variable-pitch :background "grey90" :foreground "black" :height 0.75))))
  '(tab-bar-tab ((t (:inherit tab-bar :box (:line-width 1 :color "dim gray")))))
  '(tab-bar-tab-inactive ((t (:inherit tab-bar-tab :background "gainsboro" :foreground "gray62" :box nil))))
