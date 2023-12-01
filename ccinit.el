@@ -53,6 +53,7 @@
 (require 'cc-global-keybindings)
 (require 'cc-menu-reconfig)
 (require 'kill-with-intelligence)
+(require 'cc-agenda-timeline)
 
 (when (and (string= (system-name) "bingsu.local") (display-graphic-p))
   (server-start))
@@ -75,6 +76,9 @@
 
 (add-to-list 'auto-mode-alist '("\\.msc\\'" . graphviz-dot-mode))
 (add-to-list 'auto-mode-alist '("\\.xcconfig\\'" . conf-mode))
+
+(when (eq window-system 'mac)
+  (mac-toggle-tab-bar))
 
 (unless (display-graphic-p)
   (xterm-mouse-mode 1)
