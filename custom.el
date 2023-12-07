@@ -223,11 +223,7 @@
  '(dired-use-ls-dired 'unspecified)
  '(display-buffer-alist
    '(("\\*eshell\\*" display-buffer-at-bottom
-      (window-height . 0.15))
-     ("\\*Org Agenda\\*" display-buffer-at-bottom
-      (window-height . 0.35))
-     ("\\*Help\\*" display-buffer-below-selected
-      (window-height . 0.35))))
+      (window-height . 0.15))))
  '(display-time-day-and-date t)
  '(display-time-mode t)
  '(ebib-bibtex-dialect 'biblatex)
@@ -373,7 +369,7 @@
    '(("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa" . "http://melpa.org/packages/")))
  '(package-selected-packages
-   '(orgtbl-aggregate transpose-frame diff-hl keycast edit-indirect ox-trac google-translate org wgrep js2-mode rainbow-mode use-package bind-key reveal-in-folder elfeed ob-swiftui ob-swift csv-mode company-restclient visual-regexp-steroids visual-regexp citar math-symbol-lists helm-bibtex ox-gist org-ref org-re-reveal webpaste company-org-block company eglot gnuplot ob-restclient restclient ox-slack good-scroll svg-clock disk-usage expand-region helm-pass password-store which-key org-outline-numbering org-superstar osx-dictionary spotlight ebib auto-complete plantuml-mode tj3-mode ledger-mode yasnippet-snippets yasnippet htmlize calfw kanban fireplace treemacs neotree smart-mode-line-powerline-theme pbcopy ox-jira ox-gfm helm-swoop helm ztree yaml-mode swift-mode sr-speedbar solarized-theme python-mode pkg-info markdown-mode magit json-mode graphviz-dot-mode google-this go-mode autopair))
+   '(paredit orgtbl-aggregate transpose-frame diff-hl keycast edit-indirect ox-trac google-translate org wgrep js2-mode rainbow-mode use-package bind-key reveal-in-folder elfeed ob-swiftui ob-swift csv-mode company-restclient visual-regexp-steroids visual-regexp citar math-symbol-lists helm-bibtex ox-gist org-ref org-re-reveal webpaste company-org-block company eglot gnuplot ob-restclient restclient ox-slack good-scroll svg-clock disk-usage expand-region helm-pass password-store which-key org-outline-numbering org-superstar osx-dictionary spotlight ebib auto-complete plantuml-mode tj3-mode ledger-mode yasnippet-snippets yasnippet htmlize calfw kanban fireplace treemacs neotree smart-mode-line-powerline-theme pbcopy ox-jira ox-gfm helm-swoop helm ztree yaml-mode swift-mode sr-speedbar solarized-theme python-mode pkg-info markdown-mode magit json-mode graphviz-dot-mode google-this go-mode autopair))
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
  '(plantuml-indent-level 4)
@@ -438,7 +434,7 @@
  '(minibuffer-prompt ((((type x mac ns) (class color) (background light)) (:foreground "dark magenta")) (((type x mac ns) (class color) (background dark)) (:foreground "orange")) (((type tty)) (:foreground "cyan"))))
  '(mode-line ((t (:background "#ff7700" :foreground "gray20" :box (:line-width (5 . 5) :color "#ff7700" :style flat-button) :height 1.0 :family "SF Compact Rounded"))))
  '(mode-line-inactive ((t (:inherit mode-line :background "gray" :box (:line-width (5 . 5) :color "gray" :style flat-button)))))
- '(org-agenda-done ((t (:foreground "#00bb00"))))
+ '(org-agenda-done ((t (:foreground "snow4"))))
  '(org-agenda-structure ((((type x mac ns) (class color) (background light)) (:foreground "Blue1")) (((type x mac ns) (class color) (background dark)) (:foreground "LightSkyBlue")) (((type tty) (class color)) (:foreground "light sky blue")) (t (:weight bold))))
  '(org-block ((t (:inherit fixed-pitch))))
  '(org-block-begin-line ((((type x mac ns) (class color) (background light)) (:inherit fixed-pitch :extend t :background "gray90" :foreground "gray50" :underline t)) (((type x mac ns) (class color) (background dark)) (:inherit fixed-pitch :extend t :background "grey23" :foreground "tomato" :underline t)) (((type tty)) (:background "grey23" :foreground "tomato"))))
