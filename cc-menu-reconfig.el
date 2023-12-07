@@ -109,6 +109,11 @@ tree rooted at DIR."]
                      :help "Search Org Notes in ~/org."]
                     "Shell Commands")
 
+(easy-menu-add-item global-map '(menu-bar tools)
+                    ["IELM"
+                     ielm
+                     :help "Interactively evaluate Emacs Lisp expressions."]
+                     "Language Server Support (Eglot)")
 
 (keymap-set-after (lookup-key global-map [menu-bar tools])
   "<separator-shell>"
@@ -123,6 +128,7 @@ tree rooted at DIR."]
 (define-key global-map [menu-bar tools gdb] nil t)
 (define-key global-map [menu-bar tools gnus] nil t)
 (define-key global-map [menu-bar tools rmail] nil t)
+(define-key global-map [menu-bar tools project] nil t)
 (define-key global-map [menu-bar tools compose-mail] nil t)
 (define-key global-map [menu-bar tools directory-search] nil t)
 (define-key global-map [menu-bar tools browse-web] nil t)
