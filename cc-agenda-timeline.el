@@ -41,9 +41,13 @@
 (defun cc/test-timestamp (e)
   (let ((timestamp-buf (assoc-default "TIMESTAMP" e))
         (scheduled-buf (assoc-default "SCHEDULED" e))
-        (deadline-buf (assoc-default "DEADLINE" e))                    
-        )
+        (deadline-buf (assoc-default "DEADLINE" e))
+        (timestamp nil)
+        (scheduled nil)
+        (deadline nil))
     ;; TODO: handle possible case where timestamp and/or scheduled are repeating
+    ;; TODO: handle date and time intervals "<2024-02-05 Mon>--<2024-02-12 Mon>"
+    ;; (string-match "--" "<2024-02-05 Mon>--<2024-02-12 Mon>")
     
     (cond (timestamp-buf
            (if (stringp (org-get-repeat timestamp-buf))
@@ -116,19 +120,15 @@ otherwise nil."
   (interactive)
   (let* ((headers (list))
          (footers (list))
-         (now (calendar-current-date))
-         (month (nth 0 now))
-         (day (nth 1 now))
-         (year (nth 2 now))
-         (today (format "%4d-%02d-%02d" year month day))
-         )
+         (today (format-time-string "%Y-%m-%d" (time-subtract (current-time) (* 60 60 24 2)))))
 
     (push "@startgantt" headers)
     (push "printscale daily" headers)
     (push "hide footbox" headers)
-    (push "saturday are closed" headers)
-    (push "sunday are closed" headers)
+    (push "saturday is colored wheat" headers)
+    (push "sunday is colored wheat" headers)
     (push "today is colored in Orange" headers)
+    (push "skinparam backgroundColor #EEEEEE" headers)
     (push (format "Project starts %s" today) headers)
     
     (push "@endgantt" footers)
