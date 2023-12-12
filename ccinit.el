@@ -81,7 +81,10 @@
 (when (eq window-system 'mac)
   (mac-toggle-tab-bar))
 
-;; (unless (display-graphic-p)
-;;   (xterm-mouse-mode 1)
-;;   (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
-;;   (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+(defun cc/tty-mouse ()
+  (interactive)
+  (unless (display-graphic-p)
+    (xterm-mouse-mode 1)
+    (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+    (global-set-key (kbd "<mouse-5>") 'scroll-up-line)))
+
