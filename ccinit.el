@@ -44,7 +44,7 @@
 (require 'cc-elfeed-mode)
 (require 'cc-google-translate)
 (require 'cc-repeat-mode)
-(require 'cc-info-mode)
+(require 'cc-doc-mode-ux)
 (require 'cc-ediff-mode)
 (require 'cc-context-menu)
 (require 'cc-diff-hl-mode)

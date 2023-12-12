@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Info-additional-directory-list '("/opt/local/share/info"))
- '(Info-scroll-prefer-subnodes t)
+ '(Info-scroll-prefer-subnodes nil)
  '(Man-notify-method 'aggressive)
  '(apropos-do-all t)
  '(auto-insert-alist

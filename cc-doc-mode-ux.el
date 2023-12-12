@@ -1,7 +1,8 @@
-;;; cc-info-mode.el --- Documentation Mode UX Modifications by cchoi
+;;; cc-doc-mode-ux.el --- Documentation Mode UX Modifications by cchoi
 
 ;;; Commentary:
-;;
+;; UX modifications for different Emacs documentation modes.
+;; Covers Info, Help, Man, and Shortdoc.
 
 ;;; Code:
 (require 'info)
@@ -26,7 +27,6 @@ This function is intended to be used with `hl-line-mode'."
   (forward-paragraph)
   (forward-line))
 
-
 ;; Info
 (add-hook 'Info-mode-hook
           (lambda ()
@@ -49,13 +49,14 @@ This function is intended to be used with `hl-line-mode'."
             (define-key Info-mode-map (kbd "l") 'Info-next)
             ;; Bind / to search
             (define-key Info-mode-map (kbd "/") 'Info-search)
+            ;; Set Bookmark
+            (define-key Info-mode-map (kbd "B") 'bookmark-set)
             ;; Bind side mouse buttons on Logitech mouse
             (define-key Info-mode-map (kbd "<mouse-5>") 'Info-history-forward)
             (define-key Info-mode-map (kbd "<mouse-4>") 'Info-history-back)))
 
 (add-hook 'Info-mode-hook 'hl-line-mode)
 
-
 ;; Help
 (add-hook 'help-mode-hook
           (lambda ()
@@ -79,12 +80,14 @@ This function is intended to be used with `hl-line-mode'."
 
 (add-hook 'help-mode-hook 'hl-line-mode)
 
-
 ;; Shortdoc
 (add-hook 'shortdoc-mode-hook
           (lambda ()
             ;; Bind <f1> to help
             (define-key shortdoc-mode-map (kbd "<f1>") 'describe-mode)
+            ;; Bind M-j, M-k to scrolling up/down line
+            (define-key shortdoc-mode-map (kbd "M-j") 'scroll-up-line)
+            (define-key shortdoc-mode-map (kbd "M-k") 'scroll-down-line)
             ;; Bind h and l to navigate to previous and next sections
             ;; Bind j and k to navigate to next and previous
             (define-key shortdoc-mode-map (kbd "h") 'shortdoc-previous-section)
@@ -94,19 +97,22 @@ This function is intended to be used with `hl-line-mode'."
 
 (add-hook 'shortdoc-mode-hook 'hl-line-mode)
 
-
-;; Man 
+;; Man
 (add-hook 'Man-mode-hook
           (lambda ()
+            ;; Bind <f1> to help
             (define-key Man-mode-map (kbd "<f1>") 'describe-mode)
+            ;; Bind M-j, M-k to scrolling up/down line
             (define-key Man-mode-map (kbd "M-j") 'scroll-up-line)
             (define-key Man-mode-map (kbd "M-k") 'scroll-down-line)
+            ;; Bind j and k to navigate forward and backward paragraphs
             (define-key Man-mode-map (kbd "j") 'cc/docview-forward-paragraph)
             (define-key Man-mode-map (kbd "k") 'cc/docview-backward-paragraph)
+            ;; Bind K to kill buffer to replace override of default k above
             (define-key Man-mode-map (kbd "K") 'Man-kill)))
 
 (add-hook 'Man-mode-hook 'hl-line-mode)
 
-(provide 'cc-info-mode)
+(provide 'cc-doc-mode-ux)
 
-;;; cc-info-mode.el ends here
+;;; cc-doc-mode-ux.el ends here
