@@ -51,6 +51,7 @@
 (require 'flyspell)
 (require 'cc-view-mode)
 (require 'cc-global-keybindings)
+(require 'cc-magit-mode)
 (require 'cc-menu-reconfig)
 (require 'kill-with-intelligence)
 (require 'cc-isearch-menu)
