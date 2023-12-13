@@ -44,7 +44,7 @@
 (require 'cc-elfeed-mode)
 (require 'cc-google-translate)
 (require 'cc-repeat-mode)
-(require 'cc-info-mode)
+(require 'cc-doc-mode-ux)
 (require 'cc-ediff-mode)
 (require 'cc-context-menu)
 (require 'cc-diff-hl-mode)
@@ -53,6 +53,8 @@
 (require 'cc-global-keybindings)
 (require 'cc-menu-reconfig)
 (require 'kill-with-intelligence)
+(require 'cc-isearch-menu)
+(require 'cc-agenda-timeline)
 
 (when (and (string= (system-name) "bingsu.local") (display-graphic-p))
   (server-start))
@@ -76,7 +78,13 @@
 (add-to-list 'auto-mode-alist '("\\.msc\\'" . graphviz-dot-mode))
 (add-to-list 'auto-mode-alist '("\\.xcconfig\\'" . conf-mode))
 
-(unless (display-graphic-p)
-  (xterm-mouse-mode 1)
-  (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
-  (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+(when (eq window-system 'mac)
+  (mac-toggle-tab-bar))
+
+(defun cc/tty-mouse ()
+  (interactive)
+  (unless (display-graphic-p)
+    (xterm-mouse-mode 1)
+    (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+    (global-set-key (kbd "<mouse-5>") 'scroll-up-line)))
+
