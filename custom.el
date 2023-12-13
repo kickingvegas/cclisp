@@ -381,7 +381,6 @@
  '(savehist-mode t)
  '(scroll-bar-mode nil)
  '(scroll-step 4)
- '(search-whitespace-regexp ".*?")
  '(sentence-end-double-space nil)
  '(set-mark-command-repeat-pop t)
  '(speedbar-show-unknown-files t)
