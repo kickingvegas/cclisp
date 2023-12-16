@@ -50,7 +50,7 @@
      isearch-yank-kill
      :transient nil)
     ("t"
-     "Pull object from buffer"
+     "Pull thing from buffer"
      isearch-forward-thing-at-point
      :transient nil)]
 
@@ -62,9 +62,9 @@
     ("x"
      "Start ‘query-replace-regexp’"
      isearch-query-replace-regexp
-     :transient nil)]
+     :transient nil)]]
 
-   ["Toggle"
+  [["Toggle"
     ("X"
      "Toggle regexp searching"
      isearch-toggle-regexp
