@@ -9,6 +9,7 @@
 (require 'map)
 (require 'transient)
 (require 'bookmark)
+(require 'spotlight)
 
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
@@ -504,6 +505,10 @@ SOUND - sound file (optional)"
      "Find in Files (rgrep)"
      rgrep
      :transient nil)
+    ("s"
+     "Spotlight"
+     spotlight-fast
+     :transient nil)
     ("o"
      "Org Files"
      cc/org-search
@@ -531,6 +536,10 @@ SOUND - sound file (optional)"
     ("R"
      "Recent Files"
      recentf-open-files
+     :transient nil)
+    ("j"
+     "Journal Files"
+     cc/select-journal-file
      :transient nil)]])
 
 (defun cc/html-quote-entities-to-utf8 ()
