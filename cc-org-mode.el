@@ -115,6 +115,8 @@
 (add-hook 'org-agenda-mode-hook
           (lambda ()
             (define-key org-agenda-mode-map (kbd "<f1>") 'org-save-all-org-buffers)
+            (define-key org-agenda-mode-map (kbd "M-p") 'org-agenda-previous-date-line)
+            (define-key org-agenda-mode-map (kbd "M-n") 'org-agenda-next-date-line)
             (define-key org-agenda-mode-map (kbd ".") 'cc/org-agenda-goto-now)))
 
 (org-babel-do-load-languages
@@ -159,7 +161,6 @@
 
         ("captee-help-book"
          :components ("pages" "static"))))
-
 
 ;; ox-gfm init is so broken. need to load it manually.
 ;; (eval-after-load "org"
