@@ -58,10 +58,12 @@
     ("q"
      "Start ‘query-replace’"
      isearch-query-replace
+     :if-nil buffer-read-only
      :transient nil)
     ("x"
      "Start ‘query-replace-regexp’"
      isearch-query-replace-regexp
+     :if-nil buffer-read-only
      :transient nil)]]
 
   [["Toggle"
