@@ -7,6 +7,9 @@
 
 (require 'ediff)
 (require 'map)
+(require 'transient)
+(require 'bookmark)
+(require 'spotlight)
 
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
@@ -460,27 +463,84 @@ SOUND - sound file (optional)"
   (cc/refresh-header-timestamps)
   (cc/start))
 
-(defvar cc/meta-search-menu
-      '(
-        ("url" . cc/open-url)
-        ("maps" . cc/search-apple-maps)
-        ("org" . cc/org-search)
-        ("google" . (lambda () (call-interactively 'google-this)))
-        ("bookmarks" . list-bookmarks))
-      "alist containing map of search or access functions.")
+;; (defvar cc/meta-search-menu
+;;       '(
+;;         ("url" . cc/open-url)
+;;         ("maps" . cc/search-apple-maps)
+;;         ("org" . cc/org-search)
+;;         ("google" . (lambda () (call-interactively 'google-this)))
+;;         ("bookmarks" . list-bookmarks))
+;;       "alist containing map of search or access functions.")
 
-(defun cc/meta-search ()
-  "Meta search or open different objects defined in alist `cc/meta-search-menu'."
+;; (defun cc/meta-search ()
+;;   "Meta search or open different objects defined in alist `cc/meta-search-menu'."
+;;   (interactive)
+;;   (let ((choice (car (completing-read-multiple
+;;                       "Search or open (tab to complete): "
+;;                       (map-keys cc/meta-search-menu)))))
+;;     (cond ((assoc choice cc/meta-search-menu)
+;;            (let ((ftn (cdr (assoc choice cc/meta-search-menu))))
+;;              (funcall-interactively ftn)))
+
+;;           (t
+;;            (message "unknown")))))
+
+(defun cc/list-bookmarks-transient ()
+  "Transient supporting version of `bookmark-bmenu-list'"
   (interactive)
-  (let ((choice (car (completing-read-multiple
-                      "Search or open (tab to complete): "
-                      (map-keys cc/meta-search-menu)))))
-    (cond ((assoc choice cc/meta-search-menu)
-           (let ((ftn (cdr (assoc choice cc/meta-search-menu))))
-             (funcall-interactively ftn)))
+  (bookmark-maybe-load-default-file)
+  (let ((buf (get-buffer-create bookmark-bmenu-buffer)))
+    (switch-to-buffer buf))
+  (bookmark-bmenu-mode)
+  (bookmark-bmenu--revert))
 
-          (t
-           (message "unknown")))))
+(transient-define-prefix cc/meta-search ()
+  "Meta Search Menu"
+  [["Search"
+    ("f"
+     "Find File"
+     helm-find-files
+     :transient nil)
+    ("r"
+     "Find in Files (rgrep)"
+     rgrep
+     :transient nil)
+    ("s"
+     "Spotlight"
+     spotlight-fast
+     :transient nil)
+    ("o"
+     "Org Files"
+     cc/org-search
+     :transient nil)
+    ("g"
+     "Google"
+     google-this-search
+     :if display-graphic-p
+     :transient nil)
+    ("m"
+     "Apple Maps"
+     cc/search-apple-maps
+     :if display-graphic-p
+     :transient nil)]
+   ["List"
+    ("b"
+     "Bookmarks"
+     cc/list-bookmarks-transient
+     :transient nil)
+    ("u"
+     "URLs"
+     cc/open-url
+     :if display-graphic-p
+     :transient nil)
+    ("R"
+     "Recent Files"
+     recentf-open-files
+     :transient nil)
+    ("j"
+     "Journal Files"
+     cc/select-journal-file
+     :transient nil)]])
 
 (defun cc/html-quote-entities-to-utf8 ()
   "Convert HTML quote entities to UTF8 in buffer."

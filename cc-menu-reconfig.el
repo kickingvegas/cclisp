@@ -8,6 +8,7 @@
 (require 'cc-style-text-menu)
 (require 'text-mode)
 (require 'vc)
+(require 'helm)
 
 (easy-menu-add-item (lookup-key global-map [menu-bar file]) nil
                     ["Swap Windows"
@@ -91,9 +92,8 @@ for REGEXP."
 
 (easy-menu-add-item global-map '(menu-bar tools)
                     ["Find File…"
-                     find-name-dired
-                     :help "Search DIR recursively for files matching the \
-globbing PATTERN, and run Dired on those files."]
+                     helm-find-files
+                     :help "Fuzzy find file."]
                     "Shell Commands")
 
 (easy-menu-add-item global-map '(menu-bar tools)
