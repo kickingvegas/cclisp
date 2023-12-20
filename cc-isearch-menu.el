@@ -68,23 +68,23 @@
 
   [["Toggle"
     ("X"
-     "Toggle regexp searching"
+     "Regexp searching"
      isearch-toggle-regexp
      :transient nil)
     ("S"
-     "Toggle symbol searching"
+     "Symbol searching"
      isearch-toggle-symbol
      :transient nil)
     ("W"
-     "Toggle word searching"
+     "Word searching"
      isearch-toggle-word
      :transient nil)
     ("F"
-     "Toggle case fold"
+     "Case fold"
      isearch-toggle-case-fold
      :transient nil)
     ("L"
-     "Toggle lax whitespace"
+     "Lax whitespace"
      isearch-toggle-lax-whitespace
      :transient nil)]
 
