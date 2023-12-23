@@ -26,6 +26,9 @@
 ;;; Code:
 
 (require 'org)
+(require 'calendar)
+(require 'holidays)
+(require 'diary-lib)
 
 (defun cc/at/closed-agenda-element-p (e)
   (let ((closed (assoc-default "CLOSED" e))
@@ -98,7 +101,7 @@ otherwise nil."
       nil)))
 
 
-(defun cc/agenda-timeline-items (match scope)
+(defun cc/agenda-timeline-items (match scope &optional include-diary include-holidays)
   (interactive)
   (let* ((agenda-items (org-map-entries 'org-entry-properties match scope))
          (active-agenda-items (seq-remove 'cc/at/closed-agenda-element-p agenda-items))
@@ -107,7 +110,7 @@ otherwise nil."
                               (assoc-default "ITEM" x)
                               (cc/test-timestamp x)))
                         timestamped-items))
-         (items-with-diary (append items (cc/extract-diary-items 40)))
+         (items-with-diary (append items (cc/extract-diary-items 40) (cc/extract-holiday-items 40)))
          (sorted-items (sort items-with-diary (lambda (x y) (time-less-p (nth 1 x) (nth 1 y)))))
          (results (list)))
     
@@ -116,7 +119,14 @@ otherwise nil."
 
     (reverse results)))
 
-(defun cc/agenda-timeline (match scope)
+(defun cc/extract-holiday-items (days)
+  (let* ((holidays
+          (holiday-in-range
+           (calendar-absolute-from-gregorian (calendar-current-date))
+           (calendar-absolute-from-gregorian (calendar-current-date days)))))
+    (mapcar 'cc/diary-info holidays)))
+
+(defun cc/agenda-timeline (match scope &optional include-diary include-holidays)
   (interactive)
   (let* ((headers (list))
          (footers (list))
@@ -135,7 +145,7 @@ otherwise nil."
 
     (mapconcat 'identity 
                (append (reverse headers)
-                       (cc/agenda-timeline-items match scope)
+                       (cc/agenda-timeline-items match scope include-diary include-holidays)
                        (reverse footers))
                "\n")))
 

@@ -31,6 +31,7 @@
 
 (require 'avy)
 (require 'cclisp)
+(require 'cc-diary-mode)
 (require 'cc-prog-mode)
 (require 'cc-emacs-lisp-mode)
 (require 'cc-text-mode)
