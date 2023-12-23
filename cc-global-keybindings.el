@@ -1,9 +1,30 @@
+;;; cc-global-keybindings.el --- CC Global Keybindings
+
+;;; Commentary:
+;;
 ;; Global Keyboard Mappings
+
+;;; Code:
+
+(require 'cc-ediff-mode)
+(require 'helm-buffers)
+(require 'neotree)
+(require 'bookmark)
+(require 'avy)
+(require 'expand-region)
+(require 'cclisp)
+(require 'osx-dictionary)
+(require 'google-this)
+(require 'treemacs)
+(require 'python)
+(require 'ibuffer)
+(require 'magit-status)
+
 (global-set-key (kbd "C-=") 'er/expand-region)
 ;(global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-x v") 'view-file)
 (global-set-key (kbd "M-q") 'query-replace)
-(global-set-key (kbd "M-j") 'fill-paragraph)
+(global-set-key (kbd "M-j") 'cc/journal-entry)
 ;(global-set-key "\C-h" 'delete-backward-char) (global-set-key "\C-xh"
 ;'help-for-help) (global-set-key "\r" 'newline-and-indent)
 
@@ -42,7 +63,7 @@
 (global-set-key (kbd "M-g c") 'avy-copy-line)
 (global-set-key (kbd "M-g m") 'avy-move-line)
 
-;; Terminal 
+;; Terminal
 (global-set-key (kbd "M-SPC") 'set-mark-command)
 (global-set-key (kbd "M-c") 'kill-ring-save)
 
@@ -68,7 +89,7 @@
   (global-set-key (kbd "C-<tab>") 'mac-next-tab)
   ;; this binding breaks terminal behavior
   ;(global-set-key (kbd "M-]") 'mac-next-tab)
-  ;(global-set-key (kbd "M-[") 'mac-previous-tab)    
+  ;(global-set-key (kbd "M-[") 'mac-previous-tab)
   (define-key-after global-map
     [menu-bar file mac-toggle]
     '("Toggle Tab Bar" . mac-toggle-tab-bar) 'close-tab))
@@ -104,3 +125,5 @@
 (global-set-key [vertical-scroll-bar down-mouse-1] 'scroll-bar-drag)
 
 (provide 'cc-global-keybindings)
+
+;;; cc-global-keybindings.el ends here
