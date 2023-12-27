@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2023  Charles Choi
 
-;; Author: Charles Choi <cchoi@bingsu.local>
+;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
 
 ;; This program is free software; you can redistribute it and/or modify
