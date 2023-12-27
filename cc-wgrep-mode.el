@@ -41,16 +41,9 @@
      :enable (not buffer-read-only)
      :help "Return to original mode."]))
 
-;; (define-key map "\C-c\C-c" 'wgrep-finish-edit)
-;; (define-key map "\C-c\C-d" 'wgrep-mark-deletion)
-;; (define-key map "\C-c\C-e" 'wgrep-finish-edit)
-;; (define-key map "\C-c\C-p" 'wgrep-toggle-readonly-area)
-;; (define-key map "\C-c\C-r" 'wgrep-remove-change)
-;; (define-key map "\C-x\C-s" 'wgrep-finish-edit)
-;; (define-key map "\C-c\C-u" 'wgrep-remove-all-change)
-;; (define-key map "\C-c\C-k" 'wgrep-abort-changes)
-;; (define-key map "\C-x\C-q" 'wgrep-exit)
-
+(easy-menu-add-item grep-menu-map nil
+                    cc/wgrep-menu
+                    nil)
 
 (provide 'cc-wgrep-mode)
 
