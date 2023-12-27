@@ -97,6 +97,7 @@
                            (define-key org-mode-map (kbd "M-v") 'org-previous-visible-heading)
                            (define-key org-mode-map (kbd "M-j") 'cc/journal-entry)
                            (define-key org-mode-map (kbd "C-v") 'org-next-visible-heading)
+                           (define-key org-mode-map (kbd "C-/") 'org-emphasize)
                            (add-to-list (make-local-variable 'company-backends)
                                         'company-org-block)))
 
