@@ -92,6 +92,14 @@
     ("o"
      "occur"
      isearch-occur
+     :transient nil)
+    ("h"
+     "highlight"
+     isearch-highlight-regexp
+     :transient nil)
+    ("H"
+     "highlight lines"
+     isearch-highlight-lines-matching-regexp
      :transient nil)]])
 
 (define-key isearch-mode-map (kbd "<f2>") 'cc/isearch-menu)
