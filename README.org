@@ -22,12 +22,17 @@ Initially ~ccinit.el~ is loaded from ~init.el~. Personal variable configuration 
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
 
-  (load "ccinit")
-
   (setq custom-file (concat cc/cclisp-path "/" "custom.el"))
   (load custom-file 'noerror)
 
+  (package-install-selected-packages)
+
+  (load "ccinit")
+  ;;(load custom-file 'noerror)
+
   (put 'dired-find-alternate-file 'disabled nil)
+  (put 'upcase-region 'disabled nil)
+  (put 'downcase-region 'disabled nil)
 #+end_src
 
 From ~ccinit.el~, all other Elisp files in this directory are loaded.
