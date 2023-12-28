@@ -1,8 +1,8 @@
-;;; cc-isearch-menu.el --- Transient menu support for isearch  -*- lexical-binding: t; -*-
+;;; cc-isearch-menu.el --- isearch Transient menu -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2023  Charles Choi
 
-;; Author: Charles Choi <cchoi@bingsu.local>
+;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: wp
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -92,6 +92,14 @@
     ("o"
      "occur"
      isearch-occur
+     :transient nil)
+    ("h"
+     "highlight"
+     isearch-highlight-regexp
+     :transient nil)
+    ("H"
+     "highlight lines"
+     isearch-highlight-lines-matching-regexp
      :transient nil)]])
 
 (define-key isearch-mode-map (kbd "<f2>") 'cc/isearch-menu)
