@@ -389,6 +389,7 @@
  '(tramp-terminal-type "tramp")
  '(trash-directory "~/.Trash")
  '(use-file-dialog nil)
+ '(user-mail-address "kickingvegas@gmail.com")
  '(vc-make-backup-files nil)
  '(warning-suppress-types '((comp)))
  '(wdired-allow-to-change-permissions t)
