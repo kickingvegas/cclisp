@@ -10,7 +10,8 @@
 
 (defun cc/view-exit ()
   "Advice function to disable highlighting upon exiting view-mode."
-  (hl-line-mode -1))
+  (if (not (derived-mode-p 'prog-mode))
+      (hl-line-mode -1)))
 
 (advice-add 'View-exit :after #'cc/view-exit)
 
