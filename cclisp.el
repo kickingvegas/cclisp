@@ -272,6 +272,9 @@ ISO 8601."
   (insert "‣"))
 
 (defun cc/apple-maps-search(&optional input)
+  "Search Apple Maps with INPUT.\n
+If a region is active this command will use it as INPUT, otherwise it
+will use the word at point."
   (interactive (list
                 (read-string (format "Map Search (%s): "
                                      (if (region-active-p)
