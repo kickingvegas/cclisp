@@ -439,9 +439,18 @@ SOUND - sound file (optional)"
 
 (transient-define-prefix cc/meta-search ()
   "Meta Search Menu"
-  [["Search"
+  [["Open"
     ("f"
      "Find File"
+     find-file
+     :transient nil)
+    ("j"
+     "Bookmark Jump"
+     bookmark-jump
+     :transient nil)]
+   ["Search"
+    ("F"
+     "Fuzzy Find"
      helm-find-files
      :transient nil)
     ("r"
@@ -480,7 +489,7 @@ SOUND - sound file (optional)"
      "Recent Files"
      recentf-open-files
      :transient nil)
-    ("j"
+    ("J"
      "Journal Files"
      cc/select-journal-file
      :transient nil)]])
