@@ -1,4 +1,7 @@
 ;; dired-mode
+(require 'dired)
+(require 'cclisp)
+
 (with-eval-after-load 'dired
   (require 'dired-x))
 (add-hook 'dired-mode-hook 'hl-line-mode)
@@ -38,6 +41,7 @@
 
 (add-hook 'dired-mode-hook (lambda ()
                              (define-key dired-mode-map (kbd "M-o") 'dired-omit-mode)
+                             (define-key dired-mode-map (kbd "C-o") 'cc/meta-search)
                              (setq-local mouse-1-click-follows-link 'double)
                              ;;(define-key dired-mode-map (kbd "A-M-<mouse-2>") 'cc/dired-inspect-object)
                              (define-key dired-mode-map (kbd "A-M-<mouse-1>") 'browse-url-of-dired-file)))
