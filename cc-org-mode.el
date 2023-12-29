@@ -1,4 +1,5 @@
 ;; org-mode
+(require 'org)
 
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)

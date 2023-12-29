@@ -241,51 +241,6 @@ ISO 8601."
   (cl-assert (executable-find "trash") nil "'trash' must be installed. Needs \"https://github.com/sindresorhus/macos-trash\"")
   (call-process "trash" nil 0 nil file))
 
-;; (defvar my/re-builder-positions nil
-;;   "Store point and region bounds before calling `re-builder'.")
-;; (advice-add 're-builder
-;;             :before
-;;             (defun my/re-builder-save-state (&rest _)
-;;               "Save into `my/re-builder-positions' the point and region positions \
-;; before calling `re-builder'."
-;;               (setq my/re-builder-positions
-;;                     (cons (point)
-;;                           (when (region-active-p)
-;;                             (list (region-beginning)
-;;                                   (region-end)))))))
-
-
-;; (defun reb-replace-regexp (&optional delimited)
-;;   "Run `query-replace-regexp' with the contents of `re-builder'.
-;; With non-nil optional argument DELIMITED, only replace matches
-;; surrounded by word boundaries."
-;;   (interactive "P")
-;;   (reb-update-regexp)
-;;   (let* ((re (reb-target-binding reb-regexp))
-;;          (replacement (query-replace-read-to
-;;                        re
-;;                        (concat "Query replace"
-;;                                (if current-prefix-arg
-;;                                    (if (eq current-prefix-arg '-) " backward" " word")
-;;                                  "")
-;;                                " regexp"
-;;                                (if (with-selected-window reb-target-window
-;;                                      (region-active-p)) " in region" ""))
-;;                        t))
-;;          (pnt (car my/re-builder-positions))
-;;          (beg (cadr my/re-builder-positions))
-;;          (end (caddr my/re-builder-positions)))
-;;     (with-selected-window reb-target-window
-;;       (goto-char pnt) ; replace with (goto-char (match-beginning 0)) if you want
-;;                                         ; to control where in the buffer the replacement starts
-;;                                         ; with re-builder
-;;       (setq my/re-builder-positions nil)
-;;       (reb-quit)
-;;       (query-replace-regexp re replacement delimited beg end))))
-
-;(define-key reb-mode-map (kbd "RET") #'reb-replace-regexp)
-;(define-key reb-lisp-mode-map (kbd "RET") #'reb-replace-regexp)
-
 (defun arrayify (start end quote)
   "Turn multi-line region bounded by START and END to one line delimited by QUOTE."
     (interactive "r\nMQuote: ")
@@ -316,12 +271,19 @@ ISO 8601."
   (interactive)
   (insert "‣"))
 
-(defun cc/search-apple-maps ()
-  "Open search query in Apple Maps"
-  (interactive)
-  (let* ((query (read-string "Map Search: "))
-        (mapURL (concat "maps://?q=" (url-encode-url query))))
-    (message "Searching for %s" query)
+(defun cc/apple-maps-search(&optional input)
+  (interactive (list
+                (read-string (format "Map Search (%s): "
+                                     (if (region-active-p)
+                                         (buffer-substring (region-beginning) (region-end))
+                                       (thing-at-point 'word 'no-properties)))
+                                     nil nil
+                                     (if (region-active-p)
+                                         (buffer-substring (region-beginning) (region-end))
+                                       (thing-at-point 'word 'no-properties)))))
+
+  (let* ((mapURL (concat "maps://?q=" (url-encode-url input))))
+    (message "Searching for %s" input)
     (browse-url mapURL)))
 
 (defun cc/open-region-in-apple-maps (&optional start end)
@@ -463,28 +425,6 @@ SOUND - sound file (optional)"
   (cc/refresh-header-timestamps)
   (cc/start))
 
-;; (defvar cc/meta-search-menu
-;;       '(
-;;         ("url" . cc/open-url)
-;;         ("maps" . cc/search-apple-maps)
-;;         ("org" . cc/org-search)
-;;         ("google" . (lambda () (call-interactively 'google-this)))
-;;         ("bookmarks" . list-bookmarks))
-;;       "alist containing map of search or access functions.")
-
-;; (defun cc/meta-search ()
-;;   "Meta search or open different objects defined in alist `cc/meta-search-menu'."
-;;   (interactive)
-;;   (let ((choice (car (completing-read-multiple
-;;                       "Search or open (tab to complete): "
-;;                       (map-keys cc/meta-search-menu)))))
-;;     (cond ((assoc choice cc/meta-search-menu)
-;;            (let ((ftn (cdr (assoc choice cc/meta-search-menu))))
-;;              (funcall-interactively ftn)))
-
-;;           (t
-;;            (message "unknown")))))
-
 (defun cc/list-bookmarks-transient ()
   "Transient supporting version of `bookmark-bmenu-list'"
   (interactive)
@@ -520,7 +460,7 @@ SOUND - sound file (optional)"
      :transient nil)
     ("m"
      "Apple Maps"
-     cc/search-apple-maps
+     cc/apple-maps-search
      :if display-graphic-p
      :transient nil)]
    ["List"
