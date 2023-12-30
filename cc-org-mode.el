@@ -6,6 +6,8 @@
 
 ;;; Code:
 (require 'org)
+(require 'org-capture)
+(require 'org-agenda)
 (require 'doct)
 (require 'org-superstar)
 (require 'face-remap)
@@ -13,6 +15,8 @@
 (require 'cc-save-hooks)
 (require 'company)
 (require 'hl-line)
+(if (eq system-type 'darwin)
+    (require 'ob-swiftui))
 
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
@@ -249,8 +253,7 @@ This function is intended to be passed into `doct' via the :function property."
    (plantuml . t)
    (swift . t)))
 
-(when (string-equal (system-name) "bingsu.local")
-  (require 'ob-swiftui)
+(when (fboundp 'ob-swiftui-setup)
   (ob-swiftui-setup))
 
 (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
