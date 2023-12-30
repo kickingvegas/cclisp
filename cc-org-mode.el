@@ -1,54 +1,167 @@
+;;; cc-org-mode.el --- Org configuration
 ;; org-mode
+
+;;; Commentary:
+;;
+
+;;; Code:
 (require 'org)
+(require 'doct)
 
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-cb" 'org-iswitchb)
 
 ;; default for dev5
-(setq cc/org-daily-header-template "CC Notes - %a %b %d %Y")
+(defvar cc/org-daily-header-template "CC Notes - %a %b %d %Y"
+  "Custom daily Org header template.")
 
-;(when (string-equal (system-name) "bingsu.local")
-                                        ;  (setq cc/org-daily-header-template "Charles Choi Notes - %a %b %d %Y"))
+(defun cc/--current-org-default-notes-file ()
+  "String path to current daily Org file.
+This function is dependent upon this file being created by a daily cron job."
+  (format-time-string "~/org/%Y_%m_%d.org"))
 
-(defun cc/refresh-header-timestamps ()
-  (interactive)
+(defun cc/--find-capture-point-in-file (key)
+  "Move point to the end of the first instance of KEY in the current buffer."
+  (goto-char (point-min))
+  (search-forward key))
 
-  (setf cc-org-daily-header (format-time-string cc/org-daily-header-template))
-  (setf org-default-notes-file (format-time-string "~/org/%Y_%m_%d.org"))
+(defun cc/--find-capture-point-in-current ()
+  "Helper function to locate where to insert capture item in daily Org file.
+This function is intended to be passed into `doct' via the :function property."
+  (cc/--find-capture-point-in-file
+   (format-time-string cc/org-daily-header-template)))
 
-  (setq org-capture-templates
-        `(
-          ("a" "Appointment" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-           "* %^{description}\n%^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
-          ("b" "BeOrg TODO" entry (file "~/org/refile-beorg.org")
-           "* TODO %^{description}\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
-          ("s" "TODO: Scheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-           "* TODO %^{description} %^G\nSCHEDULED: %^T\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
-          ("t" "TODO: Unscheduled" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-           "* TODO %^{description} %^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
-          ("p" "TODO: Blog Post" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-           "* TODO Post: %^{description} %^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%?" :empty-lines 1)
-          ("i" "TODO: Issue" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-           "* TODO %^{description} %^G\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n\
-** Title\n%?\n\
-** Description\n\n\
-** Environment\n\n\
-** Steps to Reproduce\n\n\
-** Expected Result\n\n\
-** Actual Result\n" :empty-lines 1)
-          ("j" "Journal" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-           "%(datestamp2)\n%?" :empty-lines 1)
-          ("c" "Captee Capture" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-           "* %:description\n\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:annotation\n%i\n%?" :empty-lines 1)
-          ("I" "Captee Issue Capture" entry (file+headline ,org-default-notes-file ,cc-org-daily-header)
-           "* TODO %:description [/]\n\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:annotation\n%i\n%?" :empty-lines 1)
-          ("w" "WWDC Capture" entry (file+headline ,"~/org/wwdc23.org" ,"WWDC 23 Notes")
-           "* TODO %:description\n%:annotation\n%i\n%?" :empty-lines 1)
-          )))
+;; Configure org-capture-templates using doct
+(setq org-capture-templates
+      (doct '(("Appointment"
+               :keys "a"
+               :type entry
+               :file cc/--current-org-default-notes-file
+               :function cc/--find-capture-point-in-current
+               :empty-lines 1
+               :template ("* %^{description}"
+                          "%^T"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%?"))
 
-(cc/refresh-header-timestamps)
+              ("BeOrg TODO"
+               :keys "b"
+               :type entry
+               :file "~/org/refile-beorg.org"
+               :empty-lines 1
+               :template ("* TODO %^{description}"
+                          "SCHEDULED: %^T"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%?"))
+
+              ("TODO: Scheduled"
+               :keys "s"
+               :type entry
+               :file cc/--current-org-default-notes-file
+               :function cc/--find-capture-point-in-current
+               :empty-lines 1
+               :template ("* TODO %^{description} %^G"
+                          "SCHEDULED: %^T"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%?"))
+
+              ("TODO: Unscheduled"
+               :keys "t"
+               :type entry
+               :file cc/--current-org-default-notes-file
+               :function cc/--find-capture-point-in-current
+               :empty-lines 1
+               :template ("* TODO %^{description} %^G"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%?"))
+
+              ("TODO: Blog Post"
+               :keys "p"
+               :type entry
+               :file cc/--current-org-default-notes-file
+               :function cc/--find-capture-point-in-current
+               :empty-lines 1
+               :template ("* TODO Post: %^{description} :blog%^G"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%?"))
+
+              ("TODO: Issue"
+               :keys "i"
+               :type entry
+               :file cc/--current-org-default-notes-file
+               :function cc/--find-capture-point-in-current
+               :empty-lines 1
+               :template ("* TODO %^{description} %^G"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          ""
+                          "** Title"
+                          "%?"
+                          "** Description\n"
+                          "** Environment\n"
+                          "** Steps to Reproduce\n"
+                          "** Expected Result\n"
+                          "** Actual Result\n"))
+
+              ("Journal"
+               :keys "j"
+               :type entry
+               :file cc/--current-org-default-notes-file
+               :function cc/--find-capture-point-in-current
+               :empty-lines 1
+               :template ("%(datestamp2)"
+                          "%?"))
+
+              ("Captee Capture"
+               :keys "c"
+               :type entry
+               :file cc/--current-org-default-notes-file
+               :function cc/--find-capture-point-in-current
+               :empty-lines 1
+               :template ("* %:description"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%:annotation"
+                          "%i"
+                          ""
+                          "%?"))
+
+              ("WWDC Capture"
+               :keys "w"
+               :type entry
+               :file "~/org/wwdc23.org"
+               :empty-lines 1
+               :template ("** TODO %:description"
+                          "%:annotation"
+                          "%i"
+                          "%?"))
+
+              ("Song"
+               :keys "o"
+               :type entry
+               :file "~/org/songs/songs.org"
+               :headline "Songs"
+               :prepend t
+               :template ("* %^{Song}"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":ARTIST: %^{Artist}"
+                          ":END:"
+                          "%?")))))
+
 (setq org-todo-keywords
            '((sequence "TODO(t)" "IN_PROGRESS(i)" "WAITING(w)" "|" "DONE(d)")
              (sequence "|" "CANCELED(c)")))
@@ -68,14 +181,6 @@
         (org-agenda-files :maxlevel . 3)))
 
 (setq org-log-done 'time)
-
-(defun cc-todo-item ()
-  (interactive)
-  (org-insert-heading)
-  (org-schedule nil)
-  (org-shiftup)
-  (org-shiftright)
-  (end-of-line))
 
 (add-hook 'org-mode-hook 'org-superstar-mode)
 (add-hook 'org-mode-hook 'variable-pitch-mode)
@@ -109,7 +214,7 @@
               [(double-mouse-1)] 'org-agenda-goto-mouse)))
 
 (defun cc/org-agenda-goto-now ()
-  "Redo agenda view and move point to current time '← now'"
+  "Redo agenda view and move point to current time '← now'."
   (interactive)
   (org-agenda-redo)
   (org-agenda-goto-today)
@@ -179,3 +284,4 @@
   (org-capture nil "j"))
 
 (provide 'cc-org-mode)
+;;; cc-org-mode.el ends here
