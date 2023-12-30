@@ -290,7 +290,7 @@
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
  '(mouse-autoselect-window 0.35)
- '(org-agenda-files '("/Users/cchoi/org"))
+ '(org-agenda-files '("~/org/"))
  '(org-agenda-include-diary t)
  '(org-agenda-start-with-log-mode '(closed clock))
  '(org-agenda-window-setup 'other-window)
@@ -465,4 +465,3 @@
  '(tab-bar-tab ((t (:inherit tab-bar :box (:line-width 1 :color "dim gray")))))
  '(tab-bar-tab-inactive ((t (:inherit tab-bar-tab :background "gainsboro" :foreground "gray62" :box nil))))
  '(variable-pitch ((t (:height 1.4 :family "Optima")))))
-

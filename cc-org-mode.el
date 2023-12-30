@@ -183,9 +183,6 @@ This function is intended to be passed into `doct' via the :function property."
         ("DONE" . "sea green")
         ("CANCELED" . (:foreground "blue" :weight bold))))
 
-(setq org-agenda-files
-      (list "~/org/"))
-
 (setq org-refile-targets
       '((nil :maxlevel . 3)
         (org-agenda-files :maxlevel . 3)))
