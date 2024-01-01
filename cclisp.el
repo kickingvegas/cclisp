@@ -4,12 +4,12 @@
 ;;
 
 ;;; Code:
-
 (require 'ediff)
 (require 'map)
 (require 'transient)
 (require 'bookmark)
 (require 'spotlight)
+(require 'org-capture)
 
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
@@ -175,10 +175,7 @@ This function presumes that the buffer *pelican* is in the correct directory."
          (process-send-string (get-buffer-process "*pelican*") "cd ~/Projects/pelican/captee\n")
          ()
          (if (display-graphic-p)
-             (cc/launch-pelican)
-           )
-         ))
-  )
+             (cc/launch-pelican)))))
 
 (defun cc/slugify (start end)
   "Slugify the region bounded by START and END."
@@ -192,8 +189,7 @@ This function presumes that the buffer *pelican* is in the correct directory."
             "[^a-z0-9-]" ""
             (replace-regexp-in-string
              "\s+" "-"
-             (downcase regionp)
-             )))))))
+             (downcase regionp))))))))
 
 (defun cc/posix-timestamp-to-human (start end)
   "Convert a POSIX timestamp bounded by START and END to RFC 822 and \
@@ -208,8 +204,7 @@ ISO 8601."
         (with-output-to-temp-buffer "*timestamps*"
           (princ (concat "| POSIX | " inputBuf " |\n"))
           (princ (concat "| RFC 822 | " rfcBuf " |\n"))
-          (princ (concat "| ISO 8601 | " isoBuf " |\n"))
-          ))))
+          (princ (concat "| ISO 8601 | " isoBuf " |\n"))))))
 
 (defun cc/human-timestamp-to-posix (start end)
   "Convert a human timestamp bounded by START and END to POSIX."
@@ -233,7 +228,6 @@ ISO 8601."
          (point-max)
          "textutil -stdin -format html -convert rtf -stdout | pbcopy"))
       (kill-buffer buf))))
-
 
 ;; See `trash-directory' as it requires defining `system-move-file-to-trash'.
 (defun system-move-file-to-trash (file)
@@ -422,12 +416,6 @@ SOUND - sound file (optional)"
     (rgrep query "*.org" "~/org/" nil)
     (switch-to-buffer-other-window "*grep*")))
 
-(defun cc/morning ()
-  "Custom function to refresh Emacs state for cchoi."
-  (interactive)
-  (cc/refresh-header-timestamps)
-  (cc/start))
-
 (defun cc/list-bookmarks-transient ()
   "Transient supporting version of `bookmark-bmenu-list'"
   (interactive)
@@ -440,14 +428,22 @@ SOUND - sound file (optional)"
 (transient-define-prefix cc/meta-search ()
   "Meta Search Menu"
   [["Open"
-    ("f"
-     "Find File"
-     find-file
-     :transient nil)
-    ("j"
-     "Bookmark Jump"
-     bookmark-jump
-     :transient nil)]
+     ("f"
+      "Find File"
+      find-file
+      :transient nil)
+     ("j"
+      "Bookmark Jump"
+      bookmark-jump
+      :transient nil)
+     ("c"
+      "Org Capture"
+      org-capture
+      :transient nil)
+     ("e"
+      "Mark sexp"
+      mark-sexp
+      :transient nil)]
    ["Search"
     ("F"
      "Fuzzy Find"
@@ -525,5 +521,4 @@ SOUND - sound file (optional)"
           (replace-match (cdr e) nil t))))))
 
 (provide 'cclisp)
-
 ;;; cclisp.el ends here
