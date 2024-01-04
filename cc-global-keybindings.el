@@ -38,7 +38,7 @@
 (global-set-key (kbd "A-<f5>") 'cc/org-search)
 (global-set-key (kbd "<f6>") 'osx-dictionary-search-input)
 (global-set-key (kbd "<f7>") 'cc/meta-search)
-(global-set-key (kbd "C-o") 'cc/meta-search) 
+(global-set-key (kbd "C-o") 'cc/meta-search)
 
 (global-set-key (kbd "<f8>") 'org-capture)
 (global-set-key (kbd "<f9>") 'avy-goto-word-1)
@@ -51,8 +51,8 @@
 
 (global-set-key (kbd "<f13>") 'cc/ediff-revision)
 (global-set-key (kbd "M-<f13>") 'treemacs)
-;;(global-set-key (kbd "<f14>") 'eshell) ;regular
-(global-set-key (kbd "<f14>") 'save-buffer) ;logitech
+(global-set-key (kbd "<f14>") 'eshell) ;regular
+;;(global-set-key (kbd "<f14>") 'save-buffer) ;logitech
 
 (global-set-key (kbd "<f15>") 'cc/ediff-revision)
 (global-set-key (kbd "<f16>") 'run-python)
