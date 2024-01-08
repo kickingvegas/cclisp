@@ -82,7 +82,7 @@ If prefix is invoked, then macOS open is used to open the PDF file."
   (interactive "P")
   (if current-prefix-arg
       (shell-command (format-time-string "open ~/org/%Y.pdf"))
-    (find-file (format-time-string "~/org/%Y.pdf"))))
+    (find-file-other-window (format-time-string "~/org/%Y.pdf"))))
 
 (defun make-year ()
   "Invoke makefile target to generate daily current year pdf file."
