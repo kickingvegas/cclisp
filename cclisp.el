@@ -76,10 +76,13 @@ A new frame will be created if `pop-up-frames' is t."
   (let ((choice (car (completing-read-multiple "Select URL: " (map-keys cc/url-bookmarks)))))
     (browse-url (cdr (assoc choice cc/url-bookmarks)))))
 
-(defun year ()
-  "Open daily generated current year pdf file using macOS open."
-  (interactive)
-  (shell-command (format-time-string "open ~/org/%Y.pdf")))
+(defun year (arg)
+  "Open daily generated current year PDF file.
+If prefix is invoked, then macOS open is used to open the PDF file."
+  (interactive "P")
+  (if current-prefix-arg
+      (shell-command (format-time-string "open ~/org/%Y.pdf"))
+    (find-file (format-time-string "~/org/%Y.pdf"))))
 
 (defun make-year ()
   "Invoke makefile target to generate daily current year pdf file."
