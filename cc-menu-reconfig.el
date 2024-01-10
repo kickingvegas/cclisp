@@ -9,6 +9,17 @@
 (require 'text-mode)
 (require 'vc)
 (require 'helm)
+(require 'dired)
+(require 'transpose-frame)
+(require 'cc-region-operations-menu)
+(require 'cc-edit-text-menu)
+
+(defun cc/dired-side-right (path)
+  "Side-by-side layout with Dired buffer on the right set to PATH."
+  (interactive "DDirectory: ")
+  (delete-other-windows)
+  (dired-other-window path)
+  (transpose-frame))
 
 (easy-menu-add-item (lookup-key global-map [menu-bar file]) nil
                     ["Swap Windows"
@@ -164,10 +175,17 @@ in a buffer"]
                     "Calendar")
 
 (easy-menu-add-item global-map '(menu-bar tools)
+                    ["Dired on Right Side"
+                     cc/dired-side-right
+                     :help "Side-by-side layout with Dired buffer on the right set to PATH."]
+                    "Calendar")
+
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["RE-Builder"
                      re-builder
                      :help "Construct a regexp interactively."]
                     "Calendar")
+
 
 (keymap-set-after (lookup-key global-map [menu-bar tools])
   "<separator-re>"
@@ -201,7 +219,7 @@ various time zones."]
     "---"
     ["Add Bookmark…" bookmark-set-no-overwrite
      :help "Set a bookmark named NAME at the current location."]
-    "---" 
+    "---"
     ["Jump to Bookmark…" bookmark-jump
      :help "Jump to bookmark"]))
 
