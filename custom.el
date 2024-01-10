@@ -218,7 +218,8 @@
  '(dired-auto-revert-buffer t)
  '(dired-dwim-target 'dired-dwim-target-next)
  '(dired-guess-shell-alist-user '(("" "open")))
- '(dired-listing-switches "-alh --time-style=long-iso --sort=version")
+ '(dired-listing-switches
+   "-lh --group-directories-first --time-style=long-iso --sort=version")
  '(dired-mouse-drag-files t)
  '(dired-use-ls-dired 'unspecified)
  '(display-buffer-alist
