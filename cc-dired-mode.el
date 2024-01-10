@@ -32,8 +32,8 @@
         ;; mark file
         (message fname)
         (dired-find-file))
-       
-       (t 
+
+       (t
         (message "undefined"))))))
 
 ;; (add-hook 'dired-mode-hook (lambda ()
@@ -42,8 +42,9 @@
 (add-hook 'dired-mode-hook (lambda ()
                              (define-key dired-mode-map (kbd "M-o") 'dired-omit-mode)
                              (define-key dired-mode-map (kbd "C-o") 'cc/meta-search)
+                             (define-key dired-mode-map (kbd "E") 'wdired-change-to-wdired-mode)
                              (setq-local mouse-1-click-follows-link 'double)
                              ;;(define-key dired-mode-map (kbd "A-M-<mouse-2>") 'cc/dired-inspect-object)
                              (define-key dired-mode-map (kbd "A-M-<mouse-1>") 'browse-url-of-dired-file)))
-  
+
 (provide 'cc-dired-mode)
