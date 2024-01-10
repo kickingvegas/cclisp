@@ -1,4 +1,4 @@
-;;; cc-dired-mode.el --- Dired Customization
+;;; cc-dired-mode.el --- Dired Customization -*- lexical-binding: t -*-
 ;; dired-mode
 
 ;;; Commentary:
@@ -8,6 +8,8 @@
 (require 'dired)
 (require 'transient)
 (require 'cclisp)
+(require 'helm)
+(require 'easymenu)
 
 (with-eval-after-load 'dired
   (require 'dired-x))
@@ -123,12 +125,12 @@ PREFIX-ARGS is a list returned from the function
 (`transient-args' `transient-current-command')
 
 This function requires GNU ls from coreutils installed."
-  (let* (arg-list (list))
-    (push "-l" arg-list)
-    ;;(push "--group-directories-first" arg-list)
+  (let ((arg-list (list "-l")))
     (if prefix-args
-        (nconc arg-list prefix-args))
-
+        (nconc arg-list prefix-args)
+      (nconc arg-list (list "--group-directories-first"
+                            "--human-readable"
+                            "--time-style=long-iso")))
     (cond
      ((eq criteria :name)
       (message "Sorting by name"))
@@ -170,6 +172,26 @@ This function requires GNU ls from coreutils installed."
 
     (dired-sort-other (mapconcat 'identity arg-list " "))))
 
+(easy-menu-define cc/dired-sort-menu nil
+  "Keymap for Dired sort by submenu."
+  '("Sort By"
+    ["Name"
+     (lambda () (interactive) (cc/--dired-sort-by :name))]
+    ["Kind"
+     (lambda () (interactive) (cc/--dired-sort-by :kind))]
+    ["Date Last Opened"
+     (lambda () (interactive) (cc/--dired-sort-by :date-last-opened))]
+    ["Date Added"
+     (lambda () (interactive) (cc/--dired-sort-by :date-added))]
+    ["Date Modified"
+     (lambda () (interactive) (cc/--dired-sort-by :date-modified))]
+    ["Date Metadata Changed"
+     (lambda () (interactive) (cc/--dired-sort-by :date-metadata-changed))]
+    ["Version"
+     (lambda () (interactive) (cc/--dired-sort-by :version))]
+    ["Size"
+     (lambda () (interactive) (cc/--dired-sort-by :size))]))
+
 (add-hook
  'dired-mode-hook
  (lambda ()
@@ -177,6 +199,7 @@ This function requires GNU ls from coreutils installed."
    (define-key dired-mode-map (kbd "C-o") 'cc/meta-search)
    (define-key dired-mode-map (kbd "E") 'wdired-change-to-wdired-mode)
    (define-key dired-mode-map (kbd "s") 'cc/dired-sort-by)
+   (define-key dired-mode-map (kbd "j") 'helm-find-files)
    (setq-local mouse-1-click-follows-link 'double)
    ;;(define-key dired-mode-map (kbd "A-M-<mouse-2>") 'cc/dired-inspect-object)
    (define-key dired-mode-map (kbd "A-M-<mouse-1>") 'browse-url-of-dired-file)))
