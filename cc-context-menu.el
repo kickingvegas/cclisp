@@ -1,5 +1,12 @@
+;;; cc-context-menu.el --- Context Menu Customization
 ;; context-menu addons
 
+
+;;; Commentary:
+;;
+
+;;; Code:
+(require 'easymenu)
 (require 'cc-context-menu-macros)
 (require 'cc-transform-text-menu)
 (require 'cc-style-text-menu)
@@ -8,9 +15,10 @@
 (require 'cc-find-menu)
 (require 'cc-edit-text-menu)
 (require 'cc-wgrep-mode)
+(require 'cc-dired-mode)
 
 (defun cc/context-menu-addons (menu click)
-  "CC context menu additions"
+  "CC context menu additions."
   (save-excursion
     (mouse-set-point click)
 
@@ -23,7 +31,7 @@
                                   :help "Show Org agenda with all TODO tasks."])
 
     (cc/context-menu-item-separator menu buffer-navigation-separator)
-        
+
     (easy-menu-add-item menu nil ["List All Buffers"
                                   list-buffers
                                   :help "List all buffers"])
@@ -36,23 +44,23 @@
                                   :label (cc/context-menu-label "Narrow Region")
                                   :help "Restrict editing in this buffer \
 to the current region"]))
-            
-            
+
+
             ((and (not (buffer-narrowed-p)) (derived-mode-p 'org-mode))
-             (cc/context-menu-item-separator menu narrow-separator)             
+             (cc/context-menu-item-separator menu narrow-separator)
              (easy-menu-add-item menu nil
                                  ["Narrow to subtree" org-narrow-to-subtree
                                   :help "Restrict editing in this buffer \
 to the current subtree"]))
-             
-            
+
+
             ((and (not (buffer-narrowed-p)) (derived-mode-p 'markdown-mode))
-             (cc/context-menu-item-separator menu narrow-separator)             
+             (cc/context-menu-item-separator menu narrow-separator)
              (easy-menu-add-item menu nil
                                  ["Narrow to subtree" markdown-narrow-to-subtree
                                   :help "Restrict editing in this buffer \
 to the current subtree"])))
-      
+
       (when (buffer-narrowed-p)
         (cc/context-menu-item-separator menu widen-separator)
         (easy-menu-add-item menu nil
@@ -60,8 +68,8 @@ to the current subtree"])))
                              :help "Remove narrowing restrictions \
 from current buffer"])))
 
-    (easy-menu-add-item menu nil "--")      
-    
+    (easy-menu-add-item menu nil "--")
+
     (cc/context-menu-item-separator menu capture-flow-separator)
     (easy-menu-add-item menu nil
                         ["New Workflow…"
@@ -80,9 +88,10 @@ from current buffer"])))
                         ["Open in Dired"
                          dired-jump-other-window
                          :visible (and (buffer-file-name) (not (derived-mode-p 'dired-mode)))
-                         :help "Open file in Dired"])    
-    
+                         :help "Open file in Dired"])
+
     (when (derived-mode-p 'dired-mode)
+      (easy-menu-add-item menu nil cc/dired-sort-menu)
       (easy-menu-add-item menu nil
                           ["Duplicate"
                            cc/dired-duplicate-file
@@ -96,9 +105,9 @@ from current buffer"])))
 
     (when (use-region-p)
       (cc/context-menu-item-separator menu dictionary-operations-separator)
-      (easy-menu-add-item menu nil ["Look Up" 
+      (easy-menu-add-item menu nil ["Look Up"
                                     osx-dictionary-search-word-at-point
-                                    :label (cc/context-menu-last-word-in-region "Look Up")                                    
+                                    :label (cc/context-menu-last-word-in-region "Look Up")
                                     :help "Look up selected region in macOS dictionary"]))
 
     (cc/context-menu-item-separator menu find-operations-separator)
@@ -114,10 +123,10 @@ a match for selected word"])
       (easy-menu-add-item menu nil
                           ["Find in buffer (occur)"
                            occur
-                           :visible (not buffer-read-only)                           
+                           :visible (not buffer-read-only)
                            :help "Show all lines in the current buffer \
 containing a match for regex"]))
-    
+
     (easy-menu-add-item menu nil cc/find-menu)
 
     (keymap-set-after menu
@@ -145,7 +154,7 @@ in a buffer"]))
                                   :help "Show log for the blob or file visited in \
 the current buffer"])
 
-    
+
     (when (use-region-p)
       (cc/context-menu-item-separator menu transform-text-separator)
       (easy-menu-add-item menu nil cc/transform-text-menu)
@@ -193,7 +202,7 @@ temporarily visible (Visible mode)"])
                           ["Toggle Reveal Markup"
                            markdown-toggle-markup-hiding
                            :help "Toggle the display or hiding of markup"])))
-     
+
     (when (org-at-table-p)
       (cc/context-menu-item-separator menu org-table-separator)
       (easy-menu-add-item menu nil
@@ -229,17 +238,17 @@ temporarily visible (Visible mode)"])
           (easy-menu-add-item menu nil ["Count Words in Region"
                                         count-words
                                         :help "Count words in region"])
-    
+
         (easy-menu-add-item menu nil ["Count Words in Buffer"
                                       count-words
                                       :help "Count words in buffer"])))
 
-    
+
     (easy-menu-add-item menu nil cc/transpose-menu)
     (easy-menu-add-item menu nil cc/move-text-menu)
     (easy-menu-add-item menu nil cc/delete-space-menu)
     (easy-menu-add-item menu nil cc/wgrep-menu)
-    
+
     menu))
 
 (defun cc/kill-org-table-reference (e)
@@ -251,3 +260,4 @@ temporarily visible (Visible mode)"])
 (add-hook 'context-menu-functions #'cc/context-menu-addons)
 
 (provide 'cc-context-menu)
+;;; cc-context-menu.el ends here

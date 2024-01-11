@@ -49,8 +49,7 @@
 (global-set-key (kbd "C-c C-;") 'shell-command)
 (global-set-key (kbd "M-<f4>") 'helm-buffers-list)
 
-(global-set-key (kbd "<f13>") 'cc/ediff-revision)
-(global-set-key (kbd "M-<f13>") 'treemacs)
+(global-set-key (kbd "<f13>") 'treemacs)
 (global-set-key (kbd "<f14>") 'eshell) ;regular
 ;;(global-set-key (kbd "<f14>") 'save-buffer) ;logitech
 

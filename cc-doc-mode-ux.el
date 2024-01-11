@@ -10,6 +10,7 @@
 (require 'shortdoc)
 (require 'man)
 (require 'hl-line)
+(require 'simple)
 
 (defun cc/docview-backward-paragraph ()
   "Move point backward paragraph such that the first line is highlighted.
@@ -56,6 +57,7 @@ This function is intended to be used with `hl-line-mode'."
             (define-key Info-mode-map (kbd "<mouse-4>") 'Info-history-back)))
 
 (add-hook 'Info-mode-hook 'hl-line-mode)
+(add-hook 'Info-mode-hook 'visual-line-mode)
 
 ;; Help
 (add-hook 'help-mode-hook
@@ -79,6 +81,7 @@ This function is intended to be used with `hl-line-mode'."
             (define-key help-mode-map (kbd "<mouse-4>") 'help-go-back)))
 
 (add-hook 'help-mode-hook 'hl-line-mode)
+(add-hook 'help-mode-hook 'visual-line-mode)
 
 ;; Shortdoc
 (add-hook 'shortdoc-mode-hook
@@ -96,6 +99,7 @@ This function is intended to be used with `hl-line-mode'."
             (define-key shortdoc-mode-map (kbd "l") 'shortdoc-next-section)))
 
 (add-hook 'shortdoc-mode-hook 'hl-line-mode)
+(add-hook 'shortdoc-mode-hook 'visual-line-mode)
 
 ;; Man
 (add-hook 'Man-mode-hook
@@ -112,6 +116,7 @@ This function is intended to be used with `hl-line-mode'."
             (define-key Man-mode-map (kbd "K") 'Man-kill)))
 
 (add-hook 'Man-mode-hook 'hl-line-mode)
+(add-hook 'Man-mode-hook 'visual-line-mode)
 
 (provide 'cc-doc-mode-ux)
 

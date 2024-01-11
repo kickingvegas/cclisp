@@ -19,7 +19,8 @@
   (interactive "DDirectory: ")
   (delete-other-windows)
   (dired-other-window path)
-  (transpose-frame))
+  (transpose-frame)
+  (other-window 1))
 
 (easy-menu-add-item (lookup-key global-map [menu-bar file]) nil
                     ["Swap Windows"
