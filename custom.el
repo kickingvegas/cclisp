@@ -290,7 +290,6 @@
  '(mark-ring-max 6)
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
- '(mouse-autoselect-window 0.35)
  '(org-agenda-files '("~/org/"))
  '(org-agenda-include-diary t)
  '(org-agenda-sorting-strategy
