@@ -133,42 +133,42 @@ This function requires GNU ls from coreutils installed."
                             "--time-style=long-iso")))
     (cond
      ((eq criteria :name)
-      (message "Sorting by name"))
+      (message "Sorted by name"))
 
      ((eq criteria :kind)
-      (message "Sorting by kind")
+      (message "Sorted by kind")
       (push "--sort=extension" arg-list))
 
      ((eq criteria :date-last-opened)
-      (message "Sorting by date last opened")
+      (message "Sorted by date last opened")
       (push "--sort=time" arg-list)
       (push "--time=access" arg-list))
 
      ((eq criteria :date-added)
-      (message "Sorting by date added")
+      (message "Sorted by date added")
       (push "--sort=time" arg-list)
       (push "--time=creation" arg-list))
 
      ((eq criteria :date-modified)
-      (message "Sorting by date modified")
+      (message "Sorted by date modified")
       (push "--sort=time" arg-list)
       (push "--time=modification" arg-list))
 
      ((eq criteria :date-metadata-changed)
-      (message "Sorting by date metadata changed")
+      (message "Sorted by date metadata changed")
       (push "--sort=time" arg-list)
       (push "--time=status" arg-list))
 
      ((eq criteria :version)
-      (message "Sorting by version")
+      (message "Sorted by version")
       (push "--sort=version" arg-list))
 
      ((eq criteria :size)
-      (message "Sorting by size")
+      (message "Sorted by size")
       (push "-S" arg-list))
 
      (t
-      (message "Default sorting by name")))
+      (message "Default sorted by name")))
 
     (dired-sort-other (mapconcat 'identity arg-list " "))))
 
@@ -176,21 +176,29 @@ This function requires GNU ls from coreutils installed."
   "Keymap for Dired sort by submenu."
   '("Sort By"
     ["Name"
-     (lambda () (interactive) (cc/--dired-sort-by :name))]
+     (lambda () (interactive) (cc/--dired-sort-by :name))
+     :help "Sort by name"]
     ["Kind"
-     (lambda () (interactive) (cc/--dired-sort-by :kind))]
+     (lambda () (interactive) (cc/--dired-sort-by :kind))
+     :help "Sort by kind"]
     ["Date Last Opened"
-     (lambda () (interactive) (cc/--dired-sort-by :date-last-opened))]
+     (lambda () (interactive) (cc/--dired-sort-by :date-last-opened))
+     :help "Sort by date last opened"]
     ["Date Added"
-     (lambda () (interactive) (cc/--dired-sort-by :date-added))]
+     (lambda () (interactive) (cc/--dired-sort-by :date-added))
+     :help "Sort by date added"]
     ["Date Modified"
-     (lambda () (interactive) (cc/--dired-sort-by :date-modified))]
+     (lambda () (interactive) (cc/--dired-sort-by :date-modified))
+     :help "Sort by date modified"]
     ["Date Metadata Changed"
-     (lambda () (interactive) (cc/--dired-sort-by :date-metadata-changed))]
+     (lambda () (interactive) (cc/--dired-sort-by :date-metadata-changed))
+     :help "Sort by date metadata changed"]
     ["Version"
-     (lambda () (interactive) (cc/--dired-sort-by :version))]
+     (lambda () (interactive) (cc/--dired-sort-by :version))
+     :help "Sort by version"]
     ["Size"
-     (lambda () (interactive) (cc/--dired-sort-by :size))]))
+     (lambda () (interactive) (cc/--dired-sort-by :size))
+     :help "Sort by size"]))
 
 (add-hook
  'dired-mode-hook
