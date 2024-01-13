@@ -17,7 +17,7 @@
 (require 'cc-find-menu)
 (require 'cc-edit-text-menu)
 (require 'cc-wgrep-mode)
-(require 'cc-dired-mode)
+(require 'cc-dired-sort-by)
 
 (defun cc/context-menu-addons (menu click)
   "Context menu customization for Charles Choi.
@@ -94,8 +94,8 @@ from current buffer"])))
                          :visible (and (buffer-file-name) (not (derived-mode-p 'dired-mode)))
                          :help "Open file in Dired"])
 
+    (easy-menu-add-item menu nil cc/dired-sort-menu)
     (when (derived-mode-p 'dired-mode)
-      (easy-menu-add-item menu nil cc/dired-sort-menu)
       (easy-menu-add-item menu nil
                           ["Duplicate"
                            cc/dired-duplicate-file
