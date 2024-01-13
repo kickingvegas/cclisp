@@ -206,6 +206,8 @@
  '(calendar-latitude 37.7643)
  '(calendar-longitude -122.4753)
  '(case-fold-search t)
+ '(cc-dired-listing-switches
+   '("--human-readable" "--group-directories-first" "--time-style=long-iso"))
  '(column-number-mode t)
  '(current-language-environment "English")
  '(cursor-type 'bar)
