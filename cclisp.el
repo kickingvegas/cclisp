@@ -523,5 +523,14 @@ SOUND - sound file (optional)"
         (while (search-forward (car e) nil t)
           (replace-match (cdr e) nil t))))))
 
+(defun cc/--image-info (filename)
+  "Get image information via Imagemagick identify utility."
+  (car
+   (process-lines
+    "identify"
+    "-format"
+    "%m %wx%h %b"
+    (expand-file-name filename))))
+
 (provide 'cclisp)
 ;;; cclisp.el ends here
