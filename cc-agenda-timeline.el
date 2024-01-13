@@ -34,13 +34,13 @@
   (let ((closed (assoc-default "CLOSED" e))
         (timestamp (assoc-default "TIMESTAMP" e))
         (scheduled (assoc-default "SCHEDULED" e))
-        (deadline (assoc-default "DEADLINE" e))                    
+        (deadline (assoc-default "DEADLINE" e))
         )
 
     (if (or closed (not (or timestamp scheduled deadline)))
         t
       nil)))
-    
+
 (defun cc/test-timestamp (e)
   (let ((timestamp-buf (assoc-default "TIMESTAMP" e))
         (scheduled-buf (assoc-default "SCHEDULED" e))
@@ -51,28 +51,28 @@
     ;; TODO: handle possible case where timestamp and/or scheduled are repeating
     ;; TODO: handle date and time intervals "<2024-02-05 Mon>--<2024-02-12 Mon>"
     ;; (string-match "--" "<2024-02-05 Mon>--<2024-02-12 Mon>")
-    
+
     (cond (timestamp-buf
            (if (stringp (org-get-repeat timestamp-buf))
                (setq timestamp (cc/at/next-time-from-repeating-org-timestamp timestamp-buf))
              (setq timestamp (time-convert (org-read-date nil t timestamp-buf) 'list)))
-           ;; now timestamp is a Lisp timesstamp 
+           ;; now timestamp is a Lisp timesstamp
            (cc/timestamp-filter timestamp 2 45))
 
           (scheduled-buf
            (if (stringp (org-get-repeat scheduled-buf))
                (setq scheduled (cc/at/next-time-from-repeating-org-timestamp scheduled-buf))
              (setq scheduled (time-convert (org-read-date nil t scheduled-buf) 'list)))
-           ;; now timestamp is a Lisp timesstamp 
+           ;; now timestamp is a Lisp timesstamp
            (cc/timestamp-filter scheduled 2 45))
 
           (deadline-buf
            (if (stringp (org-get-repeat deadline-buf))
                (setq deadline (cc/at/next-time-from-repeating-org-timestamp deadline-buf))
              (setq deadline (time-convert (org-read-date nil t deadline-buf) 'list)))
-           ;; now timestamp is a Lisp timesstamp 
+           ;; now timestamp is a Lisp timesstamp
            (cc/timestamp-filter deadline 2 45))
-          
+
           (t
            nil))))
 
@@ -93,7 +93,7 @@ otherwise nil."
 
 
 
-(defun cc/timestamp-filter (timestamp start end) 
+(defun cc/timestamp-filter (timestamp start end)
   (let ((start-timestamp (time-subtract (current-time) (* 60 60 24 start)))
         (end-timestamp (time-add (current-time) (* 60 60 24 end))))
     (if (and (time-less-p start-timestamp timestamp) (time-less-p timestamp end-timestamp))
@@ -103,6 +103,8 @@ otherwise nil."
 
 (defun cc/agenda-timeline-items (match scope &optional include-diary include-holidays)
   (interactive)
+  (ignore include-diary)
+  (ignore include-holidays)
   (let* ((agenda-items (org-map-entries 'org-entry-properties match scope))
          (active-agenda-items (seq-remove 'cc/at/closed-agenda-element-p agenda-items))
          (timestamped-items (seq-filter 'cc/test-timestamp active-agenda-items))
@@ -113,7 +115,7 @@ otherwise nil."
          (items-with-diary (append items (cc/extract-diary-items 40) (cc/extract-holiday-items 40)))
          (sorted-items (sort items-with-diary (lambda (x y) (time-less-p (nth 1 x) (nth 1 y)))))
          (results (list)))
-    
+
     (mapc (lambda (x)
               (push (format "[%s] happens %s" (cc/scrub-item-string (nth 0 x)) (format-time-string "%Y-%m-%d" (nth 1 x))) results)) sorted-items)
 
@@ -140,10 +142,10 @@ otherwise nil."
     (push "today is colored in Orange" headers)
     (push "skinparam backgroundColor #EEEEEE" headers)
     (push (format "Project starts %s" today) headers)
-    
+
     (push "@endgantt" footers)
 
-    (mapconcat 'identity 
+    (mapconcat 'identity
                (append (reverse headers)
                        (cc/agenda-timeline-items match scope include-diary include-holidays)
                        (reverse footers))
@@ -162,7 +164,7 @@ otherwise nil."
          (year (nth 2 date-list))
          (datestamp (format "%4d-%02d-%02d" year month day))
          (results (list)))
-    
+
     (push (time-convert (date-to-time datestamp) 'list) results)
     (push item results)
     results

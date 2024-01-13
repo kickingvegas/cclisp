@@ -1,3 +1,25 @@
+;;; cc-style-text-menu.el --- Style Text Menus -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2023-2024  Charles Choi
+
+;; Author: Charles Choi <kickingvegas@gmail.com>
+
+;; Keywords: tools
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+;;; Commentary:
 ;;
 
 (require 'cc-context-menu-macros)
@@ -8,7 +30,10 @@
 ;;   (interactive)
 ;;   (org-emphasize ?\s))
 
+;;; Code:
+
 (defun cc/emphasize-bold ()
+  "Mark region bold for Org or Markdown modes."
   (interactive)
   (cond ((derived-mode-p 'org-mode)
          (org-emphasize ?*))
@@ -17,7 +42,8 @@
         (t nil)))
 
 (defun cc/emphasize-italic ()
-  (interactive)  
+  "Mark region italic for Org or Markdown modes."
+  (interactive)
   (cond ((derived-mode-p 'org-mode)
          (org-emphasize ?/))
         ((derived-mode-p 'markdown-mode)
@@ -25,7 +51,8 @@
         (t nil)))
 
 (defun cc/emphasize-code ()
-  (interactive)  
+  "Mark region code for Org or Markdown modes."
+  (interactive)
   (cond ((derived-mode-p 'org-mode)
          (org-emphasize ?~))
         ((derived-mode-p 'markdown-mode)
@@ -33,19 +60,22 @@
         (t nil)))
 
 (defun cc/emphasize-underline ()
-  (interactive)  
+  "Mark region underline for Org mode."
+  (interactive)
   (cond ((derived-mode-p 'org-mode)
          (org-emphasize ?_))
         (t nil)))
 
 (defun cc/emphasize-verbatim ()
+  "Mark region verbatim for Org mode."
   (interactive)
   (cond ((derived-mode-p 'org-mode)
          (org-emphasize ?=))
         (t nil)))
 
 (defun cc/emphasize-strike-through ()
-  (interactive)  
+  "Mark region strike-through for Org or Markdown modes."
+  (interactive)
   (cond ((derived-mode-p 'org-mode)
          (org-emphasize ?+))
         ((derived-mode-p 'markdown-mode)
@@ -53,7 +83,7 @@
         (t nil)))
 
 (easy-menu-define cc/emphasize-menu nil
-  "Keymap for Emphasize Menu"
+  "Keymap for Emphasize Menu."
   '("Style"
     :visible (region-active-p)
     ["Bold" cc/emphasize-bold
@@ -62,15 +92,15 @@
      :help "Bold selected region"]
     ["Italic" cc/emphasize-italic
      :enable (region-active-p)
-     :visible (or (derived-mode-p 'org-mode) (derived-mode-p 'markdown-mode))     
+     :visible (or (derived-mode-p 'org-mode) (derived-mode-p 'markdown-mode))
      :help "Italic selected region"]
     ["Code" cc/emphasize-code
      :enable (region-active-p)
-     :visible (or (derived-mode-p 'org-mode) (derived-mode-p 'markdown-mode))     
+     :visible (or (derived-mode-p 'org-mode) (derived-mode-p 'markdown-mode))
      :help "Code selected region"]
     ["Underline" cc/emphasize-underline
      :enable (region-active-p)
-     :visible (derived-mode-p 'org-mode)     
+     :visible (derived-mode-p 'org-mode)
      :help "Underline selected region"]
     ["Verbatim" cc/emphasize-verbatim
      :enable (region-active-p)
@@ -78,7 +108,9 @@
      :help "Verbatim selected region"]
     ["Strike Through" cc/emphasize-strike-through
      :enable (region-active-p)
-     :visible (or (derived-mode-p 'org-mode) (derived-mode-p 'markdown-mode))     
+     :visible (or (derived-mode-p 'org-mode) (derived-mode-p 'markdown-mode))
      :help "Strike-through selected region"]))
 
 (provide 'cc-style-text-menu)
+
+;;; cc-style-text-menu.el ends here

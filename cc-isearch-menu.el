@@ -1,6 +1,6 @@
 ;;; cc-isearch-menu.el --- isearch Transient menu -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023  Charles Choi
+;; Copyright (C) 2023-2024  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: wp

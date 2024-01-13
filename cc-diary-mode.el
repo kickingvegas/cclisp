@@ -1,8 +1,9 @@
 ;;; cc-diary-mode.el --- diary customization         -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023  Charles Choi
+;; Copyright (C) 2023-2024  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
+
 ;; Keywords: tools
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -20,7 +21,7 @@
 
 ;;; Commentary:
 
-;; 
+;;
 
 ;;; Code:
 

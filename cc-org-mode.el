@@ -1,5 +1,23 @@
-;;; cc-org-mode.el --- Org configuration
-;; org-mode
+;;; cc-org-mode.el --- Org configuration -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2023-2024  Charles Choi
+
+;; Author: Charles Choi <kickingvegas@gmail.com>
+
+;; Keywords: tools
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 ;;
@@ -198,24 +216,25 @@ This function is intended to be passed into `doct' via the :function property."
 (add-hook
  'org-mode-hook
  (lambda ()
-   (define-key org-mode-map (kbd "M-<f8>") 'datestamp)
-   ;; (define-key org-mode-map (kbd "<f9>") 'avy-goto-word-1)
-   (define-key org-mode-map (kbd "M-<f6>") 'org-toggle-inline-images)
-   (define-key org-mode-map (kbd "C-c t") 'cc/org-time-stamp-inactive)
-   (define-key org-mode-map (kbd "<home>") 'org-beginning-of-line)
-   (define-key org-mode-map (kbd "<end>") 'org-end-of-line)
-   (define-key org-mode-map (kbd "A-<left>") 'org-backward-sentence)
-   (define-key org-mode-map (kbd "A-<right>") 'org-forward-sentence)
-   (define-key org-mode-map (kbd "A-M-<left>") 'org-backward-paragraph)
-   (define-key org-mode-map (kbd "A-M-<right>") 'org-forward-paragraph)
-   (define-key org-mode-map (kbd "C-<up>") 'org-previous-visible-heading)
-   (define-key org-mode-map (kbd "C-<down>") 'org-next-visible-heading)
-   (define-key org-mode-map (kbd "M-v") 'org-previous-visible-heading)
-   (define-key org-mode-map (kbd "M-j") 'cc/journal-entry)
-   (define-key org-mode-map (kbd "C-v") 'org-next-visible-heading)
-   (define-key org-mode-map (kbd "C-/") 'org-emphasize)
    (add-to-list (make-local-variable 'company-backends)
                 'company-org-block)))
+
+(define-key org-mode-map (kbd "M-<f8>") 'datestamp)
+;; (define-key org-mode-map (kbd "<f9>") 'avy-goto-word-1)
+(define-key org-mode-map (kbd "M-<f6>") 'org-toggle-inline-images)
+(define-key org-mode-map (kbd "C-c t") 'cc/org-time-stamp-inactive)
+(define-key org-mode-map (kbd "<home>") 'org-beginning-of-line)
+(define-key org-mode-map (kbd "<end>") 'org-end-of-line)
+(define-key org-mode-map (kbd "A-<left>") 'org-backward-sentence)
+(define-key org-mode-map (kbd "A-<right>") 'org-forward-sentence)
+(define-key org-mode-map (kbd "A-M-<left>") 'org-backward-paragraph)
+(define-key org-mode-map (kbd "A-M-<right>") 'org-forward-paragraph)
+(define-key org-mode-map (kbd "C-<up>") 'org-previous-visible-heading)
+(define-key org-mode-map (kbd "C-<down>") 'org-next-visible-heading)
+(define-key org-mode-map (kbd "M-v") 'org-previous-visible-heading)
+(define-key org-mode-map (kbd "M-j") 'cc/journal-entry)
+(define-key org-mode-map (kbd "C-v") 'org-next-visible-heading)
+(define-key org-mode-map (kbd "C-/") 'org-emphasize)
 
 (add-hook 'org-agenda-finalize-hook 'hl-line-mode)
 (add-hook 'org-agenda-finalize-hook
@@ -230,13 +249,10 @@ This function is intended to be passed into `doct' via the :function property."
   (org-agenda-goto-today)
   (search-forward " now "))
 
-(add-hook
- 'org-agenda-mode-hook
- (lambda ()
-   (define-key org-agenda-mode-map (kbd "<f1>") 'org-save-all-org-buffers)
-   (define-key org-agenda-mode-map (kbd "M-p") 'org-agenda-previous-date-line)
-   (define-key org-agenda-mode-map (kbd "M-n") 'org-agenda-next-date-line)
-   (define-key org-agenda-mode-map (kbd ".") 'cc/org-agenda-goto-now)))
+(define-key org-agenda-mode-map (kbd "<f1>") 'org-save-all-org-buffers)
+(define-key org-agenda-mode-map (kbd "M-p") 'org-agenda-previous-date-line)
+(define-key org-agenda-mode-map (kbd "M-n") 'org-agenda-next-date-line)
+(define-key org-agenda-mode-map (kbd ".") 'cc/org-agenda-goto-now)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
