@@ -1,12 +1,14 @@
-;;; cc-context-menu.el --- Context Menu Customization
+;;; cc-context-menu.el --- Context Menu Customization -*- lexical-binding: t -*-
 ;; context-menu addons
-
 
 ;;; Commentary:
 ;;
 
 ;;; Code:
 (require 'easymenu)
+(require 'mouse)
+(require 'org)
+(require 'cclisp)
 (require 'cc-context-menu-macros)
 (require 'cc-transform-text-menu)
 (require 'cc-style-text-menu)
@@ -18,7 +20,9 @@
 (require 'cc-dired-mode)
 
 (defun cc/context-menu-addons (menu click)
-  "CC context menu additions."
+  "Context menu customization for Charles Choi.
+MENU - menu
+CLICK - event"
   (save-excursion
     (mouse-set-point click)
 
@@ -101,7 +105,13 @@ from current buffer"])))
                                           "."
                                           (file-name-extension (dired-get-filename))
                                           "”")
-                           :help "Duplicate selected item"]))
+                           :help "Duplicate selected item"])
+      (easy-menu-add-item menu nil
+                          ["Image Info"
+                           cc/kill-image-info
+                           :label (concat "Info: "
+                                          (cc/--image-info (dired-get-filename)))
+                           :visible (org-file-image-p (dired-get-filename))]))
 
     (when (use-region-p)
       (cc/context-menu-item-separator menu dictionary-operations-separator)
@@ -251,8 +261,36 @@ temporarily visible (Visible mode)"])
 
     menu))
 
-(defun cc/kill-org-table-reference (e)
+;; (defvar cchoi-mouse-file nil "some thing")
+
+;; (defun cc/track-mouse (event)
+;;   (interactive "e")
+;;   (if (mouse-posn-property (event-start event) 'dired-filename)
+;;     (let (window pos file)
+;;       (save-excursion
+;;         (setq window (posn-window (event-end event))
+;;            pos (posn-point (event-end event)))
+;;         (if (not (windowp window))
+;;          (error "No file chosen"))
+;;         (set-buffer (window-buffer window))
+;;         (goto-char pos)
+;;         (setq file (dired-get-filename)))
+;;       (setq cchoi-mouse-file file)))
+;;   (setq cchoi-mouse-file nil))
+
+
+(defun cc/kill-image-info (e)
+  "Push Dired image file info into the `kill-ring'.
+E - event"
   (interactive "e")
+  (ignore e)
+  (cc/dired-image-info))
+
+(defun cc/kill-org-table-reference (e)
+  "Push Org table reference into the `kill-ring'.
+E - event"
+  (interactive "e")
+  (ignore e)
   (kill-new (format "@%d$%d"
                     (org-table-current-dline)
                     (org-table-current-column))))

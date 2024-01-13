@@ -10,11 +10,26 @@
 (require 'cclisp)
 (require 'helm)
 (require 'easymenu)
+(require 'org)
 
 (with-eval-after-load 'dired
   (require 'dired-x))
 (add-hook 'dired-mode-hook 'hl-line-mode)
 (add-hook 'dired-mode-hook 'context-menu-mode)
+
+(defun cc/dired-image-info ()
+  "Message image info in the minibuffer and push into kill-ring."
+  (interactive)
+  (when (org-file-image-p (dired-get-filename))
+    (let* ((filename (dired-get-filename))
+           (image-info (cc/--image-info filename))
+           (output (concat image-info
+                           " "
+                           (file-name-base filename)
+                           "."
+                           (file-name-extension filename))))
+      (message output)
+      (kill-new output))))
 
 (defun cc/dired-inspect-object ()
   "WIP: inspect Dired object."
