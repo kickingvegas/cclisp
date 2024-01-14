@@ -35,6 +35,7 @@
 (require 'osx-dictionary)
 (require 'google-this)
 (require 'treemacs)
+(require 'neotree)
 (require 'python)
 (require 'ibuffer)
 (require 'magit-status)
@@ -68,11 +69,13 @@
 (global-set-key (kbd "C-c C-;") 'shell-command)
 (global-set-key (kbd "M-<f4>") 'helm-buffers-list)
 
-(global-set-key (kbd "<f13>") 'treemacs)
+(global-set-key (kbd "<f13>") 'cc/ediff-revision)
+(global-set-key (kbd "M-<f13>") 'neotree-toggle)
+(global-set-key (kbd "C-<f13>") 'treemacs)
 (global-set-key (kbd "<f14>") 'eshell) ;regular
 ;;(global-set-key (kbd "<f14>") 'save-buffer) ;logitech
-
 (global-set-key (kbd "<f15>") 'cc/ediff-revision)
+
 (global-set-key (kbd "<f16>") 'run-python)
 (global-set-key (kbd "M-<f16>") 'cc/switch-to-scratch)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
