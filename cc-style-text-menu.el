@@ -24,6 +24,7 @@
 
 (require 'cc-context-menu-macros)
 (require 'markdown-mode)
+(require 'org)
 
 ;; (defun cc/org-emphasize-reset ()
 ;;   ;; this won't work when org-hide-emphasis-markers is turned on.
