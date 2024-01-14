@@ -1,6 +1,6 @@
 ;;; cc-magit-mode.el --- Magit configuration         -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023  Charles Choi
+;; Copyright (C) 2023-2024  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -19,7 +19,7 @@
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;; 
+;;
 
 ;;; Code:
 

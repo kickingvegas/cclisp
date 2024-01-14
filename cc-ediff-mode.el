@@ -1,8 +1,26 @@
-;;; cc-ediff-mode.el --- Ediff configuration for Charles Choi
-;; ediff-mode
+;;; cc-ediff-mode.el --- Ediff configuration -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2023-2024  Charles Choi
+
+;; Author: Charles Choi <kickingvegas@gmail.com>
+
+;; Keywords: tools
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;; 
+;;
 
 (require 'ediff)
 ;;; Code:
@@ -28,6 +46,7 @@ function `ediff-janitor'.")
 (defun cc/ediff-revision-from-menu (e)
   "Invoke `ediff-revision' on E with variable `buffer-file-name'."
   (interactive "e")
+  (ignore e)
   (cc/ediff-revision))
 
 (defun cc/ediff-revision ()

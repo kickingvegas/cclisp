@@ -1,6 +1,6 @@
 ;;; cc-save-hooks.el --- CC Save Hooks               -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023  Charles Choi
+;; Copyright (C) 2023-2024  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools

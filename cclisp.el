@@ -1,7 +1,26 @@
-;;; cclisp.el --- Utility functions used by Charles Choi
+;;; cclisp.el --- Utility Functions -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2023-2024  Charles Choi
+
+;; Author: Charles Choi <kickingvegas@gmail.com>
+
+;; Keywords: tools
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;;
+;; Utility functions by Charles Choi
 
 ;;; Code:
 (require 'ediff)
@@ -80,6 +99,7 @@ A new frame will be created if `pop-up-frames' is t."
   "Open daily generated current year PDF file.
 If prefix is invoked, then macOS open is used to open the PDF file."
   (interactive "P")
+  (ignore arg)
   (if current-prefix-arg
       (shell-command (format-time-string "open ~/org/%Y.pdf"))
     (find-file-other-window (format-time-string "~/org/%Y.pdf"))))
@@ -225,6 +245,7 @@ ISO 8601."
   (save-window-excursion
     (let* ((buf (org-export-to-buffer 'html "*Formatted Copy*" nil nil t t))
            (html (with-current-buffer buf (buffer-string))))
+      (ignore html)
       (with-current-buffer buf
         (shell-command-on-region
          (point-min)
