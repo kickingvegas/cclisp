@@ -39,6 +39,7 @@
 (require 'python)
 (require 'ibuffer)
 (require 'magit-status)
+(require 'cc-avy)
 
 (global-set-key (kbd "C-=") 'er/expand-region)
 ;(global-set-key (kbd "M-g") 'goto-line)
@@ -61,7 +62,7 @@
 (global-set-key (kbd "C-o") 'cc/meta-search)
 
 (global-set-key (kbd "<f8>") 'org-capture)
-(global-set-key (kbd "<f9>") 'avy-goto-word-1)
+(global-set-key (kbd "<f9>") 'compile)
 (global-set-key (kbd "<f11>") 'bookmark-set-no-overwrite)
 
 (global-set-key (kbd "M-<f1>") 'cc/open-url)
@@ -81,12 +82,7 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; Avy
-(global-set-key (kbd "M-g g") 'avy-goto-word-1)
-(global-set-key (kbd "M-g SPC") 'avy-goto-word-1)
-(global-set-key (kbd "M-g l") 'avy-goto-line)
-(global-set-key (kbd "M-g t") 'avy-goto-char-timer)
-(global-set-key (kbd "M-g c") 'avy-copy-line)
-(global-set-key (kbd "M-g m") 'avy-move-line)
+(global-set-key (kbd "M-g") 'cc/avy-menu)
 
 ;; Terminal
 (global-set-key (kbd "M-SPC") 'set-mark-command)
