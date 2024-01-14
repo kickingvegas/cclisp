@@ -23,6 +23,8 @@
 ;;
 
 ;;; Code:
+(require 'yasnippet)
+(require 'org)
 
 (require 'cc-context-menu-macros)
 

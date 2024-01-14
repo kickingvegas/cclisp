@@ -23,6 +23,7 @@
 ;;
 
 ;;; Code:
+(require 'ol)
 
 (defmacro cc/context-menu-item-separator (menu key)
   "Add single line separator to MENU with KEY."

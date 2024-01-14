@@ -29,6 +29,7 @@
 (require 'bookmark)
 (require 'spotlight)
 (require 'org-capture)
+(require 'yasnippet)
 
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."

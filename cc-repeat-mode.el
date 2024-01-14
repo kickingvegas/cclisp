@@ -23,6 +23,7 @@
 ;;
 
 ;;; Code:
+(require 'org)
 
 (defvar vifon/buffer-nextprev-repeat-map
   (let ((map (make-sparse-keymap)))

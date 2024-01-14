@@ -35,6 +35,7 @@
 (require 'cc-find-menu)
 (require 'cc-edit-text-menu)
 (require 'cc-wgrep-mode)
+(require 'cc-dired-mode)
 (require 'cc-dired-sort-by)
 
 (defun cc/context-menu-addons (menu click)
