@@ -25,9 +25,14 @@
 ;;; Code:
 (require 'transient)
 (require 'avy)
+(require 'display-line-numbers)
+
+(defun cc/display-line-numbers-mode-p ()
+  "Predicate to test if `display-line-numbers-mode' is enabled."
+  (symbol-value display-line-numbers))
 
 (transient-define-prefix cc/avy-menu ()
-  "Avy Transient menu"
+  "Avy Transient menu."
   [["Goto Thing"
     ("c"
      "Character"
@@ -61,6 +66,7 @@
     ("n"
      "Line Number"
      goto-line
+     :if cc/display-line-numbers-mode-p
      :transient nil)]
    ["Edit"
     ("C"
