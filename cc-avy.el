@@ -50,6 +50,10 @@
     ("s"
      "Symbol"
      avy-goto-symbol-1
+     :transient nil)
+    ("p"
+     "Pop Mark"
+     avy-pop-mark
      :transient nil)]
    ["Goto Line"
     ("l"
@@ -61,11 +65,11 @@
      avy-goto-end-of-line
      :transient nil)
     ("a"
-     "Line Above"
+     "Line above"
      avy-goto-line-above
      :transient nil)
     ("b"
-     "Line Below"
+     "Line below"
      avy-goto-line-below
      :transient nil)
     ("o"
@@ -94,7 +98,30 @@
     ("d"
      "Duplicate Other Line to Point"
      avy-copy-line
-     :transient nil)]])
+     :transient nil)]]
+
+  ["Region (choose two lines)"
+    ("t"
+     "Transpose Lines in Active Region"
+     avy-transpose-lines-in-region
+     :if region-active-p
+     :transient nil)
+    ("M"
+     "Move Other Region to above Current Line"
+     avy-move-region
+     :transient nil)
+    ("r"
+     "Copy Other Region"
+     avy-kill-ring-save-region
+     :transient nil)
+    ("D"
+     "Duplicate Other Region to Point"
+     avy-copy-region
+     :transient nil)
+    ("K"
+     "Kill Other Region"
+     avy-kill-region
+     :transient nil)])
 
 (provide 'cc-avy)
 ;;; cc-avy.el ends here
