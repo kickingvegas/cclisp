@@ -26,10 +26,15 @@
 (require 'transient)
 (require 'avy)
 (require 'display-line-numbers)
+(require 'org)
 
 (defun cc/display-line-numbers-mode-p ()
   "Predicate to test if `display-line-numbers-mode' is enabled."
   (symbol-value display-line-numbers))
+
+(defun cc/org-mode-p ()
+  "Predicate to test if `org-mode' is enabled."
+  (derived-mode-p 'org-mode))
 
 (transient-define-prefix cc/avy-menu ()
   "Avy Transient menu."
@@ -62,6 +67,11 @@
     ("b"
      "Line Below"
      avy-goto-line-below
+     :transient nil)
+    ("o"
+     "Org Heading"
+     avy-org-goto-heading-timer
+     :if cc/org-mode-p
      :transient nil)
     ("n"
      "Line Number"
