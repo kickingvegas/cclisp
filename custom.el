@@ -226,7 +226,7 @@
  '(dired-use-ls-dired 'unspecified)
  '(display-buffer-alist
    '(("\\*eshell\\*" display-buffer-at-bottom
-      (window-height . 0.15))))
+      (window-height . 0.2))))
  '(display-time-day-and-date t)
  '(display-time-mode t)
  '(ebib-bibtex-dialect 'biblatex)

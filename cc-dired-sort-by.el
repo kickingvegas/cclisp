@@ -143,6 +143,8 @@ Transient menu `cc/dired-sort-by'.
 This function requires GNU ls from coreutils installed.
 
 See the man page `ls(1)' for details."
+  (when dired-sort-inhibit
+    (error "Cannot sort this Dired buffer"))
   (let ((arg-list (list "-l")))
     (if prefix-args
         (nconc arg-list prefix-args)
@@ -191,7 +193,7 @@ See the man page `ls(1)' for details."
 (easy-menu-define cc/dired-sort-menu nil
   "Keymap for Dired sort by menu."
   '("Sort By"
-    :visible (derived-mode-p 'dired-mode)
+    :visible (and (derived-mode-p 'dired-mode) (not dired-sort-inhibit))
     ["Name"
      (lambda () (interactive) (cc/--dired-sort-by :name))
      :help "Sort by name"]
