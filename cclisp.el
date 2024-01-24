@@ -29,6 +29,7 @@
 (require 'bookmark)
 (require 'spotlight)
 (require 'org-capture)
+(require 'org-agenda)
 (require 'yasnippet)
 
 (defun datestamp ()
@@ -450,10 +451,21 @@ SOUND - sound file (optional)"
   (bookmark-bmenu-mode)
   (bookmark-bmenu--revert))
 
+(defun cc/copy-sexp ()
+  "Copy sexp after point."
+  (interactive)
+  ;;(backward-up-list)
+  (mark-sexp)
+  (kill-ring-save (region-beginning) (region-end)))
+
 (transient-define-prefix cc/meta-search ()
   "Meta Search Menu"
   [["Open"
      ("f"
+     "Fuzzy Find"
+     helm-find-files
+     :transient nil)
+    ("F"
       "Find File"
       find-file
       :transient nil)
@@ -461,19 +473,15 @@ SOUND - sound file (optional)"
       "Bookmark Jump"
       bookmark-jump
       :transient nil)
-     ("c"
+     ("a"
+      "Org Agenda"
+      (lambda () (interactive)(org-agenda nil "n"))
+      :transient nil)
+     ("C"
       "Org Capture"
       org-capture
-      :transient nil)
-     ("e"
-      "Mark sexp"
-      mark-sexp
       :transient nil)]
    ["Search"
-    ("F"
-     "Fuzzy Find"
-     helm-find-files
-     :transient nil)
     ("r"
      "Find in Files (rgrep)"
      rgrep
@@ -513,7 +521,20 @@ SOUND - sound file (optional)"
     ("J"
      "Journal Files"
      cc/select-journal-file
-     :transient nil)]])
+     :transient nil)]]
+  ["Sexp"
+     ("e"
+      "Mark"
+      mark-sexp
+      :transient nil)
+     ("c"
+      "Copy"
+      cc/copy-sexp
+      :transient nil)
+     ("k"
+      "Kill"
+      kill-sexp
+      :transient nil)])
 
 (defun cc/html-quote-entities-to-utf8 ()
   "Convert HTML quote entities to UTF8 in buffer."
