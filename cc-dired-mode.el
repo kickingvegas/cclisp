@@ -34,6 +34,7 @@
   (require 'dired-x))
 (add-hook 'dired-mode-hook 'hl-line-mode)
 (add-hook 'dired-mode-hook 'context-menu-mode)
+(add-hook 'dired-mode-hook 'dired-async-mode)
 
 (defun cc/dired-image-info ()
   "Message image info in the minibuffer and push into kill-ring."

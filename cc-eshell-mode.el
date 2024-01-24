@@ -22,14 +22,17 @@
 ;;; Commentary:
 ;;
 
-(require 'eshell)
 ;;; Code:
+(require 'eshell)
+(require 'company)
+(require 'hl-line)
+(require 'helm-eshell)
 
-(defvar eshell-mode-map)
-(defvar eshell-visual-options)
-(defvar eshell-visual-commands)
-(defvar eshell-visual-subcommands)
-(declare-function eshell/pwd "pwd" ())
+;; (defvar eshell-mode-map)
+;; (defvar eshell-visual-options)
+;; (defvar eshell-visual-commands)
+;; (defvar eshell-visual-subcommands)
+;; (declare-function eshell/pwd "pwd" ())
 
 (setq eshell-prompt-regexp "┗━━ \\$ "
       eshell-prompt-function
@@ -45,6 +48,7 @@
                 (if (= (user-uid) 0) "# " "$ "))))
 
 (add-hook 'eshell-mode-hook 'company-mode)
+(add-hook 'eshell-mode-hook 'hl-line-mode)
 (add-hook 'eshell-mode-hook (lambda ()
 			      (define-key eshell-mode-map (kbd "<tab>") 'company-complete)
 			      (define-key eshell-mode-map (kbd "C-r") 'helm-eshell-history)

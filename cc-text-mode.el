@@ -32,8 +32,6 @@
 (add-hook 'text-mode-hook (lambda ()
                             (setq-local line-spacing 0.1)))
 
-(define-key text-mode-map (kbd "<home>") 'beginning-of-visual-line)
-(define-key text-mode-map (kbd "<end>") 'end-of-visual-line)
 (define-key text-mode-map (kbd "A-<left>") 'backward-sentence)
 (define-key text-mode-map (kbd "A-<right>") 'forward-sentence)
 (define-key text-mode-map (kbd "A-M-<left>") 'backward-paragraph)
