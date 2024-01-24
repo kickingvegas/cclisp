@@ -575,5 +575,13 @@ SOUND - sound file (optional)"
     "%m %wx%h %b"
     (expand-file-name filename))))
 
+(defun cc/ssh (target)
+  "Create ssh `term' to TARGET."
+  (interactive "suser@host: ")
+  (term
+   (concat "ssh " target))
+  (switch-to-buffer "*terminal*")
+  (rename-buffer (format "*ssh %s*" target)))
+
 (provide 'cclisp)
 ;;; cclisp.el ends here
