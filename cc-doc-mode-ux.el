@@ -30,22 +30,8 @@
 (require 'man)
 (require 'hl-line)
 (require 'simple)
+(require 'cclisp)
 
-(defun cc/docview-backward-paragraph ()
-  "Move point backward paragraph such that the first line is highlighted.
-
-This function is intended to be used with `hl-line-mode'."
-  (interactive)
-  (backward-paragraph 2)
-  (forward-line))
-
-(defun cc/docview-forward-paragraph ()
-  "Move point forward paragraph such that the first line is highlighted.
-
-This function is intended to be used with `hl-line-mode'."
-  (interactive)
-  (forward-paragraph)
-  (forward-line))
 
 ;; # Info
 ;; Use web-browser history navigation bindings

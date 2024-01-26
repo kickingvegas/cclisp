@@ -93,13 +93,14 @@ A new frame will be created if `pop-up-frames' is t."
 (load-file (concat user-emacs-directory "url-bookmarks.el"))
 
 (defun cc/open-url ()
+  "Open URL from file `cc/url-bookmarks'."
   (interactive)
   (let ((choice (car (completing-read-multiple "Select URL: " (map-keys cc/url-bookmarks)))))
     (browse-url (cdr (assoc choice cc/url-bookmarks)))))
 
 (defun year (arg)
   "Open daily generated current year PDF file.
-If prefix is invoked, then macOS open is used to open the PDF file."
+If prefix ARG is invoked, then macOS open is used to open the PDF file."
   (interactive "P")
   (ignore arg)
   (if current-prefix-arg
@@ -277,7 +278,7 @@ ISO 8601."
   (shell-command-on-region start end "say"))
 
 (defun cc/switch-to-scratch ()
-  "Switch to *scratch* buffer"
+  "Switch to *scratch* buffer."
   (interactive)
   (switch-to-buffer "*scratch*"))
 
@@ -292,8 +293,8 @@ ISO 8601."
   (insert "‣"))
 
 (defun cc/apple-maps-search(&optional input)
-  "Search Apple Maps with INPUT.\n
-If a region is active this command will use it as INPUT, otherwise it
+  "Search Apple Maps with INPUT.
+\nIf a region is active this command will use it as INPUT, otherwise it
 will use the word at point."
   (interactive (list
                 (read-string (format "Map Search (%s): "
@@ -310,7 +311,7 @@ will use the word at point."
     (browse-url mapURL)))
 
 (defun cc/open-region-in-apple-maps (&optional start end)
-  "Open region from START to END in Apple Maps"
+  "Open region from START to END in Apple Maps."
   (interactive "r")
   (let* ((query-buf (buffer-substring start end))
          (mapURL (concat "maps://?q=" (url-encode-url query-buf))))
@@ -336,7 +337,7 @@ will use the word at point."
     (replace-regexp-in-string cc/pat-nanp "tel:+1-\\1-\\2-\\3" phone))))
 
 (defun cc/call-nanp-phone-number (&optional start end)
-  "Phone call the selected number (region) bounded between START and END"
+  "Phone call the selected number (region) bounded between START and END."
   (interactive "r")
   (let ((phone-buf (buffer-substring start end)))
     (browse-url (cc/nanp-phone-number-to-url phone-buf))))
@@ -353,7 +354,7 @@ will use the word at point."
       nil))))
 
 (defun cc/dired-duplicate-file ()
-  "Duplicate the current file in Dired"
+  "Duplicate the current file in Dired."
   (interactive)
   (when (derived-mode-p 'dired-mode)
     (let* ((filename (dired-get-filename))
@@ -412,7 +413,7 @@ Point must be at the beginning of balanced expression (sexp)."
   (forward-sexp -1))
 
 (defun cc/display-notification (msg &optional title subtitle sound)
-  "Display macOS notification via osascript with MSG, TITLE, SUBTITLE, SOUND
+  "Display macOS notification via osascript with MSG, TITLE, SUBTITLE, SOUND.
 MSG - notification message
 TITLE - notification title (optional)
 SUBTITLE - notification subtitle (optional)
@@ -443,7 +444,7 @@ SOUND - sound file (optional)"
     (switch-to-buffer-other-window "*grep*")))
 
 (defun cc/list-bookmarks-transient ()
-  "Transient supporting version of `bookmark-bmenu-list'"
+  "Transient supporting version of `bookmark-bmenu-list'."
   (interactive)
   (bookmark-maybe-load-default-file)
   (let ((buf (get-buffer-create bookmark-bmenu-buffer)))
@@ -459,7 +460,7 @@ SOUND - sound file (optional)"
   (kill-ring-save (region-beginning) (region-end)))
 
 (transient-define-prefix cc/meta-search ()
-  "Meta Search Menu"
+  "Meta Search Menu."
   [["Open"
      ("f"
      "Fuzzy Find"
@@ -567,7 +568,7 @@ SOUND - sound file (optional)"
           (replace-match (cdr e) nil t))))))
 
 (defun cc/--image-info (filename)
-  "Get image information via Imagemagick identify utility."
+  "Get image information of FILENAME via Imagemagick identify utility."
   (car
    (process-lines
     "identify"
@@ -582,6 +583,21 @@ SOUND - sound file (optional)"
    (concat "ssh " target))
   (switch-to-buffer "*terminal*")
   (rename-buffer (format "*ssh %s*" target)))
+
+(defun cc/docview-backward-paragraph ()
+  "Move point backward paragraph such that the first line is highlighted.
+\nThis function is intended to be used with `hl-line-mode'."
+  (interactive)
+  (backward-paragraph 2)
+  (forward-line))
+
+(defun cc/docview-forward-paragraph ()
+  "Move point forward paragraph such that the first line is highlighted.
+\nThis function is intended to be used with `hl-line-mode'."
+  (interactive)
+  (forward-paragraph)
+  (forward-line))
+
 
 (provide 'cclisp)
 ;;; cclisp.el ends here
