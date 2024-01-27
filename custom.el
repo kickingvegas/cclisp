@@ -455,7 +455,7 @@
  '(org-hide ((((type x mac ns) (class color) (background light)) (:foreground "white")) (((type x mac ns) (class color) (background dark)) (:foreground "#171717")) (((type tty) (class color)) (:foreground "#171717"))))
  '(org-meta-line ((((type x mac ns) (class color) (background dark)) (:inherit fixed-pitch :foreground "deep sky blue")) (((type x mac ns) (class color) (background light)) (:inherit fixed-pitch :foreground "grey50")) (((type tty) (class color)) (:inherit fixed-pitch :foreground "deep sky blue"))))
  '(org-scheduled ((t (:foreground "#4455ff"))))
- '(org-scheduled-previously ((((type x mac ns) (class color) (background light)) (:foreground "purple")) (((type x mac ns) (class color) (background dark)) (:foreground "orchid")) (((type tty) (class color)) (:foreground "orchid"))))
+ '(org-scheduled-previously ((((type x mac ns) (class color) (background light)) (:foreground "dark violet" :weight bold)) (((type x mac ns) (class color) (background dark)) (:foreground "orchid")) (((type tty) (class color)) (:foreground "orchid"))))
  '(org-scheduled-today ((t (:foreground "#cc4499"))))
  '(org-special-keyword ((t (:inherit font-lock-keyword-face :height 0.8))))
  '(org-table ((((type x mac ns) (class color) (background light)) (:inherit fixed-pitch :foreground "Blue1")) (((type x mac ns) (class color) (background dark)) (:inherit fixed-pitch :foreground "chartreuse")) (((type tty) (class color)) (:foreground "chartreuse"))))
