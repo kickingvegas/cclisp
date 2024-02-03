@@ -523,7 +523,7 @@ SOUND - sound file (optional)"
      "Journal Files"
      cc/select-journal-file
      :transient nil)]]
-  ["Sexp"
+  [["Sexp"
      ("e"
       "Mark"
       mark-sexp
@@ -535,7 +535,16 @@ SOUND - sound file (optional)"
      ("k"
       "Kill"
       kill-sexp
-      :transient nil)])
+      :transient nil)]
+   ["Edit"
+    ("i"
+     "Insert Character"
+     insert-char
+     :transient nil)
+    ("K"
+     "Set Input Method - Korean"
+     (lambda () (interactive)(set-input-method 'korean-hangul))
+     :transient nil)]])
 
 (defun cc/html-quote-entities-to-utf8 ()
   "Convert HTML quote entities to UTF8 in buffer."

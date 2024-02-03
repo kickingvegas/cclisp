@@ -33,6 +33,7 @@
 (require 'cc-save-hooks)
 (require 'company)
 (require 'hl-line)
+(require 'prog-mode)
 (if (eq system-type 'darwin)
     (require 'ob-swiftui))
 
@@ -219,6 +220,65 @@ This function is intended to be passed into `doct' via the :function property."
    (add-to-list (make-local-variable 'company-backends)
                 'company-org-block)))
 
+(defun cc/--prettify-components (prefix suffix)
+  "Generate a components argument for `prettify-symbols-alist'.
+PREFIX - character to use first
+SUFFIX - string appended to prefix
+\nRefer to `reference-point-alist' for more information on Br and Bl."
+  (let* ((result (list prefix))
+         (suffix-list (mapcar (lambda (c) (char-to-string c)) suffix)))
+    (mapc (lambda (x)
+            (push '(Br . Bl) result)
+            (push (string-to-char x) result))
+          suffix-list)
+    (reverse result)))
+
+(when (display-graphic-p)
+  (add-hook
+   'org-mode-hook
+   (lambda ()
+     "Prettify Org keywords."
+     (let* ((cc-temp-list '(("#+results:" . ?∴ )
+                            (":properties:" . ?⚙ )
+                            (":end:" . ?🔚 )
+                            (":logbook:" . ?📓 )
+                            ("[ ]" .  ?☐ )
+                            ("[x]" . ?☑ )
+                            ("[-]" . ?✈ ))))
+       (dolist (e cc-temp-list)
+         (push e prettify-symbols-alist)
+         (push (list (upcase (car e)) (nthcdr 1 e)) prettify-symbols-alist)))
+
+     (let* ((base-list (list "center"
+                             "comment"
+                             "example"
+                             "export"
+                             "quote"
+                             "src"
+                             "verse")))
+       (dolist (e base-list)
+         (push (cons (concat "#+begin_" e)
+                     (cc/--prettify-components ?⎧ e)) prettify-symbols-alist)
+         (push (cons (concat "#+BEGIN_" (upcase e))
+                     (cc/--prettify-components ?⎧ e)) prettify-symbols-alist)
+         (push (cons (concat "#+end_" e)
+                     (cc/--prettify-components ?⎩ e)) prettify-symbols-alist)
+         (push (cons (concat "#+END_" (upcase e))
+                     (cc/--prettify-components ?⎩ e)) prettify-symbols-alist)))
+     (prettify-symbols-mode))))
+
+(defun cc/org-backward-paragraph ()
+  "Move point backward an Org paragraph such that the first line is highlighted."
+  (interactive)
+  (org-backward-paragraph 2)
+  (forward-line))
+
+(defun cc/org-forward-paragraph ()
+  "Move point forward an Org paragraph such that the first line is highlighted."
+  (interactive)
+  (org-forward-paragraph)
+  (forward-line))
+
 (define-key org-mode-map (kbd "M-<f8>") 'datestamp)
 ;; (define-key org-mode-map (kbd "<f9>") 'avy-goto-word-1)
 (define-key org-mode-map (kbd "M-<f6>") 'org-toggle-inline-images)
@@ -229,8 +289,8 @@ This function is intended to be passed into `doct' via the :function property."
 (define-key org-mode-map (kbd "<end>") 'end-of-buffer)
 (define-key org-mode-map (kbd "A-<left>") 'org-backward-sentence)
 (define-key org-mode-map (kbd "A-<right>") 'org-forward-sentence)
-(define-key org-mode-map (kbd "A-M-<left>") 'org-backward-paragraph)
-(define-key org-mode-map (kbd "A-M-<right>") 'org-forward-paragraph)
+(define-key org-mode-map (kbd "M-p") 'cc/org-backward-paragraph)
+(define-key org-mode-map (kbd "M-n") 'cc/org-forward-paragraph)
 (define-key org-mode-map (kbd "C-<up>") 'org-previous-visible-heading)
 (define-key org-mode-map (kbd "C-<down>") 'org-next-visible-heading)
 (define-key org-mode-map (kbd "M-v") 'org-previous-visible-heading)
