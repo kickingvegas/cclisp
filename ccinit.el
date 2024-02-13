@@ -79,6 +79,7 @@
 (require 'cc-global-keybindings)
 (require 'cc-magit-mode)
 (require 'cc-menu-reconfig)
+(require 'cc-grep-mode)
 (require 'kill-with-intelligence)
 (require 'cc-isearch-menu)
 (require 'cc-agenda-timeline)
