@@ -83,6 +83,8 @@
 (require 'kill-with-intelligence)
 (require 'cc-isearch-menu)
 (require 'cc-agenda-timeline)
+(require 'cc-truth-table)
+(require 'cc-digital-logic)
 
 (when (and (string= (system-name) "bingsu.local") (display-graphic-p))
   (server-start))
