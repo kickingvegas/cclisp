@@ -225,8 +225,20 @@
  '(dired-mouse-drag-files t)
  '(dired-use-ls-dired 'unspecified)
  '(display-buffer-alist
-   '(("\\*eshell\\*" display-buffer-at-bottom
-      (window-height . 0.2))))
+   '(("\\*eshell\\*"
+      (display-buffer-at-bottom)
+      (window-height . 0.23)
+      (dedicated . t))
+     ("\\*Occur\\*"
+      (display-buffer-reuse-window display-buffer-below-selected)
+      (dedicated . t)
+      (body-function . select-window))
+     ("\\*grep\\*"
+      (display-buffer-reuse-window display-buffer-below-selected)
+      (dedicated . t)
+      (body-function . select-window))
+     ("\\*shell\\*"
+      (display-buffer-reuse-window display-buffer-below-selected))))
  '(display-time-day-and-date t)
  '(display-time-mode t)
  '(ebib-bibtex-dialect 'biblatex)
