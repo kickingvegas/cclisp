@@ -32,6 +32,7 @@
 (require 'transpose-frame)
 (require 'cc-region-operations-menu)
 (require 'cc-edit-text-menu)
+(require 'cc-truth-table)
 
 (defun cc/dired-side-right (path)
   "Side-by-side layout with Dired buffer on the right set to PATH."
@@ -201,11 +202,17 @@ in a buffer"]
                     "Calendar")
 
 (easy-menu-add-item global-map '(menu-bar tools)
+                    ["Insert Truth Table…"
+                     cc/insert-truth-table-input
+                     :visible (not buffer-read-only)
+                     :help "Insert truth table input with 2^BITS rows into current buffer."]
+                    "Calendar")
+
+(easy-menu-add-item global-map '(menu-bar tools)
                     ["RE-Builder"
                      re-builder
                      :help "Construct a regexp interactively."]
                     "Calendar")
-
 
 (keymap-set-after (lookup-key global-map [menu-bar tools])
   "<separator-re>"
