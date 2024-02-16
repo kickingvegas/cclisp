@@ -85,6 +85,7 @@
 (require 'cc-agenda-timeline)
 (require 'cc-truth-table)
 (require 'cc-digital-logic)
+(require 'cc-package-menu-mode)
 
 (when (and (string= (system-name) "bingsu.local") (display-graphic-p))
   (server-start))

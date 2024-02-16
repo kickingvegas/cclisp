@@ -1,9 +1,8 @@
-;;; cc-emacs-lisp-mode.el --- Elisp Customization -*- lexical-binding: t; -*-
+;;; cc-package-menu-mode.el --- Package menu customization  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2024  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
-
 ;; Keywords: tools
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -20,21 +19,14 @@
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
 ;;
 
-(require 'elisp-mode)
-(require 'paredit)
-(require 'flycheck)
-
 ;;; Code:
+(require 'package)
+(require 'hl-line)
 
-(add-hook 'emacs-lisp-mode 'enable-paredit-mode)
-(add-hook 'emacs-lisp-mode 'flycheck-mode)
+(add-hook 'package-menu-mode-hook 'hl-line-mode)
 
-
-(define-key emacs-lisp-mode-map (kbd "M-[") 'backward-sexp)
-(define-key emacs-lisp-mode-map (kbd "M-]") 'forward-sexp)
-
-(provide 'cc-emacs-lisp-mode)
-
-;;; cc-emacs-lisp-mode.el ends here
+(provide 'cc-package-menu-mode)
+;;; cc-package-menu-mode.el ends here
