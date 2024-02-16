@@ -31,6 +31,7 @@
 (require 'org-capture)
 (require 'org-agenda)
 (require 'yasnippet)
+(require 'org-ql-view)
 
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
@@ -504,6 +505,10 @@ SOUND - sound file (optional)"
      "Apple Maps"
      cc/apple-maps-search
      :if display-graphic-p
+     :transient nil)
+    ("v"
+     "Org QL View"
+     org-ql-view
      :transient nil)]
    ["List"
     ("b"
