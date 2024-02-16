@@ -36,6 +36,14 @@
   "Predicate to test if `org-mode' is enabled."
   (derived-mode-p 'org-mode))
 
+(defun cc/buffer-writeable-p ()
+  "Predicate to test if buffer is writeable."
+  (not buffer-read-only))
+
+(defun cc/buffer-writeable-and-region-active-p ()
+  "Predicate to test if buffer is writeable and region is active."
+  (and (cc/buffer-writeable-p) (region-active-p)))
+
 (transient-define-prefix cc/avy-menu ()
   "Avy Transient menu."
   [["Goto Thing"
@@ -51,8 +59,12 @@
      "Symbol"
      avy-goto-symbol-1
      :transient nil)
+    ("W"
+     "Whitespace end"
+     avy-goto-whitespace-end
+     :transient nil)
     ("p"
-     "Pop Mark"
+     "Pop mark"
      avy-pop-mark
      :transient nil)]
    ["Goto Line"
@@ -61,7 +73,7 @@
      avy-goto-line
      :transient nil)
     ("e"
-     "End of Line"
+     "End of line"
      avy-goto-end-of-line
      :transient nil)
     ("a"
@@ -73,54 +85,60 @@
      avy-goto-line-below
      :transient nil)
     ("o"
-     "Org Heading"
+     "Org heading"
      avy-org-goto-heading-timer
      :if cc/org-mode-p
      :transient nil)
     ("n"
-     "Line Number"
+     "Line number"
      goto-line
      :if cc/display-line-numbers-mode-p
      :transient nil)]
-   ["Edit"
+   ["Edit Line"
     ("C"
-     "Copy Other Line"
+     "Copy"
      avy-kill-ring-save-whole-line
      :transient nil)
     ("k"
-     "Kill Other Line"
+     "Kill"
      avy-kill-whole-line
+     :if cc/buffer-writeable-p
      :transient nil)
     ("m"
-     "Move Other Line to Point"
+     "Move to above current line"
      avy-move-line
+     :if cc/buffer-writeable-p
      :transient nil)
     ("d"
-     "Duplicate Other Line to Point"
+     "Duplicate to above current line"
      avy-copy-line
+     :if cc/buffer-writeable-p
      :transient nil)]]
 
-  ["Region (choose two lines)"
-    ("t"
-     "Transpose Lines in Active Region"
-     avy-transpose-lines-in-region
-     :if region-active-p
-     :transient nil)
-    ("M"
-     "Move Other Region to above Current Line"
-     avy-move-region
-     :transient nil)
+  ["Edit Region (choose two lines)"
     ("r"
-     "Copy Other Region"
+     "Copy"
      avy-kill-ring-save-region
      :transient nil)
-    ("D"
-     "Duplicate Other Region to Point"
-     avy-copy-region
-     :transient nil)
     ("K"
-     "Kill Other Region"
+     "Kill"
      avy-kill-region
+     :if cc/buffer-writeable-p
+     :transient nil)
+    ("M"
+     "Move to above current line"
+     avy-move-region
+     :if cc/buffer-writeable-p
+     :transient nil)
+    ("D"
+     "Duplicate to above current line"
+     avy-copy-region
+     :if cc/buffer-writeable-p
+     :transient nil)
+    ("t"
+     "Transpose lines in active region"
+     avy-transpose-lines-in-region
+     :if cc/buffer-writeable-and-region-active-p
      :transient nil)])
 
 (provide 'cc-avy)
