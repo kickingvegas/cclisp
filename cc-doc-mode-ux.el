@@ -32,8 +32,16 @@
 (require 'simple)
 (require 'cclisp)
 
+(defun cc/confirm-before-quit-window ()
+  "Raise confirm prompt before invoking `quit-window'."
+  (interactive)
+  (if (y-or-n-p "Really Quit? ")
+      (quit-window)
+    (message "all good")))
 
 ;; # Info
+;; Prompt before quitting
+(define-key Info-mode-map (kbd "q") 'cc/prompt-before-quit-window)
 ;; Use web-browser history navigation bindings
 (define-key Info-mode-map (kbd "M-[") 'Info-history-back)
 (define-key Info-mode-map (kbd "M-]") 'Info-history-forward)
