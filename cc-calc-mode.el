@@ -1,0 +1,278 @@
+;;; cc-calc-mode.el --- Calc customization           -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2024  Charles Choi
+
+;; Author: Charles Choi <kickingvegas@gmail.com>
+;; Keywords: tools
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;;
+
+;;; Code:
+
+(require 'calc)
+(require 'transient)
+
+(defun cc/confirm-before-calc-quit ()
+  "Raise confirm prompt before invoking `calc-quit'."
+  (interactive)
+  (if (y-or-n-p "Really Quit? ")
+      (calc-quit)
+    (message "all good")))
+
+(defun cc/calc-matrixp ()
+  (math-matrixp (calc-top-n 1)))
+
+(defun cc/calc-square-matrixp ()
+  (math-square-matrixp (calc-top-n 1)))
+
+(defun cc/calc-vectorp ()
+  (math-vectorp (calc-top-n 1)))
+
+(defun cc/calc-crossp ()
+  (if (> (calc-stack-size) 1)
+      (let ((arg1 (calc-top-n 1))
+            (arg2 (calc-top-n 2)))
+        (and (math-vectorp arg1)
+             (math-vectorp arg2)
+             (not (math-matrixp arg1))
+             (not (math-matrixp arg2))
+             (eq 3 (calcFunc-vlen arg1))
+             (eq 3 (calcFunc-vlen arg2))))
+    nil))
+
+
+(defun cc/calc-matrixmultp ()
+  (if (> (calc-stack-size) 1)
+      (let ((arg1 (calc-top-n 1))
+            (arg2 (calc-top-n 2)))
+        (and (math-matrixp arg1)
+             (math-matrixp arg2)))
+    nil))
+
+;;(cc/calc-crossp)
+;;(cc/calc-vectorp)
+
+;;(math-vectorp (calc-top-n 3))
+;; (calcFunc-vlen (calc-top-n 17))
+;; (not (math-matrixp (calc-top-n 17)))
+
+(define-key calc-mode-map (kbd "q") 'cc/confirm-before-calc-quit)
+
+(transient-define-prefix cc/calc-main-menu ()
+  "Transient main menu for calc."
+  [["Calc"
+    ("&" "1/𝑥" calc-inv :transient nil)
+    ("Q" "√" calc-sqrt :transient nil)
+    ("n" "+∕− " calc-change-sign :transient nil)
+    ("^" "𝑦^𝑥" calc-power :transient nil)]
+   [""
+    ("A" "|𝑥|" calc-abs :transient nil)
+    ("!" "!" calc-factorial :transient nil)
+    ("%" "٪" calc-percent :transient nil)
+    ("d" "Δ%" calc-percent-change :transient nil)]
+   ["Constants"
+    ("p" "𝜋" calc-pi :transient nil)]
+   ["Modes"
+    ("m" "Modes" cc/calc-modes-menu :transient nil)]]
+
+  [["Functions" ; test if anything is on the stack calc-stack-size 0
+    ("t" "Trig" cc/calc-trig-menu :transient nil)
+    ("l" "Logarithmic" cc/calc-logarithmic-menu :transient nil)
+    ("b" "Binary" cc/calc-binary-menu :transient nil)
+    ("v" "Vector/Matrix" cc/calc-vector-menu :transient nil)
+    ("c" "Conversions" cc/calc-conversions-menu :transient nil)
+    ("u" "Unit Conversion" cc/calc-units-menu :transient nil)]
+   ["Stack"
+    ;;("s" "Roll Up" calc-roll-up :transient nil)
+    ("s" "Swap" calc-roll-down :transient nil)
+    ("P" "Pack" calc-pack :transient nil)
+    ("U" "Unpack" calc-unpack :transient nil)
+    ("R" "Calc Reset" calc-reset :transient nil)]])
+
+(transient-define-prefix cc/calc-conversions-menu ()
+  ["Conversions"
+   ("d" "To Degrees" calc-to-degrees :transient nil)
+   ("r" "To Radians" calc-to-radians :transient nil)
+   ("h" "To HMS" calc-to-hms :transient nil)
+   ("p" "Toggle Polar/Rect" calc-polar :transient nil)])
+
+(transient-define-prefix cc/calc-binary-menu ()
+  [["Operators"
+    ("a" "and" calc-and :transient nil)
+    ("o" "or" calc-or :transient nil)
+    ("x" "xor" calc-xor :transient nil)
+    ("-" "diff" calc-diff :transient nil)
+    ("!" "diff" calc-not :transient nil)]
+   ["Shift"
+    ("l" "binary left" calc-lshift-binary :transient nil)
+    ("r" "binary right" calc-rshift-binary :transient nil)
+    ("L" "arithmetic left" calc-lshift-arith :transient nil)
+    ("R" "arithmetic right" calc-rshift-arith :transient nil)
+    ("O" "binary" calc-rotate-binary :transient nil)]
+   ["Utils"
+    ("w" "Set Word Size" calc-word-size :transient nil)
+    ("u" "Unpack Bits" calc-unpack-bits :transient nil)
+    ("p" "Pack Bits" calc-pack-bits :transient nil)]])
+
+(transient-define-prefix cc/calc-vector-menu ()
+  "Vector Menu"
+  [
+   ["Manipulation"
+    ("l" "Length" calc-vlength :transient nil)
+    ("f" "Vector Find" calc-vector-find :transient nil) ; requires target N, not a vector
+    ("a" "Vector Arrange" calc-arrange-vector :transient nil)
+    ("s" "Sort" calc-sort :transient nil) ;; need to use inverse for rsort
+    ;; ("h" "Histogram" calc-histogram :transient nil) ; requires prefix
+    ("t" "Transpose" calc-transpose :transient nil)
+    ("I" "Identity" calc-ident :transient nil)
+    ("r" "Reverse" calc-reverse-vector :transient nil)
+    ("|" "Concat" calc-concat :transient nil)]
+   ["Arithmetic"
+    ("T" "Conjugate Transpose" calc-conj-transpose :transient nil)
+    ("A" "Frobenius Norm (abs)" calc-abs :transient nil)
+    ("R" "Row Norm" calc-rnorm :transient nil)
+    ("c" "Column Norm" calc-cnorm :transient nil)
+    ("p" "RH Cross Product" calc-cross :if cc/calc-crossp :transient nil)
+    ("L" "LU Decomposition" calc-mlud :if cc/calc-matrixp :transient nil)
+    ("k" "Kronecker Product" calc-kron :if cc/calc-matrixmultp :transient nil)]
+   ["Square Matrix"
+    :if cc/calc-square-matrixp
+    ("&" "Inverse" calc-inv :transient nil)
+    ("d" "Determinant" calc-mdet :transient nil)
+    ("t" "Trace" calc-mtrace :transient nil)]
+   ["Set"
+    ("D" "Deduplicate" calc-remove-duplicates :transient nil)
+    ("u" "Union" calc-set-union :transient nil)
+    ("i" "Intersect" calc-set-intersect :transient nil)
+    ("-" "Difference" calc-set-difference :transient nil)
+    ("x" "xor" calc-set-xor :transient nil)
+    ("~" "Complement" calc-set-complement :transient nil)
+    ("#" "Cardinality" calc-set-cardinality :transient nil)]]
+
+  [;;"⦿ Single Variable Statistics"
+   ["Mean and Error"
+    ("C" "Vector Count" calc-vector-count :transient nil)
+    ("S" "Sum" calc-vector-sum :transient nil)
+    ("X" "Max" calc-vector-max :transient nil)
+    ("m" "Mean" calc-vector-mean :transient nil)
+    ("E" "Mean Error" calc-vector-mean-error :transient nil)
+    ("M" "Median" calc-vector-median :transient nil)
+    ("h" "Harmonic Mean" calc-vector-harmonic-mean :transient nil)
+    ("g" "Geometric Mean" calc-vector-geometric-mean :transient nil)]
+   ["Deviation and Variance"
+    ("q" "Root Mean Square" calc-vector-rms :transient nil)
+    ("1" "Standard Deviation" calc-vector-sdev :transient nil)
+    ("2" "Population Standard Deviation" calc-vector-pop-sdev :transient nil)
+    ("3" "Variance" calc-vector-variance :transient nil)
+    ("4" "Population Variance" calc-vector-pop-variance :transient nil)]
+   ["Paired-Sample Statistics" ; predicate for two vectors of the same size
+    ("5" "Covariance" calc-vector-covariance :transient nil)
+    ("6" "Population Covariance" calc-vector-pop-covariance :transient nil)
+    ("7" "Correlation" calc-vector-correlation :transient nil)]])
+
+(transient-define-prefix cc/calc-units-menu ()
+  ["Unit Conversions"
+   ("c" "Convert" calc-convert-units :transient nil)
+   ("t" "Convert Temperature" calc-convert-temperature :transient nil)
+   ("b" "Convert to Base Unit" calc-base-units :transient nil)
+   ("a" "Autorange" calc-autorange-units :transient nil)
+   ("r" "Remove Units" calc-remove-units :transient nil)
+   ("x" "Extract Units" calc-extract-units :transient nil)])
+
+(transient-define-prefix cc/calc-logarithmic-menu ()
+  ["Logarithmic Functions"
+    ("l" "𝑙𝑛" calc-ln :transient nil)
+    ("e" "𝑒^𝑥" calc-exp :transient nil)
+    ("L" "𝑙𝑜𝑔𝟣𝟢" calc-log10 :transient nil)
+    ("M-l" "𝑙𝑜𝑔" calc-log :transient nil)
+    ("M-e" "𝑒^𝑥 - 𝟣" calc-expm1 :transient nil)])
+
+
+(transient-define-prefix cc/calc-modes-menu ()
+  [["Display"
+    ("R" "Radix (dec, bin, hex, …)" calc-radix :transient nil)
+    ("g" "Group Digits" calc-group-digits :transient nil)
+    ("," "Group Character" calc-group-char :transient nil)
+    ("n" "Float Normal" calc-normal-notation :transient nil)
+    ("F" "Float Fixed Point" calc-fix-notation :transient nil)
+    ("S" "Float Scientific" calc-sci-notation :transient nil)
+    ("e" "Float Engineering" calc-eng-notation :transient nil)
+    ("P" "Decimal Separator" calc-point-char :transient nil)]
+   ["Toggles & Notations"
+    ("z" "Leading Zeroes" calc-leading-zeros :transient nil)
+    ("f" "Fraction" calc-frac-mode :transient nil)
+    ("s" "Symbolic" calc-symbolic-mode :transient nil)
+    ("p" "Polar" calc-polar-mode :transient nil)
+    ("m" "Matrix/Scalar (see modeline)" calc-matrix-mode :transient nil)
+    ("i" "𝑖 notation" calc-i-notation :transient nil)
+    ("j" "𝑗 notation" calc-j-notation :transient nil)
+    ("H" "ℎ𝑚𝑠 notation" calc-hms-notation :transient nil)]
+   ["Angular"
+    ("d" "Degrees" calc-degrees-mode :transient nil)
+    ("r" "Radians" calc-radians-mode :transient nil)
+    ("h" "Degrees-Minutes-Seconds" calc-hms-mode :transient nil)]])
+
+
+(transient-define-prefix cc/calc-trig-menu ()
+  ;; ["Arguments"
+  ;;  ("i" "inverse" "--inverse")
+  ;;  ("h" "hyperbolic" "--hyperbolic")]
+  [["Trig"
+    ("s" "sin" calc-sin :transient nil)
+    ("c" "cos" calc-cos :transient nil)
+    ("t" "tan" calc-tan :transient nil)]
+   ["Inverse"
+    ;;("S" "arcsin" calc-arcsin :transient nil)
+    ;;(calc-fancy-prefix 'calc-inverse-flag msg n)
+
+    ("S" "arcsin"
+     (lambda ()
+       (interactive)
+       (calc-inverse)
+       (calc-sin (calc-top-n 1)))
+     :transient nil)
+
+    ("C" "arccos" calc-arccos :transient nil)
+    ("T" "arctan" calc-arctan :transient nil)]
+   ["Hyperbolic"
+    ("M-s" "sinh" calc-sinh :transient nil)
+    ("M-c" "cosh" calc-cosh :transient nil)
+    ("M-t" "tanh" calc-tanh :transient nil)]
+   ["Inverse Hyperbolic"
+    ("M-S" "arcsinh" calc-arcsinh :transient nil)
+    ("M-C" "arccosh" calc-arccosh :transient nil)
+    ("M-T" "arctanh" calc-arctanh :transient nil)]])
+
+;; (defun cc/--trig-command (trig prefix-args)
+
+;;   (cond
+;;    ((eq trig :sin)
+;;     (cond
+;;      ((member "--inverse" prefix-args) (calc-arcsin))
+;;      ((member "--hyperbolic" prefix-args) (calc-sinh))
+;;      (t (calc-sin)))
+
+
+;;     ))
+;;     )
+
+(define-key calc-mode-map (kbd "C-o") 'cc/calc-main-menu)
+
+
+(provide 'cc-calc-mode)
+;;; cc-calc-mode.el ends here
