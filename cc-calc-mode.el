@@ -35,13 +35,16 @@
     (message "all good")))
 
 (defun cc/calc-matrixp ()
-  (math-matrixp (calc-top-n 1)))
+  (if (> (calc-stack-size) 0)
+      (math-matrixp (calc-top-n 1))))
 
 (defun cc/calc-square-matrixp ()
-  (math-square-matrixp (calc-top-n 1)))
+  (if (> (calc-stack-size) 0)
+      (math-square-matrixp (calc-top-n 1))))
 
 (defun cc/calc-vectorp ()
-  (math-vectorp (calc-top-n 1)))
+  (if (> (calc-stack-size) 0)
+      (math-vectorp (calc-top-n 1))))
 
 (defun cc/calc-crossp ()
   (if (> (calc-stack-size) 1)
@@ -77,14 +80,14 @@
   "Transient main menu for calc."
   [["Calc"
     ("&" "1/𝑥" calc-inv :transient nil)
-    ("Q" "√" calc-sqrt :transient nil)
+    ("Q" " √" calc-sqrt :transient nil)
     ("n" "+∕− " calc-change-sign :transient nil)
     ("^" "𝑦^𝑥" calc-power :transient nil)]
    [""
     ("A" "|𝑥|" calc-abs :transient nil)
-    ("!" "!" calc-factorial :transient nil)
-    ("%" "٪" calc-percent :transient nil)
-    ("d" "Δ%" calc-percent-change :transient nil)]
+    ("!" " !" calc-factorial :transient nil)
+    ("%" " ٪" calc-percent :transient nil)
+    ("d" " Δ%" calc-percent-change :transient nil)]
    ["Constants"
     ("p" "𝜋" calc-pi :transient nil)
     ("e" "𝑒" (lambda () (interactive) (calc-hyperbolic) (calc-pi)) :transient nil)]
@@ -109,8 +112,7 @@
   ["Conversions"
    ("d" "To Degrees" calc-to-degrees :transient nil)
    ("r" "To Radians" calc-to-radians :transient nil)
-   ("h" "To HMS" calc-to-hms :transient nil)
-   ("p" "Toggle Polar/Rect" calc-polar :transient nil)])
+   ("h" "To HMS" calc-to-hms :transient nil)])
 
 (transient-define-prefix cc/calc-binary-menu ()
   [["Operators"
@@ -124,11 +126,11 @@
     ("r" "binary right" calc-rshift-binary :transient nil)
     ("L" "arithmetic left" calc-lshift-arith :transient nil)
     ("R" "arithmetic right" calc-rshift-arith :transient nil)
-    ("O" "binary" calc-rotate-binary :transient nil)]
+    ("O" "rotate binary" calc-rotate-binary :transient nil)]
    ["Utils"
     ("w" "Set Word Size" calc-word-size :transient nil)
     ("u" "Unpack Bits" calc-unpack-bits :transient nil)
-    ("p" "Pack Bits" calc-pack-bits :transient nil)]])
+    ("p" "Pack Bits" calc-pack-bits :transient nil)]]) ;; add radix and zero extend
 
 (transient-define-prefix cc/calc-vector-menu ()
   "Vector Menu"
@@ -142,6 +144,7 @@
     ("t" "Transpose" calc-transpose :transient nil)
     ("I" "Identity" calc-ident :transient nil)
     ("r" "Reverse" calc-reverse-vector :transient nil)
+    ("b" "build vector sequence" calc-index :transient nil)
     ("|" "Concat" calc-concat :transient nil)]
    ["Arithmetic"
     ("T" "Conjugate Transpose" calc-conj-transpose :transient nil)
@@ -193,10 +196,12 @@
    ("b" "Convert to Base Unit" calc-base-units :transient nil)
    ("a" "Autorange" calc-autorange-units :transient nil)
    ("r" "Remove Units" calc-remove-units :transient nil)
-   ("x" "Extract Units" calc-extract-units :transient nil)])
+   ("x" "Extract Units" calc-extract-units :transient nil)
+   ("v" "View Units" calc-view-units-table :transient nil)])
 
 (transient-define-prefix cc/calc-logarithmic-menu ()
   ["Logarithmic Functions"
+   :pad-keys t
     ("l" "𝑙𝑛" calc-ln :transient nil)
     ("e" "𝑒^𝑥" calc-exp :transient nil)
     ("L" "𝑙𝑜𝑔𝟣𝟢" calc-log10 :transient nil)
@@ -251,8 +256,8 @@
 
 (defun cc/boolean-value-on-off-label (v)
   (if v
-      "on"
-    "off"))
+      "☑︎"
+    "◻︎"))
 
 
 
@@ -261,13 +266,13 @@
     ("A" calc-algebraic-mode
      :description (lambda ()
                     (format
-                     "Algebraic Mode (now %s)"
+                     "%s Algebraic Mode"
                      (cc/boolean-value-on-off-label calc-algebraic-mode)))
      :transient nil)
     ("z" "Leading Zeroes" calc-leading-zeros
      :description (lambda ()
                     (format
-                     "Leading Zeroes (now %s)"
+                     "%s Leading Zeroes"
                      (cc/boolean-value-on-off-label calc-leading-zeros)))
      :transient nil)
     ("F" calc-frac-mode :description cc/calc-prefer-frac-label :transient nil)
@@ -279,7 +284,7 @@
                     (format "Complex Number Format (now %s)›"
                             (cc/calc-complex-format-label)))
      :transient nil)
-    ]
+    ("S" "Save Calc Settings" calc-save-modes :transient nil)]
    ["Angular Measure"
     ("a" cc/calc-angle-measure-menu
      :description (lambda ()
@@ -294,7 +299,15 @@
     ;; TODO show current value float formats
     ("f" "Float Formats›" cc/calc-float-format-menu :transient nil)
     ;; TODO show current value thousands separators
-    ("g" "Thousands Separators" calc-group-digits :transient nil)
+    ("g" calc-group-digits
+     ;; TODO calc-group-digits can actually be an int 😦
+     :description (lambda ()
+                    (format
+                     "%s Thousands Separators"
+                     (cc/boolean-value-on-off-label calc-group-digits)))
+
+
+     :transient nil)
     ("," "Set Thousands Separator" calc-group-char :transient nil)
     ("P" "Decimal Separator" calc-point-char :transient nil)
     ("H" "ℎ𝑚𝑠 Format" calc-hms-notation
@@ -375,7 +388,13 @@
    ["Inverse Hyperbolic"
     ("M-S" "arcsinh" calc-arcsinh :transient nil)
     ("M-C" "arccosh" calc-arccosh :transient nil)
-    ("M-T" "arctanh" calc-arctanh :transient nil)]])
+    ("M-T" "arctanh" calc-arctanh :transient nil)]
+   ["Angle Measure"
+    ("a" cc/calc-angle-measure-menu
+     :description (lambda ()
+                    (format "Angle Measure (now %s)›"
+                            (cc/calc-angle-mode-label)))
+     :transient nil)]])
 
 ;; (defun cc/--trig-command (trig prefix-args)
 
@@ -391,7 +410,6 @@
 ;;     )
 
 (define-key calc-mode-map (kbd "C-o") 'cc/calc-main-menu)
-
 
 (provide 'cc-calc-mode)
 ;;; cc-calc-mode.el ends here
