@@ -236,16 +236,40 @@
                                         calc-matrix-mode
                                         calc-matrix-mode))))
 
+(defun cc/calc-angle-mode-label ()
+  (cond
+   ((eq calc-angle-mode 'deg) "Degrees")
+   ((eq calc-angle-mode 'rad) "Radians")
+   ((eq calc-angle-mode 'hms) "hms")))
+
+
 (defun cc/calc-complex-format-label ()
   (cond
    ((eq calc-complex-format 'i) "x + yi")
    ((eq calc-complex-format 'j) "x + yj")
    ((not calc-complex-format) "(x, y)")))
 
+(defun cc/boolean-value-on-off-label (v)
+  (if v
+      "on"
+    "off"))
+
+
+
 (transient-define-prefix cc/calc-modes-menu ()
-  [
-   ["Toggles & Notations"
-    ("z" "Leading Zeroes" calc-leading-zeros :transient nil)
+  [["Modes"
+    ("A" calc-algebraic-mode
+     :description (lambda ()
+                    (format
+                     "Algebraic Mode (now %s)"
+                     (cc/boolean-value-on-off-label calc-algebraic-mode)))
+     :transient nil)
+    ("z" "Leading Zeroes" calc-leading-zeros
+     :description (lambda ()
+                    (format
+                     "Leading Zeroes (now %s)"
+                     (cc/boolean-value-on-off-label calc-leading-zeros)))
+     :transient nil)
     ("F" calc-frac-mode :description cc/calc-prefer-frac-label :transient nil)
     ("s" calc-symbolic-mode :description cc/calc-symbolic-mode-label :transient nil)
     ("p" calc-polar-mode :description cc/calc-cmplx-or-polar-label :transient nil)
@@ -255,36 +279,57 @@
                     (format "Complex Number Format (now %s)›"
                             (cc/calc-complex-format-label)))
      :transient nil)
-    ("H" "ℎ𝑚𝑠 notation" calc-hms-notation :transient nil)]
-   ["Angular"
-    ("d" "Degrees" calc-degrees-mode :transient nil)
-    ("r" "Radians" calc-radians-mode :transient nil)
-    ("h" "Degrees-Minutes-Seconds" calc-hms-mode :transient nil)]]
-
+    ]
+   ["Angular Measure"
+    ("a" cc/calc-angle-measure-menu
+     :description (lambda ()
+                    (format "Angle Measure (now %s)›"
+                            (cc/calc-angle-mode-label)))
+     :transient nil)]]
   [["Display"
     ("R" cc/calc-radix-menu
      :description (lambda ()
                     (format "Radix (now %s)›" (cc/calc-number-radix-label)))
      :transient nil)
+    ;; TODO show current value float formats
     ("f" "Float Formats›" cc/calc-float-format-menu :transient nil)
-    ("g" "Thousands Separators (group)" calc-group-digits :transient nil)
-    ("," "Set Thousands Separator (group char)" calc-group-char :transient nil)
-    ("P" "Decimal Separator" calc-point-char :transient nil)]])
+    ;; TODO show current value thousands separators
+    ("g" "Thousands Separators" calc-group-digits :transient nil)
+    ("," "Set Thousands Separator" calc-group-char :transient nil)
+    ("P" "Decimal Separator" calc-point-char :transient nil)
+    ("H" "ℎ𝑚𝑠 Format" calc-hms-notation
+     :description (lambda ()
+                    (format
+                     "ℎ𝑚𝑠 Format (%s)"
+                     (format calc-hms-format "" "" "")))
+     :transient nil)]])
+
+(transient-define-prefix cc/calc-angle-measure-menu ()
+  ["Angle Measure"
+   :description (lambda ()
+                  (format "Angle Measure (now %s)›"
+                          (cc/calc-angle-mode-label)))
+   ("d" "Degrees" calc-degrees-mode :transient nil)
+   ("r" "Radians" calc-radians-mode :transient nil)
+   ("h" "Degrees-Minutes-Seconds" calc-hms-mode :transient nil)])
 
 
 (transient-define-prefix cc/calc-complex-format-menu ()
-  ["Complex Number Display Format"
-    ("c" calc-complex-notation
-     :description "complex notation"
-     :transient nil)
+  ["Complex Number Format"
+   :description (lambda ()
+                  (format "Complex Number Format (now %s)"
+                          (cc/calc-complex-format-label)))
+   ("c" calc-complex-notation
+    :description "complex (rectangular) notation"
+    :transient nil)
 
-    ("i" calc-i-notation
-     :description "𝑖 notation"
-     :transient nil)
+   ("i" calc-i-notation
+    :description "𝑖 notation"
+    :transient nil)
 
-    ("j" calc-i-notation
-     :description "𝑗 notation"
-     :transient nil)])
+   ("j" calc-i-notation
+    :description "𝑗 notation"
+    :transient nil)])
 
 (transient-define-prefix cc/calc-radix-menu ()
   [["Radix"
