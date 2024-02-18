@@ -86,17 +86,18 @@
     ("%" "٪" calc-percent :transient nil)
     ("d" "Δ%" calc-percent-change :transient nil)]
    ["Constants"
-    ("p" "𝜋" calc-pi :transient nil)]
+    ("p" "𝜋" calc-pi :transient nil)
+    ("e" "𝑒" (lambda () (interactive) (calc-hyperbolic) (calc-pi)) :transient nil)]
    ["Modes"
-    ("m" "Modes" cc/calc-modes-menu :transient nil)]]
+    ("m" "Modes›" cc/calc-modes-menu :transient nil)]]
 
   [["Functions" ; test if anything is on the stack calc-stack-size 0
-    ("t" "Trig" cc/calc-trig-menu :transient nil)
-    ("l" "Logarithmic" cc/calc-logarithmic-menu :transient nil)
-    ("b" "Binary" cc/calc-binary-menu :transient nil)
-    ("v" "Vector/Matrix" cc/calc-vector-menu :transient nil)
-    ("c" "Conversions" cc/calc-conversions-menu :transient nil)
-    ("u" "Unit Conversion" cc/calc-units-menu :transient nil)]
+    ("t" "Trig›" cc/calc-trig-menu :transient nil)
+    ("l" "Logarithmic›" cc/calc-logarithmic-menu :transient nil)
+    ("b" "Binary›" cc/calc-binary-menu :transient nil)
+    ("v" "Vector/Matrix›" cc/calc-vector-menu :transient nil)
+    ("c" "Conversions›" cc/calc-conversions-menu :transient nil)
+    ("u" "Unit Conversion›" cc/calc-units-menu :transient nil)]
    ["Stack"
     ;;("s" "Roll Up" calc-roll-up :transient nil)
     ("s" "Swap" calc-roll-down :transient nil)
@@ -202,30 +203,103 @@
     ("M-l" "𝑙𝑜𝑔" calc-log :transient nil)
     ("M-e" "𝑒^𝑥 - 𝟣" calc-expm1 :transient nil)])
 
+(defun cc/calc-cmplx-or-polar-label ()
+  (if (eq calc-complex-mode 'polar)
+      "Change to Complex Mode (now Polar)"
+    "Change to Polar Mode (now Complex)"))
+
+(defun cc/calc-symbolic-mode-label ()
+  (if calc-symbolic-mode
+      "Change to Numeric Mode (now Symbolic)"
+    "Change to Symbolic Mode (now Numeric)"))
+
+(defun cc/calc-prefer-frac-label ()
+  (if calc-prefer-frac
+      "Change to Floating Point Results (now Fractional)"
+    "Change to Fractional Results (now Floating Point)"))
+
+(defun cc/calc-number-radix-label ()
+  (cond
+   ((= calc-number-radix 10) "Decimal")
+   ((= calc-number-radix 2) "Binary")
+   ((= calc-number-radix 8) "Octal")
+   ((= calc-number-radix 16) "Hexadecimal")
+   (t (format "%d" calc-number-radix))))
+
+(defun cc/calc-matrix-mode-label ()
+  (cond
+   ((eq calc-matrix-mode 'matrix) "Matrix")
+   ((eq calc-matrix-mode 'sqmatrix) "Square Matrix")
+   ((eq calc-matrix-mode 'scalar) "Scalar")
+   ((eq calc-matrix-mode 'nil) "No assumptions")
+   ((integerp calc-matrix-mode) (format "%dx%d"
+                                        calc-matrix-mode
+                                        calc-matrix-mode))))
+
+(defun cc/calc-complex-format-label ()
+  (cond
+   ((eq calc-complex-format 'i) "x + yi")
+   ((eq calc-complex-format 'j) "x + yj")
+   ((not calc-complex-format) "(x, y)")))
 
 (transient-define-prefix cc/calc-modes-menu ()
-  [["Display"
-    ("R" "Radix (dec, bin, hex, …)" calc-radix :transient nil)
-    ("g" "Group Digits" calc-group-digits :transient nil)
-    ("," "Group Character" calc-group-char :transient nil)
-    ("n" "Float Normal" calc-normal-notation :transient nil)
-    ("F" "Float Fixed Point" calc-fix-notation :transient nil)
-    ("S" "Float Scientific" calc-sci-notation :transient nil)
-    ("e" "Float Engineering" calc-eng-notation :transient nil)
-    ("P" "Decimal Separator" calc-point-char :transient nil)]
+  [
    ["Toggles & Notations"
     ("z" "Leading Zeroes" calc-leading-zeros :transient nil)
-    ("f" "Fraction" calc-frac-mode :transient nil)
-    ("s" "Symbolic" calc-symbolic-mode :transient nil)
-    ("p" "Polar" calc-polar-mode :transient nil)
-    ("m" "Matrix/Scalar (see modeline)" calc-matrix-mode :transient nil)
-    ("i" "𝑖 notation" calc-i-notation :transient nil)
-    ("j" "𝑗 notation" calc-j-notation :transient nil)
+    ("F" calc-frac-mode :description cc/calc-prefer-frac-label :transient nil)
+    ("s" calc-symbolic-mode :description cc/calc-symbolic-mode-label :transient nil)
+    ("p" calc-polar-mode :description cc/calc-cmplx-or-polar-label :transient nil)
+    ;; ("m" calc-matrix-mode :description cc/calc-matrix-mode-label :transient nil) ; this is really about symbolic computation
+    ("c" "Complex Number Format›" cc/calc-complex-format-menu
+     :description (lambda ()
+                    (format "Complex Number Format (now %s)›"
+                            (cc/calc-complex-format-label)))
+     :transient nil)
     ("H" "ℎ𝑚𝑠 notation" calc-hms-notation :transient nil)]
    ["Angular"
     ("d" "Degrees" calc-degrees-mode :transient nil)
     ("r" "Radians" calc-radians-mode :transient nil)
-    ("h" "Degrees-Minutes-Seconds" calc-hms-mode :transient nil)]])
+    ("h" "Degrees-Minutes-Seconds" calc-hms-mode :transient nil)]]
+
+  [["Display"
+    ("R" cc/calc-radix-menu
+     :description (lambda ()
+                    (format "Radix (now %s)›" (cc/calc-number-radix-label)))
+     :transient nil)
+    ("f" "Float Formats›" cc/calc-float-format-menu :transient nil)
+    ("g" "Thousands Separators (group)" calc-group-digits :transient nil)
+    ("," "Set Thousands Separator (group char)" calc-group-char :transient nil)
+    ("P" "Decimal Separator" calc-point-char :transient nil)]])
+
+
+(transient-define-prefix cc/calc-complex-format-menu ()
+  ["Complex Number Display Format"
+    ("c" calc-complex-notation
+     :description "complex notation"
+     :transient nil)
+
+    ("i" calc-i-notation
+     :description "𝑖 notation"
+     :transient nil)
+
+    ("j" calc-i-notation
+     :description "𝑗 notation"
+     :transient nil)])
+
+(transient-define-prefix cc/calc-radix-menu ()
+  [["Radix"
+    ("0" "Decimal" calc-decimal-radix :transient nil)
+    ("2" "Binary" calc-binary-radix :transient nil)
+    ("8" "Octal" calc-octal-radix :transient nil)
+    ("6" "Hexadecimal" calc-hex-radix :transient nil)
+    ("n" "Other" calc-radix :transient nil)]])
+
+(transient-define-prefix cc/calc-float-format-menu ()
+  [["Float Format"
+    ("n" "Normal" calc-normal-notation :transient nil)
+    ("f" "Fixed Point" calc-fix-notation :transient nil)
+    ("s" "Scientific" calc-sci-notation :transient nil)
+    ("e" "Engineering" calc-eng-notation :transient nil)]])
 
 
 (transient-define-prefix cc/calc-trig-menu ()
