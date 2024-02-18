@@ -88,6 +88,13 @@
 (require 'cc-package-menu-mode)
 (require 'cc-calc-mode)
 
+;;; Configure MELPA Packages
+(require 'cc-isearch-menu)
+(define-key isearch-mode-map (kbd "<f2>") 'cc-isearch-menu-transient)
+
+;;; Local Customizations
+
+
 (when (and (string= (system-name) "bingsu.local") (display-graphic-p))
   (server-start))
 
