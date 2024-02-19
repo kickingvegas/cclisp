@@ -506,9 +506,9 @@ SOUND - sound file (optional)"
      cc/apple-maps-search
      :if display-graphic-p
      :transient nil)
-    ("v"
-     "Org QL View"
-     org-ql-view
+    ("q"
+     "Org QL Search"
+     org-ql-search
      :transient nil)]
    ["List"
     ("b"
