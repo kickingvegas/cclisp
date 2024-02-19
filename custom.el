@@ -233,9 +233,7 @@
       (display-buffer-reuse-window display-buffer-below-selected)
       (dedicated . t)
       (body-function . select-window))
-     ("\\*grep\\*"
-      (display-buffer-reuse-window display-buffer-below-selected)
-      (dedicated . t)
+     ("\\*grep\\*" nil
       (body-function . select-window))
      ("\\*shell\\*"
       (display-buffer-reuse-window display-buffer-below-selected))))
