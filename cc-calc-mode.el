@@ -25,6 +25,7 @@
 ;;; Code:
 
 (require 'calc)
+(require 'calc-math)
 (require 'transient)
 
 (defun cc/confirm-before-calc-quit ()
