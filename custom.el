@@ -233,9 +233,7 @@
       (display-buffer-reuse-window display-buffer-below-selected)
       (dedicated . t)
       (body-function . select-window))
-     ("\\*grep\\*"
-      (display-buffer-reuse-window display-buffer-below-selected)
-      (dedicated . t)
+     ("\\*grep\\*" nil
       (body-function . select-window))
      ("\\*shell\\*"
       (display-buffer-reuse-window display-buffer-below-selected))))
@@ -399,7 +397,18 @@
  '(python-shell-interpreter "python3")
  '(reb-re-syntax 'string)
  '(require-final-newline t)
- '(safe-local-variable-values '((vc-git-annotate-switches . "-w")))
+ '(safe-local-variable-values
+   '((eval and buffer-file-name
+           (not
+            (eq major-mode 'package-recipe-mode))
+           (or
+            (require 'package-recipe-mode nil t)
+            (let
+                ((load-path
+                  (cons "../package-build" load-path)))
+              (require 'package-recipe-mode nil t)))
+           (package-recipe-mode))
+     (vc-git-annotate-switches . "-w")))
  '(savehist-mode t)
  '(scroll-bar-mode nil)
  '(scroll-step 4)
