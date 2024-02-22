@@ -86,6 +86,7 @@
 (require 'cc-truth-table)
 (require 'cc-digital-logic)
 (require 'cc-package-menu-mode)
+(require 'cc-calc-mode)
 
 ;;; Configure MELPA Packages
 (require 'cc-isearch-menu)

@@ -41,7 +41,7 @@
 
 ;; # Info
 ;; Prompt before quitting
-(define-key Info-mode-map (kbd "q") 'cc/prompt-before-quit-window)
+(define-key Info-mode-map (kbd "q") 'cc/confirm-before-quit-window)
 ;; Use web-browser history navigation bindings
 (define-key Info-mode-map (kbd "M-[") 'Info-history-back)
 (define-key Info-mode-map (kbd "M-]") 'Info-history-forward)

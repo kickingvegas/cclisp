@@ -540,6 +540,10 @@ SOUND - sound file (optional)"
      ("k"
       "Kill"
       kill-sexp
+      :transient nil)
+     ("t"
+      "Transpose"
+      transpose-sexps
       :transient nil)]
    ["Edit"
     ("i"
