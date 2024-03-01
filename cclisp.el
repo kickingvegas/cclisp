@@ -33,6 +33,7 @@
 (require 'yasnippet)
 (require 'org-ql-view)
 (require 'calc)
+(require 'ace-window)
 
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
@@ -564,6 +565,10 @@ SOUND - sound file (optional)"
      (lambda () (interactive)(set-input-method 'korean-hangul))
      :transient nil)]
    ["Misc"
+    ("w"
+     "Select Window"
+     ace-select-window
+     :transient nil)
     ("*"
      "Calc Dispatch"
      calc-dispatch
