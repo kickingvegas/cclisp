@@ -160,7 +160,6 @@ tree rooted at DIR."]
 (define-key global-map [menu-bar tools gdb] nil t)
 (define-key global-map [menu-bar tools gnus] nil t)
 (define-key global-map [menu-bar tools rmail] nil t)
-(define-key global-map [menu-bar tools project] nil t)
 (define-key global-map [menu-bar tools compose-mail] nil t)
 (define-key global-map [menu-bar tools directory-search] nil t)
 (define-key global-map [menu-bar tools browse-web] nil t)

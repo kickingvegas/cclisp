@@ -37,5 +37,8 @@
 (define-key calc-mode-map (kbd "q") 'cc/confirm-before-calc-quit)
 (define-key calc-mode-map (kbd "C-o") 'casual-main-menu)
 
+(when (eq window-system 'mac)
+  (setq calc-gnuplot-default-device "aqua"))
+
 (provide 'cc-calc-mode)
 ;;; cc-calc-mode.el ends here

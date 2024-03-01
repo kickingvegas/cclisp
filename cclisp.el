@@ -32,6 +32,7 @@
 (require 'org-agenda)
 (require 'yasnippet)
 (require 'org-ql-view)
+(require 'calc)
 
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
@@ -550,9 +551,22 @@ SOUND - sound file (optional)"
      "Insert Character"
      insert-char
      :transient nil)
+    ("p"
+     "Fill Paragraph"
+     fill-paragraph
+     :transient nil)
+    ("l"
+     "Join line"
+     join-line
+     :transient nil)
     ("K"
      "Set Input Method - Korean"
      (lambda () (interactive)(set-input-method 'korean-hangul))
+     :transient nil)]
+   ["Misc"
+    ("*"
+     "Calc Dispatch"
+     calc-dispatch
      :transient nil)]])
 
 (defun cc/html-quote-entities-to-utf8 ()
