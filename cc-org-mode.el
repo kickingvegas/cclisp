@@ -66,6 +66,13 @@ This function is intended to be passed into `doct' via the :function property."
   (interactive)
   (org-ctrl-c-ctrl-c '(16)))
 
+(defun cc/org-toggle-list-is-checkbox ()
+  "If point is on an Org list item, toggle if the list item is also a checkbox.
+Note that this function does not toggle the actual value of a checkbox,
+which is done with `org-ctrl-c-ctrl-c'."
+  (interactive)
+  (org-ctrl-c-ctrl-c '(4)))
+
 ;; Configure org-capture-templates using doct
 (setq org-capture-templates
       (doct '(("Appointment"
@@ -287,6 +294,7 @@ SUFFIX - string appended to prefix
 (define-key org-mode-map (kbd "M-<f8>") 'datestamp)
 ;; (define-key org-mode-map (kbd "<f9>") 'avy-goto-word-1)
 (define-key org-mode-map (kbd "M-<f9>") 'cc/org-checkbox-in-progress)
+(define-key org-mode-map (kbd "C-<f9>") 'cc/org-toggle-list-is-checkbox)
 (define-key org-mode-map (kbd "<f9>") 'org-ctrl-c-ctrl-c)
 (define-key org-mode-map (kbd "M-<f6>") 'org-toggle-inline-images)
 (define-key org-mode-map (kbd "C-c t") 'cc/org-time-stamp-inactive)
