@@ -61,6 +61,11 @@ This function is intended to be passed into `doct' via the :function property."
   (cc/--find-capture-point-in-file
    (format-time-string cc/org-daily-header-template)))
 
+(defun cc/org-checkbox-in-progress ()
+  "If point is on an Org list item, set it to be a checkbox in-progress."
+  (interactive)
+  (org-ctrl-c-ctrl-c '(16)))
+
 ;; Configure org-capture-templates using doct
 (setq org-capture-templates
       (doct '(("Appointment"
@@ -225,8 +230,8 @@ This function is intended to be passed into `doct' via the :function property."
 PREFIX - character to use first
 SUFFIX - string appended to prefix
 \nRefer to `reference-point-alist' for more information on Br and Bl."
-  (let* ((result (list prefix))
-         (suffix-list (mapcar (lambda (c) (char-to-string c)) suffix)))
+  (let ((result (list prefix))
+        (suffix-list (mapcar (lambda (c) (char-to-string c)) suffix)))
     (mapc (lambda (x)
             (push '(Br . Bl) result)
             (push (string-to-char x) result))
@@ -281,6 +286,8 @@ SUFFIX - string appended to prefix
 
 (define-key org-mode-map (kbd "M-<f8>") 'datestamp)
 ;; (define-key org-mode-map (kbd "<f9>") 'avy-goto-word-1)
+(define-key org-mode-map (kbd "M-<f9>") 'cc/org-checkbox-in-progress)
+(define-key org-mode-map (kbd "<f9>") 'org-ctrl-c-ctrl-c)
 (define-key org-mode-map (kbd "M-<f6>") 'org-toggle-inline-images)
 (define-key org-mode-map (kbd "C-c t") 'cc/org-time-stamp-inactive)
 (define-key org-mode-map (kbd "C-<home>") 'org-beginning-of-line)

@@ -33,6 +33,7 @@
 (require 'yasnippet)
 (require 'org-ql-view)
 (require 'calc)
+(require 'project)
 (require 'ace-window)
 
 (defun datestamp ()
@@ -476,6 +477,10 @@ SOUND - sound file (optional)"
      ("j"
       "Bookmark Jump"
       bookmark-jump
+      :transient nil)
+     ("P"
+      "Project…"
+      project-switch-project
       :transient nil)
      ("a"
       "Org Agenda"

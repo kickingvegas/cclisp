@@ -81,7 +81,6 @@
 (require 'cc-menu-reconfig)
 (require 'cc-grep-mode)
 (require 'kill-with-intelligence)
-(require 'cc-isearch-menu)
 (require 'cc-agenda-timeline)
 (require 'cc-truth-table)
 (require 'cc-digital-logic)
