@@ -34,7 +34,7 @@
       (calc-quit)
     (message "all good")))
 
-(define-key calc-mode-map (kbd "q") 'cc/confirm-before-calc-quit)
+;;(define-key calc-mode-map (kbd "q") 'cc/confirm-before-calc-quit)
 (define-key calc-mode-map (kbd "C-o") 'casual-main-menu)
 
 (when (eq window-system 'mac)

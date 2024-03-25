@@ -640,6 +640,10 @@ SOUND - sound file (optional)"
   (forward-paragraph)
   (forward-line))
 
+(defun cc/enable-local-sentence-double-space ()
+  "Enable `sentence-end-double-space' locally."
+  (interactive)
+  (setq-local sentence-end-double-space t))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

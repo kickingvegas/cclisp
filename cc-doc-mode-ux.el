@@ -69,6 +69,7 @@
 
 (add-hook 'Info-mode-hook 'hl-line-mode)
 (add-hook 'Info-mode-hook 'visual-line-mode)
+(add-hook 'Info-mode-hook 'scroll-lock-mode)
 
 ;; # Help
 ;; Use web-browser history navigation bindings
@@ -91,6 +92,7 @@
 
 (add-hook 'help-mode-hook 'hl-line-mode)
 (add-hook 'help-mode-hook 'visual-line-mode)
+(add-hook 'help-mode-hook 'scroll-lock-mode)
 
 ;; # Shortdoc
 ;; Bind <f1> to help
@@ -107,6 +109,7 @@
 
 (add-hook 'shortdoc-mode-hook 'hl-line-mode)
 (add-hook 'shortdoc-mode-hook 'visual-line-mode)
+(add-hook 'shortdoc-mode-hook 'scroll-lock-mode)
 
 ;; # Man
 ;; Bind <f1> to help
@@ -122,6 +125,7 @@
 
 (add-hook 'Man-mode-hook 'hl-line-mode)
 (add-hook 'Man-mode-hook 'visual-line-mode)
+(add-hook 'Man-mode-hook 'scroll-lock-mode)
 
 (provide 'cc-doc-mode-ux)
 
