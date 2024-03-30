@@ -25,7 +25,9 @@
 ;;; Code:
 
 (require 'calc)
-(require 'casual)
+(require 'calc-mode)
+(require 'calc-ext)
+;;(require 'casual)
 
 (defun cc/confirm-before-calc-quit ()
   "Raise confirm prompt before invoking `calc-quit'."
@@ -34,8 +36,11 @@
       (calc-quit)
     (message "all good")))
 
-;;(define-key calc-mode-map (kbd "q") 'cc/confirm-before-calc-quit)
+;; (define-key calc-mode-map (kbd "q") 'cc/confirm-before-calc-quit)
+;; (add-hook 'calc-mode-hook #'calc-total-algebraic-mode)
+
 (define-key calc-mode-map (kbd "C-o") 'casual-main-menu)
+(define-key calc-alg-map (kbd "C-o") 'casual-main-menu)
 
 (when (eq window-system 'mac)
   (setq calc-gnuplot-default-device "aqua"))
