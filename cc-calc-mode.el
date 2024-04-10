@@ -27,7 +27,7 @@
 (require 'calc)
 (require 'calc-mode)
 (require 'calc-ext)
-;;(require 'casual)
+(require 'casual)
 
 (defun cc/confirm-before-calc-quit ()
   "Raise confirm prompt before invoking `calc-quit'."
@@ -35,6 +35,11 @@
   (if (y-or-n-p "Really Quit? ")
       (calc-quit)
     (message "all good")))
+
+(defun cc/ptop ()
+  "Print top of Calc stack."
+  (interactive)
+  (kill-new (pp (calc-top))))
 
 ;; (define-key calc-mode-map (kbd "q") 'cc/confirm-before-calc-quit)
 ;; (add-hook 'calc-mode-hook #'calc-total-algebraic-mode)
