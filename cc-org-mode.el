@@ -34,6 +34,8 @@
 (require 'company)
 (require 'hl-line)
 (require 'prog-mode)
+(require 'cc-org-smart-quotes)
+
 (if (eq system-type 'darwin)
     (require 'ob-swiftui))
 
@@ -225,6 +227,8 @@ which is done with `org-ctrl-c-ctrl-c'."
 (add-hook 'org-mode-hook 'org-indent-mode)
 (add-hook 'org-mode-hook 'org-clock-persistence-insinuate)
 (add-hook 'org-mode-hook #'cc/save-hook-delete-trailing-whitespace)
+(add-hook 'org-mode-hook (lambda ()
+                           (cc/reconfig-org-smart-quotes-lang "en")))
 
 (add-hook
  'org-mode-hook
