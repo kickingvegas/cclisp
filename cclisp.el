@@ -645,5 +645,15 @@ SOUND - sound file (optional)"
   (interactive)
   (setq-local sentence-end-double-space t))
 
+(defun weather (location)
+  "Call weather script with LOCATION and show result in minibuffer."
+  (interactive "sWhere (default: local): ")
+
+  (let* ((weather-cmd "weather")
+         (cmd (if location (format "%s %s" weather-cmd location) weather-cmd))
+         (result (shell-command-to-string cmd)))
+    (kill-new result)
+    (message result)))
+
 (provide 'cclisp)
 ;;; cclisp.el ends here
