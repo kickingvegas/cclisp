@@ -452,7 +452,7 @@
  '(comint-highlight-prompt ((((type x mac ns) (class color) (background light)) (:inherit minibuffer-prompt :foreground "dark magenta")) (((type x mac ns) (class color) (background dark)) (:inherit minibuffer-prompt :foreground "tomato")) (((type tty) (class color)) (:foreground "tomato"))))
  '(diff-added ((t (:inherit diff-changed :extend t :background "lawn green"))))
  '(eshell-prompt ((t (:foreground "#cc33ff" :weight bold))))
- '(fixed-pitch ((t (:family "Menlo" :height 150))))
+ '(fixed-pitch ((t (:height 0.8 :family "Menlo"))))
  '(font-lock-comment-face ((((type x mac ns) (class color) (background light)) (:foreground "dim gray")) (((type x mac ns) (class color) (background dark)) (:foreground "dark gray")) (((type tty) (class color)) (:foreground "medium turquoise"))))
  '(font-lock-constant-face ((t (:height 1.0))))
  '(font-lock-function-name-face ((((type x mac ns) (class color) (background light)) (:foreground "Blue1")) (((type x mac ns) (class color) (background dark)) (:foreground "LightSkyBlue")) (((type tty) (class color)) (:foreground "yellow")) (t (:weight bold))))

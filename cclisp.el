@@ -655,5 +655,51 @@ SOUND - sound file (optional)"
     (kill-new result)
     (message result)))
 
+(defun cc/describe-function-point-is-in ()
+  "Describe enclosing Elisp function at point.
+\nInvoke `describe-function' on the enclosing Elisp function the point is in.
+\nThanks to mwnaylor for guidance in writing this function."
+  (interactive)
+  (save-excursion
+    (beginning-of-defun)
+    (forward-char)
+    (forward-sexp 2)
+    (let ((end-point (point)))
+      (backward-sexp)
+      (let* ((fn-name (buffer-substring (point) end-point))
+             (interned (intern-soft fn-name)))
+        (if interned
+            (describe-function interned))))))
+
+(defun cc/convert-menu-entry-to-test-vector ()
+  "Convert Transient menu item into a casualt test vector.
+
+If the menu item persists the transient (e.g. :transient t),
+then you should put a ‘q’ at the end of the key macro string."
+  (interactive)
+  (back-to-indentation)
+  (forward-char)
+  (forward-sexp)
+  (kill-sexp)
+  (insert-char ?  )
+  (insert-char ?.)
+  (forward-sexp)
+  (kill-sexp)
+  (kill-sexp))
+
+(defun cc/repunctutate-and-fill-paragraph ()
+  "Fill paragraph with repunctuated sentences.
+
+This command refills the paragraph surrounding the point such
+that sentences are double space separated.  For this function to
+work properly, the point must be within a paragraph that has a
+blank line before its start and after its end."
+  (interactive)
+  (backward-paragraph)
+  (mark-paragraph)
+  (repunctuate-sentences t)
+  (deactivate-mark)
+  (fill-paragraph))
+
 (provide 'cclisp)
 ;;; cclisp.el ends here
