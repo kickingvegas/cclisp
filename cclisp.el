@@ -687,7 +687,7 @@ then you should put a ‘q’ at the end of the key macro string."
   (kill-sexp)
   (kill-sexp))
 
-(defun cc/repunctutate-and-fill-paragraph ()
+(defun cc/repunctuate-and-fill-paragraph ()
   "Fill paragraph with repunctuated sentences.
 
 This command refills the paragraph surrounding the point such
