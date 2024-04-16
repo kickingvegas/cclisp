@@ -34,7 +34,7 @@
 
 (define-key emacs-lisp-mode-map (kbd "M-[") #'backward-sexp)
 (define-key emacs-lisp-mode-map (kbd "M-]") #'forward-sexp)
-(define-key emacs-lisp-mode-map (kbd "C-h M-f") #'cc/describe-function-point-is-in)
+(define-key emacs-lisp-mode-map (kbd "C-h ;") #'cc/describe-function-point-is-in)
 (define-key emacs-lisp-mode-map (kbd "M-j") #'cc/repunctuate-and-fill-paragraph)
 
 (provide 'cc-emacs-lisp-mode)
