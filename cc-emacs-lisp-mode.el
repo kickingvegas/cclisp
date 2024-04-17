@@ -36,6 +36,8 @@
 (define-key emacs-lisp-mode-map (kbd "M-]") #'forward-sexp)
 (define-key emacs-lisp-mode-map (kbd "<f6>") #'cc/describe-function-point-is-in)
 (define-key emacs-lisp-mode-map (kbd "M-j") #'fill-paragraph)
+(define-key emacs-lisp-mode-map (kbd "M-n") #'cc/browse-forward-sexp)
+(define-key emacs-lisp-mode-map (kbd "M-p") #'cc/browse-backward-sexp)
 
 (provide 'cc-emacs-lisp-mode)
 ;;; cc-emacs-lisp-mode.el ends here

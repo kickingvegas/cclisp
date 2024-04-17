@@ -46,8 +46,8 @@
 (define-key Info-mode-map (kbd "M-[") 'Info-history-back)
 (define-key Info-mode-map (kbd "M-]") 'Info-history-forward)
 ;; Bind p and n to paragraph navigation
-(define-key Info-mode-map (kbd "p") 'cc/docview-backward-paragraph)
-(define-key Info-mode-map (kbd "n") 'cc/docview-forward-paragraph)
+(define-key Info-mode-map (kbd "p") 'cc/browse-backward-paragraph)
+(define-key Info-mode-map (kbd "n") 'cc/browse-forward-paragraph)
 ;; Bind <f1> to help
 (define-key Info-mode-map (kbd "<f1>") 'Info-help)
 ;; Bind M-j, M-k to scrolling up/down line
@@ -76,8 +76,8 @@
 (define-key help-mode-map (kbd "M-[") 'help-go-back)
 (define-key help-mode-map (kbd "M-]") 'help-go-forward)
 ;; Bind p and n to paragraph navigation
-(define-key help-mode-map (kbd "p") 'cc/docview-backward-paragraph)
-(define-key help-mode-map (kbd "n") 'cc/docview-forward-paragraph)
+(define-key help-mode-map (kbd "p") 'cc/browse-backward-paragraph)
+(define-key help-mode-map (kbd "n") 'cc/browse-forward-paragraph)
 ;; Bind <f1> to help
 (define-key help-mode-map (kbd "<f1>") 'describe-mode)
 ;; Bind M-j, M-k to scrolling up/down line
@@ -118,8 +118,8 @@
 (define-key Man-mode-map (kbd "M-j") 'scroll-up-line)
 (define-key Man-mode-map (kbd "M-k") 'scroll-down-line)
 ;; Bind j and k to navigate forward and backward paragraphs
-(define-key Man-mode-map (kbd "j") 'cc/docview-forward-paragraph)
-(define-key Man-mode-map (kbd "k") 'cc/docview-backward-paragraph)
+(define-key Man-mode-map (kbd "j") 'cc/browse-forward-paragraph)
+(define-key Man-mode-map (kbd "k") 'cc/browse-backward-paragraph)
 ;; Bind K to kill buffer to replace override of default k above
 (define-key Man-mode-map (kbd "K") 'Man-kill)
 

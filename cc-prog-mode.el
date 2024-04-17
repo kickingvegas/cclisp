@@ -32,7 +32,7 @@
 (require 'display-fill-column-indicator)
 (require 'hl-line)
 (require 'gud)
-
+(require 'flyspell)
 
 ;;; Code:
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -42,6 +42,7 @@
 (add-hook 'prog-mode-hook 'rainbow-mode)
 (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
 (add-hook 'prog-mode-hook 'hl-line-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (add-hook 'prog-mode-hook #'cc/save-hook-delete-trailing-whitespace)
 
 (define-key prog-mode-map [remap indent-for-tab-command]

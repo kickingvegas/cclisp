@@ -29,6 +29,7 @@
 (require 'org)
 (require 'wdired)
 (require 'cc-dired-sort-by)
+(require 'cc-main-tmenu)
 
 (with-eval-after-load 'dired
   (require 'dired-x))
@@ -88,7 +89,7 @@
    (setq-local mouse-1-click-follows-link 'double)))
 
 (define-key dired-mode-map (kbd "M-o") 'dired-omit-mode)
-(define-key dired-mode-map (kbd "C-o") 'cc/meta-search)
+(define-key dired-mode-map (kbd "C-o") 'cc/main-tmenu)
 (define-key dired-mode-map (kbd "E") 'wdired-change-to-wdired-mode)
 (define-key dired-mode-map (kbd "s") 'cc/dired-sort-by)
 (define-key dired-mode-map (kbd "j") 'helm-find-files)

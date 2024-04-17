@@ -456,10 +456,37 @@ SOUND - sound file (optional)"
   (bookmark-bmenu-mode)
   (bookmark-bmenu--revert))
 
+(defun cc/copy-word ()
+  "Copy word after point."
+  (interactive)
+  (mark-word)
+  (kill-ring-save (region-beginning) (region-end)))
+
+(defun cc/copy-sentence ()
+  "Copy sentence after point."
+  (interactive)
+  (save-excursion
+    (set-mark (point))
+    (forward-sentence)
+    (kill-ring-save (region-beginning) (region-end))))
+
+(defun cc/copy-paragraph ()
+  "Copy paragraph point is in."
+  (interactive)
+  (save-excursion
+    (mark-paragraph)
+    (kill-ring-save (region-beginning) (region-end))))
+
+(defun cc/copy-defun ()
+  "Copy defun point is in."
+  (interactive)
+  (save-excursion
+    (mark-defun)
+    (kill-ring-save (region-beginning) (region-end))))
+
 (defun cc/copy-sexp ()
   "Copy sexp after point."
   (interactive)
-  ;;(backward-up-list)
   (mark-sexp)
   (kill-ring-save (region-beginning) (region-end)))
 
@@ -626,19 +653,30 @@ SOUND - sound file (optional)"
   (switch-to-buffer "*terminal*")
   (rename-buffer (format "*ssh %s*" target)))
 
-(defun cc/docview-backward-paragraph ()
+(defun cc/browse-backward-paragraph ()
   "Move point backward paragraph such that the first line is highlighted.
 \nThis function is intended to be used with `hl-line-mode'."
   (interactive)
   (backward-paragraph 2)
   (forward-line))
 
-(defun cc/docview-forward-paragraph ()
+(defun cc/browse-forward-paragraph ()
   "Move point forward paragraph such that the first line is highlighted.
 \nThis function is intended to be used with `hl-line-mode'."
   (interactive)
   (forward-paragraph)
   (forward-line))
+
+(defun cc/browse-forward-sexp ()
+  "Move point forward sexp such that the first line is highlighted."
+  (interactive)
+  (forward-sexp 2)
+  (backward-sexp))
+
+(defun cc/browse-backward-sexp ()
+  "Move point backward sexp such that the first line is highlighted."
+  (interactive)
+  (backward-sexp))
 
 (defun cc/enable-local-sentence-double-space ()
   "Enable `sentence-end-double-space' locally."
