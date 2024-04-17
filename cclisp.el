@@ -671,7 +671,22 @@ SOUND - sound file (optional)"
         (if interned
             (describe-function interned))))))
 
-(defun cc/convert-menu-entry-to-test-vector ()
+
+(defun cc/repunctuate-and-fill-paragraph ()
+  "Fill paragraph with repunctuated sentences.
+
+This command refills the paragraph surrounding the point such
+that sentences are double space separated. For this function to
+work properly, the point must be within a paragraph that has a
+blank line before its start and after its end."
+  (interactive)
+  (backward-paragraph)
+  (mark-paragraph)
+  (repunctuate-sentences t)
+  (deactivate-mark)
+  (fill-paragraph))
+
+(defun cc/casual-convert-menu-entry-to-test-vector ()
   "Convert Transient menu item into a casualt test vector.
 
 If the menu item persists the transient (e.g. :transient t),
@@ -686,20 +701,6 @@ then you should put a ‘q’ at the end of the key macro string."
   (forward-sexp)
   (kill-sexp)
   (kill-sexp))
-
-(defun cc/repunctuate-and-fill-paragraph ()
-  "Fill paragraph with repunctuated sentences.
-
-This command refills the paragraph surrounding the point such
-that sentences are double space separated.  For this function to
-work properly, the point must be within a paragraph that has a
-blank line before its start and after its end."
-  (interactive)
-  (backward-paragraph)
-  (mark-paragraph)
-  (repunctuate-sentences t)
-  (deactivate-mark)
-  (fill-paragraph))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here
