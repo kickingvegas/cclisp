@@ -35,6 +35,7 @@
 (require 'calc)
 (require 'project)
 (require 'ace-window)
+(require 'which-func)
 
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
@@ -696,19 +697,14 @@ SOUND - sound file (optional)"
 (defun cc/describe-function-point-is-in ()
   "Describe enclosing Elisp function at point.
 \nInvoke `describe-function' on the enclosing Elisp function the point is in.
-\nThanks to mwnaylor for guidance in writing this function."
+
+Thanks to mwnaylor and PropagandaOfTheDude for helping write this
+function."
   (interactive)
   (save-excursion
-    (beginning-of-defun)
-    (forward-char)
-    (forward-sexp 2)
-    (let ((end-point (point)))
-      (backward-sexp)
-      (let* ((fn-name (buffer-substring (point) end-point))
-             (interned (intern-soft fn-name)))
-        (if interned
-            (describe-function interned))))))
-
+    (let ((interned (intern-soft (which-function))))
+      (if interned
+          (describe-function interned)))))
 
 (defun cc/repunctuate-and-fill-paragraph ()
   "Fill paragraph with repunctuated sentences.
