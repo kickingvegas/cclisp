@@ -29,6 +29,7 @@
 (require 'doct)
 (require 'org-superstar)
 (require 'face-remap)
+(require 'org-ql)
 (require 'cclisp)
 (require 'cc-save-hooks)
 (require 'company)

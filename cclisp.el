@@ -736,5 +736,23 @@ then you should put a ‘q’ at the end of the key macro string."
   (kill-sexp)
   (kill-sexp))
 
+
+(defun cc/--variable-to-checkbox (v)
+  "Checkbox string representation of variable V.
+V is either nil or non-nil."
+  (if (display-graphic-p)
+      (if v "☑︎" "◻︎")
+    (if v "[x]" "[ ]")))
+
+(defun cc/--prefix-label (label prefix)
+  "Label constructed with PREFIX and LABEL separated by a space."
+  (format "%s %s" prefix label))
+
+
+(defun cc/--checkbox-label (v label)
+  "Checkbox label using variable V and LABEL."
+  (cc/--prefix-label label (cc/--variable-to-checkbox v)))
+
+
 (provide 'cclisp)
 ;;; cclisp.el ends here
