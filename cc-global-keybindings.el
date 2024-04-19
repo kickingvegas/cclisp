@@ -40,6 +40,7 @@
 (require 'ibuffer)
 (require 'magit-status)
 (require 'cc-avy)
+(require 'cc-main-tmenu)
 
 (global-set-key (kbd "C-=") 'er/expand-region)
 ;(global-set-key (kbd "M-g") 'goto-line)
@@ -59,7 +60,7 @@
 (global-set-key (kbd "A-<f5>") 'cc/org-search)
 (global-set-key (kbd "<f6>") 'osx-dictionary-search-input)
 (global-set-key (kbd "<f7>") 'cc/meta-search)
-(global-set-key (kbd "C-o") 'cc/meta-search)
+(global-set-key (kbd "C-o") 'cc/main-tmenu)
 
 (global-set-key (kbd "<f8>") 'org-capture)
 (global-set-key (kbd "<f9>") 'compile)
