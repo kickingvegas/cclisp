@@ -26,6 +26,7 @@
 (require 'transient)
 (require 'bookmark)
 (require 'cclisp)
+(require 'org-agenda)
 
 (defun cc/version-controlled-p ()
   "Predicate if version controlled."
@@ -44,11 +45,17 @@
   "Predicate if current buffer is `org-mode'."
   (derived-mode-p 'org-mode))
 
+(defun cc/org-agenda-all-todos ()
+  "Invoke `org-agenda' to show all TODO items."
+  (interactive)
+  (org-agenda nil "n"))
+
 (transient-define-prefix cc/main-tmenu ()
   "CC Main Menu."
   [["Quick"
     ("f" "Find Dired…" cc/find-dired-regexp :transient nil)
     ("j" "Jump to Bookmark…" bookmark-jump :transient nil)
+    ("a" "Org Agenda" cc/org-agenda-all-todos :transient nil)
     ("b" "List Buffers" ibuffer :transient nil)
     ("w" "Jump to Window…" ace-select-window :transient nil)
     ("u" "URLs…" cc/open-url :if display-graphic-p :transient nil)
