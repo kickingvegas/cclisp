@@ -60,7 +60,8 @@
     ("w" "Jump to Window…" ace-select-window :transient nil)
     ("u" "URLs…" cc/open-url :if display-graphic-p :transient nil)
     ("R" "Recent Files" recentf-open-files :transient nil)
-    ("J" "Journal Files" cc/select-journal-file :transient nil)]
+    ("J" "Journal Files" cc/select-journal-file :transient nil)
+    ("P" "Switch to Project…" project-switch-project :transient nil)]
 
    ["Sexp"
      ("m" "Mark" mark-sexp :transient nil)
@@ -73,17 +74,18 @@
     ("i" "Insert Character…" insert-char :transient nil)
     ("p" "Fill Paragraph" fill-paragraph :transient nil)
     ("l" "Join line" join-line :transient nil)
-    ("K" "Set Input Method - Korean"
+    ("I" "Korean Input"
      (lambda () (interactive)(set-input-method 'korean-hangul))
      :transient nil)]
 
    ["Misc"
     :pad-keys t
     ("d" "Dired…" dired :transient nil)
-    ("C-d" "Dired Other Window…" dired-other-window :transient nil)
+    ("M-d" "Dired Other…" dired-other-window :transient nil)
     ("g" "Magit Status" magit :if cc/version-controlled-p :transient nil)
     ("D" "Ediff Revision" cc/ediff-revision
-     :if cc/version-controlled-p :transient nil)]]
+     :if cc/version-controlled-p :transient nil)
+    ("C" "Compile…" compile :transient nil)]]
 
   ["Menu"
    :class transient-row
@@ -100,10 +102,11 @@
   ["Open"
    ["File"
    ("f" "Fuzzy Find…" helm-find-files :transient nil)
-   ("F" "File…" find-file :transient nil)
-   ("p" "File in Project…" project-find-file :transient nil)
-   ("P" "Project…" project-dired :transient nil)]
+   ("F" "File…" find-file :transient nil)]
+
    ["Project"
+    ("p" "File in Project…" project-find-file :transient nil)
+    ("d" "Project Dired…" project-dired :transient nil)
     ("s" "Switch to Project…" project-switch-project :transient nil)]]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
