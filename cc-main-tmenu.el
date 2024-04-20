@@ -85,7 +85,8 @@
     ("g" "Magit Status" magit :if cc/version-controlled-p :transient nil)
     ("D" "Ediff Revision" cc/ediff-revision
      :if cc/version-controlled-p :transient nil)
-    ("C" "Compile…" compile :transient nil)]]
+    ("C" "Compile…" compile :transient nil)
+    ("r" "Registers" cc/registers-tmenu :transient nil)]]
 
   ["Menu"
    :class transient-row
@@ -246,6 +247,23 @@
 
    ["Fun"
     ("z" "Zone" zone :transient nil)]]
+
+  [("q" "Dismiss" ignore :transient transient--do-exit)])
+
+(transient-define-prefix cc/registers-tmenu ()
+  ["Registers"
+   ["Store"
+    ("p" "Record Point…" point-to-register :transient nil)
+    ("w" "Window Configuration…" window-configuration-to-register :transient nil)
+    ("m" "Keyboard Macro…" kmacro-to-register :transient nil)
+    ("j" "Jump…" jump-to-register :transient nil)]
+
+   ["Store Text"
+    ("c" "Copy Region…" copy-to-register :transient nil)
+    ("r" "Copy Rectangle…" copy-rectangle-to-register :transient nil)
+    ("a" "Append to Register…" append-to-register :transient nil)
+    ("P" "Prepend to Register…" prepend-to-register :transient nil)
+    ("i" "Insert Text…" insert-register :transient nil)]]
 
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
