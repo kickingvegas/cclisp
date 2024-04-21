@@ -637,6 +637,10 @@ SOUND - sound file (optional)"
         (while (search-forward (car e) nil t)
           (replace-match (cdr e) nil t))))))
 
+(defun cc/dired-image-file-p ()
+  "Predicate if current file in Dired is an image file."
+  (string-match-p (image-dired--file-name-regexp) (dired-get-filename)))
+
 (defun cc/--image-info (filename)
   "Get image information of FILENAME via Imagemagick identify utility."
   (car
@@ -696,15 +700,14 @@ SOUND - sound file (optional)"
 
 (defun cc/describe-function-point-is-in ()
   "Describe enclosing Elisp function at point.
-\nInvoke `describe-function' on the enclosing Elisp function the point is in.
+\nInvoke `describe-function' on the enclosing Elisp function the
+point is in.
 
-Thanks to mwnaylor and PropagandaOfTheDude for helping write this
-function."
+Thanks to mwnaylor, PropagandaOfTheDude, and deaddyfreddy for
+helping write this function. "
   (interactive)
-  (save-excursion
-    (let ((interned (intern-soft (which-function))))
-      (if interned
-          (describe-function interned)))))
+  (when-let ((interned (intern-soft (which-function))))
+    (describe-function interned)))
 
 (defun cc/repunctuate-and-fill-paragraph ()
   "Fill paragraph with repunctuated sentences.
@@ -753,6 +756,10 @@ V is either nil or non-nil."
   "Checkbox label using variable V and LABEL."
   (cc/--prefix-label label (cc/--variable-to-checkbox v)))
 
+(defun cc/find-dired-regexp (REGEXP)
+  "Find files in current directory whose names match REGEXP."
+  (interactive "sFind filenames with regex: ")
+  (find-lisp-find-dired default-directory REGEXP))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here
