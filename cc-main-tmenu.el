@@ -116,7 +116,8 @@
     ("v" "Move Text›" cc/edit-move-text-tmenu :transient nil)
     ("d" "Delete Space›" cc/edit-delete-space-tmenu :transient nil)]
 
-   [("f" "Fill Paragraph›" fill-paragraph :transient nil)]]
+   [("f" "Fill Paragraph›" fill-paragraph :transient nil)
+    ("r" "Rectangle›" cc/rectangle-tmenu :transient nil)]]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/edit-mark-tmenu ()
@@ -263,6 +264,28 @@
     ("a" "Append to Register…" append-to-register :if use-region-p :transient nil)
     ("P" "Prepend to Register…" prepend-to-register :if use-region-p :transient nil)
     ("i" "Insert Text…" insert-register :transient nil)]]
+
+  [("q" "Dismiss" ignore :transient transient--do-exit)])
+
+
+(transient-define-prefix cc/rectangle-tmenu ()
+  ["Rectangle"
+   ["Edit"
+    ("k" "Kill" kill-rectangle :inapt-if-not use-region-p :transient nil)
+    ("c" "Copy" copy-rectangle-as-kill :inapt-if-not use-region-p  :transient nil)
+    ("y" "Yank" yank-rectangle :transient nil)
+    ("d" "Delete" delete-rectangle :inapt-if-not use-region-p :transient nil)]
+
+   ["Replace"
+    ("s" "String" string-rectangle :inapt-if-not use-region-p  :transient nil)
+    ("i" "String Insert" string-insert-rectangle :inapt-if-not use-region-p  :transient nil)
+    ("o" "Open Insert" open-rectangle :inapt-if-not use-region-p :transient nil)]
+
+   ["Misc"
+    ("m" "Mark" rectangle-mark-mode :inapt-if-not use-region-p :transient nil)
+    ("n" "Number" rectangle-number-lines :inapt-if-not use-region-p :transient nil)
+    ("C" "Clear" clear-rectangle :inapt-if-not use-region-p :transient nil)
+    ("D" "Delete Leading Spaces" delete-whitespace-rectangle :inapt-if-not use-region-p :transient nil)]]
 
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
