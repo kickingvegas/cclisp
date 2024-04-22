@@ -146,7 +146,7 @@
 
    ["Navigation"
     :pad-keys t
-    ("^" ".. 📁" dired-up-directory :transient t)
+    ("^" "᳞ 📁" dired-up-directory :transient t)
     ("p" "↑" dired-previous-line :transient t)
     ("n" "↓" dired-next-line :transient t)
     ("M-p" "↑ 📁" dired-prev-dirline :transient t)
