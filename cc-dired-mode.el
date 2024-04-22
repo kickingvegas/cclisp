@@ -134,7 +134,7 @@
     ("f" "Filter…" cc/find-dired-regexp :transient nil)
     ("E" "Edit (wdired)" wdired-change-to-wdired-mode :transient nil)
     ("T" "Thumbnails…" image-dired :if display-graphic-p :transient n)
-    ("I" "Image Info" cc/dired-image-info :transient n)
+    ("I" "Image Info" cc/dired-image-info :transient t)
     ]
 
    ["Mark"
