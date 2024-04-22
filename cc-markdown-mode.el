@@ -24,19 +24,18 @@
 
 ;;; Code:
 (require 'markdown-mode)
+(require 'face-remap)
 (require 'cc-save-hooks)
+(require 'org-table)
 (defvar markdown-mode-map)
 
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
 
-(add-hook 'markdown-mode-hook 'variable-pitch-mode)
+(add-hook 'markdown-mode-hook #'variable-pitch-mode)
 ;;(add-hook 'markdown-mode-hook 'markdown-toggle-markup-hiding)
 
-(add-hook
- 'markdown-mode-hook
- (lambda ()
-   (turn-on-orgtbl)))
+(add-hook 'markdown-mode-hook #'turn-on-orgtbl)
 
 (define-key markdown-mode-map (kbd "C-<up>") 'markdown-backward-same-level)
 (define-key markdown-mode-map (kbd "C-<down>") 'markdown-forward-same-level)
