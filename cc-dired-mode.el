@@ -108,7 +108,7 @@
   "Transient menu for dired."
   ["Dired"
    ["File"
-    ("o" "Open" dired-find-file-other-window :transient nil)
+    ("o" "Open Other" dired-find-file-other-window :transient nil)
     ("C" "Copy to…" dired-do-copy :transient nil)
     ("R" "Rename…" dired-do-rename :transient nil)
     ("D" "Delete…" dired-do-delete :transient nil)
@@ -166,7 +166,9 @@
     ("+" "Directory" dired-create-directory :transient t)
     ("F" "File" dired-create-empty-file :transient t)]]
 
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [:class transient-row
+   ("<return>" "Open" dired-find-file :transient nil)
+   ("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/dired-regexp-tmenu ()
   "Transient menu for dired regexp."
