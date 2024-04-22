@@ -32,11 +32,6 @@
   "Predicate if version controlled."
   (vc-responsible-backend default-directory t))
 
-(defun cc/find-dired-regexp (REGEXP)
-  "Find files in currentx directory whose names match REGEXP."
-  (interactive "sFind filenames with regex: ")
-  (find-lisp-find-dired default-directory REGEXP))
-
 (defun cc/prog-mode-p ()
   "Predicate if current buffer is `prog-mode'."
   (derived-mode-p 'prog-mode))
@@ -91,7 +86,7 @@
   ["Menu"
    :class transient-row
     ("o" "Open›" cc/open-tmenu :transient nil)
-    ("W" "Windows & Tabs›" cc/windows-tmenu :transient nil)
+    ("W" "Windows›" cc/windows-tmenu :transient nil)
     ("e" "Edit›" cc/edit-tmenu :transient nil)
     ("B" "Bookmarks›" cc/bookmarks-tmenu :transient nil)
     ("s" "Search›" cc/search-tmenu :transient nil)
@@ -208,9 +203,13 @@
    ("t" "Transpose" transpose-frame :transient nil)
    ("b" "New Window Below" split-window-below :transient nil)
    ("r" "New Window on Right" split-window-horizontally :transient nil)
-   ;;("T" "Toggle Tab Bar" mac-toggle-tab-bar :if ma :transient nil)
+   ("T" "Toggle Tab Bar" mac-toggle-tab-bar :if window-system-mac-p :transient nil)
    ]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
+
+(defun window-system-mac-p ()
+  "Predicate if window system is mac."
+  (eq window-system 'mac))
 
 (transient-define-prefix cc/bookmarks-tmenu ()
   ["Bookmarks"
@@ -253,16 +252,16 @@
 (transient-define-prefix cc/registers-tmenu ()
   ["Registers"
    ["Store"
-    ("p" "Record Point…" point-to-register :transient nil)
+    ("p" "Point…" point-to-register :transient nil)
     ("w" "Window Configuration…" window-configuration-to-register :transient nil)
     ("m" "Keyboard Macro…" kmacro-to-register :transient nil)
     ("j" "Jump…" jump-to-register :transient nil)]
 
    ["Store Text"
-    ("c" "Copy Region…" copy-to-register :transient nil)
-    ("r" "Copy Rectangle…" copy-rectangle-to-register :transient nil)
-    ("a" "Append to Register…" append-to-register :transient nil)
-    ("P" "Prepend to Register…" prepend-to-register :transient nil)
+    ("c" "Region…" copy-to-register :if use-region-p :transient nil)
+    ("r" "Rectangle…" copy-rectangle-to-register :if use-region-p :transient nil)
+    ("a" "Append to Register…" append-to-register :if use-region-p :transient nil)
+    ("P" "Prepend to Register…" prepend-to-register :if use-region-p :transient nil)
     ("i" "Insert Text…" insert-register :transient nil)]]
 
   [("q" "Dismiss" ignore :transient transient--do-exit)])

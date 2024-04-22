@@ -27,11 +27,9 @@
 (require 'dired-x)
 (require 'cclisp)
 (require 'helm)
-(require 'org)
-(require 'org-ql)
 (require 'wdired)
 (require 'cc-dired-sort-by)
-(require 'cc-main-tmenu)
+(require 'image-dired)
 
 (with-eval-after-load 'dired
   (require 'dired-x))
@@ -42,7 +40,7 @@
 (defun cc/dired-image-info ()
   "Message image info in the minibuffer and push into kill-ring."
   (interactive)
-  (when (org-file-image-p (dired-get-filename))
+  (if (cc/dired-image-file-p)
     (let* ((filename (dired-get-filename))
            (image-info (cc/--image-info filename))
            (output (concat image-info
@@ -51,7 +49,8 @@
                            "."
                            (file-name-extension filename))))
       (message output)
-      (kill-new output))))
+      (kill-new output))
+    (message "Not an image file.")))
 
 (defun cc/dired-inspect-object ()
   "WIP: inspect Dired object."
@@ -102,17 +101,22 @@
 (define-key dired-mode-map (kbd "A-M-<mouse-1>") 'browse-url-of-dired-file)
 ;;(define-key dired-mode-map (kbd "A-M-<mouse-2>") 'cc/dired-inspect-object)
 
+(define-key image-dired-thumbnail-mode-map (kbd "n") 'image-dired-display-next)
+(define-key image-dired-thumbnail-mode-map (kbd "p") 'image-dired-display-previous)
+
 (transient-define-prefix cc/dired-tmenu ()
   "Transient menu for dired."
   ["Dired"
    ["File"
+    ("o" "Open" dired-find-file-other-window :transient nil)
     ("C" "Copy to…" dired-do-copy :transient nil)
-    ("R" "Rename…" dired-do-rename :transient t)
-    ("S" "Symlink to…" dired-do-symlink :transient t)
+    ("R" "Rename…" dired-do-rename :transient nil)
+    ("D" "Delete…" dired-do-delete :transient nil)
+    ("S" "Symlink to…" dired-do-symlink :transient nil)
     ("c" "Change›" cc/dired-change-tmenu :transient nil)
     ("w" "Copy Name" dired-copy-filename-as-kill :transient nil)
-    ("!" "Shell Command" dired-do-shell-command :transient nil)
-    ("&" "Shell Command ☕︎" dired-do-async-shell-command :transient nil)
+    ("!" "$ …" dired-do-shell-command :transient nil)
+    ("&" "$ &… " dired-do-async-shell-command :transient nil)
     ("W" "Browse" browse-url-of-dired-file :transient nil)]
 
    ["Directory"
@@ -120,25 +124,29 @@
     ("h" "Hide Details" dired-hide-details-mode
      :description (lambda () (cc/--checkbox-label dired-hide-details-mode "Hide Details"))
      :transient t)
-    ("o" "Omit Mode" dired-omit-mode
+    ("O" "Omit Mode" dired-omit-mode
      :description (lambda () (cc/--checkbox-label dired-omit-mode "Omit Mode"))
      :transient t)
     ("i" "Insert Subdir" dired-maybe-insert-subdir :transient t)
     ("$" "Hide/Unhide Subdir" dired-hide-subdir :transient t)
-    ("k" "Kill Line" dired-do-kill-lines :transient t)
-    ("E" "Edit Filenames (wdired)" wdired-change-to-wdired-mode :transient nil)
-    ("I" "Thumbnails…" image-dired :transient n)]
+    ("k" "Kill Line(s)" dired-do-kill-lines :transient t)
+    ("g" "Revert" revert-buffer :transient t)
+    ("f" "Filter…" cc/find-dired-regexp :transient nil)
+    ("E" "Edit (wdired)" wdired-change-to-wdired-mode :transient nil)
+    ("T" "Thumbnails…" image-dired :if display-graphic-p :transient n)
+    ("I" "Image Info" cc/dired-image-info :transient n)
+    ]
 
    ["Mark"
     ("t" "Toggle Marks" dired-toggle-marks :transient t)
     ("m" "Mark" dired-mark :transient t)
-    ("u" "Unmark" dired-unmark :transient qt)
+    ("u" "Unmark" dired-unmark :transient t)
     ("U" "Unmark All" dired-unmark-all-marks :transient t)
     ("r" "Regexp›" cc/dired-regexp-tmenu :transient nil)]
 
    ["Navigation"
     :pad-keys t
-    ("^" "Up Directory" dired-up-directory :transient t)
+    ("^" ".. 📁" dired-up-directory :transient t)
     ("p" "↑" dired-previous-line :transient t)
     ("n" "↓" dired-next-line :transient t)
     ("M-p" "↑ 📁" dired-prev-dirline :transient t)
@@ -148,41 +156,34 @@
 
   [["Quick"
     ("j" "Jump to Bookmark…" bookmark-jump :transient nil)
-    ("b" "List Buffers" ibuffer :transient nil)
-    ("M" "Main Menu›" cc/main-tmenu :transient nil)]
+    ("b" "List Buffers" ibuffer :transient nil)]
 
    ["Search"
-    ("C-s" "I-Search Filenames…" dired-isearch-filenames :transient nil)
-    ("M-s" "I-Search Regexp Filenames…" dired-isearch-filenames-regexp :transient nil)]]
+    ("C-s" "I-Search…" dired-isearch-filenames :transient nil)
+    ("M-s" "I-Search Regexp…" dired-isearch-filenames-regexp :transient nil)]
 
-  ;; ["Menu"
-  ;;  :class transient-row
-  ;;   ("o" "Open›" cc/open-tmenu :transient nil)
-  ;;   ("W" "Windows & Tabs›" cc/windows-tmenu :transient nil)
-  ;;   ("e" "Edit›" cc/edit-tmenu :transient nil)
-  ;;   ("B" "Bookmarks›" cc/bookmarks-tmenu :transient nil)
-  ;;   ("s" "Search›" cc/search-tmenu :transient nil)
-  ;;   ("T" "Tools›" cc/tools-tmenu :transient nil)]
+   ["New"
+    ("+" "Directory" dired-create-directory :transient t)
+    ("F" "File" dired-create-empty-file :transient t)]]
 
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/dired-regexp-tmenu ()
   "Transient menu for dired regexp."
-  ["Regexp"
-   ("m" "Mark Files…" dired-mark-files-regexp :transient nil)
-   ("c" "Mark Files Containing…" dired-mark-files-containing-regexp :transient nil)
-   ("d" "Mark Files For Deletion…" dired-flag-files-regexp :transient nil)
-   ("C" "Mark Files To Copy…" dired-do-copy-regexp :transient nil)
-   ("r" "Mark Files To Rename…" dired-do-rename-regexp :transient nil)]
-
+  ["Regexp Mark"
+   ("m" "Files…" dired-mark-files-regexp :transient nil)
+   ("c" "Files Containing…" dired-mark-files-containing-regexp :transient nil)
+   ("d" "Files For Deletion…" dired-flag-files-regexp :transient nil)
+   ("C" "Files To Copy…" dired-do-copy-regexp :transient nil)
+   ("r" "Files To Rename…" dired-do-rename-regexp :transient nil)]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/dired-change-tmenu ()
   ["Change"
-   ("T" "Touch" dired-do-touch :transient t)
-   ("M" "Mode…" dired-do-chmod :transient t)
-   ("G" "Group…" dired-do-chgrp :transient t)
-   ("O" "Owner…" dired-do-chown :transient t)]
+   [("M" "Mode…" dired-do-chmod :transient t)
+    ("G" "Group…" dired-do-chgrp :transient t)
+    ("O" "Owner…" dired-do-chown :transient t)]
+   [("T" "Touch" dired-do-touch :transient t)]]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (provide 'cc-dired-mode)
