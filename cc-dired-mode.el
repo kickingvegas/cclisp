@@ -52,6 +52,10 @@
       (kill-new output))
     (message "Not an image file.")))
 
+(defun cc/find-lisp-dired-buffer-p ()
+  "Predicate if buffer name is “*Find Lisp Dired*”."
+  (string-equal (buffer-name) "*Find Lisp Dired*"))
+
 (defun cc/dired-inspect-object ()
   "WIP: inspect Dired object."
   (interactive)
@@ -120,22 +124,26 @@
     ("W" "Browse" browse-url-of-dired-file :transient nil)]
 
    ["Directory"
-    ("s" "Sort By›" cc/dired-sort-by :transient t)
+    ("s" "Sort By›" cc/dired-sort-by :if-not cc/find-lisp-dired-buffer-p :transient t)
     ("h" "Hide Details" dired-hide-details-mode
      :description (lambda () (cc/--checkbox-label dired-hide-details-mode "Hide Details"))
+     :if-not cc/find-lisp-dired-buffer-p
      :transient t)
     ("O" "Omit Mode" dired-omit-mode
      :description (lambda () (cc/--checkbox-label dired-omit-mode "Omit Mode"))
      :transient t)
-    ("i" "Insert Subdir" dired-maybe-insert-subdir :transient t)
-    ("$" "Hide/Unhide Subdir" dired-hide-subdir :transient t)
-    ("k" "Kill Line(s)" dired-do-kill-lines :transient t)
+    ("i" "Insert Subdir" dired-maybe-insert-subdir
+     :if-not cc/find-lisp-dired-buffer-p
+     :transient t)
+    ("$" "Hide/Unhide Subdir" dired-hide-subdir
+     :if-not cc/find-lisp-dired-buffer-p
+     :transient t)
+    ("k" "Kill (Hide) Line(s)" dired-do-kill-lines :transient t)
     ("g" "Revert" revert-buffer :transient t)
     ("f" "Filter…" cc/find-dired-regexp :transient nil)
     ("E" "Edit (wdired)" wdired-change-to-wdired-mode :transient nil)
     ("T" "Thumbnails…" image-dired :if display-graphic-p :transient n)
-    ("I" "Image Info" cc/dired-image-info :transient t)
-    ]
+    ("I" "Image Info" cc/dired-image-info :transient t)]
 
    ["Mark"
     ("t" "Toggle Marks" dired-toggle-marks :transient t)
