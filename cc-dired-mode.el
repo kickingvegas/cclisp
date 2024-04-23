@@ -112,7 +112,7 @@
     ("C" "Copy to…" dired-do-copy :transient nil)
     ("R" "Rename…" dired-do-rename :transient nil)
     ("D" "Delete…" dired-do-delete :transient nil)
-    ("S" "Symlink to…" dired-do-symlink :transient nil)
+    ("S" "Symlink…" dired-do-symlink :transient nil)
     ("c" "Change›" cc/dired-change-tmenu :transient nil)
     ("w" "Copy Name" dired-copy-filename-as-kill :transient nil)
     ("!" "$ …" dired-do-shell-command :transient nil)
