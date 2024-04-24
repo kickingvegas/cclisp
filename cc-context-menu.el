@@ -36,7 +36,7 @@
 (require 'cc-edit-text-menu)
 (require 'cc-wgrep-mode)
 (require 'cc-dired-mode)
-(require 'cc-dired-sort-by)
+(require 'casual-dired)
 
 (defun cc/context-menu-addons (menu click)
   "Context menu customization for Charles Choi.
@@ -113,7 +113,7 @@ from current buffer"])))
                          :visible (and (buffer-file-name) (not (derived-mode-p 'dired-mode)))
                          :help "Open file in Dired"])
 
-    (easy-menu-add-item menu nil cc/dired-sort-menu)
+    (easy-menu-add-item menu nil casual-dired-sort-menu)
     (when (derived-mode-p 'dired-mode)
       (easy-menu-add-item menu nil
                           ["Duplicate"
@@ -128,9 +128,11 @@ from current buffer"])))
       (easy-menu-add-item menu nil
                           ["Image Info"
                            cc/kill-image-info
-                           :label (concat "Info: "
-                                          (cc/--image-info (dired-get-filename)))
-                           :visible (org-file-image-p (dired-get-filename))]))
+                           :label (concat
+                                   "Info: "
+                                   (casual-dired--identify-image
+                                    (dired-get-filename)))
+                           :visible (casual-dired-image-file-p)]))
 
     (when (use-region-p)
       (cc/context-menu-item-separator menu dictionary-operations-separator)
@@ -304,7 +306,7 @@ temporarily visible (Visible mode)"])
 E - event"
   (interactive "e")
   (ignore e)
-  (cc/dired-image-info))
+  (casual-dired-image-info))
 
 (defun cc/kill-org-table-reference (e)
   "Push Org table reference into the `kill-ring'.
