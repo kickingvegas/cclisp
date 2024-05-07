@@ -159,7 +159,7 @@ a match for selected word"])
                            :help "Show all lines in the current buffer \
 containing a match for regex"]))
 
-    (easy-menu-add-item menu nil cc/find-menu)
+    ;;(easy-menu-add-item menu nil cc/find-menu)
 
     (keymap-set-after menu
       "<vc-separator>"
@@ -168,24 +168,19 @@ containing a match for regex"]))
       'Find\ and/or\ Replace)
 
     (if (vc-responsible-backend default-directory t)
-        (easy-menu-add-item menu nil
-                            ["Magit Status"
-                             magit-status
-                             :help "Show the status of the current Git repository \
-in a buffer"]))
+        (easy-menu-add-item
+         menu nil
+         ["Magit Status"
+          magit-status
+          :help "Show the status of the current Git repository in a buffer"]))
 
-    (easy-menu-add-item menu nil ["Ediff revision…"
-                                  cc/ediff-revision-from-menu
-                                  :visible (and (bound-and-true-p buffer-file-name)
-                                                (vc-registered (buffer-file-name)))
-                                  :help "Ediff this file with revision"])
-    (easy-menu-add-item menu nil ["Git History"
-                                  magit-log-buffer-file
-                                  :visible (and (bound-and-true-p buffer-file-name)
-                                                (vc-registered (buffer-file-name)))
-                                  :help "Show log for the blob or file visited in \
-the current buffer"])
-
+    (easy-menu-add-item
+     menu nil
+     ["Ediff revision…"
+      cc/ediff-revision-from-menu
+      :visible (and (bound-and-true-p buffer-file-name)
+                    (vc-registered (buffer-file-name)))
+      :help "Ediff this file with revision"]))
 
     (when (use-region-p)
       (cc/context-menu-item-separator menu transform-text-separator)
@@ -275,10 +270,6 @@ temporarily visible (Visible mode)"])
                                       count-words
                                       :help "Count words in buffer"])))
 
-
-    (easy-menu-add-item menu nil cc/transpose-menu)
-    (easy-menu-add-item menu nil cc/move-text-menu)
-    (easy-menu-add-item menu nil cc/delete-space-menu)
     (easy-menu-add-item menu nil cc/wgrep-menu)
 
     menu))
