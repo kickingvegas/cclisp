@@ -180,7 +180,7 @@ containing a match for regex"]))
       cc/ediff-revision-from-menu
       :visible (and (bound-and-true-p buffer-file-name)
                     (vc-registered (buffer-file-name)))
-      :help "Ediff this file with revision"]))
+      :help "Ediff this file with revision"])
 
     (when (use-region-p)
       (cc/context-menu-item-separator menu transform-text-separator)

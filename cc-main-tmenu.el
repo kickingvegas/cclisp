@@ -145,8 +145,12 @@
     ("v" "Move›" cc/edit-move-text-tmenu :transient nil)
     ("d" "Delete›" cc/edit-delete-space-tmenu :transient nil)]
 
+   [:pad-keys t
+    ("r" "Replace" query-replace :transient nil)
+    ("M-r" "Replace Regexp" query-replace-regexp :transient nil)]
+
    [("f" "Fill Paragraph" fill-paragraph :transient nil)
-    ("r" "Rectangle›" cc/rectangle-tmenu :transient nil)]]
+    ("R" "Rectangle›" cc/rectangle-tmenu :transient nil)]]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/edit-mark-tmenu ()
