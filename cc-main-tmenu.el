@@ -79,12 +79,13 @@
   "CC Main Menu."
   ["Menu"
    :class transient-row
-    ("o" "Open›" cc/open-tmenu :transient nil)
-    ("e" "Edit›" cc/edit-tmenu :transient nil)
-    ("w" "Window›" cc/windows-tmenu :transient nil)
-    ("B" "Bookmarks›" cc/bookmarks-tmenu :transient nil)
-    ("s" "Search›" cc/search-tmenu :transient nil)
-    ("T" "Tools›" cc/tools-tmenu :transient nil)]
+   ("o" "Open›" cc/open-tmenu :transient nil)
+   ;; TODO: test buffer-read-only
+   ("e" "Edit›" cc/edit-tmenu :transient nil)
+   ("w" "Window›" cc/windows-tmenu :transient nil)
+   ("B" "Bookmarks›" cc/bookmarks-tmenu :transient nil)
+   ("s" "Search›" cc/search-tmenu :transient nil)
+   ("T" "Tools›" cc/tools-tmenu :transient nil)]
 
   [["Quick"
     ("j" "Jump to Bookmark…" bookmark-jump :transient nil)
@@ -95,12 +96,14 @@
     ("u" "URLs…" cc/open-url :if display-graphic-p :transient nil)]
 
    ["Sexp"
-     ("m" "Mark" mark-sexp :transient nil)
-     ("c" "Copy" cc/copy-sexp :transient nil)
-     ("k" "Kill" kill-sexp :transient nil)
-     ("t" "Transpose" transpose-sexps :transient nil)]
+    ("m" "Mark" mark-sexp :transient nil)
+    ;; TODO: test buffer-read-only
+    ("c" "Copy" cc/copy-sexp :transient nil)
+    ("k" "Kill" kill-sexp :transient nil)
+    ("t" "Transpose" transpose-sexps :transient nil)]
 
    ["Edit"
+    ;; TODO: test buffer-read-only
     ("i" "Insert Character…" insert-char :transient nil)
     ("p" "Fill Paragraph" fill-paragraph :transient nil)
     ("l" "Join line" join-line :transient nil)
