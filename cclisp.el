@@ -174,8 +174,7 @@ This function presumes that the buffer *pelican* is in the correct directory."
   (interactive)
   (process-send-string (get-buffer-process "*pelican*") "make devserver\n")
   (sleep-for 3)
-  (shell-command "open http://localhost:8000")
-  )
+  (shell-command "open http://localhost:8000"))
 
 (defun cc/blog ()
   "One-step operation to develop a blog post for “notes from /dev/null”."
@@ -190,8 +189,7 @@ This function presumes that the buffer *pelican* is in the correct directory."
          (process-send-string (get-buffer-process "*pelican*") "cd ~/Projects/devnull\n")
          ()
          (if (display-graphic-p)
-             (cc/launch-pelican)
-           ))))
+             (cc/launch-pelican)))))
 
 (defun cc/web-captee()
   "One-step operation to startup a devserver for the Captee website."
@@ -739,7 +737,7 @@ then you should put a ‘q’ at the end of the key macro string."
   (kill-sexp)
   (kill-sexp))
 
-
+;; Transient Labels
 (defun cc/--variable-to-checkbox (v)
   "Checkbox string representation of variable V.
 V is either nil or non-nil."
@@ -751,15 +749,39 @@ V is either nil or non-nil."
   "Label constructed with PREFIX and LABEL separated by a space."
   (format "%s %s" prefix label))
 
-
 (defun cc/--checkbox-label (v label)
   "Checkbox label using variable V and LABEL."
   (cc/--prefix-label label (cc/--variable-to-checkbox v)))
 
-(defun cc/find-dired-regexp (REGEXP)
-  "Find files in current directory whose names match REGEXP."
-  (interactive "sFind filenames with regex: ")
-  (find-lisp-find-dired default-directory REGEXP))
+(defun cc/smart-single-quote-region (start end)
+  "Enclose region within START and END in smart single quotes."
+  (interactive "r")
+  (let* ((content (string-trim (buffer-substring start end))))
+    (delete-region start end)
+    (insert (concat "‘" content "’"))))
+
+(defun cc/smart-double-quote-region (start end)
+  "Enclose region within START and END in smart double quotes."
+  (interactive "r")
+  (let* ((content (string-trim (buffer-substring start end))))
+    (delete-region start end)
+    (insert (concat "“" content "”"))))
+
+(defun cc/smart-single-quotes ()
+  "Insert smart single quotes."
+  (interactive)
+  (insert "‘’"))
+
+(defun cc/smart-double-quotes ()
+  "Insert smart double quotes."
+  (interactive)
+  (insert "“”"))
+
+(defun cc/apostrophe ()
+  "Insert smart apostrophe."
+  (interactive)
+  (insert "’"))
+
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

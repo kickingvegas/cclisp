@@ -48,11 +48,10 @@
 (transient-define-prefix cc/main-tmenu ()
   "CC Main Menu."
   [["Quick"
-    ("f" "Find Dired…" cc/find-dired-regexp :transient nil)
+    ("f" "Find Dired…" casual-dired-find-dired-regexp :transient nil)
     ("j" "Jump to Bookmark…" bookmark-jump :transient nil)
     ("a" "Org Agenda" cc/org-agenda-all-todos :transient nil)
     ("b" "List Buffers" ibuffer :transient nil)
-    ("w" "Jump to Window…" ace-select-window :transient nil)
     ("u" "URLs…" cc/open-url :if display-graphic-p :transient nil)
     ("R" "Recent Files" recentf-open-files :transient nil)
     ("J" "Journal Files" cc/select-journal-file :transient nil)
@@ -78,6 +77,8 @@
     ("d" "Dired…" dired :transient nil)
     ("M-d" "Dired Other…" dired-other-window :transient nil)
     ("g" "Magit Status" magit :if cc/version-controlled-p :transient nil)
+    ("G" "Magit Dispatch" magit-file-dispatch
+     :if cc/version-controlled-p :transient nil)
     ("D" "Ediff Revision" cc/ediff-revision
      :if cc/version-controlled-p :transient nil)
     ("C" "Compile…" compile :transient nil)
@@ -86,7 +87,7 @@
   ["Menu"
    :class transient-row
     ("o" "Open›" cc/open-tmenu :transient nil)
-    ("W" "Windows›" cc/windows-tmenu :transient nil)
+    ("w" "Window›" cc/windows-tmenu :transient nil)
     ("e" "Edit›" cc/edit-tmenu :transient nil)
     ("B" "Bookmarks›" cc/bookmarks-tmenu :transient nil)
     ("s" "Search›" cc/search-tmenu :transient nil)
@@ -113,20 +114,20 @@
     ("k" "Kill›" cc/edit-kill-tmenu :transient nil)]
 
    [("t" "Transpose›" cc/edit-transpose-tmenu :transient nil)
-    ("v" "Move Text›" cc/edit-move-text-tmenu :transient nil)
-    ("d" "Delete Space›" cc/edit-delete-space-tmenu :transient nil)]
+    ("v" "Move›" cc/edit-move-text-tmenu :transient nil)
+    ("d" "Delete›" cc/edit-delete-space-tmenu :transient nil)]
 
-   [("f" "Fill Paragraph›" fill-paragraph :transient nil)
+   [("f" "Fill Paragraph" fill-paragraph :transient nil)
     ("r" "Rectangle›" cc/rectangle-tmenu :transient nil)]]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/edit-mark-tmenu ()
   ["Mark"
-   ("w" "Word"  mark-word :transient nil)
-   ("s" "Sentence" mark-end-of-sentence :transient nil)
-   ("p" "Paragraph" mark-paragraph :transient nil)
-   ("b" "Balanced Expression (sexp)" mark-sexp :transient nil)
-   ("d" "Defun" mark-defun :transient nil)]
+   [("w" "Word"  mark-word :transient nil)
+    ("s" "Sentence" mark-end-of-sentence :transient nil)
+    ("p" "Paragraph" mark-paragraph :transient nil)]
+   [("b" "Balanced Expression (sexp)" mark-sexp :transient nil)
+    ("d" "Defun" mark-defun :transient nil)]]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/edit-copy-tmenu ()
@@ -140,11 +141,11 @@
 
 (transient-define-prefix cc/edit-kill-tmenu ()
   ["Kill"
-   ("w" "Word"  kill-word :transient nil)
-   ("l" "Line" kill-line :transient nil)
-   ("s" "Sentence" kill-sentence :transient nil)
-   ("p" "Paragraph" kill-paragraph :transient nil)
-   ("b" "Balanced Expression (sexp)" kill-sexp :transient nil)]
+   [("w" "Word"  kill-word :transient nil)
+    ("s" "Sentence" kill-sentence :transient nil)
+    ("p" "Paragraph" kill-paragraph :transient nil)]
+   [("l" "Line" kill-line :transient nil)
+    ("b" "Balanced Expression (sexp)" kill-sexp :transient nil)]]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/edit-transpose-tmenu ()
@@ -173,7 +174,7 @@
   ["Move Text"
    ("w" "Word"  cc/edit-move-word-tmenu :transient nil)
    ("s" "Sentence"  cc/edit-move-sentence-tmenu :transient nil)
-   ("b" "Balanced Expression" cc/edit-move-sexp-tmenu :transient nil)]
+   ("b" "Balanced Expression (sexp)" cc/edit-move-sexp-tmenu :transient nil)]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/edit-move-word-tmenu ()
@@ -199,13 +200,27 @@
 
 (transient-define-prefix cc/windows-tmenu ()
   ["Windows"
-   ("j" "Jump to Window…" ace-select-window :transient nil)
-   ("s" "Swap" window-swap-states :transient nil)
-   ("t" "Transpose" transpose-frame :transient nil)
-   ("b" "New Window Below" split-window-below :transient nil)
-   ("r" "New Window on Right" split-window-horizontally :transient nil)
-   ("T" "Toggle Tab Bar" mac-toggle-tab-bar :if window-system-mac-p :transient nil)
-   ]
+   ["New"
+    ("b" "Below" split-window-below :transient nil)
+    ("r" "On Right" split-window-horizontally :transient nil)]
+
+   ["Layout"
+    ("s" "Swap" window-swap-states :transient nil)
+    ("t" "Transpose" transpose-frame :transient nil)
+    ("T" "Toggle Tab Bar" mac-toggle-tab-bar
+     :if window-system-mac-p :transient nil)]
+
+   ["Jump"
+    ("j" "Jump to Window…" ace-select-window :transient nil)]]
+
+  ["Resize"
+   ["↕︎"
+    ("+" "Enlarge" enlarge-window :transient t)
+    ("-" "Shrink" shrink-window :transient t)]
+   ["↔︎"
+    (">" "Enlarge" enlarge-window-horizontally :transient t)
+    ("<" "Shrink" shrink-window-horizontally :transient t)]]
+
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (defun window-system-mac-p ()

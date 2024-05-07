@@ -207,6 +207,7 @@
  '(calendar-latitude 37.7643)
  '(calendar-longitude -122.4753)
  '(case-fold-search t)
+ '(casual-dired-use-utf8-symbols t)
  '(cc-dired-listing-switches
    '("--human-readable" "--group-directories-first" "--time-style=long-iso"))
  '(column-number-mode t)
@@ -221,10 +222,9 @@
  '(dired-auto-revert-buffer t)
  '(dired-dwim-target 'dired-dwim-target-next)
  '(dired-guess-shell-alist-user '(("" "open")))
- '(dired-listing-switches
-   "-lh --group-directories-first --time-style=long-iso --sort=version")
+ '(dired-listing-switches "-lh --group-directories-first --time-style=long-iso ")
  '(dired-mouse-drag-files t)
- '(dired-use-ls-dired 'unspecified)
+ '(dired-use-ls-dired t)
  '(display-buffer-alist
    '(("\\*eshell\\*"
       (display-buffer-at-bottom)
@@ -390,7 +390,7 @@
    '(("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa" . "http://melpa.org/packages/")))
  '(package-selected-packages
-   '(cc-isearch-menu org-ql flycheck-package package-lint iedit doct scpaste snow paredit orgtbl-aggregate transpose-frame diff-hl keycast edit-indirect ox-trac google-translate org wgrep js2-mode rainbow-mode use-package bind-key reveal-in-folder elfeed ob-swiftui ob-swift csv-mode company-restclient visual-regexp-steroids visual-regexp citar math-symbol-lists helm-bibtex ox-gist org-ref org-re-reveal webpaste company-org-block company eglot gnuplot ob-restclient restclient ox-slack good-scroll svg-clock disk-usage expand-region helm-pass password-store which-key org-outline-numbering org-superstar osx-dictionary spotlight ebib auto-complete plantuml-mode tj3-mode ledger-mode yasnippet-snippets yasnippet htmlize calfw kanban fireplace treemacs neotree smart-mode-line-powerline-theme pbcopy ox-jira ox-gfm helm-swoop helm ztree yaml-mode swift-mode sr-speedbar solarized-theme python-mode pkg-info markdown-mode magit json-mode graphviz-dot-mode google-this go-mode autopair))
+   '(casual casual-dired cc-isearch-menu org-ql flycheck-package package-lint iedit doct scpaste snow paredit orgtbl-aggregate transpose-frame diff-hl keycast edit-indirect ox-trac google-translate org wgrep js2-mode rainbow-mode use-package bind-key reveal-in-folder elfeed ob-swiftui ob-swift csv-mode company-restclient visual-regexp-steroids visual-regexp citar math-symbol-lists helm-bibtex ox-gist org-ref org-re-reveal webpaste company-org-block company eglot gnuplot ob-restclient restclient ox-slack good-scroll svg-clock disk-usage expand-region helm-pass password-store which-key org-outline-numbering org-superstar osx-dictionary spotlight ebib auto-complete plantuml-mode tj3-mode ledger-mode yasnippet-snippets yasnippet htmlize calfw kanban fireplace treemacs neotree smart-mode-line-powerline-theme pbcopy ox-jira ox-gfm helm-swoop helm ztree yaml-mode swift-mode sr-speedbar solarized-theme python-mode pkg-info markdown-mode magit json-mode graphviz-dot-mode google-this go-mode autopair))
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
  '(plantuml-indent-level 4)
