@@ -55,17 +55,24 @@
   "Select appropriate Magit command given context."
   (interactive)
   (if (cc/version-controlled-p)
-      (if (derived-mode-p 'dired-mode)
-          (funcall-interactively #'magit-status)
+      (cond
+       ((derived-mode-p 'dired-mode) (funcall-interactively #'magit-status))
+       ((or (derived-mode-p 'prog-mode)
+            (derived-mode-p 'text-mode))
         (funcall-interactively #'magit-file-dispatch))
+       (t (funcall-interactively #'magit-status)))
+
     (message "Not a version controlled buffer.")))
 
 (defun cc/select-magit-command-description ()
   "Select appropriate Magit command description given context."
   (if (cc/version-controlled-p)
-      (if (derived-mode-p 'dired-mode)
-          "Magit Status"
+      (cond
+       ((derived-mode-p 'dired-mode) "Magit Status")
+       ((or (derived-mode-p 'prog-mode)
+            (derived-mode-p 'text-mode))
         "Magit Dispatch")
+       (t "Magit Status"))
     (message "Not a version controlled buffer.")))
 
 (transient-define-prefix cc/main-tmenu ()
