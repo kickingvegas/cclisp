@@ -245,7 +245,8 @@
     ("T" "Toggle Tab Bar" mac-toggle-tab-bar
      :if window-system-mac-p :transient nil)]
 
-   ["Jump"
+   ["Navigate"
+    ("o" "Next" other-window :transient t)
     ("j" "Jump to Window…" ace-select-window :transient nil)]]
 
   ["Resize"
