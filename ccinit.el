@@ -41,6 +41,8 @@
 (recentf-mode 1)
 
 (when (eq window-system 'x)
+  (setq x-meta-keysym 'super
+	x-super-keysym 'meta)
   (require 'pbcopy)
   (turn-on-pbcopy))
 
@@ -49,8 +51,9 @@
 (setq mouse-wheel-follow-mouse 't)
 ;;(setq scroll-step 1)
 
-(setq mac-mouse-wheel-mode t)
-(setq mac-mouse-wheel-smooth-scroll t)
+(when (eq window-system 'mac)
+    (setq mac-mouse-wheel-mode t)
+    (setq mac-mouse-wheel-smooth-scroll t))
 ;;(pixel-scroll-precision-mode 1)
 ;;(setq pixel-scroll-precision-large-scroll-height 10.0)
 
@@ -92,7 +95,6 @@
 (define-key isearch-mode-map (kbd "<f2>") 'cc-isearch-menu-transient)
 
 ;;; Local Customizations
-
 
 (when (and (string= (system-name) "bingsu.local") (display-graphic-p))
   (server-start))
