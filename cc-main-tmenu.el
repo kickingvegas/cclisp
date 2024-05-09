@@ -27,6 +27,12 @@
 (require 'bookmark)
 (require 'cclisp)
 (require 'org-agenda)
+(require 'ace-window)
+(require 'recentf)
+(require 'org-ql-search)
+(require 'magit-status)
+(require 'magit-files)
+(require 'google-this)
 
 (defun cc/version-controlled-p ()
   "Predicate if version controlled."
@@ -45,26 +51,59 @@
   (interactive)
   (org-agenda nil "n"))
 
+(defun cc/select-magit-command ()
+  "Select appropriate Magit command given context."
+  (interactive)
+  (if (cc/version-controlled-p)
+      (cond
+       ((derived-mode-p 'dired-mode) (funcall-interactively #'magit-status))
+       ((or (derived-mode-p 'prog-mode)
+            (derived-mode-p 'text-mode))
+        (funcall-interactively #'magit-file-dispatch))
+       (t (funcall-interactively #'magit-status)))
+
+    (message "Not a version controlled buffer.")))
+
+(defun cc/select-magit-command-description ()
+  "Select appropriate Magit command description given context."
+  (if (cc/version-controlled-p)
+      (cond
+       ((derived-mode-p 'dired-mode) "Magit Status")
+       ((or (derived-mode-p 'prog-mode)
+            (derived-mode-p 'text-mode))
+        "Magit Dispatch")
+       (t "Magit Status"))
+    (message "Not a version controlled buffer.")))
+
 (transient-define-prefix cc/main-tmenu ()
   "CC Main Menu."
+  ["Menu"
+   :class transient-row
+   ("o" "Open›" cc/open-tmenu :transient nil)
+   ;; TODO: test buffer-read-only
+   ("e" "Edit›" cc/edit-tmenu :transient nil)
+   ("w" "Window›" cc/windows-tmenu :transient nil)
+   ("B" "Bookmarks›" cc/bookmarks-tmenu :transient nil)
+   ("s" "Search›" cc/search-tmenu :transient nil)
+   ("T" "Tools›" cc/tools-tmenu :transient nil)]
+
   [["Quick"
-    ("f" "Find Dired…" casual-dired-find-dired-regexp :transient nil)
     ("j" "Jump to Bookmark…" bookmark-jump :transient nil)
-    ("a" "Org Agenda" cc/org-agenda-all-todos :transient nil)
     ("b" "List Buffers" ibuffer :transient nil)
-    ("u" "URLs…" cc/open-url :if display-graphic-p :transient nil)
     ("R" "Recent Files" recentf-open-files :transient nil)
     ("J" "Journal Files" cc/select-journal-file :transient nil)
-    ("P" "Switch to Project…" project-switch-project :transient nil)]
+    ("a" "Org Agenda" cc/org-agenda-all-todos :transient nil)
+    ("u" "URLs…" cc/open-url :if display-graphic-p :transient nil)]
 
    ["Sexp"
-     ("m" "Mark" mark-sexp :transient nil)
-     ("c" "Copy" cc/copy-sexp :transient nil)
-     ("k" "Kill" kill-sexp :transient nil)
-     ("t" "Transpose" transpose-sexps :transient nil)]
+    ("m" "Mark" mark-sexp :transient nil)
+    ;; TODO: test buffer-read-only
+    ("c" "Copy" cc/copy-sexp :transient nil)
+    ("k" "Kill" kill-sexp :transient nil)
+    ("t" "Transpose" transpose-sexps :transient nil)]
 
    ["Edit"
-    :pad-keys t
+    ;; TODO: test buffer-read-only
     ("i" "Insert Character…" insert-char :transient nil)
     ("p" "Fill Paragraph" fill-paragraph :transient nil)
     ("l" "Join line" join-line :transient nil)
@@ -74,37 +113,29 @@
 
    ["Misc"
     :pad-keys t
+    ("C" "Compile…" compile :transient nil)
     ("d" "Dired…" dired :transient nil)
     ("M-d" "Dired Other…" dired-other-window :transient nil)
-    ("g" "Magit Status" magit :if cc/version-controlled-p :transient nil)
-    ("G" "Magit Dispatch" magit-file-dispatch
+    ("g" "Magit Status" cc/select-magit-command
+     :description cc/select-magit-command-description
      :if cc/version-controlled-p :transient nil)
     ("D" "Ediff Revision" cc/ediff-revision
-     :if cc/version-controlled-p :transient nil)
-    ("C" "Compile…" compile :transient nil)
-    ("r" "Registers" cc/registers-tmenu :transient nil)]]
+     :if cc/version-controlled-p :transient nil)]]
 
-  ["Menu"
-   :class transient-row
-    ("o" "Open›" cc/open-tmenu :transient nil)
-    ("w" "Window›" cc/windows-tmenu :transient nil)
-    ("e" "Edit›" cc/edit-tmenu :transient nil)
-    ("B" "Bookmarks›" cc/bookmarks-tmenu :transient nil)
-    ("s" "Search›" cc/search-tmenu :transient nil)
-    ("T" "Tools›" cc/tools-tmenu :transient nil)]
-
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [:class transient-row
+          ("r" "Registers›" cc/registers-tmenu :transient nil)
+          ("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/open-tmenu ()
   ["Open"
    ["File"
-   ("f" "Fuzzy Find…" helm-find-files :transient nil)
-   ("F" "File…" find-file :transient nil)]
+   ("f" "File…" find-file :transient nil)
+   ("F" "Fuzzy Find…" helm-find-files :transient nil)]
 
    ["Project"
     ("p" "File in Project…" project-find-file :transient nil)
     ("d" "Project Dired…" project-dired :transient nil)
-    ("s" "Switch to Project…" project-switch-project :transient nil)]]
+    ("P" "Switch to Project…" project-switch-project :transient nil)]]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/edit-tmenu ()
@@ -117,8 +148,12 @@
     ("v" "Move›" cc/edit-move-text-tmenu :transient nil)
     ("d" "Delete›" cc/edit-delete-space-tmenu :transient nil)]
 
+   [:pad-keys t
+    ("r" "Replace" query-replace :transient nil)
+    ("M-r" "Replace Regexp" query-replace-regexp :transient nil)]
+
    [("f" "Fill Paragraph" fill-paragraph :transient nil)
-    ("r" "Rectangle›" cc/rectangle-tmenu :transient nil)]]
+    ("R" "Rectangle›" cc/rectangle-tmenu :transient nil)]]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/edit-mark-tmenu ()
@@ -199,7 +234,7 @@
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/windows-tmenu ()
-  ["Windows"
+  ["Window"
    ["New"
     ("b" "Below" split-window-below :transient nil)
     ("r" "On Right" split-window-horizontally :transient nil)]
@@ -210,7 +245,8 @@
     ("T" "Toggle Tab Bar" mac-toggle-tab-bar
      :if window-system-mac-p :transient nil)]
 
-   ["Jump"
+   ["Navigate"
+    ("o" "Next" other-window :transient t)
     ("j" "Jump to Window…" ace-select-window :transient nil)]]
 
   ["Resize"
@@ -236,12 +272,17 @@
 
 (transient-define-prefix cc/search-tmenu ()
   ["Search"
+   ["Local"
     ("r" "Find in Files (rgrep)" rgrep :transient nil)
     ("s" "Spotlight" spotlight-fast :transient nil)
     ("o" "Org Files" cc/org-search :transient nil)
-    ("g" "Google" google-this-search :if display-graphic-p :transient nil)
-    ("m" "Apple Maps" cc/apple-maps-search :if display-graphic-p :transient nil)
     ("Q" "Org QL Search" org-ql-search :transient nil)]
+
+   ["Web"
+    :if display-graphic-p
+    ("g" "Google" google-this-search :transient nil)
+    ("m" "Apple Maps" cc/apple-maps-search :transient nil)]]
+
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/tools-tmenu ()
