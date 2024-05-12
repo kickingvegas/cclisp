@@ -235,19 +235,33 @@
 
 (transient-define-prefix cc/windows-tmenu ()
   ["Window"
-   ["New"
-    ("b" "Below" split-window-below :transient nil)
-    ("r" "On Right" split-window-horizontally :transient nil)]
+   ["Navigate"
+    :pad-keys t
+    ("o" "»" other-window :transient t)
+    ("p" "↑" windmove-up :transient t)
+    ("n" "↓" windmove-down :transient t)
+    ("b" "←" windmove-left :transient t)
+    ("f" "→" windmove-right :transient t)]
 
-   ["Layout"
-    ("s" "Swap" window-swap-states :transient nil)
+   ["Swap"
+    :pad-keys t
+    ("s" "⇄" window-swap-states :transient nil)
+    ("M-p" "↑" windmove-swap-states-up :transient nil)
+    ("M-n" "↓" windmove-swap-states-down :transient nil)
+    ("M-b" "←" windmove-swap-states-left :transient nil)
+    ("M-f" "→" windmove-swap-states-right :transient nil)]
+
+   ["New"
+    ("1" "❏" delete-other-windows :transient nil)
+    ("2" "⇩" split-window-below :transient nil)
+    ("3" "⇨" split-window-horizontally :transient nil)]
+
+   ["Misc"
     ("t" "Transpose" transpose-frame :transient nil)
     ("T" "Toggle Tab Bar" mac-toggle-tab-bar
-     :if window-system-mac-p :transient nil)]
-
-   ["Navigate"
-    ("o" "Next" other-window :transient t)
-    ("j" "Jump to Window…" ace-select-window :transient nil)]]
+     :if window-system-mac-p :transient nil)
+    ("j" "Jump to Window…" ace-select-window :transient nil)
+    ("d" "Delete›" cc/windows-delete-tmenu :transient nil)]]
 
   ["Resize"
    ["↕︎"
@@ -257,6 +271,14 @@
     (">" "Enlarge" enlarge-window-horizontally :transient t)
     ("<" "Shrink" shrink-window-horizontally :transient t)]]
 
+  [("q" "Dismiss" ignore :transient transient--do-exit)])
+
+(transient-define-prefix cc/windows-delete-tmenu ()
+  ["Delete Window"
+   ("p" "Above" windmove-delete-up :transient nil)
+   ("n" "Below" windmove-delete-down :transient nil)
+   ("b" "On Left" windmove-delete-left :transient nil)
+   ("f" "On Right" windmove-delete-right :transient nil)]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (defun window-system-mac-p ()
@@ -299,7 +321,8 @@
     ("W" "Weather" weather :transient nil)
     ("r" "RE-Builder" re-builder :transient nil)
     ("w" "Word Count" count-words :transient nil)
-    ("C" "World Clock" world-clock :transient nil)]
+    ("C" "World Clock" world-clock :transient nil)
+    ("S" "Sunrise/Sunset" sunrise-sunset :transient nil)]
 
    ["Fun"
     ("z" "Zone" zone :transient nil)]]
@@ -322,7 +345,6 @@
     ("i" "Insert Text…" insert-register :transient nil)]]
 
   [("q" "Dismiss" ignore :transient transient--do-exit)])
-
 
 (transient-define-prefix cc/rectangle-tmenu ()
   ["Rectangle"
