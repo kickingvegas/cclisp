@@ -139,7 +139,10 @@
      "Transpose lines in active region"
      avy-transpose-lines-in-region
      :if cc/buffer-writeable-and-region-active-p
-     :transient nil)])
+     :transient nil)]
+
+  [:class transient-row
+          ("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (provide 'cc-avy)
 ;;; cc-avy.el ends here

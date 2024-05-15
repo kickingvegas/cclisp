@@ -56,7 +56,7 @@ CLICK - event"
     (cc/context-menu-item-separator menu buffer-navigation-separator)
 
     (easy-menu-add-item menu nil ["List All Buffers"
-                                  list-buffers
+                                  ibuffer
                                   :help "List all buffers"])
 
     (when buffer-file-name
