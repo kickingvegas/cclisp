@@ -236,22 +236,6 @@ various time zones."]
   '(menu-item "--")
   'Babel\ Ingest\ -\ Org\ Table\ To\ SQL)
 
-;; Streamlined Bookmarks Menu
-(easy-menu-define cc/bookmarks-menu nil
-  "Keymap for CC Bookmarks Menu"
-  '("Bookmarks"
-    ["Edit Bookmarks" list-bookmarks
-     :help "Display a list of existing bookmarks."]
-    "---"
-    ["Add Bookmark…" bookmark-set-no-overwrite
-     :help "Set a bookmark named NAME at the current location."]
-    "---"
-    ["Jump to Bookmark…" bookmark-jump
-     :help "Jump to bookmark"]))
-
-(easy-menu-add-item global-map '(menu-bar)
-                    cc/bookmarks-menu
-                    "Tools")
 
 (define-key global-map [menu-bar edit bookmark] nil t)
 
