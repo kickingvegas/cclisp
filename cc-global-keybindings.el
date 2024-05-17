@@ -39,7 +39,7 @@
 (require 'python)
 (require 'ibuffer)
 (require 'magit-status)
-(require 'cc-avy)
+(require 'casual-avy)
 (require 'cc-main-tmenu)
 
 (global-set-key (kbd "C-=") 'er/expand-region)
@@ -83,7 +83,7 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; Avy
-(global-set-key (kbd "M-g") 'cc/avy-menu)
+(keymap-global-set "M-g" #'casual-avy-tmenu)
 
 ;; Terminal
 (global-set-key (kbd "M-SPC") 'set-mark-command)

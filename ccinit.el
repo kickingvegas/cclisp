@@ -57,7 +57,7 @@
 ;;(pixel-scroll-precision-mode 1)
 ;;(setq pixel-scroll-precision-large-scroll-height 10.0)
 
-(require 'avy)
+;;(require 'avy)
 (require 'cclisp)
 (require 'cc-ibuffer-mode)
 (require 'cc-diary-mode)
