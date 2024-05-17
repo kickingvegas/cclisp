@@ -228,6 +228,7 @@
    "-lh --group-directories-first --time-style=long-iso -g --no-group")
  '(dired-mouse-drag-files t)
  '(dired-use-ls-dired t)
+ '(dired-vc-rename-file t)
  '(display-buffer-alist
    '(("\\*eshell\\*"
       (display-buffer-at-bottom)
@@ -454,6 +455,7 @@
  '(calendar-weekend-header ((t (:inherit font-lock-comment-face))))
  '(comint-highlight-prompt ((((type x mac ns) (class color) (background light)) (:inherit minibuffer-prompt :foreground "dark magenta")) (((type x mac ns) (class color) (background dark)) (:inherit minibuffer-prompt :foreground "tomato")) (((type tty) (class color)) (:foreground "tomato"))))
  '(diff-added ((t (:inherit diff-changed :extend t :background "lawn green"))))
+ '(elisp-shorthand-font-lock-face ((((type x w32 mac ns pgtk tty) (class color) (background dark)) (:inherit font-lock-keyword-face :foreground "cyan")) (((type x w32 mac ns pgtk) (class color) (background light)) (:background "white smoke" :foreground "medium violet red"))))
  '(eshell-prompt ((t (:foreground "#cc33ff" :weight bold))))
  '(fixed-pitch ((((type mac ns)) (:height 0.85 :family "Menlo")) (((type x pgtk)) (:height 0.85 :family "Liberation Mono"))))
  '(font-lock-comment-face ((((type x mac ns) (class color) (background light)) (:foreground "dim gray")) (((type x mac ns) (class color) (background dark)) (:foreground "dark gray")) (((type tty) (class color)) (:foreground "medium turquoise"))))

@@ -26,8 +26,13 @@
 
 (require 'ibuffer)
 (require 'hl-line)
+(require 'mouse)
 
 (add-hook 'ibuffer-mode-hook #'hl-line-mode)
+
+;;(define-key ibuffer-mode-map (kbd "<mouse-1>") #'mouse-set-point)
+(define-key ibuffer-mode-map (kbd "<double-mouse-1>") #'ibuffer-visit-buffer)
+(define-key ibuffer-mode-map (kbd "M-<double-mouse-1>") #'ibuffer-visit-buffer-other-window)
 
 (provide 'cc-ibuffer-mode)
 ;;; cc-ibuffer-mode.el ends here
