@@ -448,7 +448,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((((type mac ns)) (:inherit nil :extend nil :stipple nil :background "mac:textBackgroundColor" :foreground "mac:textColor" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight medium :height 151 :width normal :foundry "nil" :family "Menlo")) (((type x pgtk)) (:extend nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Liberation Mono"))))
+ '(default ((((type mac ns)) (:inherit nil :extend nil :stipple nil :background "mac:textBackgroundColor" :foreground "mac:textColor" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight medium :height 151 :width normal :foundry "nil" :family "Menlo")) (((type x pgtk)) (:extend nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Noto Sans Mono"))))
  '(Man-overstrike ((((class color) (background light)) (:inherit bold :foreground "dark slate blue")) (((class color) (background dark)) (:inherit bold :foreground "gold")) (((type tty) (class color)) (:inherit bold :foreground "gold"))))
  '(Man-underline ((((type x mac ns) (class color) (background light)) (:inherit underline :foreground "magenta")) (((type x mac ns) (class color) (background dark)) (:inherit underline :foreground "lawn green")) (((type tty) (class color)) (:inherit underline :foreground "lawn green"))))
  '(calendar-today ((t (:foreground "magenta" :underline "dark violet" :height 1.0))))
@@ -457,7 +457,7 @@
  '(diff-added ((t (:inherit diff-changed :extend t :background "lawn green"))))
  '(elisp-shorthand-font-lock-face ((((type x w32 mac ns pgtk tty) (class color) (background dark)) (:inherit font-lock-keyword-face :foreground "cyan")) (((type x w32 mac ns pgtk) (class color) (background light)) (:background "white smoke" :foreground "medium violet red"))))
  '(eshell-prompt ((t (:foreground "#cc33ff" :weight bold))))
- '(fixed-pitch ((((type mac ns)) (:height 0.85 :family "Menlo")) (((type x pgtk)) (:height 0.85 :family "Liberation Mono"))))
+ '(fixed-pitch ((((type mac ns)) (:height 0.85 :family "Menlo")) (((type x pgtk)) (:height 0.85 :family "Noto Sans Mono"))))
  '(font-lock-comment-face ((((type x mac ns) (class color) (background light)) (:foreground "dim gray")) (((type x mac ns) (class color) (background dark)) (:foreground "dark gray")) (((type tty) (class color)) (:foreground "medium turquoise"))))
  '(font-lock-constant-face ((t (:height 1.0))))
  '(font-lock-function-name-face ((((type x mac ns) (class color) (background light)) (:foreground "Blue1")) (((type x mac ns) (class color) (background dark)) (:foreground "LightSkyBlue")) (((type tty) (class color)) (:foreground "yellow")) (t (:weight bold))))
@@ -469,8 +469,8 @@
  '(markdown-language-keyword-face ((t (:inherit font-lock-type-face))))
  '(markdown-markup-face ((t (:inherit shadow :slant normal :weight normal))))
  '(minibuffer-prompt ((((type x mac ns) (class color) (background light)) (:foreground "dark magenta")) (((type x mac ns) (class color) (background dark)) (:foreground "orange")) (((type tty)) (:foreground "cyan"))))
- '(mode-line ((((type mac ns)) (:background "#ff7700" :foreground "gray20" :box (:line-width (5 . 5) :color "#ff7700" :style flat-button) :height 1.0 :family "SF Compact Rounded")) (((type x pgtk)) (:background "#ff7700" :foreground "gray20" :box (:line-width (2 . 2) :color "#ff7700" :style flat-button) :height 1.0 :family "Gayathri")) (((type tty)) (:background "#ff7700" :foreground "gray20"))))
- '(mode-line-inactive ((t (:inherit mode-line :background "gray" :box (:line-width (5 . 5) :color "gray" :style flat-button)))))
+ '(mode-line ((((type mac ns)) (:background "#ff7700" :foreground "gray20" :box (:line-width (5 . 5) :color "#ff7700" :style flat-button) :height 1.0 :family "SF Compact Rounded")) (((type x pgtk)) (:background "#ff7700" :foreground "gray20" :box (:line-width (2 . 2) :color "#ff7700") :height 1.0 :family "Gayathri")) (((type tty)) (:background "#ff7700" :foreground "gray20"))))
+ '(mode-line-inactive ((t (:inherit mode-line :background "gray" :box (:line-width (5 . 5) :color "gray")))))
  '(org-agenda-done ((t (:foreground "snow4"))))
  '(org-agenda-structure ((((type x mac ns) (class color) (background light)) (:foreground "Blue1")) (((type x mac ns) (class color) (background dark)) (:foreground "LightSkyBlue")) (((type tty) (class color)) (:foreground "light sky blue")) (t (:weight bold))))
  '(org-block ((t (:inherit fixed-pitch))))
