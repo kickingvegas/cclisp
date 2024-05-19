@@ -76,6 +76,14 @@ which is done with `org-ctrl-c-ctrl-c'."
   (interactive)
   (org-ctrl-c-ctrl-c '(4)))
 
+(defun cc/config-capture-template (&optional prefix suffix)
+  (let* ((properties (list ":PROPERTIES:"
+                           ":CREATED: %U"
+                           ":END:"))
+         (properties (if prefix (append prefix properties) properties))
+         (properties (if suffix (append properties suffix) properties)))
+    properties))
+
 ;; Configure org-capture-templates using doct
 (setq org-capture-templates
       (doct '(("Appointment"
@@ -84,12 +92,10 @@ which is done with `org-ctrl-c-ctrl-c'."
                :file cc/--current-org-default-notes-file
                :function cc/--find-capture-point-in-current
                :empty-lines 1
-               :template ("* %^{description}"
-                          "%^T"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%?"))
+               :template (lambda ()
+                           (cc/config-capture-template '("* %^{description}"
+                                                         "%^T")
+                                                       '("%?"))))
 
               ("BeOrg TODO"
                :keys "b"
@@ -103,61 +109,55 @@ which is done with `org-ctrl-c-ctrl-c'."
                           ":END:"
                           "%?"))
 
-              ("TODO: Scheduled"
-               :keys "s"
-               :type entry
-               :file cc/--current-org-default-notes-file
-               :function cc/--find-capture-point-in-current
-               :empty-lines 1
-               :template ("* TODO %^{description} %^G"
-                          "SCHEDULED: %^T"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%?"))
-
-              ("TODO: Unscheduled"
+              ("TODO"
                :keys "t"
+               :prepend t
                :type entry
                :file cc/--current-org-default-notes-file
                :function cc/--find-capture-point-in-current
-               :empty-lines 1
-               :template ("* TODO %^{description} %^G"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%?"))
+               :children (("Scheduled"
+                           :keys "s"
+                           :headline "Scheduled"
+                           :todo-state "TODO"
+                           :template (lambda ()
+                                       (cc/config-capture-template
+                                        '("* %{todo-state} %^{description} %^G"
+                                          "SCHEDULED: %^T")
+                                        '("%?"))))
 
-              ("TODO: Blog Post"
-               :keys "p"
-               :type entry
-               :file cc/--current-org-default-notes-file
-               :function cc/--find-capture-point-in-current
-               :empty-lines 1
-               :template ("* TODO Post: %^{description} :blog%^G"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%?"))
+                          ("Unscheduled"
+                           :keys "t"
+                           :headline "Unscheduled"
+                           :todo-state "TODO"
+                           :template (lambda ()
+                                       (cc/config-capture-template
+                                        '("* %{todo-state} %^{description} %^G")
+                                        '("%?"))))
 
-              ("TODO: Issue"
-               :keys "i"
-               :type entry
-               :file cc/--current-org-default-notes-file
-               :function cc/--find-capture-point-in-current
-               :empty-lines 1
-               :template ("* TODO %^{description} %^G"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          ""
-                          "** Title"
-                          "%?"
-                          "** Description\n"
-                          "** Environment\n"
-                          "** Steps to Reproduce\n"
-                          "** Expected Result\n"
-                          "** Actual Result\n"))
+                          ("Blog Post"
+                           :keys "p"
+                           :headline "Blog Post"
+                           :todo-state "TODO"
+                           :template (lambda ()
+                                       (cc/config-capture-template
+                                        '("* %{todo-state} Post: %^{description} :blog%^G")
+                                        '("%?"))))
+
+                          ("Issue"
+                           :keys "i"
+                           :headline "Issue"
+                           :todo-state "TODO"
+                           :template (lambda ()
+                                       (cc/config-capture-template
+                                        '("* %{todo-state} %^{description} %^G")
+                                        '("\n** Title"
+                                          "%?"
+                                          "** Description\n"
+                                          "** Environment\n"
+                                          "** Steps to Reproduce\n"
+                                          "** Expected Result\n"
+                                          "** Actual Result\n"
+                                          ))))))
 
               ("Journal"
                :keys "j"
