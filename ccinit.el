@@ -76,6 +76,7 @@
 (require 'cc-google-translate)
 (require 'cc-repeat-mode)
 (require 'cc-doc-mode-ux)
+(require 'cc-info-mode)
 (require 'cc-ediff-mode)
 (require 'cc-occur-mode)
 (require 'cc-context-menu)
