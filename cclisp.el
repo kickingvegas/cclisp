@@ -37,6 +37,11 @@
 (require 'ace-window)
 (require 'which-func)
 
+(defcustom cchoi-use-unicode-symbols nil
+  "If non-nil then use Unicode symbols whenever appropriate for labels."
+  :type 'boolean
+  :group 'cchoi)
+
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
   (interactive)
