@@ -300,6 +300,11 @@ ISO 8601."
   (interactive)
   (insert "‣"))
 
+(defun cc/menu-symbol ()
+  "Insert a menu symbol."
+  (interactive)
+  (insert "›"))
+
 (defun cc/apple-maps-search(&optional input)
   "Search Apple Maps with INPUT.
 \nIf a region is active this command will use it as INPUT, otherwise it
