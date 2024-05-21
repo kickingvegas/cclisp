@@ -111,13 +111,12 @@ which is done with `org-ctrl-c-ctrl-c'."
 
               ("TODO"
                :keys "t"
-               :prepend t
                :type entry
+               :empty-lines 1
                :file cc/--current-org-default-notes-file
                :function cc/--find-capture-point-in-current
                :children (("Scheduled"
                            :keys "s"
-                           :headline "Scheduled"
                            :todo-state "TODO"
                            :template (lambda ()
                                        (cc/config-capture-template
@@ -127,7 +126,6 @@ which is done with `org-ctrl-c-ctrl-c'."
 
                           ("Unscheduled"
                            :keys "t"
-                           :headline "Unscheduled"
                            :todo-state "TODO"
                            :template (lambda ()
                                        (cc/config-capture-template
@@ -136,7 +134,6 @@ which is done with `org-ctrl-c-ctrl-c'."
 
                           ("Blog Post"
                            :keys "p"
-                           :headline "Blog Post"
                            :todo-state "TODO"
                            :template (lambda ()
                                        (cc/config-capture-template
@@ -145,7 +142,6 @@ which is done with `org-ctrl-c-ctrl-c'."
 
                           ("Issue"
                            :keys "i"
-                           :headline "Issue"
                            :todo-state "TODO"
                            :template (lambda ()
                                        (cc/config-capture-template
