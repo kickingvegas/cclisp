@@ -26,11 +26,11 @@
 
 ;;; Code:
 
-(define-key tetris-mode-map "j" 'tetris-move-left)
-(define-key tetris-mode-map "i" 'tetris-rotate-prev)
-(define-key tetris-mode-map "k" 'tetris-rotate-next)
-(define-key tetris-mode-map "l" 'tetris-move-right)
-(define-key tetris-mode-map "m" 'tetris-move-down)
+(keymap-set tetris-mode-map "j" 'tetris-move-left)
+(keymap-set tetris-mode-map "i" 'tetris-rotate-prev)
+(keymap-set tetris-mode-map "k" 'tetris-rotate-next)
+(keymap-set tetris-mode-map "l" 'tetris-move-right)
+(keymap-set tetris-mode-map "m" 'tetris-move-down)
 
 (provide 'cc-tetris-mode)
 ;;; cc-tetris-mode.el ends here

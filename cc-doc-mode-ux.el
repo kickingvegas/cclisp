@@ -41,31 +41,31 @@
 
 ;; # Info
 ;; Prompt before quitting
-;;(define-key Info-mode-map (kbd "q") 'cc/confirm-before-quit-window)
+;;(keymap-set Info-mode-map "q" 'cc/confirm-before-quit-window)
 ;; Use web-browser history navigation bindings
-(define-key Info-mode-map (kbd "M-[") 'Info-history-back)
-(define-key Info-mode-map (kbd "M-]") 'Info-history-forward)
+(keymap-set Info-mode-map "M-[" #'Info-history-back)
+(keymap-set Info-mode-map "M-]" #'Info-history-forward)
 ;; Bind p and n to paragraph navigation
-(define-key Info-mode-map (kbd "p") 'cc/browse-backward-paragraph)
-(define-key Info-mode-map (kbd "n") 'cc/browse-forward-paragraph)
+(keymap-set Info-mode-map "p" #'cc/browse-backward-paragraph)
+(keymap-set Info-mode-map "n" #'cc/browse-forward-paragraph)
 ;; Bind <f1> to help
-(define-key Info-mode-map (kbd "<f1>") 'Info-help)
+(keymap-set Info-mode-map "<f1>" #'Info-help)
 ;; Bind M-j, M-k to scrolling up/down line
-(define-key Info-mode-map (kbd "M-j") 'scroll-up-line)
-(define-key Info-mode-map (kbd "M-k") 'scroll-down-line)
+(keymap-set Info-mode-map "M-j" #'scroll-up-line)
+(keymap-set Info-mode-map "M-k" #'scroll-down-line)
 ;; Bind h and l to navigate to previous and next nodes
 ;; Bind j and k to navigate to next and previous references
-(define-key Info-mode-map (kbd "h") 'Info-prev)
-(define-key Info-mode-map (kbd "j") 'Info-next-reference)
-(define-key Info-mode-map (kbd "k") 'Info-prev-reference)
-(define-key Info-mode-map (kbd "l") 'Info-next)
+(keymap-set Info-mode-map "h" #'Info-prev)
+(keymap-set Info-mode-map "j" #'Info-next-reference)
+(keymap-set Info-mode-map "k" #'Info-prev-reference)
+(keymap-set Info-mode-map "l" #'Info-next)
 ;; Bind / to search
-(define-key Info-mode-map (kbd "/") 'Info-search)
+(keymap-set Info-mode-map "/" #'Info-search)
 ;; Set Bookmark
-(define-key Info-mode-map (kbd "B") 'bookmark-set)
+(keymap-set Info-mode-map "B" #'bookmark-set)
 ;; Bind side mouse buttons on Logitech mouse
-(define-key Info-mode-map (kbd "<mouse-5>") 'Info-history-forward)
-(define-key Info-mode-map (kbd "<mouse-4>") 'Info-history-back)
+(keymap-set Info-mode-map "<mouse-5>" #'Info-history-forward)
+(keymap-set Info-mode-map "<mouse-4>" #'Info-history-back)
 
 (add-hook 'Info-mode-hook 'hl-line-mode)
 (add-hook 'Info-mode-hook 'visual-line-mode)
@@ -73,22 +73,22 @@
 
 ;; # Help
 ;; Use web-browser history navigation bindings
-(define-key help-mode-map (kbd "M-[") 'help-go-back)
-(define-key help-mode-map (kbd "M-]") 'help-go-forward)
+(keymap-set help-mode-map "M-[" #'help-go-back)
+(keymap-set help-mode-map "M-]" #'help-go-forward)
 ;; Bind p and n to paragraph navigation
-(define-key help-mode-map (kbd "p") 'cc/browse-backward-paragraph)
-(define-key help-mode-map (kbd "n") 'cc/browse-forward-paragraph)
+(keymap-set help-mode-map "p" #'cc/browse-backward-paragraph)
+(keymap-set help-mode-map "n" #'cc/browse-forward-paragraph)
 ;; Bind <f1> to help
-(define-key help-mode-map (kbd "<f1>") 'describe-mode)
+(keymap-set help-mode-map "<f1>" #'describe-mode)
 ;; Bind M-j, M-k to scrolling up/down line
-(define-key help-mode-map (kbd "M-j") 'scroll-up-line)
-(define-key help-mode-map (kbd "M-k") 'scroll-down-line)
+(keymap-set help-mode-map "M-j" #'scroll-up-line)
+(keymap-set help-mode-map "M-k" #'scroll-down-line)
 ;; Bind j and k to navigate to forward and backward buttons
-(define-key help-mode-map (kbd "j") 'forward-button)
-(define-key help-mode-map (kbd "k") 'backward-button)
+(keymap-set help-mode-map "j" #'forward-button)
+(keymap-set help-mode-map "k" #'backward-button)
 ;; Bind side mouse buttons on Logitech mouse
-(define-key help-mode-map (kbd "<mouse-5>") 'help-go-forward)
-(define-key help-mode-map (kbd "<mouse-4>") 'help-go-back)
+(keymap-set help-mode-map "<mouse-5>" #'help-go-forward)
+(keymap-set help-mode-map "<mouse-4>" #'help-go-back)
 
 (add-hook 'help-mode-hook 'hl-line-mode)
 (add-hook 'help-mode-hook 'visual-line-mode)
@@ -96,16 +96,16 @@
 
 ;; # Shortdoc
 ;; Bind <f1> to help
-(define-key shortdoc-mode-map (kbd "<f1>") 'describe-mode)
+(keymap-set shortdoc-mode-map "<f1>" #'describe-mode)
 ;; Bind M-j, M-k to scrolling up/down line
-(define-key shortdoc-mode-map (kbd "M-j") 'scroll-up-line)
-(define-key shortdoc-mode-map (kbd "M-k") 'scroll-down-line)
+(keymap-set shortdoc-mode-map "M-j" #'scroll-up-line)
+(keymap-set shortdoc-mode-map "M-k" #'scroll-down-line)
 ;; Bind h and l to navigate to previous and next sections
 ;; Bind j and k to navigate to next and previous
-(define-key shortdoc-mode-map (kbd "h") 'shortdoc-previous-section)
-(define-key shortdoc-mode-map (kbd "j") 'shortdoc-next)
-(define-key shortdoc-mode-map (kbd "k") 'shortdoc-previous)
-(define-key shortdoc-mode-map (kbd "l") 'shortdoc-next-section)
+(keymap-set shortdoc-mode-map "h" #'shortdoc-previous-section)
+(keymap-set shortdoc-mode-map "j" #'shortdoc-next)
+(keymap-set shortdoc-mode-map "k" #'shortdoc-previous)
+(keymap-set shortdoc-mode-map "l" #'shortdoc-next-section)
 
 (add-hook 'shortdoc-mode-hook 'hl-line-mode)
 (add-hook 'shortdoc-mode-hook 'visual-line-mode)
@@ -113,15 +113,15 @@
 
 ;; # Man
 ;; Bind <f1> to help
-(define-key Man-mode-map (kbd "<f1>") 'describe-mode)
+(keymap-set Man-mode-map "<f1>" #'describe-mode)
 ;; Bind M-j, M-k to scrolling up/down line
-(define-key Man-mode-map (kbd "M-j") 'scroll-up-line)
-(define-key Man-mode-map (kbd "M-k") 'scroll-down-line)
+(keymap-set Man-mode-map "M-j" #'scroll-up-line)
+(keymap-set Man-mode-map "M-k" #'scroll-down-line)
 ;; Bind j and k to navigate forward and backward paragraphs
-(define-key Man-mode-map (kbd "j") 'cc/browse-forward-paragraph)
-(define-key Man-mode-map (kbd "k") 'cc/browse-backward-paragraph)
+(keymap-set Man-mode-map "j" #'cc/browse-forward-paragraph)
+(keymap-set Man-mode-map "k" #'cc/browse-backward-paragraph)
 ;; Bind K to kill buffer to replace override of default k above
-(define-key Man-mode-map (kbd "K") 'Man-kill)
+(keymap-set Man-mode-map "K" #'Man-kill)
 
 (add-hook 'Man-mode-hook 'hl-line-mode)
 (add-hook 'Man-mode-hook 'visual-line-mode)

@@ -26,8 +26,8 @@
 
 (require 'swift-mode)
 
-(define-key swift-mode-map (kbd "M-[") #'backward-sexp)
-(define-key swift-mode-map (kbd "M-]") #'forward-sexp)
+(keymap-set swift-mode-map "M-[" #'backward-sexp)
+(keymap-set swift-mode-map "M-]" #'forward-sexp)
 
 (provide 'cc-swift-mode)
 ;;; cc-swift-mode.el ends here

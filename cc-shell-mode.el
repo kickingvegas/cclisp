@@ -25,8 +25,8 @@
 ;;; Code:
 
 (add-hook 'shell-mode-hook 'context-menu-mode)
-(define-key shell-mode-map (kbd "C-p") 'comint-previous-input)
-(define-key shell-mode-map (kbd "C-n") 'comint-next-input)
+(keymap-set shell-mode-map "C-p" #'comint-previous-input)
+(keymap-set shell-mode-map "C-n" #'comint-next-input)
 
 (provide 'cc-shell-mode)
 ;;; cc-shell-mode.el ends here

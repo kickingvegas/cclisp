@@ -167,8 +167,8 @@ plain ASCII-range string."
       (nth 1 (eval item)))))
 
 
-(define-key Info-mode-map (kbd "C-o") #'cc/info-tmenu)
-(define-key Info-mode-map (kbd "C-M-o") #'cc/main-tmenu)
+(keymap-set Info-mode-map "C-o" #'cc/info-tmenu)
+(keymap-set Info-mode-map "C-M-o" #'cc/main-tmenu)
 
 (provide 'cc-info-mode)
 ;;; cc-info-mode.el ends here

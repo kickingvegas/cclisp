@@ -32,12 +32,12 @@
 (add-hook 'emacs-lisp-mode #'enable-paredit-mode)
 (add-hook 'emacs-lisp-mode #'flycheck-mode)
 
-(define-key emacs-lisp-mode-map (kbd "M-[") #'backward-sexp)
-(define-key emacs-lisp-mode-map (kbd "M-]") #'forward-sexp)
-(define-key emacs-lisp-mode-map (kbd "<f6>") #'cc/describe-function-point-is-in)
-(define-key emacs-lisp-mode-map (kbd "M-j") #'fill-paragraph)
-(define-key emacs-lisp-mode-map (kbd "M-n") #'cc/browse-forward-sexp)
-(define-key emacs-lisp-mode-map (kbd "M-p") #'cc/browse-backward-sexp)
+(keymap-set emacs-lisp-mode-map "M-[" #'backward-sexp)
+(keymap-set emacs-lisp-mode-map "M-]" #'forward-sexp)
+(keymap-set emacs-lisp-mode-map "<f6>" #'cc/describe-function-point-is-in)
+(keymap-set emacs-lisp-mode-map "M-j" #'fill-paragraph)
+(keymap-set emacs-lisp-mode-map "M-n" #'cc/browse-forward-sexp)
+(keymap-set emacs-lisp-mode-map "M-p" #'cc/browse-backward-sexp)
 
 (provide 'cc-emacs-lisp-mode)
 ;;; cc-emacs-lisp-mode.el ends here
