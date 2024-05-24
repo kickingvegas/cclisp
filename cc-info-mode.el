@@ -34,9 +34,9 @@
   "CC Info Transient menu."
 
   [["Overview"
-    ("d" "Directory" Info-directory :transient t)
-    ("t" "Top" Info-top-node :transient t)
-    ("T" "ToC" Info-toc :transient t)]
+    ("d" "Directory" Info-directory :transient nil)
+    ("t" "Top" Info-top-node :transient nil)
+    ("T" "ToC" Info-toc :transient nil)]
 
    ["Goto"
     ("m" "Menu…" Info-menu)
@@ -52,7 +52,7 @@
 
    ["History"
     :pad-keys t
-    ("L" "History" Info-history :transient t)
+    ("L" "History" Info-history :transient nil)
     ("M-[" "⏪️" Info-history-back
      :description (lambda () (cc/info-unicode-db-get :rewind))
      :transient t)
@@ -124,8 +124,6 @@
                                          (clone-frame nil t))
                :transient nil)
               ("M-n" "Clone buffer" clone-buffer :transient nil)]]
-
-
 
   [:class transient-row
           ("<return>" "Open" Info-follow-nearest-node :transient t)
