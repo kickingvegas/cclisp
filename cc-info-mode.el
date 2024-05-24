@@ -35,7 +35,7 @@
 
   [["Overview"
     ("d" "Directory" Info-directory :transient nil)
-    ("t" "Top" Info-top-node :transient nil)
+    ("t" "Top" Info-top-node)
     ("T" "ToC" Info-toc :transient nil)]
 
    ["Goto"
