@@ -706,6 +706,16 @@ SOUND - sound file (optional)"
     (kill-new result)
     (message result)))
 
+(defun melpa-package-status (package-name)
+  "Get current timestamp of a MELPA package.
+
+Invokes python script ‘melpa-package-status.py’."
+  (interactive "sPackage Name: ")
+  (let* ((cmd (format "%s %s" "melpa-package-status" package-name))
+         (result (shell-command-to-string cmd)))
+    (kill-new result)
+    (message result)))
+
 (defun cc/describe-function-point-is-in ()
   "Describe enclosing Elisp function at point.
 \nInvoke `describe-function' on the enclosing Elisp function the
