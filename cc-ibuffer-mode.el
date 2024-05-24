@@ -31,9 +31,9 @@
 
 (add-hook 'ibuffer-mode-hook #'hl-line-mode)
 
-;;(define-key ibuffer-mode-map (kbd "<mouse-1>") #'mouse-set-point)
-(define-key ibuffer-mode-map (kbd "<double-mouse-1>") #'ibuffer-visit-buffer)
-(define-key ibuffer-mode-map (kbd "M-<double-mouse-1>") #'ibuffer-visit-buffer-other-window)
+;;(keymap-set ibuffer-mode-map "<mouse-1>" #'mouse-set-point)
+(keymap-set ibuffer-mode-map "<double-mouse-1>" #'ibuffer-visit-buffer)
+(keymap-set ibuffer-mode-map "M-<double-mouse-1>" #'ibuffer-visit-buffer-other-window)
 
 (transient-define-prefix cc/ibuffer-tmenu ()
   [["Buffer"
@@ -135,8 +135,8 @@
   [:class transient-row
           ("q" "Dismiss" ignore :transient transient--do-exit)])
 
-(define-key ibuffer-mode-map (kbd "s") #'cc/ibuffer-sortby-tmenu)
-(define-key ibuffer-mode-map (kbd "C-o") #'cc/ibuffer-tmenu)
+(keymap-set ibuffer-mode-map "s" #'cc/ibuffer-sortby-tmenu)
+(keymap-set ibuffer-mode-map "C-o" #'cc/ibuffer-tmenu)
 
 (provide 'cc-ibuffer-mode)
 ;;; cc-ibuffer-mode.el ends here

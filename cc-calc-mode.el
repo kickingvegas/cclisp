@@ -41,11 +41,11 @@
   (interactive)
   (kill-new (pp (calc-top))))
 
-;; (define-key calc-mode-map (kbd "q") 'cc/confirm-before-calc-quit)
+;; (keymap-set calc-mode-map "q" 'cc/confirm-before-calc-quit)
 ;; (add-hook 'calc-mode-hook #'calc-total-algebraic-mode)
 
-(define-key calc-mode-map (kbd "C-o") 'casual-main-menu)
-(define-key calc-alg-map (kbd "C-o") 'casual-main-menu)
+(keymap-set calc-mode-map "C-o" #'casual-main-menu)
+(keymap-set calc-alg-map "C-o" #'casual-main-menu)
 
 (when (eq window-system 'mac)
   (setq calc-gnuplot-default-device "aqua"))
