@@ -56,6 +56,7 @@
 (keymap-global-set "<f2>" #'other-window)
 (keymap-global-set "A-<return>" #'other-window)
 (keymap-global-set "<f3>" #'save-buffers-kill-emacs)
+(keymap-global-set "M-<f3>" #'cc/windows-tmenu)
 (keymap-global-set "<f4>" #'bookmark-jump)
 (keymap-global-set "<f5>" #'status-report)
 (keymap-global-set "S-<f5>" #'cc/select-journal-file)
@@ -140,18 +141,27 @@
 (keymap-global-set "C-<return>" #'other-window)
 
 ;; Mouse Button Bindings
-(global-set-key (kbd "<mouse-5>") 'next-buffer)
-(global-set-key (kbd "<mouse-4>") 'previous-buffer)
+(keymap-global-set "<mouse-5>" #'next-buffer)
+(keymap-global-set "<mouse-4>" #'previous-buffer)
 
-(global-set-key (kbd "<mode-line> <mouse-2>") 'transpose-frame)
+(keymap-global-set "<mode-line> <mouse-2>" #'transpose-frame)
 
 ;; Magit
-(global-set-key (kbd "C-x g") 'magit-status)
+(keymap-global-set "C-x g" #'magit-status)
 
-(global-unset-key (kbd "C-x f"))
+(keymap-global-unset "C-x f")
+;;(global-unset-key (kbd "C-x f"))
 
-(global-set-key [vertical-scroll-bar down-mouse-1] 'scroll-bar-drag)
+(global-set-key [vertical-scroll-bar down-mouse-1] #'scroll-bar-drag)
+
+;; Window Navigation
+
+(keymap-global-set "C-<kp-8>" #'windmove-up)
+(keymap-global-set "C-<kp-5>" #'windmove-down)
+(keymap-global-set "C-<kp-2>" #'windmove-down)
+(keymap-global-set "C-<kp-4>" #'windmove-left)
+(keymap-global-set "C-<kp-6>" #'windmove-right)
+(keymap-global-set "C-<kp-0>" #'ace-select-window)
 
 (provide 'cc-global-keybindings)
-
 ;;; cc-global-keybindings.el ends here

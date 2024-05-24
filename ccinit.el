@@ -67,6 +67,7 @@
 (require 'cc-org-mode)
 (require 'cc-markdown-mode)
 (require 'cc-objc-mode)
+(require 'cc-nxml-mode)
 (require 'cc-bookmarks-bmenu-mode)
 (require 'cc-dired-mode)
 (require 'cc-js-mode)
