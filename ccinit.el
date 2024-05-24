@@ -33,6 +33,7 @@
 (require 'expand-region)
 (require 'wgrep)
 (require 'yasnippet)
+;;(require 'pbcopy)
 (add-hook 'calendar-today-visible-hook 'calendar-mark-today)
 
 (yas-global-mode 1)
@@ -40,11 +41,10 @@
 (set-default-coding-systems 'utf-8-unix)
 (recentf-mode 1)
 
-(when (eq window-system 'x)
-  (setq x-meta-keysym 'super
-	x-super-keysym 'meta)
-  (require 'pbcopy)
-  (turn-on-pbcopy))
+;; (when (eq window-system 'x)
+;;   (setq x-meta-keysym 'super
+;; 	x-super-keysym 'meta)
+;;   (turn-on-pbcopy))
 
 ;;(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 (setq mouse-wheel-progressive-speed nil)
@@ -68,6 +68,7 @@
 (require 'cc-markdown-mode)
 (require 'cc-objc-mode)
 (require 'cc-nxml-mode)
+(require 'cc-sgml-mode)
 (require 'cc-bookmarks-bmenu-mode)
 (require 'cc-dired-mode)
 (require 'cc-js-mode)
