@@ -97,7 +97,7 @@
      :description (lambda () (cc/info-unicode-db-get :fast-forward))
      :transient t)]
 
-   ["Nodes"
+   [""
     ("<" "⏮️" Info-top-node
      :description (lambda () (cc/info-unicode-db-get :first))
      :transient t)
@@ -106,7 +106,7 @@
      :transient t)]
 
    [""
-    ("u" "⏫️"  Info-up
+    ("^" "⏫️"  Info-up
      :description (lambda () (cc/info-unicode-db-get :up))
      :transient t)]]
 
@@ -115,10 +115,17 @@
     ("B" "Set bookmark…" bookmark-set-no-overwrite :transient nil)
     ("b" "List buffers" ibuffer :transient nil)]
 
+   [("c" "Copy node name" Info-copy-current-node-name :transient nil)
+    ("G" "Open node in web…" Info-goto-node-web :transient nil)]
+
    [:pad-keys t
-    ("c" "Copy node name" Info-copy-current-node-name :transient nil)
-    ("G" "Open node in web…" Info-goto-node-web :transient nil)
-    ("M-n" "Clone Info" clone-buffer :transient nil)]]
+              ("C-M-n" "New frame" (lambda ()
+                                         (interactive)
+                                         (clone-frame nil t))
+               :transient nil)
+              ("M-n" "Clone buffer" clone-buffer :transient nil)]]
+
+
 
   [:class transient-row
           ("<return>" "Open" Info-follow-nearest-node :transient t)
