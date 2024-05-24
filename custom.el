@@ -284,6 +284,10 @@
    '(eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-term eshell-unix))
  '(eshell-scroll-to-bottom-on-input 'this)
  '(eshell-scroll-to-bottom-on-output 'this)
+ '(eshell-visual-commands
+   '("vi" "vim" "screen" "tmux" "top" "htop" "less" "more" "lynx" "links" "ncftp" "mutt" "pine" "tin" "trn" "elm" "gdu-go"))
+ '(eshell-visual-options '(("git" "--help" "--paginate")))
+ '(eshell-visual-subcommands '(("git" "log" "diff" "show") ("swift" "repl")))
  '(fill-column 80)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
