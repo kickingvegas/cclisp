@@ -88,10 +88,10 @@
    ("T" "Tools›" cc/tools-tmenu :transient nil)]
 
   [["Quick"
-    ("j" "Jump to Bookmark…" bookmark-jump :transient nil)
+    ("J" "Jump to Bookmark…" bookmark-jump :transient nil)
     ("b" "List Buffers" ibuffer :transient nil)
     ("R" "Recent Files" recentf-open-files :transient nil)
-    ("J" "Journal Files" cc/select-journal-file :transient nil)
+    ("M-j" "Journal Files" cc/select-journal-file :transient nil)
     ("a" "Org Agenda" cc/org-agenda-all-todos :transient nil)
     ("u" "URLs…" cc/open-url :if display-graphic-p :transient nil)]
 
@@ -260,7 +260,7 @@
     ("t" "Transpose" transpose-frame :transient nil)
     ("T" "Toggle Tab Bar" mac-toggle-tab-bar
      :if window-system-mac-p :transient nil)
-    ("j" "Jump to Window…" ace-select-window :transient nil)
+    ("J" "Jump to Window…" ace-select-window :transient nil)
     ("d" "Delete›" cc/windows-delete-tmenu :transient nil)]]
 
   ["Resize"
@@ -289,7 +289,7 @@
   ["Bookmarks"
    ("e" "Edit Bookmarks" cc/list-bookmarks-transient :transient nil)
    ("a" "Add Bookmark…" bookmark-set-no-overwrite :transient nil)
-   ("j" "Jump to Bookmark…" bookmark-jump :transient nil)]
+   ("J" "Jump to Bookmark…" bookmark-jump :transient nil)]
   [("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/search-tmenu ()
