@@ -1,4 +1,4 @@
-;;; cc-nxml-mode.el --- nXML Mode Customization      -*- lexical-binding: t; -*-
+;;; cc-sgml-mode.el --- SGML Mode Customization      -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024  Charles Choi
 
@@ -23,18 +23,22 @@
 ;;
 
 ;;; Code:
-(require 'nxml-mode)
+
+(require 'sgml-mode) ;; inherits from text-mode
+(require 'display-line-numbers)
+(require 'elec-pair)
 (require 'hl-line)
+(require 'cc-save-hooks)
 
-(keymap-set nxml-mode-map "M-[" #'backward-sexp)
-(keymap-set nxml-mode-map "M-]" #'forward-sexp)
-(keymap-set nxml-mode-map "M-<down>" #'nxml-down-element)
-(keymap-set nxml-mode-map "M-<up>" #'nxml-backward-up-element)
-(keymap-set nxml-mode-map "M-<left>" #'backward-sexp)
-(keymap-set nxml-mode-map "M-<right>" #'forward-sexp)
+(add-hook 'sgml-mode-hook #'display-line-numbers-mode)
+(add-hook 'sgml-mode-hook #'rainbow-mode)
+(add-hook 'sgml-mode-hook #'electric-pair-mode)
+(add-hook 'sgml-mode-hook #'sgml-electric-tag-pair-mode)
+(add-hook 'sgml-mode-hook #'cc/save-hook-delete-trailing-whitespace)
+(add-hook 'sgml-mode-hook #'hl-line-mode)
 
+(keymap-set sgml-mode-map "M-[" #'sgml-skip-tag-backward)
+(keymap-set sgml-mode-map "M-]" #'sgml-skip-tag-forward)
 
-(add-hook 'nxml-mode-hook #'hl-line-mode)
-
-(provide 'cc-nxml-mode)
-;;; cc-nxml-mode.el ends here
+(provide 'cc-sgml-mode)
+;;; cc-sgml-mode.el ends here
