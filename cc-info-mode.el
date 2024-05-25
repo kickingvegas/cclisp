@@ -100,10 +100,10 @@
    [""
     ("<" "⏮️" Info-top-node
      :description (lambda () (cc/info-unicode-db-get :first))
-     :transient t)
+     :transient nil)
     (">" "⏭️" Info-final-node
      :description (lambda () (cc/info-unicode-db-get :last))
-     :transient t)]
+     :transient nil)]
 
    [""
     ("^" "⏫️"  Info-up
