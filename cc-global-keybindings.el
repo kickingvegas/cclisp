@@ -62,7 +62,8 @@
 (keymap-global-set "S-<f5>" #'cc/select-journal-file)
 (keymap-global-set "A-<f5>" #'cc/org-search)
 (keymap-global-set "<f6>" #'osx-dictionary-search-input)
-(keymap-global-set "<f7>" #'cc/meta-search)
+(keymap-global-set "<f7>" #'repeat)
+(keymap-global-set "M-<f7>" #'repeat-complex-command)
 (keymap-global-set "C-o" #'cc/main-tmenu)
 
 (keymap-global-set "<f8>" #'org-capture)
