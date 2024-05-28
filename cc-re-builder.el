@@ -46,6 +46,13 @@ function."
     (kill-new buf)))
 
 (transient-define-prefix cc/reb-tmenu ()
+  "Transient menu for Re-Builder commands.
+
+Menu for Re-Builder (`re-builder'), a tool to construct a
+regexp interactively.
+
+* References
+- Info node `(elisp) Regular Expressions'"
   ["Re-Builder"
    ["Copy Regexp"
     ("c" "For interactive" cc/reb-copy)
@@ -58,11 +65,21 @@ function."
    ["Settings"
     ("i" "Change syntax" reb-change-syntax)
     ("b" "Change target buffer" reb-change-target-buffer)
-    ("t" "Toggle case" reb-toggle-case)]]
+    ("t" "Toggle case" reb-toggle-case)]
+
+   [""
+    ("S" "Subexp mode" reb-enter-subexp-mode)
+    ("f" "Force update" reb-force-update)]]
 
   [:class transient-row
+          ("s" "ℹ️ Special Characters" cc/reb-info-regexp-special)
           ("Q" "Quit Re-Builder" reb-quit)
           ("q" "Dismiss" ignore :transient transient--do-exit)])
+
+(defun cc/reb-info-regexp-special ()
+  "Get Info for special characters in regular expressions."
+  (interactive)
+  (info "(elisp) Regexp Special"))
 
 (keymap-set reb-mode-map "C-o" #'cc/reb-tmenu)
 
