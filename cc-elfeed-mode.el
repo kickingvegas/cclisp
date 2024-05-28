@@ -25,7 +25,7 @@
 ;;; Code:
 (require 'elfeed-search)
 
-(define-key elfeed-search-mode-map (kbd "/") 'elfeed-search-live-filter)
+(keymap-set elfeed-search-mode-map "/" #'elfeed-search-live-filter)
 
 (provide 'cc-elfeed-mode)
 ;;; cc-elfeed-mode.el ends here

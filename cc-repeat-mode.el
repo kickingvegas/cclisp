@@ -27,10 +27,10 @@
 
 (defvar vifon/buffer-nextprev-repeat-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "<up>")    #'next-buffer)
-    (define-key map (kbd "<right>") #'next-buffer)
-    (define-key map (kbd "<down>")  #'previous-buffer)
-    (define-key map (kbd "<left>")  #'previous-buffer)
+    (keymap-set map "<up>"    #'next-buffer)
+    (keymap-set map "<right>" #'next-buffer)
+    (keymap-set map "<down>"  #'previous-buffer)
+    (keymap-set map "<left>"  #'previous-buffer)
     map))
 ;;(put 'next-buffer     'repeat-map 'vifon/buffer-nextprev-repeat-map)
 ;;(put 'previous-buffer 'repeat-map 'vifon/buffer-nextprev-repeat-map)
@@ -45,8 +45,8 @@
 
 (defvar cc/org-header-navigation-repeat-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "p")    #'org-previous-visible-heading)
-    (define-key map (kbd "n")  #'org-next-visible-heading)
+    (keymap-set map "p"    #'org-previous-visible-heading)
+    (keymap-set map "n"  #'org-next-visible-heading)
     map))
 
 (repeatize 'vifon/buffer-nextprev-repeat-map)

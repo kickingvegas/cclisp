@@ -47,7 +47,7 @@
 
 (define-key prog-mode-map [remap indent-for-tab-command]
   #'company-indent-or-complete-common)
-(define-key prog-mode-map (kbd "C-a") 'back-to-indentation)
+(keymap-set prog-mode-map "C-a" #'back-to-indentation)
 
 ;; GUD - mode preferences
 ;; (setq gud-mode-hook
@@ -57,7 +57,7 @@
 ;; 	  (local-set-key [f9] 'gud-cont))))
 
 ;; # Makefile
-(define-key makefile-mode-map (kbd "<f9>") 'compile)
+(keymap-set makefile-mode-map "<f9>" #'compile)
 
 (provide 'cc-prog-mode)
 ;;; cc-prog-mode.el ends here

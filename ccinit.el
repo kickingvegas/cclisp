@@ -97,10 +97,11 @@
 (require 'cc-digital-logic)
 (require 'cc-package-menu-mode)
 (require 'cc-calc-mode)
+(require 'cc-re-builder)
 
 ;;; Configure MELPA Packages
 (require 'cc-isearch-menu)
-(define-key isearch-mode-map (kbd "<f2>") 'cc-isearch-menu-transient)
+(keymap-set isearch-mode-map "<f2>" #'cc-isearch-menu-transient)
 
 ;;; Local Customizations
 

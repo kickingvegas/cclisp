@@ -34,9 +34,9 @@
   "CC Info Transient menu."
 
   [["Overview"
-    ("d" "Directory" Info-directory :transient t)
-    ("t" "Top" Info-top-node :transient t)
-    ("T" "ToC" Info-toc :transient t)]
+    ("d" "Directory" Info-directory :transient nil)
+    ("t" "Top" Info-top-node)
+    ("T" "ToC" Info-toc :transient nil)]
 
    ["Goto"
     ("m" "Menu…" Info-menu)
@@ -52,7 +52,7 @@
 
    ["History"
     :pad-keys t
-    ("L" "History" Info-history :transient t)
+    ("L" "History" Info-history :transient nil)
     ("M-[" "⏪️" Info-history-back
      :description (lambda () (cc/info-unicode-db-get :rewind))
      :transient t)
@@ -97,16 +97,16 @@
      :description (lambda () (cc/info-unicode-db-get :fast-forward))
      :transient t)]
 
-   ["Nodes"
+   [""
     ("<" "⏮️" Info-top-node
      :description (lambda () (cc/info-unicode-db-get :first))
-     :transient t)
+     :transient nil)
     (">" "⏭️" Info-final-node
      :description (lambda () (cc/info-unicode-db-get :last))
-     :transient t)]
+     :transient nil)]
 
    [""
-    ("u" "⏫️"  Info-up
+    ("^" "⏫️"  Info-up
      :description (lambda () (cc/info-unicode-db-get :up))
      :transient t)]]
 
@@ -115,10 +115,15 @@
     ("B" "Set bookmark…" bookmark-set-no-overwrite :transient nil)
     ("b" "List buffers" ibuffer :transient nil)]
 
+   [("c" "Copy node name" Info-copy-current-node-name :transient nil)
+    ("G" "Open node in web…" Info-goto-node-web :transient nil)]
+
    [:pad-keys t
-    ("c" "Copy node name" Info-copy-current-node-name :transient nil)
-    ("G" "Open node in web…" Info-goto-node-web :transient nil)
-    ("M-n" "Clone Info" clone-buffer :transient nil)]]
+              ("C-M-n" "New frame" (lambda ()
+                                         (interactive)
+                                         (clone-frame nil t))
+               :transient nil)
+              ("M-n" "Clone buffer" clone-buffer :transient nil)]]
 
   [:class transient-row
           ("<return>" "Open" Info-follow-nearest-node :transient t)
@@ -162,8 +167,8 @@ plain ASCII-range string."
       (nth 1 (eval item)))))
 
 
-(define-key Info-mode-map (kbd "C-o") #'cc/info-tmenu)
-(define-key Info-mode-map (kbd "C-M-o") #'cc/main-tmenu)
+(keymap-set Info-mode-map "C-o" #'cc/info-tmenu)
+(keymap-set Info-mode-map "C-M-o" #'cc/main-tmenu)
 
 (provide 'cc-info-mode)
 ;;; cc-info-mode.el ends here

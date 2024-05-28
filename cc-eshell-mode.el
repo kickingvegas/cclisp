@@ -50,8 +50,8 @@
 (add-hook 'eshell-mode-hook 'company-mode)
 (add-hook 'eshell-mode-hook 'hl-line-mode)
 (add-hook 'eshell-mode-hook (lambda ()
-			      (define-key eshell-mode-map (kbd "<tab>") 'company-complete)
-			      (define-key eshell-mode-map (kbd "C-r") 'helm-eshell-history)
+			      (keymap-set eshell-mode-map "<tab>" 'company-complete)
+			      (keymap-set eshell-mode-map "C-r" 'helm-eshell-history)
                               (setenv "NO_COLOR" "1")
                               (setenv "CLICOLOR" "0")))
 

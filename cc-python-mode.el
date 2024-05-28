@@ -25,8 +25,8 @@
 ;;; Code:
 (require 'python)
 
-(define-key python-mode-map (kbd "M-[") #'backward-sexp)
-(define-key python-mode-map (kbd "M-]") #'forward-sexp)
+(keymap-set python-mode-map "M-[" #'backward-sexp)
+(keymap-set python-mode-map "M-]" #'forward-sexp)
 
 (provide 'cc-python-mode)
 ;;; cc-python-mode.el ends here

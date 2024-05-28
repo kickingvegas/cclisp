@@ -32,11 +32,11 @@
 (add-hook 'text-mode-hook (lambda ()
                             (setq-local line-spacing 0.1)))
 
-(define-key text-mode-map (kbd "A-<left>") 'backward-sentence)
-(define-key text-mode-map (kbd "A-<right>") 'forward-sentence)
-(define-key text-mode-map (kbd "A-M-<left>") 'backward-paragraph)
-(define-key text-mode-map (kbd "A-M-<right>") 'forward-paragraph)
-(define-key text-mode-map (kbd "M-/") 'hippie-expand)
+(keymap-set text-mode-map "A-<left>" #'backward-sentence)
+(keymap-set text-mode-map "A-<right>" #'forward-sentence)
+(keymap-set text-mode-map "A-M-<left>" #'backward-paragraph)
+(keymap-set text-mode-map "A-M-<right>" #'forward-paragraph)
+(keymap-set text-mode-map "M-/" #'hippie-expand)
 
 ;;(setq auto-mode-alist (cons (cons "\\.txt$" 'text-mode) auto-mode-alist))
 ;;(setq auto-mode-alist (cons (cons "\\.text$" 'text-mode) auto-mode-alist))

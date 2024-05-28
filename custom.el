@@ -212,6 +212,7 @@
  '(casual-dired-use-utf8-symbols t)
  '(cc-dired-listing-switches
    '("--human-readable" "--group-directories-first" "--time-style=long-iso"))
+ '(cchoi-use-unicode-symbols t)
  '(column-number-mode t)
  '(current-language-environment "English")
  '(cursor-type 'bar)
@@ -473,8 +474,8 @@
  '(markdown-language-keyword-face ((t (:inherit font-lock-type-face))))
  '(markdown-markup-face ((t (:inherit shadow :slant normal :weight normal))))
  '(minibuffer-prompt ((((type x mac ns) (class color) (background light)) (:foreground "dark magenta")) (((type x mac ns) (class color) (background dark)) (:foreground "orange")) (((type tty)) (:foreground "cyan"))))
- '(mode-line ((((type mac ns)) (:background "#ff7700" :foreground "gray20" :box (:line-width (5 . 5) :color "#ff7700" :style flat-button) :height 1.0 :family "SF Compact Rounded")) (((type x pgtk)) (:background "#ff7700" :foreground "gray20" :box (:line-width (2 . 2) :color "#ff7700") :height 1.0 :family "Gayathri")) (((type tty)) (:background "#ff7700" :foreground "gray20"))))
- '(mode-line-inactive ((t (:inherit mode-line :background "gray" :box (:line-width (5 . 5) :color "gray")))))
+ '(mode-line ((((type mac ns)) (:background "#ff7700" :foreground "gray20" :box (:line-width (5 . 5) :color "#ff7700" :style flat-button) :height 1.0 :family "SF Compact Rounded")) (((type x pgtk)) (:background "#ff7700" :foreground "gray20" :height 1.0 :family "Gayathri")) (((type tty)) (:background "#ff7700" :foreground "gray20")) (((type tty)) (:background "#ff7700" :foreground "gray20"))))
+ '(mode-line-inactive ((((type mac ns)) (:inherit mode-line :background "gray" :box (:line-width (5 . 5) :color "gray"))) (((type x pgtk)) (:inherit mode-line :background "gray")) (((type tty)) (:background "gray"))))
  '(org-agenda-done ((t (:foreground "snow4"))))
  '(org-agenda-structure ((((type x mac ns) (class color) (background light)) (:foreground "Blue1")) (((type x mac ns) (class color) (background dark)) (:foreground "LightSkyBlue")) (((type tty) (class color)) (:foreground "light sky blue")) (t (:weight bold))))
  '(org-block ((t (:inherit fixed-pitch))))

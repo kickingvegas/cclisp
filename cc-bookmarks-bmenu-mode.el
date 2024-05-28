@@ -127,8 +127,8 @@
                     cc/bookmarks-menu
                     "Tools")
 
-(define-key bookmark-bmenu-mode-map (kbd "C-o") #'cc/bookmark-bmenu-tmenu)
-(define-key bookmark-bmenu-mode-map (kbd "C-M-o") #'cc/main-tmenu)
+(keymap-set bookmark-bmenu-mode-map "C-o" #'cc/bookmark-bmenu-tmenu)
+(keymap-set bookmark-bmenu-mode-map "C-M-o" #'cc/main-tmenu)
 
 (provide 'cc-bookmarks-bmenu-mode)
 ;;; cc-bookmarks-bmenu-mode.el ends here
