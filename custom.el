@@ -210,6 +210,7 @@
  '(case-fold-search t)
  '(casual-dired-use-unicode-symbols t)
  '(casual-dired-use-utf8-symbols t)
+ '(casual-info-use-unicode-symbols t)
  '(cc-dired-listing-switches
    '("--human-readable" "--group-directories-first" "--time-style=long-iso"))
  '(cchoi-use-unicode-symbols t)

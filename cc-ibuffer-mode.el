@@ -41,7 +41,7 @@
     ("S" "Save" ibuffer-do-save)
     ("T" "Toggle Read-only" ibuffer-do-toggle-read-only)
     ("D" "Delete…" ibuffer-do-delete)
-    ("M" "More Operations›" cc/ibuffer-operations-tmenu)]
+    ("M" "More›" cc/ibuffer-operations-tmenu)]
 
    ["Display"
     ("s" "Sort By›" cc/ibuffer-sortby-tmenu :transient t)
