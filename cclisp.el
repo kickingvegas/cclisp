@@ -146,6 +146,11 @@ If prefix ARG is invoked, then macOS open is used to open the PDF file."
   (interactive)
   (org-time-stamp-inactive '(16)))
 
+(defun cc/org-set-creation-timestamp ()
+  "Set Org property “CREATED”."
+  (interactive)
+  (org-set-property "CREATED" (org-time-stamp-inactive '(16))))
+
 (defun cc/select-journal-file ()
   "Select one of Charles Choi's journal files to open in a buffer."
   (interactive)

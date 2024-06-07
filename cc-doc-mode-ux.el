@@ -31,6 +31,7 @@
 (require 'hl-line)
 (require 'simple)
 (require 'cclisp)
+(require 'casual-info)
 
 (defun cc/confirm-before-quit-window ()
   "Raise confirm prompt before invoking `quit-window'."
@@ -46,13 +47,10 @@
 (keymap-set Info-mode-map "M-[" #'Info-history-back)
 (keymap-set Info-mode-map "M-]" #'Info-history-forward)
 ;; Bind p and n to paragraph navigation
-(keymap-set Info-mode-map "p" #'cc/browse-backward-paragraph)
-(keymap-set Info-mode-map "n" #'cc/browse-forward-paragraph)
+(keymap-set Info-mode-map "p" #'casual-info-browse-backward-paragraph)
+(keymap-set Info-mode-map "n" #'casual-info-browse-forward-paragraph)
 ;; Bind <f1> to help
 (keymap-set Info-mode-map "<f1>" #'Info-help)
-;; Bind M-j, M-k to scrolling up/down line
-(keymap-set Info-mode-map "M-j" #'scroll-up-line)
-(keymap-set Info-mode-map "M-k" #'scroll-down-line)
 ;; Bind h and l to navigate to previous and next nodes
 ;; Bind j and k to navigate to next and previous references
 (keymap-set Info-mode-map "h" #'Info-prev)
@@ -67,17 +65,16 @@
 (keymap-set Info-mode-map "<mouse-5>" #'Info-history-forward)
 (keymap-set Info-mode-map "<mouse-4>" #'Info-history-back)
 
-(add-hook 'Info-mode-hook 'hl-line-mode)
-(add-hook 'Info-mode-hook 'visual-line-mode)
-(add-hook 'Info-mode-hook 'scroll-lock-mode)
+(add-hook 'Info-mode-hook #'hl-line-mode)
+(add-hook 'Info-mode-hook #'scroll-lock-mode)
 
 ;; # Help
 ;; Use web-browser history navigation bindings
 (keymap-set help-mode-map "M-[" #'help-go-back)
 (keymap-set help-mode-map "M-]" #'help-go-forward)
 ;; Bind p and n to paragraph navigation
-(keymap-set help-mode-map "p" #'cc/browse-backward-paragraph)
-(keymap-set help-mode-map "n" #'cc/browse-forward-paragraph)
+(keymap-set help-mode-map "p" #'casual-info-browse-backward-paragraph)
+(keymap-set help-mode-map "n" #'casual-info-browse-forward-paragraph)
 ;; Bind <f1> to help
 (keymap-set help-mode-map "<f1>" #'describe-mode)
 ;; Bind M-j, M-k to scrolling up/down line
@@ -90,9 +87,8 @@
 (keymap-set help-mode-map "<mouse-5>" #'help-go-forward)
 (keymap-set help-mode-map "<mouse-4>" #'help-go-back)
 
-(add-hook 'help-mode-hook 'hl-line-mode)
-(add-hook 'help-mode-hook 'visual-line-mode)
-(add-hook 'help-mode-hook 'scroll-lock-mode)
+(add-hook 'help-mode-hook #'hl-line-mode)
+(add-hook 'help-mode-hook #'scroll-lock-mode)
 
 ;; # Shortdoc
 ;; Bind <f1> to help
@@ -107,9 +103,8 @@
 (keymap-set shortdoc-mode-map "k" #'shortdoc-previous)
 (keymap-set shortdoc-mode-map "l" #'shortdoc-next-section)
 
-(add-hook 'shortdoc-mode-hook 'hl-line-mode)
-(add-hook 'shortdoc-mode-hook 'visual-line-mode)
-(add-hook 'shortdoc-mode-hook 'scroll-lock-mode)
+(add-hook 'shortdoc-mode-hook #'hl-line-mode)
+(add-hook 'shortdoc-mode-hook #'scroll-lock-mode)
 
 ;; # Man
 ;; Bind <f1> to help
@@ -118,14 +113,13 @@
 (keymap-set Man-mode-map "M-j" #'scroll-up-line)
 (keymap-set Man-mode-map "M-k" #'scroll-down-line)
 ;; Bind j and k to navigate forward and backward paragraphs
-(keymap-set Man-mode-map "j" #'cc/browse-forward-paragraph)
-(keymap-set Man-mode-map "k" #'cc/browse-backward-paragraph)
+(keymap-set Man-mode-map "j" #'casual-info-browse-forward-paragraph)
+(keymap-set Man-mode-map "k" #'casual-info-browse-backward-paragraph)
 ;; Bind K to kill buffer to replace override of default k above
 (keymap-set Man-mode-map "K" #'Man-kill)
 
-(add-hook 'Man-mode-hook 'hl-line-mode)
-(add-hook 'Man-mode-hook 'visual-line-mode)
-(add-hook 'Man-mode-hook 'scroll-lock-mode)
+(add-hook 'Man-mode-hook #'hl-line-mode)
+(add-hook 'Man-mode-hook #'scroll-lock-mode)
 
 (provide 'cc-doc-mode-ux)
 

@@ -33,6 +33,8 @@
 (require 'hl-line)
 (require 'gud)
 (require 'flyspell)
+(require 'compile)
+(require 'cc-main-tmenu)
 
 ;;; Code:
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -48,6 +50,8 @@
 (define-key prog-mode-map [remap indent-for-tab-command]
   #'company-indent-or-complete-common)
 (keymap-set prog-mode-map "C-a" #'back-to-indentation)
+
+(keymap-set compilation-mode-map "C-o" #'cc/main-tmenu)
 
 ;; GUD - mode preferences
 ;; (setq gud-mode-hook

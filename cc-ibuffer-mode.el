@@ -23,10 +23,10 @@
 ;;
 
 ;;; Code:
-
 (require 'ibuffer)
 (require 'hl-line)
 (require 'mouse)
+(require 'bookmark)
 (require 'transient)
 
 (add-hook 'ibuffer-mode-hook #'hl-line-mode)
@@ -41,7 +41,10 @@
     ("S" "Save" ibuffer-do-save)
     ("T" "Toggle Read-only" ibuffer-do-toggle-read-only)
     ("D" "Delete…" ibuffer-do-delete)
-    ("M" "More Operations›" cc/ibuffer-operations-tmenu)]
+    ("=" "Diff Buffer|File" ibuffer-diff-with-file)
+    ("B" "Copy Buffer Name" ibuffer-copy-buffername-as-kill)
+    ("w" "Copy File Name" ibuffer-copy-filename-as-kill)
+    ("M" "More›" cc/ibuffer-operations-tmenu)]
 
    ["Display"
     ("s" "Sort By›" cc/ibuffer-sortby-tmenu :transient t)
@@ -66,26 +69,27 @@
     ("/" "Filter by…" ibuffer-filter-chosen-by-completion)
     ("|" "Disable" ibuffer-filter-disable)]
 
-   ["Find, Replace"
+   ["Find/Replace"
     :pad-keys t
     ("O" "Occur…" ibuffer-do-occur)
     ("M-r" "Query Replace…" ibuffer-do-query-replace)
     ("C-M-r" "Query Replace Regexp…" ibuffer-do-query-replace-regexp)]
-   ]
+
+   ["Quick"
+    ("J" "Jump to Bookmark…" bookmark-jump :transient nil)]]
   [:class transient-row
           ("<return>" "Visit" ibuffer-visit-buffer)
           ("q" "Dismiss" ignore :transient transient--do-exit)])
 
 (transient-define-prefix cc/ibuffer-operations-tmenu ()
   ["Buffer Operations"
-   ;;("E" "Eval" ibuffer-do-eval)
+   ;;
    [("R" "Rename Uniquely…" ibuffer-do-rename-uniquely)
     ("!" "Shell…" ibuffer-do-shell-command-file)
     ("|" "Pipe to Shell…" ibuffer-do-shell-command-pipe)]
 
-   [("=" "Diff Buffer/file" ibuffer-diff-with-file)
-    ("B" "Copy Buffer Name" ibuffer-copy-buffername-as-kill)
-    ("w" "Copy File Name" ibuffer-copy-filename-as-kill)]
+   [("E" "Eval" ibuffer-do-eval)
+    ]
 
    [("L" "Toggle Lock" ibuffer-do-toggle-lock)]]
 
