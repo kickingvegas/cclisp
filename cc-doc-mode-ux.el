@@ -51,9 +51,6 @@
 (keymap-set Info-mode-map "n" #'casual-info-browse-forward-paragraph)
 ;; Bind <f1> to help
 (keymap-set Info-mode-map "<f1>" #'Info-help)
-;; Bind M-j, M-k to scrolling up/down line
-(keymap-set Info-mode-map "M-j" #'scroll-up-line)
-(keymap-set Info-mode-map "M-k" #'scroll-down-line)
 ;; Bind h and l to navigate to previous and next nodes
 ;; Bind j and k to navigate to next and previous references
 (keymap-set Info-mode-map "h" #'Info-prev)
