@@ -420,6 +420,7 @@
               (require 'package-recipe-mode nil t)))
            (package-recipe-mode))
      (vc-git-annotate-switches . "-w")))
+ '(save-place-mode t)
  '(savehist-mode t)
  '(scroll-bar-mode nil)
  '(scroll-step 4)

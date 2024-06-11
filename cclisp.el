@@ -691,6 +691,13 @@ V is either nil or non-nil."
   (interactive)
   (insert "’"))
 
+(defun cc/show-fn-key-bindings ()
+  "Show function key bindings."
+  (interactive)
+  (call-interactively #'describe-bindings)
+  (switch-to-buffer "*Help*")
+  (occur "^.*<f[[:digit:]]*>")
+  (delete-other-windows))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

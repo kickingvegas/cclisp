@@ -182,9 +182,10 @@ which is done with `org-ctrl-c-ctrl-c'."
               ("WWDC Capture"
                :keys "w"
                :type entry
-               :file "~/org/wwdc23.org"
+               :file "~/org/wwdc24.org"
+               :headline "WWDC 24 Notes"
                :empty-lines 1
-               :template ("** TODO %:description"
+               :template ("* TODO %:description"
                           "%:annotation"
                           "%i"
                           "%?"))
