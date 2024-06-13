@@ -100,8 +100,8 @@
 (require 'cc-re-builder)
 
 ;;; Configure MELPA Packages
-(require 'cc-isearch-menu)
-(keymap-set isearch-mode-map "<f2>" #'cc-isearch-menu-transient)
+(require 'casual-isearch)
+(keymap-set isearch-mode-map "<f2>" #'casual-isearch-tmenu)
 
 ;;; Local Customizations
 
