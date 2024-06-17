@@ -236,7 +236,7 @@ ISO 8601."
   (interactive "r")
   (if (use-region-p)
       (let* ((regionp (buffer-substring start end))
-             (inputTime (time-convert (string-to-number regionp) "list"))
+             (inputTime (time-convert (string-to-number regionp) 'list))
              (inputBuf (number-to-string (string-to-number regionp)))
              (rfcBuf (format-time-string "%a, %e %b %Y %H:%M:%S %z" inputTime))
              (isoBuf (format-time-string "%Y-%m-%dT%H:%M:%S%z" inputTime)))
