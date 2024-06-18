@@ -27,7 +27,7 @@
 (require 'calc)
 (require 'calc-mode)
 (require 'calc-ext)
-(require 'casual)
+(require 'casual-calc)
 
 (defun cc/confirm-before-calc-quit ()
   "Raise confirm prompt before invoking `calc-quit'."

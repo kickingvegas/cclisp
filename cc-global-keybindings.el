@@ -65,6 +65,8 @@
 (keymap-global-set "<f7>" #'repeat)
 (keymap-global-set "M-<f7>" #'repeat-complex-command)
 (keymap-global-set "C-o" #'cc/main-tmenu)
+(if (string-equal (window-system) "mac")
+    (keymap-global-set "<f10>" #'cc/main-tmenu))
 
 (keymap-global-set "<f8>" #'org-capture)
 (keymap-global-set "<f9>" #'compile)

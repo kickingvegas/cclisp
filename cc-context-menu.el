@@ -190,7 +190,7 @@ containing a match for regex"]))
        ((derived-mode-p 'prog-mode)
         (easy-menu-add-item menu nil
                             ["Toggle Comment"
-                             comment-region
+                             comment-dwim
                              :help "Toggle comment on selected region"]))
 
        ((derived-mode-p 'org-mode)

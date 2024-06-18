@@ -120,7 +120,8 @@
      :description cc/select-magit-command-description
      :if cc/version-controlled-p :transient nil)
     ("D" "Ediff Revision" cc/ediff-revision
-     :if cc/version-controlled-p :transient nil)]]
+     :if cc/version-controlled-p :transient nil)
+    ("M-n" "New Frame" make-frame-command)]]
 
   [:class transient-row
           ("r" "Registers›" cc/registers-tmenu :transient nil)

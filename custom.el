@@ -209,8 +209,8 @@
  '(calendar-longitude -122.4753)
  '(case-fold-search t)
  '(casual-dired-use-unicode-symbols t)
- '(casual-dired-use-utf8-symbols t)
  '(casual-info-use-unicode-symbols t)
+ '(casual-lib-use-unicode t)
  '(cc-dired-listing-switches
    '("--human-readable" "--group-directories-first" "--time-style=long-iso"))
  '(cchoi-use-unicode-symbols t)
@@ -300,6 +300,7 @@
  '(highlight-nonselected-windows nil)
  '(hippie-expand-try-functions-list
    '(try-expand-dabbrev try-expand-line try-expand-list try-expand-dabbrev-all-buffers try-complete-file-name-partially try-complete-file-name try-expand-all-abbrevs try-expand-dabbrev-from-kill try-complete-lisp-symbol-partially try-complete-lisp-symbol))
+ '(holiday-other-holidays '((holiday-fixed 6 19 "Juneteenth")))
  '(ignored-local-variable-values
    '((vc-prepare-patches-separately)
      (diff-add-log-use-relative-names . t)
