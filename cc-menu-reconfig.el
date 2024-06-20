@@ -168,6 +168,13 @@ tree rooted at DIR."]
 (define-key global-map [menu-bar tools separator-encryption-decryption] nil t)
 (define-key global-map [menu-bar tools Table] nil t)
 
+(define-key global-map [menu-bar buffer list-all-buffers] nil t)
+(easy-menu-add-item global-map '(menu-bar buffer)
+                    ["List All Buffers"
+                     ibuffer
+                     :help "Begin using Ibuffer to edit a list of buffers."]
+                    "Select Buffer in Project...")
+
 (easy-menu-add-item global-map '(menu-bar tools)
                     ["Magit Status"
                      magit-status
