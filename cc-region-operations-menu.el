@@ -30,6 +30,10 @@
   "Keymap for Region Operations submenu."
   '("Operate on Region"
     :visible (region-active-p)
+    ["Write to file…" write-region
+     :enable (region-active-p)
+     :help "Write current region into specified file."]
+
     ["Search with Google" google-this-noconfirm
      :enable (region-active-p)
      :label (cc/context-menu-label "Search with Google")
