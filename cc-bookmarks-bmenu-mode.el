@@ -28,6 +28,7 @@
 (require 'transient)
 (require 'tabulated-list)
 (require 'cc-main-tmenu)
+(require 'casual-lib)
 
 (add-hook 'bookmark-bmenu-mode-hook #'hl-line-mode)
 
@@ -82,7 +83,7 @@
           ("<return>" "Open" bookmark-bmenu-this-window :transient nil)
           ("g" "Refresh" revert-buffer :transient t)
           ("S" "Save" bookmark-bmenu-save :transient t)
-          ("q" "Dismiss" ignore :transient transient--do-exit)])
+          (casual-lib-quit-all)])
 
 (transient-define-prefix cc/bookmark-bmenu-sortby-tmenu ()
   ["Sort By"
@@ -90,7 +91,7 @@
    ("m" "Last Modified" cc/bookmark-bmenu-sortby-modified :transient nil)
    ("c" "Creation Time" cc/bookmark-bmenu-sortby-creation :transient nil)]
   [:class transient-row
-          ("q" "Dismiss" ignore :transient transient--do-exit)])
+          (casual-lib-quit-all)])
 
 (defun cc/bookmark-bmenu-sortby-name ()
   "Sort bookmark list by name."

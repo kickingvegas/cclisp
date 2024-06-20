@@ -123,7 +123,7 @@
   (call-interactively #'eval-defun))
 
 ;;(keymap-set edebug-mode-map "C-<f9>" #'cc/edebug-tmenu)
-(keymap-set emacs-lisp-mode-map "<f5>" #'cc/edebug-tmenu)
+(keymap-set emacs-lisp-mode-map "<f8>" #'cc/edebug-tmenu)
 
 (transient-define-prefix cc/edebug-watch-tmenu ()
   [["Expression"
@@ -139,7 +139,7 @@
 
   [("C-g" "Dismiss" ignore :transient transient-quit-one)])
 
-(keymap-set edebug-eval-mode-map "<f5>" #'cc/edebug-watch-tmenu)
+(keymap-set edebug-eval-mode-map "<f8>" #'cc/edebug-watch-tmenu)
 
 (provide 'cc-emacs-lisp-mode)
 ;;; cc-emacs-lisp-mode.el ends here

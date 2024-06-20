@@ -28,6 +28,7 @@
 (require 'mouse)
 (require 'bookmark)
 (require 'transient)
+(require 'casual-lib)
 
 (add-hook 'ibuffer-mode-hook #'hl-line-mode)
 
@@ -79,7 +80,7 @@
     ("J" "Jump to Bookmark…" bookmark-jump :transient nil)]]
   [:class transient-row
           ("<return>" "Visit" ibuffer-visit-buffer)
-          ("q" "Dismiss" ignore :transient transient--do-exit)])
+          (casual-lib-quit-all)])
 
 (transient-define-prefix cc/ibuffer-operations-tmenu ()
   ["Buffer Operations"
@@ -94,7 +95,7 @@
    [("L" "Toggle Lock" ibuffer-do-toggle-lock)]]
 
   [:class transient-row
-          ("q" "Dismiss" ignore :transient transient--do-exit)])
+          (casual-lib-quit-all)])
 
 (transient-define-prefix cc/ibuffer-sortby-tmenu ()
   ["Sort By"
@@ -109,7 +110,7 @@
 
   [:class transient-row
           ("," "Cycle Sort" ibuffer-toggle-sorting-mode)
-          ("q" "Dismiss" ignore :transient transient--do-exit)])
+          (casual-lib-quit-all)])
 
 
 (transient-define-prefix cc/ibuffer-mark-tmenu ()
@@ -127,7 +128,7 @@
     ("z" "Compressed" ibuffer-mark-compressed-file-buffers)]]
 
   [:class transient-row
-          ("q" "Dismiss" ignore :transient transient--do-exit)])
+          (casual-lib-quit-all)])
 
 
 (transient-define-prefix cc/ibuffer-mark-regexp-tmenu ()
@@ -137,7 +138,7 @@
    ("f" "File name" ibuffer-mark-by-file-name-regexp)
    ("c" "Content" ibuffer-mark-by-content-regexp)]
   [:class transient-row
-          ("q" "Dismiss" ignore :transient transient--do-exit)])
+          (casual-lib-quit-all)])
 
 (keymap-set ibuffer-mode-map "s" #'cc/ibuffer-sortby-tmenu)
 (keymap-set ibuffer-mode-map "C-o" #'cc/ibuffer-tmenu)

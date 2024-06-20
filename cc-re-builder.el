@@ -26,6 +26,7 @@
 (require 're-builder)
 (require 'rx)
 (require 'transient)
+(require 'casual-lib)
 
 (defun cc/reb-copy ()
   "Reformat `reb-copy' result for interactive use.
@@ -74,7 +75,7 @@ regexp interactively.
   [:class transient-row
           ("s" "ℹ️ Special Characters" cc/reb-info-regexp-special)
           ("Q" "Quit Re-Builder" reb-quit)
-          ("q" "Dismiss" ignore :transient transient--do-exit)])
+          (casual-lib-quit-all)])
 
 (defun cc/reb-info-regexp-special ()
   "Get Info for special characters in regular expressions."

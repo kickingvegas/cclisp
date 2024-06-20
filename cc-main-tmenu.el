@@ -33,6 +33,7 @@
 (require 'magit-status)
 (require 'magit-files)
 (require 'google-this)
+(require 'casual-lib)
 
 (defun cc/version-controlled-p ()
   "Predicate if version controlled."
@@ -126,7 +127,7 @@
 
   [:class transient-row
           ("r" "Registers›" cc/registers-tmenu :transient nil)
-          ("q" "Dismiss" ignore :transient transient--do-exit)])
+          (casual-lib-quit-all)])
 
 (transient-define-prefix cc/open-tmenu ()
   ["Open"
@@ -138,7 +139,7 @@
     ("p" "File in Project…" project-find-file :transient nil)
     ("d" "Project Dired…" project-dired :transient nil)
     ("P" "Switch to Project…" project-switch-project :transient nil)]]
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/edit-tmenu ()
   ["Edit"
@@ -156,7 +157,7 @@
 
    [("f" "Fill Paragraph" fill-paragraph :transient nil)
     ("R" "Rectangle›" cc/rectangle-tmenu :transient nil)]]
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/edit-mark-tmenu ()
   ["Mark"
@@ -165,7 +166,7 @@
     ("p" "Paragraph" mark-paragraph :transient nil)]
    [("b" "Balanced Expression (sexp)" mark-sexp :transient nil)
     ("d" "Defun" mark-defun :transient nil)]]
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/edit-copy-tmenu ()
   ["Copy"
@@ -174,7 +175,7 @@
     ("p" "Paragraph" cc/copy-paragraph :transient nil)]
    [("b" "Balanced Expression (sexp)" cc/copy-sexp :transient nil)
     ("d" "Defun" cc/copy-defun :transient nil)]]
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/edit-kill-tmenu ()
   ["Kill"
@@ -183,7 +184,7 @@
     ("p" "Paragraph" kill-paragraph :transient nil)]
    [("l" "Line" kill-line :transient nil)
     ("b" "Balanced Expression (sexp)" kill-sexp :transient nil)]]
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/edit-transpose-tmenu ()
   ["Transpose"
@@ -194,7 +195,7 @@
    [("p" "Paragraphs" transpose-paragraphs :transient nil)
     ("b" "Balanced Expression (sexp)" transpose-sexps :transient nil)
     ("r" "Regions" transpose-regions :transient nil)]]
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/edit-delete-space-tmenu ()
   ["Delete Space"
@@ -205,35 +206,35 @@
    [("b" "Blank Lines" delete-blank-lines :transient nil)
     ("w" "Whitespace Cleanup" whitespace-cleanup :transient nil)
     ("d" "Delete Trailing Whitespace" delete-trailing-whitespace :transient nil)]]
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/edit-move-text-tmenu ()
   ["Move Text"
    ("w" "Word"  cc/edit-move-word-tmenu :transient nil)
    ("s" "Sentence"  cc/edit-move-sentence-tmenu :transient nil)
    ("b" "Balanced Expression (sexp)" cc/edit-move-sexp-tmenu :transient nil)]
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/edit-move-word-tmenu ()
   ["Move Word"
    :class transient-row
    ("b" "Backward"  cc/move-word-backward :transient t)
    ("f" "Forward"  cc/move-word-forward :transient t)]
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/edit-move-sentence-tmenu ()
   ["Move Sentence"
    :class transient-row
    ("b" "Backward"  cc/move-sentence-backward :transient t)
    ("f" "Forward"  cc/move-sentence-forward :transient t)]
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/edit-move-sexp-tmenu ()
   ["Move Sexp"
    :class transient-row
    ("b" "Backward"  cc/move-sexp-backward :transient t)
    ("f" "Forward"  cc/move-sexp-forward :transient t)]
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/windows-tmenu ()
   ["Window"
@@ -273,7 +274,7 @@
     (">" "Enlarge" enlarge-window-horizontally :transient t)
     ("<" "Shrink" shrink-window-horizontally :transient t)]]
 
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/windows-delete-tmenu ()
   ["Delete Window"
@@ -281,7 +282,7 @@
    ("n" "Below" windmove-delete-down :transient nil)
    ("b" "On Left" windmove-delete-left :transient nil)
    ("f" "On Right" windmove-delete-right :transient nil)]
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (defun window-system-mac-p ()
   "Predicate if window system is mac."
@@ -292,7 +293,7 @@
    ("e" "Edit Bookmarks" cc/list-bookmarks-transient :transient nil)
    ("a" "Add Bookmark…" bookmark-set-no-overwrite :transient nil)
    ("J" "Jump to Bookmark…" bookmark-jump :transient nil)]
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/search-tmenu ()
   ["Search"
@@ -307,7 +308,7 @@
     ("g" "Google" google-this-search :transient nil)
     ("m" "Apple Maps" cc/apple-maps-search :transient nil)]]
 
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/tools-tmenu ()
   ["Tools"
@@ -329,7 +330,7 @@
    ["Fun"
     ("z" "Zone" zone :transient nil)]]
 
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/registers-tmenu ()
   ["Registers"
@@ -346,7 +347,7 @@
     ("P" "Prepend to Register…" prepend-to-register :if use-region-p :transient nil)
     ("i" "Insert Text…" insert-register :transient nil)]]
 
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/rectangle-tmenu ()
   ["Rectangle"
@@ -367,7 +368,7 @@
     ("C" "Clear" clear-rectangle :inapt-if-not use-region-p :transient nil)
     ("D" "Delete Leading Spaces" delete-whitespace-rectangle :inapt-if-not use-region-p :transient nil)]]
 
-  [("q" "Dismiss" ignore :transient transient--do-exit)])
+  [(casual-lib-quit-all)])
 
 (provide 'cc-main-tmenu)
 ;;; cc-main-tmenu.el ends here
