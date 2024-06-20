@@ -114,8 +114,9 @@
    ["Misc"
     :pad-keys t
     ("C" "Compile…" compile :transient nil)
-    ("d" "Dired…" dired :transient nil)
-    ("M-d" "Dired Other…" dired-other-window :transient nil)
+    ("d" "Open in Dired" dired-jump-other-window
+     :if (lambda () (buffer-file-name))
+     :transient nil)
     ("g" "Magit Status" cc/select-magit-command
      :description cc/select-magit-command-description
      :if cc/version-controlled-p :transient nil)
