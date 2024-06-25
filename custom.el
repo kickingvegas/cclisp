@@ -208,6 +208,7 @@
  '(calendar-location-name '(format "%s, San Francisco" "Inner Sunset"))
  '(calendar-longitude -122.4753)
  '(case-fold-search t)
+ '(casual-avy-imenu-modes '(prog-mode makefile-mode markdown-mode))
  '(casual-dired-use-unicode-symbols t)
  '(casual-info-use-unicode-symbols t)
  '(casual-lib-use-unicode t)
