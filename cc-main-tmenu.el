@@ -33,6 +33,7 @@
 (require 'magit-status)
 (require 'magit-files)
 (require 'google-this)
+(require 'symbol-overlay)
 (require 'casual-lib)
 
 (defun cc/version-controlled-p ()
@@ -108,6 +109,7 @@
     ("i" "Insert Character…" insert-char :transient nil)
     ("p" "Fill Paragraph" fill-paragraph :transient nil)
     ("l" "Join line" join-line :transient nil)
+    ("h" "Toggle Symbol Highlight" symbol-overlay-put)
     ("I" "Korean Input"
      (lambda () (interactive)(set-input-method 'korean-hangul))
      :transient nil)]
