@@ -48,6 +48,11 @@
 (keymap-set dired-mode-map "M-p" #'dired-prev-dirline)
 (keymap-set dired-mode-map "]" #'dired-next-subdir)
 (keymap-set dired-mode-map "[" #'dired-prev-subdir)
+
+;; Added to be consistent with IBuffer
+(keymap-set dired-mode-map "<backtab>" #'dired-prev-subdir)
+(keymap-set dired-mode-map "TAB" #'dired-next-subdir)
+
 (keymap-set dired-mode-map "A-M-<mouse-1>" #'browse-url-of-dired-file)
 
 (keymap-set image-dired-thumbnail-mode-map "n" #'image-dired-display-next)

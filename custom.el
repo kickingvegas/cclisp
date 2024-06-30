@@ -302,6 +302,86 @@
  '(hippie-expand-try-functions-list
    '(try-expand-dabbrev try-expand-line try-expand-list try-expand-dabbrev-all-buffers try-complete-file-name-partially try-complete-file-name try-expand-all-abbrevs try-expand-dabbrev-from-kill try-complete-lisp-symbol-partially try-complete-lisp-symbol))
  '(holiday-other-holidays '((holiday-fixed 6 19 "Juneteenth")))
+ '(ibuffer-saved-filter-groups
+   '(("Blog"
+      ("devnull Blog"
+       (or
+        (directory . "/Users/cchoi/org/posts")
+        (name . "*pelican*")
+        (directory . "/Users/cchoi/Projects/pelican/devnull")))
+      ("Documentation"
+       (or
+        (mode . makefile-mode)
+        (mode . Info-mode)
+        (mode . help-mode)))
+      ("Org Files"
+       (and
+        (directory . "/Users/cchoi/org")
+        (mode . org-mode)))
+      ("cclisp"
+       (directory . "cclisp")))
+     ("Casual"
+      ("Documentation"
+       (or
+        (mode . makefile-mode)
+        (mode . Info-mode)
+        (mode . help-mode)))
+      ("Casual Suite"
+       (directory . "casual-suite"))
+      ("Casual Lib"
+       (directory . "casual-lib"))
+      ("Casual Avy"
+       (directory . "casual-avy"))
+      ("Casual Calc"
+       (directory . "casual-calc"))
+      ("Casual Dired"
+       (directory . "casual-dired"))
+      ("Casual IBuffer"
+       (directory . "casual-ibuffer"))
+      ("Casual Info"
+       (directory . "casual-info"))
+      ("Casual I-Search"
+       (directory . "casual-isearch"))
+      ("cclisp"
+       (directory . "cclisp"))
+      ("Org Files"
+       (and
+        (directory . "/Users/cchoi/org")
+        (mode . org-mode))))))
+ '(ibuffer-saved-filters
+   '(("programming"
+      (or
+       (derived-mode . prog-mode)
+       (mode . ess-mode)
+       (mode . compilation-mode)))
+     ("text document"
+      (and
+       (derived-mode . text-mode)
+       (not
+        (starred-name))))
+     ("TeX"
+      (or
+       (derived-mode . tex-mode)
+       (mode . latex-mode)
+       (mode . context-mode)
+       (mode . ams-tex-mode)
+       (mode . bibtex-mode)))
+     ("web"
+      (or
+       (derived-mode . sgml-mode)
+       (derived-mode . css-mode)
+       (mode . javascript-mode)
+       (mode . js2-mode)
+       (mode . scss-mode)
+       (derived-mode . haml-mode)
+       (mode . sass-mode)))
+     ("gnus"
+      (or
+       (mode . message-mode)
+       (mode . mail-mode)
+       (mode . gnus-group-mode)
+       (mode . gnus-summary-mode)
+       (mode . gnus-article-mode)))))
  '(ignored-local-variable-values
    '((vc-prepare-patches-separately)
      (diff-add-log-use-relative-names . t)
