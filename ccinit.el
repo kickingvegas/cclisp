@@ -98,6 +98,7 @@
 (require 'cc-package-menu-mode)
 (require 'cc-calc-mode)
 (require 'cc-re-builder)
+(require 'cc-symbol-overlay)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
