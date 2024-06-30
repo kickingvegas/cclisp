@@ -182,9 +182,10 @@ which is done with `org-ctrl-c-ctrl-c'."
               ("WWDC Capture"
                :keys "w"
                :type entry
-               :file "~/org/wwdc23.org"
+               :file "~/org/wwdc24.org"
+               :headline "WWDC 24 Notes"
                :empty-lines 1
-               :template ("** TODO %:description"
+               :template ("* TODO %:description"
                           "%:annotation"
                           "%i"
                           "%?"))
@@ -313,6 +314,7 @@ SUFFIX - string appended to prefix
 (keymap-set org-mode-map "M-j" #'cc/journal-entry)
 (keymap-set org-mode-map "C-v" #'org-next-visible-heading)
 (keymap-set org-mode-map "C-/" #'org-emphasize)
+(keymap-set org-mode-map "C-6" #'org-goto)
 
 (add-hook 'org-agenda-finalize-hook 'hl-line-mode)
 (add-hook 'org-agenda-finalize-hook

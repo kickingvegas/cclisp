@@ -26,8 +26,11 @@
 
 (require 'grep)
 (require 'hl-line)
+(require 'cc-main-tmenu)
 
 (add-hook 'grep-mode-hook 'hl-line-mode)
+
+(keymap-set grep-mode-map "C-o" #'cc/main-tmenu)
 
 (provide 'cc-grep-mode)
 ;;; cc-grep-mode.el ends here

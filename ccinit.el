@@ -98,10 +98,11 @@
 (require 'cc-package-menu-mode)
 (require 'cc-calc-mode)
 (require 'cc-re-builder)
+(require 'cc-symbol-overlay)
 
 ;;; Configure MELPA Packages
-(require 'cc-isearch-menu)
-(keymap-set isearch-mode-map "<f2>" #'cc-isearch-menu-transient)
+(require 'casual-isearch)
+(keymap-set isearch-mode-map "<f2>" #'casual-isearch-tmenu)
 
 ;;; Local Customizations
 

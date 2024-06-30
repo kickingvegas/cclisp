@@ -27,6 +27,7 @@
 (require 'face-remap)
 (require 'cc-save-hooks)
 (require 'org-table)
+(require 'imenu)
 (defvar markdown-mode-map)
 
 (autoload 'markdown-mode "markdown-mode"
@@ -45,6 +46,7 @@
 ;; (define-key markdown-mode-map [f13] 'markdown-preview)
 
 (add-hook 'markdown-mode-hook #'cc/save-hook-delete-trailing-whitespace)
+(add-hook 'markdown-mode-hook #'imenu-add-menubar-index)
 
 (provide 'cc-markdown-mode)
 ;;; cc-markdown-mode.el ends here

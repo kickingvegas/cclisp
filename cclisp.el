@@ -146,6 +146,11 @@ If prefix ARG is invoked, then macOS open is used to open the PDF file."
   (interactive)
   (org-time-stamp-inactive '(16)))
 
+(defun cc/org-set-creation-timestamp ()
+  "Set Org property “CREATED”."
+  (interactive)
+  (org-set-property "CREATED" (org-time-stamp-inactive '(16))))
+
 (defun cc/select-journal-file ()
   "Select one of Charles Choi's journal files to open in a buffer."
   (interactive)
@@ -231,7 +236,7 @@ ISO 8601."
   (interactive "r")
   (if (use-region-p)
       (let* ((regionp (buffer-substring start end))
-             (inputTime (time-convert (string-to-number regionp) "list"))
+             (inputTime (time-convert (string-to-number regionp) 'list))
              (inputBuf (number-to-string (string-to-number regionp)))
              (rfcBuf (format-time-string "%a, %e %b %Y %H:%M:%S %z" inputTime))
              (isoBuf (format-time-string "%Y-%m-%dT%H:%M:%S%z" inputTime)))
@@ -686,6 +691,13 @@ V is either nil or non-nil."
   (interactive)
   (insert "’"))
 
+(defun cc/show-fn-key-bindings ()
+  "Show function key bindings."
+  (interactive)
+  (call-interactively #'describe-bindings)
+  (switch-to-buffer "*Help*")
+  (occur "^.*<f[[:digit:]]*>")
+  (delete-other-windows))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

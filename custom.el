@@ -208,8 +208,10 @@
  '(calendar-location-name '(format "%s, San Francisco" "Inner Sunset"))
  '(calendar-longitude -122.4753)
  '(case-fold-search t)
+ '(casual-avy-imenu-modes '(prog-mode makefile-mode markdown-mode))
  '(casual-dired-use-unicode-symbols t)
- '(casual-dired-use-utf8-symbols t)
+ '(casual-info-use-unicode-symbols t)
+ '(casual-lib-use-unicode t)
  '(cc-dired-listing-switches
    '("--human-readable" "--group-directories-first" "--time-style=long-iso"))
  '(cchoi-use-unicode-symbols t)
@@ -299,6 +301,87 @@
  '(highlight-nonselected-windows nil)
  '(hippie-expand-try-functions-list
    '(try-expand-dabbrev try-expand-line try-expand-list try-expand-dabbrev-all-buffers try-complete-file-name-partially try-complete-file-name try-expand-all-abbrevs try-expand-dabbrev-from-kill try-complete-lisp-symbol-partially try-complete-lisp-symbol))
+ '(holiday-other-holidays '((holiday-fixed 6 19 "Juneteenth")))
+ '(ibuffer-saved-filter-groups
+   '(("Blog"
+      ("devnull Blog"
+       (or
+        (directory . "/Users/cchoi/org/posts")
+        (name . "*pelican*")
+        (directory . "/Users/cchoi/Projects/pelican/devnull")))
+      ("Documentation"
+       (or
+        (mode . makefile-mode)
+        (mode . Info-mode)
+        (mode . help-mode)))
+      ("Org Files"
+       (and
+        (directory . "/Users/cchoi/org")
+        (mode . org-mode)))
+      ("cclisp"
+       (directory . "cclisp")))
+     ("Casual"
+      ("Documentation"
+       (or
+        (mode . makefile-mode)
+        (mode . Info-mode)
+        (mode . help-mode)))
+      ("Casual Suite"
+       (directory . "casual-suite"))
+      ("Casual Lib"
+       (directory . "casual-lib"))
+      ("Casual Avy"
+       (directory . "casual-avy"))
+      ("Casual Calc"
+       (directory . "casual-calc"))
+      ("Casual Dired"
+       (directory . "casual-dired"))
+      ("Casual IBuffer"
+       (directory . "casual-ibuffer"))
+      ("Casual Info"
+       (directory . "casual-info"))
+      ("Casual I-Search"
+       (directory . "casual-isearch"))
+      ("cclisp"
+       (directory . "cclisp"))
+      ("Org Files"
+       (and
+        (directory . "/Users/cchoi/org")
+        (mode . org-mode))))))
+ '(ibuffer-saved-filters
+   '(("programming"
+      (or
+       (derived-mode . prog-mode)
+       (mode . ess-mode)
+       (mode . compilation-mode)))
+     ("text document"
+      (and
+       (derived-mode . text-mode)
+       (not
+        (starred-name))))
+     ("TeX"
+      (or
+       (derived-mode . tex-mode)
+       (mode . latex-mode)
+       (mode . context-mode)
+       (mode . ams-tex-mode)
+       (mode . bibtex-mode)))
+     ("web"
+      (or
+       (derived-mode . sgml-mode)
+       (derived-mode . css-mode)
+       (mode . javascript-mode)
+       (mode . js2-mode)
+       (mode . scss-mode)
+       (derived-mode . haml-mode)
+       (mode . sass-mode)))
+     ("gnus"
+      (or
+       (mode . message-mode)
+       (mode . mail-mode)
+       (mode . gnus-group-mode)
+       (mode . gnus-summary-mode)
+       (mode . gnus-article-mode)))))
  '(ignored-local-variable-values
    '((vc-prepare-patches-separately)
      (diff-add-log-use-relative-names . t)
@@ -399,7 +482,7 @@
    '(("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa" . "http://melpa.org/packages/")))
  '(package-selected-packages
-   '(casual-avy casual-dired casual cc-isearch-menu org-ql flycheck-package package-lint iedit doct scpaste snow paredit orgtbl-aggregate transpose-frame diff-hl keycast edit-indirect ox-trac google-translate org wgrep js2-mode rainbow-mode use-package bind-key reveal-in-folder elfeed ob-swiftui ob-swift csv-mode company-restclient visual-regexp-steroids visual-regexp citar math-symbol-lists helm-bibtex ox-gist org-ref org-re-reveal webpaste company-org-block company eglot gnuplot ob-restclient restclient ox-slack good-scroll svg-clock disk-usage expand-region helm-pass password-store which-key org-outline-numbering org-superstar osx-dictionary spotlight ebib auto-complete plantuml-mode tj3-mode ledger-mode yasnippet-snippets yasnippet htmlize calfw kanban fireplace treemacs neotree smart-mode-line-powerline-theme pbcopy ox-jira ox-gfm helm-swoop helm ztree yaml-mode swift-mode sr-speedbar solarized-theme python-mode pkg-info markdown-mode magit json-mode graphviz-dot-mode google-this go-mode autopair))
+   '(symbol-overlay org-ql flycheck-package package-lint iedit doct scpaste snow paredit orgtbl-aggregate transpose-frame diff-hl keycast edit-indirect ox-trac google-translate org wgrep js2-mode rainbow-mode use-package bind-key reveal-in-folder elfeed ob-swiftui ob-swift csv-mode company-restclient visual-regexp-steroids visual-regexp citar math-symbol-lists helm-bibtex ox-gist org-ref org-re-reveal webpaste company-org-block company eglot gnuplot ob-restclient restclient ox-slack good-scroll svg-clock disk-usage expand-region helm-pass password-store which-key org-outline-numbering org-superstar osx-dictionary spotlight ebib auto-complete plantuml-mode tj3-mode ledger-mode yasnippet-snippets yasnippet htmlize calfw kanban fireplace treemacs neotree smart-mode-line-powerline-theme pbcopy ox-jira ox-gfm helm-swoop helm ztree yaml-mode swift-mode sr-speedbar solarized-theme python-mode pkg-info markdown-mode magit json-mode graphviz-dot-mode google-this go-mode autopair))
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
  '(plantuml-indent-level 4)
@@ -419,6 +502,7 @@
               (require 'package-recipe-mode nil t)))
            (package-recipe-mode))
      (vc-git-annotate-switches . "-w")))
+ '(save-place-mode t)
  '(savehist-mode t)
  '(scroll-bar-mode nil)
  '(scroll-step 4)

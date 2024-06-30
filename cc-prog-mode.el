@@ -33,6 +33,9 @@
 (require 'hl-line)
 (require 'gud)
 (require 'flyspell)
+(require 'compile)
+(require 'imenu)
+(require 'cc-main-tmenu)
 
 ;;; Code:
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -44,10 +47,14 @@
 (add-hook 'prog-mode-hook 'hl-line-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (add-hook 'prog-mode-hook #'cc/save-hook-delete-trailing-whitespace)
+(add-hook 'prog-mode-hook #'imenu-add-menubar-index)
 
 (define-key prog-mode-map [remap indent-for-tab-command]
   #'company-indent-or-complete-common)
 (keymap-set prog-mode-map "C-a" #'back-to-indentation)
+(keymap-set prog-mode-map "C-6" #'imenu)
+
+(keymap-set compilation-mode-map "C-o" #'cc/main-tmenu)
 
 ;; GUD - mode preferences
 ;; (setq gud-mode-hook
@@ -58,6 +65,9 @@
 
 ;; # Makefile
 (keymap-set makefile-mode-map "<f9>" #'compile)
+(keymap-set makefile-mode-map "C-6" #'imenu)
+
+(add-hook 'makefile-mode-hook #'imenu-add-menubar-index)
 
 (provide 'cc-prog-mode)
 ;;; cc-prog-mode.el ends here
