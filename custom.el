@@ -208,7 +208,6 @@
  '(calendar-location-name '(format "%s, San Francisco" "Inner Sunset"))
  '(calendar-longitude -122.4753)
  '(case-fold-search t)
- '(casual-avy-imenu-modes '(prog-mode makefile-mode markdown-mode))
  '(casual-lib-use-unicode t)
  '(cc-dired-listing-switches
    '("--human-readable" "--group-directories-first" "--time-style=long-iso"))
@@ -306,7 +305,7 @@
        (or
         (directory . "/Users/cchoi/org/posts")
         (name . "*pelican*")
-        (directory . "/Users/cchoi/Projects/pelican/devnull")))
+        (directory . "devnull")))
       ("Documentation"
        (or
         (mode . makefile-mode)
@@ -342,6 +341,8 @@
        (directory . "casual-isearch"))
       ("cclisp"
        (directory . "cclisp"))
+      ("Desktop"
+       (directory . "/Users/cchoi/Desktop"))
       ("Org Files"
        (and
         (directory . "/Users/cchoi/org")

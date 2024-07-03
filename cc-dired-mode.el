@@ -48,6 +48,7 @@
 (keymap-set dired-mode-map "M-p" #'dired-prev-dirline)
 (keymap-set dired-mode-map "]" #'dired-next-subdir)
 (keymap-set dired-mode-map "[" #'dired-prev-subdir)
+(keymap-set dired-mode-map "M-j" #'dired-goto-subdir)
 
 ;; Added to be consistent with IBuffer
 (keymap-set dired-mode-map "<backtab>" #'dired-prev-subdir)

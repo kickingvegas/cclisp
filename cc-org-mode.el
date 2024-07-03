@@ -36,6 +36,7 @@
 (require 'hl-line)
 (require 'prog-mode)
 (require 'cc-org-smart-quotes)
+(require 'imenu)
 
 (if (eq system-type 'darwin)
     (require 'ob-swiftui))
@@ -220,13 +221,17 @@ which is done with `org-ctrl-c-ctrl-c'."
 
 (setq org-log-done 'time)
 
-(add-hook 'org-mode-hook 'org-superstar-mode)
-(add-hook 'org-mode-hook 'variable-pitch-mode)
-(add-hook 'org-mode-hook 'org-indent-mode)
-(add-hook 'org-mode-hook 'org-clock-persistence-insinuate)
+(add-hook 'org-mode-hook #'org-superstar-mode)
+(add-hook 'org-mode-hook #'variable-pitch-mode)
+(add-hook 'org-mode-hook #'org-indent-mode)
+(add-hook 'org-mode-hook #'org-clock-persistence-insinuate)
 ;;(add-hook 'org-mode-hook #'cc/save-hook-delete-trailing-whitespace)
 (add-hook 'org-mode-hook (lambda ()
                            (cc/reconfig-org-smart-quotes-lang "en")))
+
+(setq org-imenu-depth 7)
+(add-hook 'org-mode-hook #'imenu-add-menubar-index)
+(add-hook 'org-mode-hook (lambda () (setq-local imenu-auto-rescan t)))
 
 (add-hook
  'org-mode-hook

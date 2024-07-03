@@ -47,6 +47,7 @@
 
 (add-hook 'markdown-mode-hook #'cc/save-hook-delete-trailing-whitespace)
 (add-hook 'markdown-mode-hook #'imenu-add-menubar-index)
+(add-hook 'markdown-mode-hook (lambda () (setq-local imenu-auto-rescan t)))
 
 (provide 'cc-markdown-mode)
 ;;; cc-markdown-mode.el ends here
