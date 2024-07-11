@@ -299,8 +299,40 @@
  '(hippie-expand-try-functions-list
    '(try-expand-dabbrev try-expand-line try-expand-list try-expand-dabbrev-all-buffers try-complete-file-name-partially try-complete-file-name try-expand-all-abbrevs try-expand-dabbrev-from-kill try-complete-lisp-symbol-partially try-complete-lisp-symbol))
  '(holiday-other-holidays '((holiday-fixed 6 19 "Juneteenth")))
+ '(ibuffer-deletion-char 10005)
+ '(ibuffer-locked-char 8861)
+ '(ibuffer-marked-char 10095)
+ '(ibuffer-modified-char 9998)
+ '(ibuffer-read-only-char 8856)
  '(ibuffer-saved-filter-groups
-   '(("Blog"
+   '(("melpa app"
+      ("melpa-app"
+       (directory . "melpa-app"))
+      ("Documentation"
+       (or
+        (mode . makefile-mode)
+        (mode . Info-mode)
+        (mode . help-mode)))
+      ("Org Files"
+       (saved . "Org Files"))
+      ("cclisp"
+       (directory . "cclisp"))
+      ("Elisp Packages"
+       (or
+        (directory . ".config/emacs/elpa")
+        (directory . "EmacsMac.app/Contents/Resources/lisp"))))
+     ("Org"
+      ("Documentation"
+       (saved . "Documentation"))
+      ("Org Files"
+       (saved . "Org Files"))
+      ("cclisp"
+       (directory . "cclisp"))
+      ("Elisp Packages"
+       (or
+        (directory . ".config/emacs/elpa")
+        (directory . "EmacsMac.app/Contents/Resources/lisp"))))
+     ("Blog"
       ("devnull Blog"
        (or
         (directory . "/Users/cchoi/org/posts")
@@ -316,13 +348,12 @@
         (directory . "/Users/cchoi/org")
         (mode . org-mode)))
       ("cclisp"
-       (directory . "cclisp")))
-     ("Casual"
-      ("Documentation"
+       (directory . "cclisp"))
+      ("Elisp Packages"
        (or
-        (mode . makefile-mode)
-        (mode . Info-mode)
-        (mode . help-mode)))
+        (directory . ".config/emacs/elpa")
+        (directory . "EmacsMac.app/Contents/Resources/lisp"))))
+     ("Casual"
       ("Casual Suite"
        (directory . "casual-suite"))
       ("Casual Lib"
@@ -339,6 +370,11 @@
        (directory . "casual-info"))
       ("Casual I-Search"
        (directory . "casual-isearch"))
+      ("Documentation"
+       (or
+        (mode . makefile-mode)
+        (mode . Info-mode)
+        (mode . help-mode)))
       ("cclisp"
        (directory . "cclisp"))
       ("Desktop"
@@ -346,9 +382,48 @@
       ("Org Files"
        (and
         (directory . "/Users/cchoi/org")
-        (mode . org-mode))))))
+        (mode . org-mode)))
+      ("cclisp"
+       (directory . "cclisp"))
+      ("Elisp Packages"
+       (or
+        (directory . ".config/emacs/elpa")
+        (directory . "EmacsMac.app/Contents/Resources/lisp"))))))
  '(ibuffer-saved-filters
-   '(("programming"
+   '(("Documentation"
+      (or
+       (mode . makefile-mode)
+       (mode . Info-mode)
+       (mode . help-mode)))
+     ("Casual Suite"
+      (directory . "casual-suite"))
+     ("Casual Lib"
+      (directory . "casual-lib"))
+     ("Casual Avy"
+      (directory . "casual-avy"))
+     ("Casual Calc"
+      (directory . "casual-calc"))
+     ("Casual Dired"
+      (directory . "casual-dired"))
+     ("Casual IBuffer"
+      (directory . "casual-ibuffer"))
+     ("Casual Info"
+      (directory . "casual-info"))
+     ("Casual I-Search"
+      (directory . "casual-isearch"))
+     ("cclisp"
+      (directory . "cclisp"))
+     ("Desktop"
+      (directory . "/Users/cchoi/Desktop"))
+     ("Org Files"
+      (and
+       (directory . "/Users/cchoi/org")
+       (mode . org-mode)))
+     ("Elisp Packages"
+      (or
+       (directory . ".config/emacs/elpa")
+       (directory . "EmacsMac.app/Contents/Resources/lisp")))
+     ("programming"
       (or
        (derived-mode . prog-mode)
        (mode . ess-mode)
