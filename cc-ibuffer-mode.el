@@ -43,6 +43,7 @@
 (keymap-set ibuffer-mode-map "}" #'ibuffer-forward-next-marked)
 (keymap-set ibuffer-mode-map "[" #'ibuffer-backward-filter-group)
 (keymap-set ibuffer-mode-map "]" #'ibuffer-forward-filter-group)
+(keymap-set ibuffer-mode-map "$" #'ibuffer-toggle-filter-group)
 
 (provide 'cc-ibuffer-mode)
 ;;; cc-ibuffer-mode.el ends here
