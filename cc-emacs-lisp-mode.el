@@ -41,6 +41,7 @@
 (keymap-set emacs-lisp-mode-map "M-p" #'cc/browse-backward-sexp)
 
 (transient-define-prefix cc/edebug-tmenu ()
+  :refresh-suffixes t
   ["Debug"
    :class transient-row
    :if edebug-mode-p
@@ -48,15 +49,15 @@
    ("f" "→" edebug-forward-sexp :transient nil)
    ("i" "→(" edebug-step-in :transient nil)
    ("o" "→)" edebug-step-out :transient nil)
-   ("e" "❯…" edebug-eval-expression)
-   ("r" "∴" edebug-previous-result :transient nil)
-   ("d" "≣" edebug-pop-to-backtrace :transient nil)]
+   ("e" "❯…" edebug-eval-expression :transient t)
+   ("r" "∴" edebug-previous-result :transient t)
+   ("d" "≣" edebug-pop-to-backtrace :transient t)]
 
   ["Actions"
    :class transient-row
    ("I" "🔬 Instrument" cc/instrument-function :transient nil)
-   ("R" "▶️ Run" eval-defun :transient nil)
-   ("E" "🔎 Watch List" edebug-visit-eval-list :if edebug-mode-p)
+   ("R" "▶️ " eval-defun :transient nil)
+   ("E" "🔎 Watch List" edebug-visit-eval-list :if edebug-mode-p :transient t)
    ("S" "🛑 Stop" edebug-stop :transient nil)]
 
   ["Navigate"
@@ -76,10 +77,9 @@
     ("n" "Next" edebug-next-mode :transient nil)
     ("c" "Continue" edebug-continue-mode :transient nil)
     ("t" "Trace" edebug-trace-mode :transient nil)
-
     ("T" "Trace Fast" edebug-Trace-fast-mode :transient nil)
     ("G" "Go Nonstop" edebug-Go-nonstop-mode :transient nil)
-    ("m" "Set Mode…" edebug-set-initial-mode :transient t)]
+    ("m" "Set Mode…" edebug-set-initial-mode :transient nil)]
 
    ["Breakpoint"
     :pad-keys t
@@ -121,6 +121,10 @@
   (interactive)
   (setq current-prefix-arg '(4))
   (call-interactively #'eval-defun))
+
+;; (add-hook 'edebug-setup-hook (lambda ()
+;;                                (call-interactively #'cc/edebug-tmenu)))
+
 
 ;;(keymap-set edebug-mode-map "C-<f9>" #'cc/edebug-tmenu)
 (keymap-set emacs-lisp-mode-map "<f8>" #'cc/edebug-tmenu)
