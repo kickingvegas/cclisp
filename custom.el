@@ -300,7 +300,7 @@
    '(try-expand-dabbrev try-expand-line try-expand-list try-expand-dabbrev-all-buffers try-complete-file-name-partially try-complete-file-name try-expand-all-abbrevs try-expand-dabbrev-from-kill try-complete-lisp-symbol-partially try-complete-lisp-symbol))
  '(holiday-other-holidays '((holiday-fixed 6 19 "Juneteenth")))
  '(ibuffer-deletion-char 10005)
- '(ibuffer-locked-char 8861)
+ '(ibuffer-locked-char 119923)
  '(ibuffer-marked-char 10095)
  '(ibuffer-modified-char 9998)
  '(ibuffer-read-only-char 8856)
