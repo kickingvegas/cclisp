@@ -351,9 +351,7 @@
      ("Blog"
       ("devnull Blog"
        (or
-        (directory concat
-                   (getenv "HOME")
-                   "/org/posts")
+        (directory . "/Users/cchoi/org/posts")
         (name . "*pelican*")
         (directory . "devnull")))
       ("Documentation"
@@ -363,9 +361,7 @@
         (mode . help-mode)))
       ("Org Files"
        (and
-        (directory concat
-                   (getenv "HOME")
-                   "/org")
+        (directory . "/Users/cchoi/org")
         (mode . org-mode)))
       ("cclisp"
        (directory . "cclisp"))
@@ -374,6 +370,8 @@
         (directory . ".config/emacs/elpa")
         (directory . "EmacsMac.app/Contents/Resources/lisp"))))
      ("Casual"
+      ("Casual RE Builder"
+       (directory . "casual-re-builder"))
       ("Casual Suite"
        (directory . "casual-suite"))
       ("Casual Lib"
@@ -398,14 +396,10 @@
       ("cclisp"
        (directory . "cclisp"))
       ("Desktop"
-       (directory concat
-                  (getenv "HOME")
-                  "/Desktop"))
+       (directory . "/Users/cchoi/Desktop"))
       ("Org Files"
        (and
-        (directory concat
-                   (getenv "HOME")
-                   "/org")
+        (directory . "/Users/cchoi/org")
         (mode . org-mode)))
       ("cclisp"
        (directory . "cclisp"))
