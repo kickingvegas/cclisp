@@ -45,7 +45,7 @@
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
   (interactive)
-  (insert (format-time-string "*** %a %h %d %H:%M:%S %Z %Y")))
+  (insert (format-time-string "** %a %h %d %H:%M:%S %Z %Y")))
 
 (defun datestamp2 ()
   "Datestamp string using format used by date utility."

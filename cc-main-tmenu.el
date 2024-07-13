@@ -106,9 +106,11 @@
 
    ["Edit"
     ;; TODO: test buffer-read-only
+    :pad-keys t
     ("i" "Insert Character…" insert-char :transient nil)
     ("p" "Fill Paragraph" fill-paragraph :transient nil)
     ("l" "Join line" join-line :transient nil)
+    ("C-o" "Newline" newline :transient nil)
     ("h" "Toggle Symbol Highlight" symbol-overlay-put)
     ("I" "Korean Input"
      (lambda () (interactive)(set-input-method 'korean-hangul))

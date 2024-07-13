@@ -317,6 +317,22 @@
        (saved . "Org Files"))
       ("cclisp"
        (directory . "cclisp"))
+      ("Casual Suite"
+       (directory . "casual-suite"))
+      ("Casual Lib"
+       (directory . "casual-lib"))
+      ("Casual Avy"
+       (directory . "casual-avy"))
+      ("Casual Calc"
+       (directory . "casual-calc"))
+      ("Casual Dired"
+       (directory . "casual-dired"))
+      ("Casual IBuffer"
+       (directory . "casual-ibuffer"))
+      ("Casual Info"
+       (directory . "casual-info"))
+      ("Casual I-Search"
+       (directory . "casual-isearch"))
       ("Elisp Packages"
        (or
         (directory . ".config/emacs/elpa")
@@ -335,7 +351,9 @@
      ("Blog"
       ("devnull Blog"
        (or
-        (directory . "/Users/cchoi/org/posts")
+        (directory concat
+                   (getenv "HOME")
+                   "/org/posts")
         (name . "*pelican*")
         (directory . "devnull")))
       ("Documentation"
@@ -345,7 +363,9 @@
         (mode . help-mode)))
       ("Org Files"
        (and
-        (directory . "/Users/cchoi/org")
+        (directory concat
+                   (getenv "HOME")
+                   "/org")
         (mode . org-mode)))
       ("cclisp"
        (directory . "cclisp"))
@@ -378,10 +398,14 @@
       ("cclisp"
        (directory . "cclisp"))
       ("Desktop"
-       (directory . "/Users/cchoi/Desktop"))
+       (directory concat
+                  (getenv "HOME")
+                  "/Desktop"))
       ("Org Files"
        (and
-        (directory . "/Users/cchoi/org")
+        (directory concat
+                   (getenv "HOME")
+                   "/org")
         (mode . org-mode)))
       ("cclisp"
        (directory . "cclisp"))

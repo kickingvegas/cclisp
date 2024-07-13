@@ -137,8 +137,8 @@
 (keymap-global-set "A-<down>" #'scroll-one-line-up)
 (keymap-global-set "C-<kp-add>" #'enlarge-window)
 (keymap-global-set "C-<kp-subtract>" #'shrink-window)
-(keymap-global-set "C-M-<kp-add>" #'enlarge-window-horizontally)
-(keymap-global-set "C-M-<kp-subtract>" #'shrink-window-horizontally)
+(keymap-global-set "M-<kp-add>" #'enlarge-window-horizontally)
+(keymap-global-set "M-<kp-subtract>" #'shrink-window-horizontally)
 (keymap-global-set "C-<kp-enter>" #'other-window)
 (keymap-global-set "M-<kp-enter>" #'switch-to-buffer)
 (keymap-global-set "C-<return>" #'other-window)
@@ -158,13 +158,13 @@
 (global-set-key [vertical-scroll-bar down-mouse-1] #'scroll-bar-drag)
 
 ;; Window Navigation
-
 (keymap-global-set "C-<kp-8>" #'windmove-up)
 (keymap-global-set "C-<kp-5>" #'windmove-down)
 (keymap-global-set "C-<kp-2>" #'windmove-down)
 (keymap-global-set "C-<kp-4>" #'windmove-left)
 (keymap-global-set "C-<kp-6>" #'windmove-right)
 (keymap-global-set "C-<kp-0>" #'ace-select-window)
+(keymap-global-set "C-<kp-divide>" #'transpose-frame)
 
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here

@@ -54,35 +54,52 @@ regexp interactively.
 
 * References
 - Info node `(elisp) Regular Expressions'"
-  ["Re-Builder"
+  :refresh-suffixes t
+  ["RE-Builder"
+   :description (lambda () (format "RE-Builder (%s)" reb-target-buffer))
    ["Copy Regexp"
-    ("c" "For interactive" cc/reb-copy)
-    ("C" "For code" reb-copy)]
+    ("w" "Interactive" cc/reb-copy
+     :if-not (lambda () (derived-mode-p 'reb-lisp-mode))
+     :transient t)
+    ("c" "Code" reb-copy :transient t)]
 
    ["Match"
     ("p" "Previous" reb-prev-match :transient t)
     ("n" "Next" reb-next-match :transient t)]
 
-   ["Settings"
-    ("i" "Change syntax" reb-change-syntax)
-    ("b" "Change target buffer" reb-change-target-buffer)
-    ("t" "Toggle case" reb-toggle-case)]
+   ["Change"
+    ("x" "Syntax" reb-change-syntax
+     :description (lambda () (format "Syntax (%s)" reb-re-syntax))
+     :transient t)
+    ("b" "Target buffer" reb-change-target-buffer
+     :transient t)
+    ("t" "Case sensitivity" reb-toggle-case :transient t)]
 
-   [""
-    ("S" "Subexp mode" reb-enter-subexp-mode)
-    ("f" "Force update" reb-force-update)]]
+   ["Display"
+    ("s" "Subexp mode" reb-enter-subexp-mode)
+    ("f" "Force update" reb-force-update :transient t)]]
 
   [:class transient-row
-          ("s" "ℹ️ Special Characters" cc/reb-info-regexp-special)
-          ("Q" "Quit Re-Builder" reb-quit)
+          (casual-lib-quit-one)
+          ("i" "ⓘ Regexp Syntax" cc/reb-info-regexp
+           :if (lambda () (derived-mode-p 'reb-mode)))
+          ("i" "ⓘ Rx Notation" cc/rx-info-regexp
+           :if (lambda () (derived-mode-p 'reb-lisp-mode)))
+          ("q" "Quit" reb-quit)
           (casual-lib-quit-all)])
 
-(defun cc/reb-info-regexp-special ()
+(defun cc/reb-info-regexp ()
   "Get Info for special characters in regular expressions."
   (interactive)
-  (info "(elisp) Regexp Special"))
+  (info "(elisp) Syntax of Regexps"))
+
+(defun cc/rx-info-regexp ()
+  "Get Info for special characters in regular expressions."
+  (interactive)
+  (info "(elisp) Rx Notation"))
 
 (keymap-set reb-mode-map "C-o" #'cc/reb-tmenu)
+(keymap-set reb-lisp-mode-map "C-o" #'cc/reb-tmenu)
 
 (provide 'cc-re-builder)
 ;;; cc-re-builder.el ends here
