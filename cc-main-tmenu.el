@@ -82,7 +82,7 @@
   ["Menu"
    :class transient-row
    ("o" "Open›" cc/open-tmenu :transient nil)
-   ;; TODO: test buffer-read-only
+      ;; TODO: test buffer-read-only
    ("e" "Edit›" cc/edit-tmenu :transient nil)
    ("w" "Window›" cc/windows-tmenu :transient nil)
    ("B" "Bookmarks›" cc/bookmarks-tmenu :transient nil)
@@ -90,10 +90,12 @@
    ("T" "Tools›" cc/tools-tmenu :transient nil)]
 
   [["Quick"
+    :pad-keys t
+    ("f" "Open file…" find-file :transient nil)
     ("J" "Jump to Bookmark…" bookmark-jump :transient nil)
     ("b" "List Buffers" ibuffer :transient nil)
     ("R" "Recent Files" recentf-open-files :transient nil)
-    ("M-j" "Journal Files" cc/select-journal-file :transient nil)
+    ("j" "Journal Files" cc/select-journal-file :transient nil)
     ("a" "Org Agenda" cc/org-agenda-all-todos :transient nil)
     ("u" "URLs…" cc/open-url :if display-graphic-p :transient nil)]
 
@@ -192,8 +194,8 @@
 
 (transient-define-prefix cc/edit-transpose-tmenu ()
   ["Transpose"
-   [("c" "Characters"  transpose-chars :transient nil)
-    ("w" "Words"  transpose-words :transient nil)
+   [("c" "Characters" transpose-chars :transient nil)
+    ("w" "Words" transpose-words :transient nil)
     ("l" "Lines" transpose-lines :transient nil)
     ("s" "Sentences" transpose-sentences :transient nil)]
    [("p" "Paragraphs" transpose-paragraphs :transient nil)
