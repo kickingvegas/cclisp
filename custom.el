@@ -202,6 +202,7 @@
  '(auto-insert-directory "~/Templates")
  '(auto-insert-mode t)
  '(bibtex-completion-bibliography '("~/org/bib/references.bib"))
+ '(bookmark-automatically-show-annotations nil)
  '(bookmark-save-flag 1)
  '(calc-kill-line-numbering nil)
  '(calendar-latitude 37.7643)
@@ -317,6 +318,10 @@
        (saved . "Org Files"))
       ("cclisp"
        (directory . "cclisp"))
+      ("Casual Bookmarks"
+       (directory . "casual-bookmarks"))
+      ("Casual RE Builder"
+       (directory . "casual-re-builder"))
       ("Casual Suite"
        (directory . "casual-suite"))
       ("Casual Lib"
@@ -370,6 +375,8 @@
         (directory . ".config/emacs/elpa")
         (directory . "EmacsMac.app/Contents/Resources/lisp"))))
      ("Casual"
+      ("Casual Bookmarks"
+       (directory . "casual-bookmarks"))
       ("Casual RE Builder"
        (directory . "casual-re-builder"))
       ("Casual Suite"
