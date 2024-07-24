@@ -65,6 +65,7 @@
 (require 'cc-emacs-lisp-mode)
 (require 'cc-text-mode)
 (require 'cc-org-mode)
+(require 'cc-org-agenda)
 (require 'cc-markdown-mode)
 (require 'cc-objc-mode)
 (require 'cc-nxml-mode)

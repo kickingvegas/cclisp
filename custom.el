@@ -576,6 +576,32 @@
  '(org-superstar-headline-bullets-list '(10687 10070 10040 10047))
  '(org-superstar-leading-bullet 32)
  '(org-support-shift-select t)
+ '(org-todo-keyword-faces
+   '(("TODO" :background "pale green" :foreground "dark green" :box
+      (:line-width
+       (1 . 1)
+       :color "grey" :style "flat-button")
+      :inverse-video t)
+     ("IN_PROGRESS" :background "black" :foreground "light green" :box
+      (:line-width
+       (1 . 1)
+       :color "grey" :style "flat-button")
+      :inverse-video t)
+     ("WAITING" :background "navajo white" :foreground "dark goldenrod" :box
+      (:line-width
+       (1 . 1)
+       :color "grey" :style "flat-button")
+      :inverse-video t)
+     ("DONE" :background "gray52" :foreground "gray15" :box
+      (:line-width
+       (1 . 1)
+       :color "grey" :style "flat-button")
+      :inverse-video t)
+     ("CANCELED" :background "DeepPink1" :foreground "gray15" :box
+      (:line-width
+       (1 . 1)
+       :color "grey" :style "flat-button")
+      :inverse-video t)))
  '(org-use-speed-commands t)
  '(package-archives
    '(("gnu" . "http://elpa.gnu.org/packages/")

@@ -208,12 +208,12 @@ which is done with `org-ctrl-c-ctrl-c'."
            '((sequence "TODO(t)" "IN_PROGRESS(i)" "WAITING(w)" "|" "DONE(d)")
              (sequence "|" "CANCELED(c)")))
 
-(setq org-todo-keyword-faces
-      '(("TODO" . "red")
-        ("IN_PROGRESS" . "dark orange")
-        ("WAITING" . "dark orange")
-        ("DONE" . "sea green")
-        ("CANCELED" . (:foreground "blue" :weight bold))))
+;; (setq org-todo-keyword-faces
+;;       '(("TODO" . "red")
+;;         ("IN_PROGRESS" . "dark orange")
+;;         ("WAITING" . "dark orange")
+;;         ("DONE" . "sea green")
+;;         ("CANCELED" . (:foreground "blue" :weight bold))))
 
 (setq org-refile-targets
       '((nil :maxlevel . 3)
