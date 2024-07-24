@@ -56,9 +56,9 @@
   ["Actions"
    :class transient-row
    ("I" "🔬 Instrument" cc/instrument-function :transient nil)
-   ("R" "▶️ " eval-defun :transient nil)
-   ("E" "🔎 Watch List" edebug-visit-eval-list :if edebug-mode-p :transient t)
-   ("S" "🛑 Stop" edebug-stop :transient nil)]
+   ("R" "▶️ Eval/Run" eval-defun :transient nil)
+   ("E" "🔎 Watch List" edebug-visit-eval-list :if edebug-mode-p :transient nil)
+   ("S" "⏹️ Stop" edebug-stop :if edebug-mode-p :transient nil)]
 
   ["Navigate"
    :class transient-row
@@ -125,6 +125,30 @@
 ;; (add-hook 'edebug-setup-hook (lambda ()
 ;;                                (call-interactively #'cc/edebug-tmenu)))
 
+;;(advice-add #'edebug-set-mode :after #'cc/edebug-set-mode)
+;;(advice-remove #'edebug-set-mode #'cc/edebug-set-mode)
+
+                                        ;(advice-remove #'edebug-default-enter #'cc/edebug-default-enter)
+
+
+;; (advice-add #'edebug-print-trace-after :after #'cc/edebug-print-trace-after)
+;; (advice-remove #'edebug-print-trace-after #'cc/edebug-print-trace-after)
+
+;; (defun cc/edebug-print-trace-after (msg)
+;;   (call-interactively #'cc/edebug-tmenu))
+
+;; (defun cc/edebug-set-mode (mode shortmsg msg)
+;;   (call-interactively #'cc/edebug-tmenu))
+
+;; (defun cc/edebug-slow-before (stuff)
+;;   "Advise default enter"
+;;   (call-interactively #'cc/edebug-tmenu))
+
+;; (defun cc/edebug-default-enter (function args body)
+;;   "Advise default enter"
+;;   (call-interactively #'cc/edebug-tmenu))
+
+;; (advice-add #'edebug-default-enter :after #'cc/edebug-default-enter)
 
 ;;(keymap-set edebug-mode-map "C-<f9>" #'cc/edebug-tmenu)
 (keymap-set emacs-lisp-mode-map "<f8>" #'cc/edebug-tmenu)
