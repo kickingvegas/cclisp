@@ -581,27 +581,27 @@
       (:line-width
        (1 . 1)
        :color "grey" :style "flat-button")
-      :inverse-video t)
+      :inverse-video t :height 0.8)
      ("IN_PROGRESS" :background "black" :foreground "light green" :box
       (:line-width
        (1 . 1)
        :color "grey" :style "flat-button")
-      :inverse-video t)
+      :inverse-video t :height 0.8)
      ("WAITING" :background "navajo white" :foreground "dark goldenrod" :box
       (:line-width
        (1 . 1)
        :color "grey" :style "flat-button")
-      :inverse-video t)
+      :inverse-video t :height 0.8)
      ("DONE" :background "gray52" :foreground "gray15" :box
       (:line-width
        (1 . 1)
        :color "grey" :style "flat-button")
-      :inverse-video t)
+      :inverse-video t :height 0.8)
      ("CANCELED" :background "DeepPink1" :foreground "gray15" :box
       (:line-width
        (1 . 1)
        :color "grey" :style "flat-button")
-      :inverse-video t)))
+      :inverse-video t :height 0.8)))
  '(org-use-speed-commands t)
  '(package-archives
    '(("gnu" . "http://elpa.gnu.org/packages/")
