@@ -34,6 +34,7 @@
                     "Tools")
 
 (keymap-set bookmark-bmenu-mode-map "C-o" #'casual-bookmarks-tmenu)
+(keymap-set bookmark-bmenu-mode-map "S" #'casual-bookmarks-sortby-tmenu)
 (keymap-set bookmark-bmenu-mode-map "J" #'bookmark-jump)
 
 (keymap-set bookmark-bmenu-mode-map "C-M-o" #'cc/main-tmenu)
