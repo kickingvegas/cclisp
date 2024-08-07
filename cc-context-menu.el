@@ -68,6 +68,12 @@ CLICK - event"
                                   :help "Restrict editing in this buffer \
 to the current region"]))
 
+            ((and (not (buffer-narrowed-p)) (derived-mode-p 'prog-mode))
+             (cc/context-menu-item-separator menu narrow-separator)
+             (easy-menu-add-item menu nil
+                                 ["Narrow to defun" narrow-to-defun
+                                  :help "Restrict editing in this buffer \
+to the current defun"]))
 
             ((and (not (buffer-narrowed-p)) (derived-mode-p 'org-mode))
              (cc/context-menu-item-separator menu narrow-separator)

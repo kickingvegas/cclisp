@@ -700,7 +700,16 @@ V is either nil or non-nil."
   (delete-other-windows))
 
 (defalias 'cc/convert-to-menu-testcase
-   (kmacro "C-a C-f c a s u a l t - a d d - t e s t c a s e SPC M-] C-o k SPC # ' C-d M-] SPC t e s t - v e c t o r s C-n C-a"))
+  (kmacro "C-a C-f c a s u a l t - a d d - t e s t c a s e SPC M-] C-o k SPC # ' C-d M-] SPC t e s t - v e c t o r s C-n C-a"))
+
+(defun cc/find-test-file ()
+  "Open test file in other window."
+  (interactive)
+  (let* ((filename (file-name-nondirectory (buffer-file-name)))
+         (test-name (concat "../tests/test-" filename)))
+    (find-file-other-window test-name)
+    (transpose-frame)))
+
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

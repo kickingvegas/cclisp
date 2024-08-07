@@ -327,17 +327,11 @@ SUFFIX - string appended to prefix
             (define-key org-agenda-mode-map
               [(double-mouse-1)] 'org-agenda-goto-mouse)))
 
-(defun cc/org-agenda-goto-now ()
-  "Redo agenda view and move point to current time '← now'."
-  (interactive)
-  (org-agenda-redo)
-  (org-agenda-goto-today)
-  (search-forward " now "))
 
 (keymap-set org-agenda-mode-map "<f1>" #'org-save-all-org-buffers)
 (keymap-set org-agenda-mode-map "M-p" #'org-agenda-previous-date-line)
 (keymap-set org-agenda-mode-map "M-n" #'org-agenda-next-date-line)
-(keymap-set org-agenda-mode-map "." #'cc/org-agenda-goto-now)
+(keymap-set org-agenda-mode-map "." #'casual-agenda-goto-now)
 
 (org-babel-do-load-languages
  'org-babel-load-languages

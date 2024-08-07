@@ -151,7 +151,8 @@
   ["Edit"
    [("m" "Mark›" cc/edit-mark-tmenu :transient nil)
     ("c" "Copy›" cc/edit-copy-tmenu :transient nil)
-    ("k" "Kill›" cc/edit-kill-tmenu :transient nil)]
+    ("k" "Kill›" cc/edit-kill-tmenu :transient nil)
+    ("D" "Duplicate" duplicate-dwim :transient t)]
 
    [("t" "Transpose›" cc/edit-transpose-tmenu :transient nil)
     ("v" "Move›" cc/edit-move-text-tmenu :transient nil)
@@ -163,7 +164,9 @@
 
    [("f" "Fill Paragraph" fill-paragraph :transient nil)
     ("R" "Rectangle›" cc/rectangle-tmenu :transient nil)]]
-  [(casual-lib-quit-all)])
+  [:class transient-row
+   (casual-lib-quit-one)
+   (casual-lib-quit-all)])
 
 (transient-define-prefix cc/edit-mark-tmenu ()
   ["Mark"

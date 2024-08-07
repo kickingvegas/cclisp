@@ -23,10 +23,17 @@
 ;;
 
 ;;; Code:
-(require 'casual-re-builder)
 
-(keymap-set reb-mode-map "C-o" #'casual-re-builder-tmenu)
-(keymap-set reb-lisp-mode-map "C-o" #'casual-re-builder-tmenu)
+(use-package re-builder
+  :defer t)
+
+(use-package casual-re-builder
+  :ensure nil
+  :bind (:map
+         reb-mode-map ("C-o" . casual-re-builder-tmenu)
+         :map
+         reb-lisp-mode-map ("C-o" . casual-re-builder-tmenu))
+  :after (re-builder))
 
 (provide 'cc-re-builder)
 ;;; cc-re-builder.el ends here

@@ -24,20 +24,27 @@
 
 ;;; Code:
 (require 'casual-bookmarks)
-(require 'cc-main-tmenu)
-(require 'hl-line)
-
-(add-hook 'bookmark-bmenu-mode-hook #'hl-line-mode)
 
 (easy-menu-add-item global-map '(menu-bar)
                     casual-bookmarks-main-menu
                     "Tools")
 
-(keymap-set bookmark-bmenu-mode-map "C-o" #'casual-bookmarks-tmenu)
-(keymap-set bookmark-bmenu-mode-map "S" #'casual-bookmarks-sortby-tmenu)
-(keymap-set bookmark-bmenu-mode-map "J" #'bookmark-jump)
+(use-package bookmark
+  :ensure nil
+  :defer t)
 
-(keymap-set bookmark-bmenu-mode-map "C-M-o" #'cc/main-tmenu)
+(use-package cc-main-tmenu
+  :ensure nil
+  :defer t)
+
+(use-package casual-bookmarks
+  :ensure nil
+  :bind (:map bookmark-bmenu-mode-map
+              ("C-o" . casual-bookmarks-tmenu)
+              ("S" . casual-bookmarks-sortby-tmenu)
+              ("J" . bookmark-jump)
+              ("C-M-o" . cc/main-menu))
+  :after (bookmark cc-main-tmenu))
 
 (provide 'cc-bookmarks-bmenu-mode)
 ;;; cc-bookmarks-bmenu-mode.el ends here
