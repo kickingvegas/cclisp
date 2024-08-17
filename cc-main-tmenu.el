@@ -332,7 +332,7 @@
     ("c" "Calc" calc :transient nil)
     ("W" "Weather" weather :transient nil)
     ("r" "RE-Builder" re-builder :transient nil)
-    ("w" "Word Count" count-words :transient nil)
+    ("w" "Word Count" (lambda () (interactive) (call-interactively #'count-words)) :transient nil)
     ("C" "World Clock" world-clock :transient nil)
     ("S" "Sunrise/Sunset" sunrise-sunset :transient nil)]
 
