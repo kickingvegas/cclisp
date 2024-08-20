@@ -59,6 +59,14 @@ CLICK - event"
                                   ibuffer
                                   :help "List all buffers"])
 
+    (easy-menu-add-item menu nil ["Previous Buffer"
+                                  previous-buffer
+                                  :help "Go to previous buffer"])
+
+    (easy-menu-add-item menu nil ["Next Buffer"
+                                  next-buffer
+                                  :help "Go to next buffer"])
+
     (when buffer-file-name
       (cond ((use-region-p)
              (cc/context-menu-item-separator menu narrow-separator)

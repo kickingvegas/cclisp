@@ -551,6 +551,8 @@
  '(org-latex-pdf-process
    '("%latex -interaction nonstopmode --shell-escape -output-directory %o %f" "%latex -interaction nonstopmode --shell-escape -output-directory %o %f" "%latex -interaction nonstopmode --shell-escape -output-directory %o %f"))
  '(org-latex-prefer-user-labels t)
+ '(org-log-done 'time)
+ '(org-log-state-notes-insert-after-drawers t)
  '(org-plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar")
  '(org-re-reveal-theme "moon")
  '(org-show-notification-handler 'cc/display-notification)
@@ -631,7 +633,7 @@
      (vc-git-annotate-switches . "-w")))
  '(save-place-mode t)
  '(savehist-mode t)
- '(scroll-bar-mode nil)
+ '(scroll-bar-mode t)
  '(scroll-step 4)
  '(sentence-end-double-space nil)
  '(set-mark-command-repeat-pop t)

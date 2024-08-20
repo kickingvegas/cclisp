@@ -219,7 +219,7 @@ which is done with `org-ctrl-c-ctrl-c'."
       '((nil :maxlevel . 3)
         (org-agenda-files :maxlevel . 3)))
 
-(setq org-log-done 'time)
+;;(setq org-log-done 'time)
 
 (add-hook 'org-mode-hook #'org-superstar-mode)
 (add-hook 'org-mode-hook #'variable-pitch-mode)

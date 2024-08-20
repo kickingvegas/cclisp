@@ -155,6 +155,7 @@
     ("D" "Duplicate" duplicate-dwim :transient t)]
 
    [("t" "Transpose›" cc/edit-transpose-tmenu :transient nil)
+    ("T" "Transform›" cc/transform-text-tmenu)
     ("v" "Move›" cc/edit-move-text-tmenu :transient nil)
     ("d" "Delete›" cc/edit-delete-space-tmenu :transient nil)]
 
@@ -378,6 +379,16 @@
     ("D" "Delete Leading Spaces" delete-whitespace-rectangle :inapt-if-not use-region-p :transient nil)]]
 
   [(casual-lib-quit-all)])
+
+(transient-define-prefix cc/transform-text-tmenu ()
+  ["Transform"
+   ("c" "Capitialize" capitalize-dwim :transient t)
+   ("l" "Make Lower Case" downcase-dwim :transient t)
+   ("u" "Make Upper Case" upcase-dwim :transient t)]
+
+  [:class transient-row
+   (casual-lib-quit-one)
+   (casual-lib-quit-all)])
 
 (provide 'cc-main-tmenu)
 ;;; cc-main-tmenu.el ends here
