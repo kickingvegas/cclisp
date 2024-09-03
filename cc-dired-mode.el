@@ -78,7 +78,7 @@
 ;;          ("TAB" . #'dired-next-subdir)
 ;;          ("<backtab>" . #'dired-prev-subdir)
 ;;          ("A-M-<mouse-1>" . #'browse-url-of-dired-file)
-;;          ("C-M-o" . #'cc/main-tmenu))
+;;          ("C-M-o" . #'casual-editkit-main-tmenu))
 ;;   :after (browse-url cclisp cc-main-tmenu))
 
 ;; (use-package casual-dired

@@ -28,7 +28,7 @@
 (require 'casual-info)
 
 (keymap-set Info-mode-map "C-o" #'casual-info-tmenu)
-(keymap-set Info-mode-map "C-M-o" #'cc/main-tmenu)
+(keymap-set Info-mode-map "C-M-o" #'casual-editkit-main-tmenu)
 
 (provide 'cc-info-mode)
 ;;; cc-info-mode.el ends here

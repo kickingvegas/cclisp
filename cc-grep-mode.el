@@ -30,7 +30,7 @@
 
 (add-hook 'grep-mode-hook 'hl-line-mode)
 
-(keymap-set grep-mode-map "C-o" #'cc/main-tmenu)
+(keymap-set grep-mode-map "C-o" #'casual-editkit-main-tmenu)
 
 (provide 'cc-grep-mode)
 ;;; cc-grep-mode.el ends here
