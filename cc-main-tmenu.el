@@ -161,7 +161,9 @@
 
    [:pad-keys t
     ("r" "Replace" query-replace :transient nil)
-    ("M-r" "Replace Regexp" query-replace-regexp :transient nil)]
+    ("M-r" "Replace Regexp" query-replace-regexp :transient nil)
+    ("F" "Flush Lines…" flush-lines)
+    ("K" "Keep Lines…" keep-lines)]
 
    [("f" "Fill Paragraph" fill-paragraph :transient nil)
     ("R" "Rectangle›" cc/rectangle-tmenu :transient nil)]]
@@ -220,9 +222,9 @@
 
 (transient-define-prefix cc/edit-move-text-tmenu ()
   ["Move Text"
-   ("w" "Word"  cc/edit-move-word-tmenu :transient nil)
-   ("s" "Sentence"  cc/edit-move-sentence-tmenu :transient nil)
-   ("b" "Balanced Expression (sexp)" cc/edit-move-sexp-tmenu :transient nil)]
+   ("w" "Word›"  cc/edit-move-word-tmenu :transient nil)
+   ("s" "Sentence›"  cc/edit-move-sentence-tmenu :transient nil)
+   ("b" "Balanced Expression (sexp)›" cc/edit-move-sexp-tmenu :transient nil)]
   [(casual-lib-quit-all)])
 
 (transient-define-prefix cc/edit-move-word-tmenu ()
