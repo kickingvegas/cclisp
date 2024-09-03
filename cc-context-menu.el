@@ -139,14 +139,15 @@ from current buffer"])))
                                           (file-name-extension (dired-get-filename))
                                           "”")
                            :help "Duplicate selected item"])
-      (easy-menu-add-item menu nil
-                          ["Image Info"
-                           cc/kill-image-info
-                           :label (concat
-                                   "Info: "
-                                   (casual-dired--identify-image
-                                    (dired-get-filename)))
-                           :visible (casual-dired-image-file-p)]))
+      ;; (easy-menu-add-item menu nil
+      ;;                     ["Image Info"
+      ;;                      cc/kill-image-info
+      ;;                      :label (concat
+      ;;                              "Info: "
+      ;;                              (casual-dired--identify-image
+      ;;                               (dired-get-filename)))
+      ;;                      :visible (casual-dired-image-file-p)])
+      )
 
     (when (use-region-p)
       (cc/context-menu-item-separator menu dictionary-operations-separator)
@@ -306,18 +307,25 @@ temporarily visible (Visible mode)"])
 ;;   (setq cchoi-mouse-file nil))
 
 
-(defun cc/kill-image-info (e)
-  "Push Dired image file info into the `kill-ring'.
-E - event"
-  (interactive "e")
-  (ignore e)
-  (casual-dired-image-info))
+;; (defun cc/kill-image-info (e)
+;;   "Show file type.
+;; E - event"
+;;   (interactive "e")
+;;   (ignore e)
+;;   (dired-show-file-type))
 
 (defun cc/kill-org-table-reference (e)
   "Push Org table reference into the `kill-ring'.
 E - event"
   (interactive "e")
   (ignore e)
+  (kill-new (format "@%d$%d"
+                    (org-table-current-dline)
+                    (org-table-current-column))))
+
+(defun cc/copy-org-table-cell ()
+  "Push Org table reference into the `kill-ring'."
+  (interactive)
   (kill-new (format "@%d$%d"
                     (org-table-current-dline)
                     (org-table-current-column))))
