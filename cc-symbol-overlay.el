@@ -23,36 +23,17 @@
 ;;
 
 ;;; Code:
-(require 'symbol-overlay)
-(require 'casual-lib)
+;;(require 'symbol-overlay)
+;;(require 'casual-lib)
+;; (require 'casual-symbol-overlay)
+;; (keymap-set symbol-overlay-map "C-o" #'casual-symbol-overlay-tmenu)
 
-(transient-define-prefix cc/symbol-overlay-tmenu ()
-  [["Operations"
-    ("h" "Toggle highlight" symbol-overlay-put)
-    ("w" "Copy symbol name" symbol-overlay-save-symbol)
-    ("r" "Rename symbol name…" symbol-overlay-rename)
-    ("q" "Query replace…" symbol-overlay-query-replace)
-    ("d" "Jump to definition" symbol-overlay-jump-to-definition)]
+(use-package casual-symbol-overlay
+  :ensure nil
+  :bind (:map
+         symbol-overlay-map
+         ("C-o" . casual-symbol-overlay-tmenu)))
 
-   ["Navigation"
-    :pad-keys t
-    ("p" "Jump previous" symbol-overlay-jump-prev)
-    ("n" "Jump next" symbol-overlay-jump-next)
-    ("M-p" "Switch previous" symbol-overlay-switch-backward)
-    ("M-n" "Switch next" symbol-overlay-switch-forward)
-    ("e" "Jump to last mark" symbol-overlay-echo-mark)]
-
-   ["Display"
-    ("t" "Toggle in scope" symbol-overlay-toggle-in-scope)]
-
-   ["Remove"
-    ("k" "Remove all" symbol-overlay-remove-all)]]
-
-  [:class transient-row
-          (casual-lib-quit-one)
-          (casual-lib-quit-all)])
-
-(keymap-set symbol-overlay-map "C-o" #'cc/symbol-overlay-tmenu)
 
 (provide 'cc-symbol-overlay)
 ;;; cc-symbol-overlay.el ends here
