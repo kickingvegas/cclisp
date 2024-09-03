@@ -534,10 +534,12 @@ SOUND - sound file (optional)"
         (while (search-forward (car e) nil t)
           (replace-match (cdr e) nil t))))))
 
+;; TODO: obsolete
 (defun cc/dired-image-file-p ()
   "Predicate if current file in Dired is an image file."
   (string-match-p (image-dired--file-name-regexp) (dired-get-filename)))
 
+;; TODO: obsolete
 (defun cc/--image-info (filename)
   "Get image information of FILENAME via Imagemagick identify utility."
   (car
@@ -647,6 +649,8 @@ then you should put a ‘q’ at the end of the key macro string."
   (kill-sexp))
 
 ;; Transient Labels
+
+;; TODO: obsolete
 (defun cc/--variable-to-checkbox (v)
   "Checkbox string representation of variable V.
 V is either nil or non-nil."
@@ -654,10 +658,12 @@ V is either nil or non-nil."
       (if v "☑︎" "◻︎")
     (if v "[x]" "[ ]")))
 
+;; TODO: obsolete
 (defun cc/--prefix-label (label prefix)
   "Label constructed with PREFIX and LABEL separated by a space."
   (format "%s %s" prefix label))
 
+;; TODO: obsolete
 (defun cc/--checkbox-label (v label)
   "Checkbox label using variable V and LABEL."
   (cc/--prefix-label label (cc/--variable-to-checkbox v)))
