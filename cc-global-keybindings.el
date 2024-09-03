@@ -41,6 +41,7 @@
 (require 'magit-status)
 (require 'casual-avy)
 (require 'cc-main-tmenu)
+(require 'casual-editkit)
 
 (keymap-global-set "C-=" #'er/expand-region)
 ;(keymap-global-set (kbd "M-g") 'goto-line)
@@ -64,7 +65,7 @@
 (keymap-global-set "<f6>" #'osx-dictionary-search-input)
 (keymap-global-set "<f7>" #'repeat)
 (keymap-global-set "M-<f7>" #'repeat-complex-command)
-(keymap-global-set "C-o" #'cc/main-tmenu)
+(keymap-global-set "C-o" #'casual-editkit-main-tmenu)
 (if (string-equal (window-system) "mac")
     (keymap-global-set "<f10>" #'cc/main-tmenu))
 
