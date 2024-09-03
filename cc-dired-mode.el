@@ -30,6 +30,7 @@
 (require 'image-dired)
 (require 'image-dired-dired)
 (require 'casual-dired)
+(require 'casual-editkit)
 (require 'cc-main-tmenu)
 
 ;; (use-package image-dired
@@ -107,7 +108,7 @@
    (setq-local mouse-1-click-follows-link 'double)))
 
 (keymap-set dired-mode-map "M-o" #'dired-omit-mode)
-(keymap-set dired-mode-map "C-M-o" #'cc/main-tmenu)
+(keymap-set dired-mode-map "C-M-o" #'casual-editkit-main-tmenu)
 (keymap-set dired-mode-map "E" #'wdired-change-to-wdired-mode)
 (keymap-set dired-mode-map "C-o" #'casual-dired-tmenu)
 (keymap-set dired-mode-map "s" #'casual-dired-sort-by-tmenu)
