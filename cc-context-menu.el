@@ -326,9 +326,12 @@ E - event"
 (defun cc/copy-org-table-cell ()
   "Push Org table reference into the `kill-ring'."
   (interactive)
-  (kill-new (format "@%d$%d"
-                    (org-table-current-dline)
-                    (org-table-current-column))))
+
+  (let* ((row (org-table-current-dline))
+         (col (org-table-current-column))
+         (cell (format "@%d$%d" row col)))
+    (message cell)
+    (kill-new cell)))
 
 (add-hook 'context-menu-functions #'cc/context-menu-addons)
 
