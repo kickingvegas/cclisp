@@ -100,6 +100,7 @@
 (require 'cc-calc-mode)
 (require 'cc-re-builder)
 (require 'cc-symbol-overlay)
+(require 'password-store-menu)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
@@ -144,3 +145,5 @@
     (xterm-mouse-mode 1)
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line)))
+
+(password-store-menu-enable)
