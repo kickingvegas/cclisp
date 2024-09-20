@@ -24,27 +24,19 @@
 
 ;;; Code:
 
-(use-package calc
-  :config
-  (when (eq window-system 'mac)
-    (setq calc-gnuplot-default-device "aqua"))
-  :defer t)
+(require 'calc)
+(require 'calc-ext)
+(require 'casual-calc)
 
-(use-package casual-calc
-  :ensure nil
-  :bind (:map
-         calc-mode-map
-         ("C-o" . casual-calc-tmenu)
-         :map
-         calc-alg-map
-         ("C-o" . casual-calc-tmenu))
-  :config
-  (defun cc/ptop ()
-    "Print top of Calc stack."
-    (interactive)
-    (kill-new (pp (calc-top))))
+(add-hook 'calc-mode-hook (lambda () (setq calc-gnuplot-default-device "aqua")))
 
-  :after (calc))
+(keymap-set calc-mode-map "C-o" #'casual-calc-tmenu)
+(keymap-set calc-alg-map "C-o" #'casual-calc-tmenu)
+
+(defun cc/ptop ()
+  "Print top of Calc stack."
+  (interactive)
+  (kill-new (pp (calc-top))))
 
 ;; (defun cc/confirm-before-calc-quit ()
 ;;   "Raise confirm prompt before invoking `calc-quit'."
