@@ -24,7 +24,10 @@
 
 ;;; Code:
 (require 'casual-editkit)
+(require 'cclisp)
 (require 'password-store-menu)
+(require 'google-translate-smooth-ui)
+(require 'webpaste)
 
 (transient-define-prefix cc/main-tmenu ()
   "Main menu for Charles Choi."
@@ -35,6 +38,7 @@
      :if (lambda () (buffer-file-name)))
     ("b" "List Buffers" ibuffer)
     ("R" "Recent Files" recentf-open-files)
+    ("j" "Goto Journal…" cc/select-journal-file)
     ("s" "Save" save-buffer)]
 
    ["Edit"
@@ -103,7 +107,7 @@
 
 Tools specific to Charles Choi "
   ["Tools"
-   ["Shells & Interpreters"
+   ["Shells/REPLs"
     ("s" "Shell" shell)
     ("e" "Eshell" eshell)
     ("i" "IELM" ielm)
@@ -112,16 +116,28 @@ Tools specific to Charles Choi "
 
    ["Utilities"
     ("c" "Calc" calc)
-    ("W" "Weather" weather)
     ("r" "RE-Builder" re-builder)
     ("w" "Word Count" (lambda () (interactive) (call-interactively #'count-words)))
+    ("P" "Password›" password-store-menu)]
+
+   ["Almanac"
     ("C" "World Clock" world-clock)
     ("S" "Sunrise/Sunset" sunrise-sunset)
-    ("P" "Password›" password-store-menu)]
+    ("W" "Weather" weather)]
+
+   ["Region"
+    :if use-region-p
+    ("C" "Call" cc/call-nanp-phone-number)
+    ("m" "Maps" cc/open-region-in-apple-maps)
+    ("M-s" "Say" cc/say-region)
+    ("M-t" "Translate" google-translate-smooth-translate)
+    ("M-p" "Webpaste" webpaste-paste-region)]
 
    ["Fun"
     ("T" "Tetris" tetris)
-    ("z" "Zone" zone)]]
+    ("z" "Zone" zone)
+    ("F" "Fireplace" fireplace)
+    ("Z" "Snow" snow)]]
 
   casual-editkit-navigation-group)
 
