@@ -509,6 +509,7 @@
  '(mark-ring-max 6)
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
+ '(mouse-autoselect-window 0.5)
  '(org-agenda-files '("~/org/"))
  '(org-agenda-include-diary t)
  '(org-agenda-sorting-strategy
@@ -644,6 +645,7 @@
               (require 'package-recipe-mode nil t)))
            (package-recipe-mode))
      (vc-git-annotate-switches . "-w")))
+ '(save-interprogram-paste-before-kill t)
  '(save-place-mode t)
  '(savehist-mode t)
  '(scroll-bar-mode t)
