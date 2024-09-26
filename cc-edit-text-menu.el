@@ -22,6 +22,8 @@
 ;;; Commentary:
 ;;
 
+(require 'casual-editkit)
+
 (easy-menu-define cc/transpose-menu nil
   "Keymap for Transpose submenu"
   '("Transpose"
@@ -52,23 +54,23 @@ expressions (sexps)."]))
   "Keymap for Move Text submenu"
   '("Move Text"
     :visible (not buffer-read-only)
-    ["Word Forward" cc/move-word-forward
+    ["Word Forward" casual-editkit-move-word-forward
      :help "Move word to the right of point forward one word."]
 
-    ["Word Backward" cc/move-word-backward
+    ["Word Backward" casual-editkit-move-word-backward
      :help "Move word to the right of point backward one word."]
 
-    ["Sentence Forward" cc/move-sentence-forward
+    ["Sentence Forward" casual-editkit-move-sentence-forward
      :help "Move sentence to the right of point forward one sentence."]
 
-    ["Sentence Backward" cc/move-sentence-backward
+    ["Sentence Backward" casual-editkit-move-sentence-backward
      :help "Move sentence to the right of point backward one sentence."]
 
-    ["Balanced Expression (sexp) Forward" cc/move-sexp-forward
+    ["Balanced Expression (sexp) Forward" casual-editkit-move-sexp-forward
      :help "Move balanced expression (sexp) to the right of point forward \
 one sexp."]
 
-    ["Balanced Expression (sexp) Backward" cc/move-sexp-backward
+    ["Balanced Expression (sexp) Backward" casual-editkit-move-sexp-backward
      :help "Move balanced expression (sexp) to the right of point backward \
 one sexp."]))
 
