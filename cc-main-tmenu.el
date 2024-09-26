@@ -99,7 +99,7 @@
    ("," "Settings›" casual-editkit-settings-tmenu)
    (casual-lib-quit-all)
 
-   ("x" "Exit" save-buffers-kill-emacs)])
+   ("x" "Exit Emacs" save-buffers-kill-emacs)])
 
 
 (transient-define-prefix cc/tools-tmenu ()
