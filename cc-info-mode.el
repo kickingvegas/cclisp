@@ -30,5 +30,8 @@
 (keymap-set Info-mode-map "C-o" #'casual-info-tmenu)
 (keymap-set Info-mode-map "C-M-o" #'casual-editkit-main-tmenu)
 
+(keymap-set Info-mode-map "<mouse-5>" #'Info-history-forward)
+(keymap-set Info-mode-map "<mouse-4>" #'Info-history-back)
+
 (provide 'cc-info-mode)
 ;;; cc-info-mode.el ends here
