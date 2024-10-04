@@ -249,10 +249,8 @@ temporarily visible (Visible mode)"])
       (cc/context-menu-item-separator menu org-table-separator)
       (easy-menu-add-item menu nil
                           ["Table Cell Info"
-                           cc/kill-org-table-reference
-                           :label (format "@%d$%d"
-                                          (org-table-current-dline)
-                                          (org-table-current-column))
+                           cc/mouse-copy-org-table-range-dwim
+                           :label (cc/org-table-range-dwim)
                            :help "Table field/cell information"])
       (easy-menu-add-item menu nil cc/insert-org-plot-menu)
       (easy-menu-add-item menu nil ["Run gnuplot"
@@ -314,24 +312,6 @@ temporarily visible (Visible mode)"])
 ;;   (ignore e)
 ;;   (dired-show-file-type))
 
-(defun cc/kill-org-table-reference (e)
-  "Push Org table reference into the `kill-ring'.
-E - event"
-  (interactive "e")
-  (ignore e)
-  (kill-new (format "@%d$%d"
-                    (org-table-current-dline)
-                    (org-table-current-column))))
-
-(defun cc/copy-org-table-cell ()
-  "Push Org table reference into the `kill-ring'."
-  (interactive)
-
-  (let* ((row (org-table-current-dline))
-         (col (org-table-current-column))
-         (cell (format "@%d$%d" row col)))
-    (message cell)
-    (kill-new cell)))
 
 (add-hook 'context-menu-functions #'cc/context-menu-addons)
 

@@ -30,6 +30,7 @@
 (require 'spotlight)
 (require 'org-capture)
 (require 'org-agenda)
+(require 'org-table)
 (require 'yasnippet)
 (require 'org-ql-view)
 (require 'calc)
@@ -669,6 +670,89 @@ V is either nil or non-nil."
          (test-name (concat "../tests/test-" filename)))
     (find-file-other-window test-name)
     (transpose-frame)))
+
+;; Org Table Functions
+
+(defun cc/org-table-cell ()
+  "Return Org table cell.
+
+An Org table cell is defined to be a list containing the row and
+the column, successively."
+  (if (not (org-at-table-p))
+      (error "Not in a table."))
+
+  (let* ((row (org-table-current-dline))
+         (col (org-table-current-column)))
+    (list row col)))
+
+(defun cc/format-org-table-cell (cell)
+  "Format Org table CELL into @r$c format."
+  (let ((row (nth 0 cell))
+        (col (nth 1 cell)))
+    (format "@%d$%d" row col)))
+
+(defun cc/org-table-range ()
+  "Return Org table range specified by current region.
+
+The range is a list of two cells, the first being the cell at the
+start of the region and the last being the cell at the end of the
+region."
+  (if (not (and (org-at-table-p) (use-region-p)))
+      (error "Not in table"))
+
+  (save-excursion
+    (let* ((end (cc/org-table-cell)))
+      (exchange-point-and-mark)
+      (let ((start (cc/org-table-cell)))
+        (list start end)))))
+
+(defvar cc/current-org-table-range nil
+  "Current Org table range.")
+
+(defun cc/org-table-range-dwim ()
+  "Return formatted Org table range or cell.
+
+Whenever called, this will set `cc/current-org-table-range'."
+  (if (not (org-at-table-p))
+      (error "Not in a table."))
+
+  (cond
+   ((use-region-p)
+
+    (let* ((range (cc/org-table-range))
+           (start (nth 0 range))
+           (end (nth 1 range))
+           (msg (format "%s..%s"
+                        (cc/format-org-table-cell start)
+                        (cc/format-org-table-cell end))))
+      (setq cc/current-org-table-range msg)
+      msg))
+
+   (t
+    (let ((msg (cc/format-org-table-cell (cc/org-table-cell))))
+      (setq cc/current-org-table-range msg)
+      msg))))
+
+(defun cc/copy-org-table-range-dwim ()
+  "Copy formatted Org table range or cell into kill ring."
+  (interactive)
+  (if (not (org-at-table-p))
+      (error "Not in a table."))
+
+  (let ((msg (cc/org-table-range-dwim)))
+    (message "Copied %s" msg)
+    (kill-new msg)))
+
+(defun cc/mouse-copy-org-table-range-dwim ()
+  "Copy formatted Org table range or cell into kill ring via mouse."
+  (interactive)
+  (if (not (org-at-table-p))
+      (error "Not in a table."))
+
+  (when cc/current-org-table-range
+    (let ((msg cc/current-org-table-range))
+      (message "Copied %s" msg)
+      (kill-new msg))))
 
 
 (provide 'cclisp)
