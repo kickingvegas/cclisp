@@ -720,7 +720,6 @@
  '(org-scheduled ((t (:foreground "#4455ff"))))
  '(org-scheduled-previously ((((type x mac ns) (class color) (background light)) (:foreground "dark violet" :weight bold)) (((type x mac ns) (class color) (background dark)) (:foreground "orchid")) (((type tty) (class color)) (:foreground "orchid"))))
  '(org-scheduled-today ((t (:foreground "#cc4499"))))
- '(org-special-keyword ((t (:inherit font-lock-keyword-face :height 0.8))))
  '(org-table ((((type x mac ns) (class color) (background light)) (:inherit fixed-pitch :foreground "Blue1")) (((type x mac ns) (class color) (background dark)) (:inherit fixed-pitch :foreground "chartreuse")) (((type tty) (class color)) (:foreground "chartreuse"))))
  '(outline-1 ((((type mac ns)) (:height 1.1 :family "Futura")) (((type x pgtk)) (:height 1.1 :family "Lato"))))
  '(outline-2 ((t (:inherit outline-1))))

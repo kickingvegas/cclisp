@@ -37,6 +37,7 @@
 (require 'prog-mode)
 (require 'cc-org-smart-quotes)
 (require 'imenu)
+(require 'casual-agenda)
 
 (if (eq system-type 'darwin)
     (require 'ob-swiftui))
@@ -261,6 +262,12 @@ SUFFIX - string appended to prefix
                             (":properties:" . ?⚙ )
                             (":end:" . ?🔚 )
                             (":logbook:" . ?📓 )
+                            ("[#A]" . ?🄰 )
+                            ("[#B]" . ?🄱 )
+                            ("[#C]" . ?🄲 )
+                            ("#+NAME:" . ?📇 )
+                            ("#+TBLFM:" . ?🧮 )
+                            ("#+PLOT:" . ?📊 )
                             ("[ ]" .  ?☐ )
                             ("[x]" . ?☑ )
                             ("[-]" . ?✈ ))))
@@ -387,6 +394,10 @@ SUFFIX - string appended to prefix
   "Capture journal entry in Org."
   (interactive)
   (org-capture nil "j"))
+
+(defalias 'cc/insert-org-keyword
+   (kmacro "C-a # + M-x c o m p l e t e - s y m b o l <return>"))
+
 
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here

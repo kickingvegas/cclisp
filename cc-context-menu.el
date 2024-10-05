@@ -252,6 +252,10 @@ temporarily visible (Visible mode)"])
                            cc/mouse-copy-org-table-range-dwim
                            :label (cc/org-table-range-dwim)
                            :help "Table field/cell information"])
+      (easy-menu-add-item menu nil
+                          ["Toggle Overlay"
+                           org-table-toggle-coordinate-overlays
+                           :help "Toggle the display of row/column numbers in tables"])
       (easy-menu-add-item menu nil cc/insert-org-plot-menu)
       (easy-menu-add-item menu nil ["Run gnuplot"
                                     org-plot/gnuplot
