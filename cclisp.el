@@ -553,7 +553,7 @@ SOUND - sound file (optional)"
     (message result)))
 
 (defun melpa-package-status (package-name)
-  "Get current timestamp of a MELPA package.
+  "Get current timestamp of a MELPA PACKAGE-NAME.
 
 Invokes python script ‘melpa-package-status.py’."
   (interactive "sPackage Name: ")
@@ -568,7 +568,7 @@ Invokes python script ‘melpa-package-status.py’."
 point is in.
 
 Thanks to mwnaylor, PropagandaOfTheDude, and deaddyfreddy for
-helping write this function. "
+helping write this function."
   (interactive)
   (when-let ((interned (intern-soft (which-function))))
     (describe-function interned)))
@@ -673,48 +673,71 @@ V is either nil or non-nil."
 
 ;; Org Table Functions
 
-(defun cc/org-table-cell ()
-  "Return Org table cell.
+(defun cc/org-table-cell-at-point ()
+  "At point, return the cell object from an Org table.
 
-An Org table cell is defined to be a list containing the row and
-the column, successively."
+A cell object is defined to be a list containing the row and the
+column, successively."
   (if (not (org-at-table-p))
-      (error "Not in a table."))
+      (error "Not in a table"))
 
   (let* ((row (org-table-current-dline))
          (col (org-table-current-column)))
     (list row col)))
 
-(defun cc/format-org-table-cell (cell)
-  "Format Org table CELL into @r$c format."
+(defun cc/format-org-table-field-reference (cell)
+  "Format CELL object into @r$c format.
+
+CELL object obtained via `cc/org-table-cell-at-point'.
+
+See Info node `(org) References' for more on Org table field
+reference format."
   (let ((row (nth 0 cell))
         (col (nth 1 cell)))
     (format "@%d$%d" row col)))
 
 (defun cc/org-table-range ()
-  "Return Org table range specified by current region.
+  "Return range object from a region defined within an Org table.
 
-The range is a list of two cells, the first being the cell at the
+A range object is a list of two cells computed via
+`cc/org-table-cell-at-point', the first being the cell at the
 start of the region and the last being the cell at the end of the
 region."
   (if (not (and (org-at-table-p) (use-region-p)))
-      (error "Not in table"))
+      (error "Not in an Org table"))
 
   (save-excursion
-    (let* ((end (cc/org-table-cell)))
+    (let* ((end (cc/org-table-cell-at-point)))
       (exchange-point-and-mark)
-      (let ((start (cc/org-table-cell)))
+      (let ((start (cc/org-table-cell-at-point)))
         (list start end)))))
 
-(defvar cc/current-org-table-range nil
-  "Current Org table range.")
+(defvar cc/last-org-table-reference nil
+  "Last stored Org table reference.
 
-(defun cc/org-table-range-dwim ()
-  "Return formatted Org table range or cell.
+State variable to store an Org table reference (field or range)
+to be used in an Org table formula. This variable is set via
+`cc/org-table-reference-dwim'
 
-Whenever called, this will set `cc/current-org-table-range'."
+NOTE: This state variable to work-around my lack of clarity on
+region and mouse menu interaction.")
+
+(defun cc/org-table-reference-dwim ()
+  "Org table reference given point or region is defined.
+
+Return Org table reference (field or range) depending on whether
+a point or region is defined in an Org table.
+
+If the region is defined over multiple columns, then a Calc
+vector matrix is returned. See Info node `(org) Formula syntax
+for Calc' for more.
+
+Calling this function will set `cc/last-org-table-reference'.
+
+See Info node `(org) References' for more on Org table field
+reference format."
   (if (not (org-at-table-p))
-      (error "Not in a table."))
+      (error "Not in an Org table"))
 
   (cond
    ((use-region-p)
@@ -723,36 +746,99 @@ Whenever called, this will set `cc/current-org-table-range'."
            (start (nth 0 range))
            (end (nth 1 range))
            (msg (format "%s..%s"
-                        (cc/format-org-table-cell start)
-                        (cc/format-org-table-cell end))))
-      (setq cc/current-org-table-range msg)
+                        (cc/format-org-table-field-reference start)
+                        (cc/format-org-table-field-reference end))))
+      (setq cc/last-org-table-reference (cc/org-table-range-to-reference range))
       msg))
 
    (t
-    (let ((msg (cc/format-org-table-cell (cc/org-table-cell))))
-      (setq cc/current-org-table-range msg)
+    (let ((msg (cc/format-org-table-field-reference (cc/org-table-cell-at-point))))
+      (setq cc/last-org-table-reference msg)
       msg))))
 
-(defun cc/copy-org-table-range-dwim ()
-  "Copy formatted Org table range or cell into kill ring."
+(defun cc/copy-org-table-reference-dwim ()
+  "Copy Org table reference (field or range) into kill ring.
+
+Given a point or region defined in an Org table, add to the
+`kill-ring' an Org table field or range reference.
+
+If the region is defined over multiple columns, then a Calc
+vector matrix is returned. See Info node `(org) Formula syntax
+for Calc' for more.
+
+See Info node `(org) References' for more on Org table field
+reference format."
   (interactive)
   (if (not (org-at-table-p))
-      (error "Not in a table."))
+      (error "Not in an Org table"))
 
-  (let ((msg (cc/org-table-range-dwim)))
-    (message "Copied %s" msg)
-    (kill-new msg)))
+  (let ((msg (cc/org-table-reference-dwim)))
 
-(defun cc/mouse-copy-org-table-range-dwim ()
-  "Copy formatted Org table range or cell into kill ring via mouse."
+    (message "Range: %s, Copied %s" msg cc/last-org-table-reference)
+    (kill-new cc/last-org-table-reference)))
+
+(defun cc/mouse-copy-org-table-reference-dwim ()
+  "Copy Org table reference (field or range) into kill ring via mouse.
+
+Given a point or region defined in an Org table, add to the
+`kill-ring' an Org table field or range reference.
+
+NOTE: This function is intended to be called from a mouse menu
+after `cc/copy-org-table-reference-dwim' is called which will set
+`cc/last-org-table-reference'. This is to work-around my lack of
+clarity on region and mouse menu interaction.
+
+If the region is defined over multiple columns, then a Calc
+vector matrix is returned. See Info node `(org) Formula syntax
+for Calc' for more."
   (interactive)
   (if (not (org-at-table-p))
-      (error "Not in a table."))
+      (error "Not in an Org table"))
 
-  (when cc/current-org-table-range
-    (let ((msg cc/current-org-table-range))
+  (when cc/last-org-table-reference
+    (let ((msg cc/last-org-table-reference))
       (message "Copied %s" msg)
       (kill-new msg))))
+
+(defun cc/org-table-range-to-reference (range)
+  "Convert RANGE object to Org table reference (field or range).
+
+If the region is defined over multiple columns, then a Calc
+vector matrix is returned. See Info node `(org) Formula syntax
+for Calc' for more.
+
+See `cc/org-table-range' for more on RANGE object."
+  (let* ((start (nth 0 range))
+         (end (nth 1 range))
+         (a (nth 0 start))
+         (b (nth 1 start))
+         (c (nth 0 end))
+         (d (nth 1 end))
+
+         (r1 (apply #'min (list a c)))
+         (c1 (apply #'min (list b d)))
+
+         (r2 (apply #'max (list a c)))
+         (c2 (apply #'max (list b d)))
+
+         (rowrange (number-sequence r1 r2))
+         (buflist (list)))
+
+
+    (cond
+     ((and (= r1 r2) (= c1 c2))
+      (format "@%d$%d" r1 c1 ))
+
+     ((or (= c1 c2) (= r1 r2))
+      (format "@%d$%d..@%d$%d" r1 c1 r2 c2))
+
+     (t
+      (mapc (lambda (r)
+                (push (format "@%d$%d..@%d$%d" r c1 r c2) buflist))
+              rowrange)
+
+      (format "vec(%s)"
+            (string-join (reverse buflist) ", "))))))
 
 
 (provide 'cclisp)

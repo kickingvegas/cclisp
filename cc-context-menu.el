@@ -249,12 +249,14 @@ temporarily visible (Visible mode)"])
       (cc/context-menu-item-separator menu org-table-separator)
       (easy-menu-add-item menu nil
                           ["Table Cell Info"
-                           cc/mouse-copy-org-table-range-dwim
-                           :label (cc/org-table-range-dwim)
-                           :help "Table field/cell information"])
+                           cc/mouse-copy-org-table-reference-dwim
+                           :label (cc/org-table-reference-dwim)
+                           :help "Copy Org table reference (field or range) into kill ring via mouse"])
       (easy-menu-add-item menu nil
-                          ["Toggle Overlay"
+                          ["Toggle Coordinates"
                            org-table-toggle-coordinate-overlays
+                           :style toggle
+                           :selected org-table-coordinate-overlays
                            :help "Toggle the display of row/column numbers in tables"])
       (easy-menu-add-item menu nil cc/insert-org-plot-menu)
       (easy-menu-add-item menu nil ["Run gnuplot"
