@@ -100,10 +100,17 @@
 (require 'cc-calc-mode)
 (require 'cc-re-builder)
 (require 'cc-symbol-overlay)
+(require 'password-store-menu)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
-(keymap-set isearch-mode-map "<f2>" #'casual-isearch-tmenu)
+(keymap-set isearch-mode-map "C-o" #'casual-isearch-tmenu)
+
+(use-package hl-line
+  :ensure nil
+  :defer t
+  :hook ((bookmark-bmenu-mode . hl-line-mode)
+         (ibuffer-mode . hl-line-mode)))
 
 ;;; Local Customizations
 
@@ -138,3 +145,5 @@
     (xterm-mouse-mode 1)
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line)))
+
+(password-store-menu-enable)

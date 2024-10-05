@@ -37,6 +37,7 @@
 (require 'prog-mode)
 (require 'cc-org-smart-quotes)
 (require 'imenu)
+(require 'casual-agenda)
 
 (if (eq system-type 'darwin)
     (require 'ob-swiftui))
@@ -219,7 +220,7 @@ which is done with `org-ctrl-c-ctrl-c'."
       '((nil :maxlevel . 3)
         (org-agenda-files :maxlevel . 3)))
 
-(setq org-log-done 'time)
+;;(setq org-log-done 'time)
 
 (add-hook 'org-mode-hook #'org-superstar-mode)
 (add-hook 'org-mode-hook #'variable-pitch-mode)
@@ -261,6 +262,12 @@ SUFFIX - string appended to prefix
                             (":properties:" . ?⚙ )
                             (":end:" . ?🔚 )
                             (":logbook:" . ?📓 )
+                            ("[#A]" . ?🄰 )
+                            ("[#B]" . ?🄱 )
+                            ("[#C]" . ?🄲 )
+                            ("#+NAME:" . ?📇 )
+                            ("#+TBLFM:" . ?🧮 )
+                            ("#+PLOT:" . ?📊 )
                             ("[ ]" .  ?☐ )
                             ("[x]" . ?☑ )
                             ("[-]" . ?✈ ))))
@@ -327,17 +334,11 @@ SUFFIX - string appended to prefix
             (define-key org-agenda-mode-map
               [(double-mouse-1)] 'org-agenda-goto-mouse)))
 
-(defun cc/org-agenda-goto-now ()
-  "Redo agenda view and move point to current time '← now'."
-  (interactive)
-  (org-agenda-redo)
-  (org-agenda-goto-today)
-  (search-forward " now "))
 
 (keymap-set org-agenda-mode-map "<f1>" #'org-save-all-org-buffers)
 (keymap-set org-agenda-mode-map "M-p" #'org-agenda-previous-date-line)
 (keymap-set org-agenda-mode-map "M-n" #'org-agenda-next-date-line)
-(keymap-set org-agenda-mode-map "." #'cc/org-agenda-goto-now)
+(keymap-set org-agenda-mode-map "." #'casual-agenda-goto-now)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -393,6 +394,10 @@ SUFFIX - string appended to prefix
   "Capture journal entry in Org."
   (interactive)
   (org-capture nil "j"))
+
+(defalias 'cc/insert-org-keyword
+   (kmacro "C-a # + M-x c o m p l e t e - s y m b o l <return>"))
+
 
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here

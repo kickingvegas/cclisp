@@ -318,6 +318,10 @@
        (saved . "Org Files"))
       ("cclisp"
        (directory . "cclisp"))
+      ("Casual EditKit"
+       (directory . "casual-editkit"))
+      ("Casual Symbol Overlay"
+       (directory . "casual-symbol-overlay"))
       ("Casual Bookmarks"
        (directory . "casual-bookmarks"))
       ("Casual RE Builder"
@@ -375,6 +379,12 @@
         (directory . ".config/emacs/elpa")
         (directory . "EmacsMac.app/Contents/Resources/lisp"))))
      ("Casual"
+      ("Casual EditKit"
+       (directory . "casual-editkit"))
+      ("Casual Symbol Overlay"
+       (directory . "casual-symbol-overlay"))
+      ("Casual Agenda"
+       (directory . "casual-agenda"))
       ("Casual Bookmarks"
        (directory . "casual-bookmarks"))
       ("Casual RE Builder"
@@ -420,6 +430,10 @@
        (mode . makefile-mode)
        (mode . Info-mode)
        (mode . help-mode)))
+     ("Casual EditKit"
+      (directory . "casual-editkit"))
+     ("Casual Symbol Overlay"
+      (directory . "casual-symbol-overlay"))
      ("Casual Suite"
       (directory . "casual-suite"))
      ("Casual Lib"
@@ -495,6 +509,7 @@
  '(mark-ring-max 6)
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
+ '(mouse-autoselect-window 0.5)
  '(org-agenda-files '("~/org/"))
  '(org-agenda-include-diary t)
  '(org-agenda-sorting-strategy
@@ -549,6 +564,8 @@
  '(org-latex-pdf-process
    '("%latex -interaction nonstopmode --shell-escape -output-directory %o %f" "%latex -interaction nonstopmode --shell-escape -output-directory %o %f" "%latex -interaction nonstopmode --shell-escape -output-directory %o %f"))
  '(org-latex-prefer-user-labels t)
+ '(org-log-done 'time)
+ '(org-log-state-notes-insert-after-drawers t)
  '(org-plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar")
  '(org-re-reveal-theme "moon")
  '(org-show-notification-handler 'cc/display-notification)
@@ -606,8 +623,9 @@
  '(package-archives
    '(("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa" . "http://melpa.org/packages/")))
+ '(package-install-upgrade-built-in t)
  '(package-selected-packages
-   '(symbol-overlay org-ql flycheck-package package-lint iedit doct scpaste snow paredit orgtbl-aggregate transpose-frame diff-hl keycast edit-indirect ox-trac google-translate org wgrep js2-mode rainbow-mode use-package bind-key reveal-in-folder elfeed ob-swiftui ob-swift csv-mode company-restclient visual-regexp-steroids visual-regexp citar math-symbol-lists helm-bibtex ox-gist org-ref org-re-reveal webpaste company-org-block company eglot gnuplot ob-restclient restclient ox-slack good-scroll svg-clock disk-usage expand-region helm-pass password-store which-key org-outline-numbering org-superstar osx-dictionary spotlight ebib auto-complete plantuml-mode tj3-mode ledger-mode yasnippet-snippets yasnippet htmlize calfw kanban fireplace treemacs neotree smart-mode-line-powerline-theme pbcopy ox-jira ox-gfm helm-swoop helm ztree yaml-mode swift-mode sr-speedbar solarized-theme python-mode pkg-info markdown-mode magit json-mode graphviz-dot-mode google-this go-mode autopair))
+   '(password-store-menu modus-themes eldoc erc faceup flymake idlwave jsonrpc project soap-client tramp verilog-mode xref symbol-overlay org-ql flycheck-package package-lint iedit doct scpaste snow paredit orgtbl-aggregate transpose-frame diff-hl keycast edit-indirect ox-trac google-translate org wgrep js2-mode rainbow-mode use-package bind-key reveal-in-folder elfeed ob-swiftui ob-swift csv-mode company-restclient visual-regexp-steroids visual-regexp citar math-symbol-lists helm-bibtex ox-gist org-ref org-re-reveal webpaste company-org-block company eglot gnuplot ob-restclient restclient ox-slack good-scroll svg-clock disk-usage expand-region helm-pass password-store which-key org-outline-numbering org-superstar osx-dictionary spotlight ebib auto-complete plantuml-mode tj3-mode ledger-mode yasnippet-snippets yasnippet htmlize calfw kanban fireplace treemacs neotree smart-mode-line-powerline-theme pbcopy ox-jira ox-gfm helm-swoop helm ztree yaml-mode swift-mode sr-speedbar solarized-theme python-mode pkg-info markdown-mode magit json-mode graphviz-dot-mode google-this go-mode autopair))
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
  '(plantuml-indent-level 4)
@@ -627,9 +645,10 @@
               (require 'package-recipe-mode nil t)))
            (package-recipe-mode))
      (vc-git-annotate-switches . "-w")))
+ '(save-interprogram-paste-before-kill t)
  '(save-place-mode t)
  '(savehist-mode t)
- '(scroll-bar-mode nil)
+ '(scroll-bar-mode t)
  '(scroll-step 4)
  '(sentence-end-double-space nil)
  '(set-mark-command-repeat-pop t)
@@ -691,7 +710,7 @@
  '(org-block-begin-line ((((type x mac ns) (class color) (background light)) (:inherit fixed-pitch :extend t :background "gray90" :foreground "gray50")) (((type x mac ns) (class color) (background dark)) (:inherit fixed-pitch :extend t :background "grey23" :foreground "tomato")) (((type tty)) (:background "grey23" :foreground "tomato"))))
  '(org-block-end-line ((t (:inherit org-block-begin-line))))
  '(org-code ((((type x mac ns) (class color)) (:inherit fixed-pitch)) (((type tty) (class color)) (:inherit fixed-pitch :background "color-238"))))
- '(org-date ((((type x mac) (class color) (background light)) (:inherit fixed-pitch :foreground "dark violet" :underline t)) (((type mac ns) (class color) (background dark)) (:inherit fixed-pitch :foreground "dark turquoise" :underline t)) (((type tty) (class color)) (:foreground "dark turquoise" :underline t))))
+ '(org-date ((((type mac ns) (class color) (background light)) (:foreground "dark violet" :underline t :family "Menlo")) (((type mac ns) (class color) (background dark)) (:foreground "dark turquoise" :underline t :family "Menlo")) (((type tty) (class color)) (:foreground "dark turquoise" :underline t))))
  '(org-document-info ((((class color) (background light)) (:foreground "midnight blue")) (((class color) (background dark)) (:foreground "pale turquoise")) (t nil) (((type tty) (class color)) (:foreground "pale turquoise"))))
  '(org-document-info-keyword ((t (:inherit fixed-pitch))))
  '(org-document-title ((((type x mac ns) (class color) (background light)) (:foreground "midnight blue" :weight bold)) (((type x mac ns) (class color) (background dark)) (:foreground "pale turquoise" :weight bold)) (t (:weight bold)) (((type tty) (class color)) (:foreground "pale turquoise"))))
@@ -701,7 +720,6 @@
  '(org-scheduled ((t (:foreground "#4455ff"))))
  '(org-scheduled-previously ((((type x mac ns) (class color) (background light)) (:foreground "dark violet" :weight bold)) (((type x mac ns) (class color) (background dark)) (:foreground "orchid")) (((type tty) (class color)) (:foreground "orchid"))))
  '(org-scheduled-today ((t (:foreground "#cc4499"))))
- '(org-special-keyword ((t (:inherit font-lock-keyword-face :height 0.8))))
  '(org-table ((((type x mac ns) (class color) (background light)) (:inherit fixed-pitch :foreground "Blue1")) (((type x mac ns) (class color) (background dark)) (:inherit fixed-pitch :foreground "chartreuse")) (((type tty) (class color)) (:foreground "chartreuse"))))
  '(outline-1 ((((type mac ns)) (:height 1.1 :family "Futura")) (((type x pgtk)) (:height 1.1 :family "Lato"))))
  '(outline-2 ((t (:inherit outline-1))))

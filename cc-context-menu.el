@@ -59,6 +59,14 @@ CLICK - event"
                                   ibuffer
                                   :help "List all buffers"])
 
+    (easy-menu-add-item menu nil ["Previous Buffer"
+                                  previous-buffer
+                                  :help "Go to previous buffer"])
+
+    (easy-menu-add-item menu nil ["Next Buffer"
+                                  next-buffer
+                                  :help "Go to next buffer"])
+
     (when buffer-file-name
       (cond ((use-region-p)
              (cc/context-menu-item-separator menu narrow-separator)
@@ -68,6 +76,12 @@ CLICK - event"
                                   :help "Restrict editing in this buffer \
 to the current region"]))
 
+            ((and (not (buffer-narrowed-p)) (derived-mode-p 'prog-mode))
+             (cc/context-menu-item-separator menu narrow-separator)
+             (easy-menu-add-item menu nil
+                                 ["Narrow to defun" narrow-to-defun
+                                  :help "Restrict editing in this buffer \
+to the current defun"]))
 
             ((and (not (buffer-narrowed-p)) (derived-mode-p 'org-mode))
              (cc/context-menu-item-separator menu narrow-separator)
@@ -125,14 +139,15 @@ from current buffer"])))
                                           (file-name-extension (dired-get-filename))
                                           "”")
                            :help "Duplicate selected item"])
-      (easy-menu-add-item menu nil
-                          ["Image Info"
-                           cc/kill-image-info
-                           :label (concat
-                                   "Info: "
-                                   (casual-dired--identify-image
-                                    (dired-get-filename)))
-                           :visible (casual-dired-image-file-p)]))
+      ;; (easy-menu-add-item menu nil
+      ;;                     ["Image Info"
+      ;;                      cc/kill-image-info
+      ;;                      :label (concat
+      ;;                              "Info: "
+      ;;                              (casual-dired--identify-image
+      ;;                               (dired-get-filename)))
+      ;;                      :visible (casual-dired-image-file-p)])
+      )
 
     (when (use-region-p)
       (cc/context-menu-item-separator menu dictionary-operations-separator)
@@ -234,11 +249,15 @@ temporarily visible (Visible mode)"])
       (cc/context-menu-item-separator menu org-table-separator)
       (easy-menu-add-item menu nil
                           ["Table Cell Info"
-                           cc/kill-org-table-reference
-                           :label (format "@%d$%d"
-                                          (org-table-current-dline)
-                                          (org-table-current-column))
-                           :help "Table field/cell information"])
+                           cc/mouse-copy-org-table-reference-dwim
+                           :label (cc/org-table-reference-dwim)
+                           :help "Copy Org table reference (field or range) into kill ring via mouse"])
+      (easy-menu-add-item menu nil
+                          ["Toggle Coordinates"
+                           org-table-toggle-coordinate-overlays
+                           :style toggle
+                           :selected org-table-coordinate-overlays
+                           :help "Toggle the display of row/column numbers in tables"])
       (easy-menu-add-item menu nil cc/insert-org-plot-menu)
       (easy-menu-add-item menu nil ["Run gnuplot"
                                     org-plot/gnuplot
@@ -292,21 +311,13 @@ temporarily visible (Visible mode)"])
 ;;   (setq cchoi-mouse-file nil))
 
 
-(defun cc/kill-image-info (e)
-  "Push Dired image file info into the `kill-ring'.
-E - event"
-  (interactive "e")
-  (ignore e)
-  (casual-dired-image-info))
+;; (defun cc/kill-image-info (e)
+;;   "Show file type.
+;; E - event"
+;;   (interactive "e")
+;;   (ignore e)
+;;   (dired-show-file-type))
 
-(defun cc/kill-org-table-reference (e)
-  "Push Org table reference into the `kill-ring'.
-E - event"
-  (interactive "e")
-  (ignore e)
-  (kill-new (format "@%d$%d"
-                    (org-table-current-dline)
-                    (org-table-current-column))))
 
 (add-hook 'context-menu-functions #'cc/context-menu-addons)
 

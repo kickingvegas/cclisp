@@ -58,7 +58,7 @@
 (keymap-set prog-mode-map "C-a" #'back-to-indentation)
 (keymap-set prog-mode-map "C-6" #'imenu)
 
-(keymap-set compilation-mode-map "C-o" #'cc/main-tmenu)
+(keymap-set compilation-mode-map "C-o" #'casual-editkit-main-tmenu)
 
 ;; GUD - mode preferences
 ;; (setq gud-mode-hook

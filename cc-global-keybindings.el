@@ -41,6 +41,7 @@
 (require 'magit-status)
 (require 'casual-avy)
 (require 'cc-main-tmenu)
+(require 'casual-editkit)
 
 (keymap-global-set "C-=" #'er/expand-region)
 ;(keymap-global-set (kbd "M-g") 'goto-line)
@@ -56,7 +57,7 @@
 (keymap-global-set "<f2>" #'other-window)
 (keymap-global-set "A-<return>" #'other-window)
 (keymap-global-set "<f3>" #'save-buffers-kill-emacs)
-(keymap-global-set "M-<f3>" #'cc/windows-tmenu)
+(keymap-global-set "M-<f3>" #'casual-editkit-windows-tmenu)
 (keymap-global-set "<f4>" #'bookmark-jump)
 (keymap-global-set "<f5>" #'status-report)
 (keymap-global-set "S-<f5>" #'cc/select-journal-file)
@@ -64,7 +65,10 @@
 (keymap-global-set "<f6>" #'osx-dictionary-search-input)
 (keymap-global-set "<f7>" #'repeat)
 (keymap-global-set "M-<f7>" #'repeat-complex-command)
-(keymap-global-set "C-o" #'cc/main-tmenu)
+(keymap-global-set "C-o" #'casual-editkit-main-tmenu)
+;; (if (string-equal (window-system) "mac")
+;;     (keymap-global-set "<f10>" #'casual-editkit-main-tmenu))
+;; (keymap-global-set "C-o" #'cc/main-tmenu)
 (if (string-equal (window-system) "mac")
     (keymap-global-set "<f10>" #'cc/main-tmenu))
 
@@ -75,7 +79,7 @@
 (keymap-global-set "M-<f1>" #'cc/open-url)
 (keymap-global-set "M-<f2>" #'google-this)
 (keymap-global-set "C-c C-;" #'shell-command)
-(keymap-global-set "M-<f4>" #'helm-buffers-list)
+(keymap-global-set "M-<f4>" #'calc)
 
 (keymap-global-set "<f13>" #'cc/ediff-revision)
 (keymap-global-set "M-<f13>" #'neotree-toggle)
@@ -84,8 +88,9 @@
 ;;(keymap-global-set (kbd "<f14>") 'save-buffer) ;logitech
 (keymap-global-set "<f15>" #'cc/ediff-revision)
 
-(keymap-global-set "<f16>" #'run-python)
-(keymap-global-set "M-<f16>" #'cc/switch-to-scratch)
+(keymap-global-set "<f16>" #'calc)
+(keymap-global-set "<f17>" #'run-python)
+(keymap-global-set "M-<f16>" #'cc/switch-to-scratch) ;; this need to be in main
 (keymap-global-set "C-x C-b" #'ibuffer)
 
 ;; Avy

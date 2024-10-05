@@ -41,8 +41,9 @@
         t
       nil)))
 
-(defun cc/test-timestamp (e)
-  (let ((timestamp-buf (assoc-default "TIMESTAMP" e))
+(defun cc/test-timestamp (e &optional days-out)
+  (let ((days-out (or days-out 40))
+        (timestamp-buf (assoc-default "TIMESTAMP" e))
         (scheduled-buf (assoc-default "SCHEDULED" e))
         (deadline-buf (assoc-default "DEADLINE" e))
         (timestamp nil)
@@ -57,21 +58,21 @@
                (setq timestamp (cc/at/next-time-from-repeating-org-timestamp timestamp-buf))
              (setq timestamp (time-convert (org-read-date nil t timestamp-buf) 'list)))
            ;; now timestamp is a Lisp timesstamp
-           (cc/timestamp-filter timestamp 2 45))
+           (cc/timestamp-filter timestamp 2 days-out))
 
           (scheduled-buf
            (if (stringp (org-get-repeat scheduled-buf))
                (setq scheduled (cc/at/next-time-from-repeating-org-timestamp scheduled-buf))
              (setq scheduled (time-convert (org-read-date nil t scheduled-buf) 'list)))
            ;; now timestamp is a Lisp timesstamp
-           (cc/timestamp-filter scheduled 2 45))
+           (cc/timestamp-filter scheduled 2 days-out))
 
           (deadline-buf
            (if (stringp (org-get-repeat deadline-buf))
                (setq deadline (cc/at/next-time-from-repeating-org-timestamp deadline-buf))
              (setq deadline (time-convert (org-read-date nil t deadline-buf) 'list)))
            ;; now timestamp is a Lisp timesstamp
-           (cc/timestamp-filter deadline 2 45))
+           (cc/timestamp-filter deadline 2 days-out))
 
           (t
            nil))))
@@ -101,23 +102,39 @@ otherwise nil."
       nil)))
 
 
-(defun cc/agenda-timeline-items (match scope &optional include-diary include-holidays)
+(defun cc/agenda-timeline-items (match scope &optional days-out include-diary include-holidays)
   (interactive)
-  (ignore include-diary)
-  (ignore include-holidays)
-  (let* ((agenda-items (org-map-entries 'org-entry-properties match scope))
-         (active-agenda-items (seq-remove 'cc/at/closed-agenda-element-p agenda-items))
-         (timestamped-items (seq-filter 'cc/test-timestamp active-agenda-items))
+  (let* ((days-out (or days-out 40))
+
+         (agenda-items (org-map-entries 'org-entry-properties match scope))
+         (active-agenda-items (seq-remove #'cc/at/closed-agenda-element-p agenda-items))
+         (timestamped-items (seq-filter (lambda (x) (cc/test-timestamp x days-out)) active-agenda-items))
+
          (items (mapcar (lambda (x) (list
                               (assoc-default "ITEM" x)
-                              (cc/test-timestamp x)))
+                              (cc/test-timestamp x days-out)))
                         timestamped-items))
-         (items-with-diary (append items (cc/extract-diary-items 40) (cc/extract-holiday-items 40)))
-         (sorted-items (sort items-with-diary (lambda (x y) (time-less-p (nth 1 x) (nth 1 y)))))
+
+         ;;(items-with-diary (append items (cc/extract-diary-items days-out) (cc/extract-holiday-items days-out)))
+         ;;(sorted-items (sort items-with-diary (lambda (x y) (time-less-p (nth 1 x) (nth 1 y)))))
          (results (list)))
 
-    (mapc (lambda (x)
-              (push (format "[%s] happens %s" (cc/scrub-item-string (nth 0 x)) (format-time-string "%Y-%m-%d" (nth 1 x))) results)) sorted-items)
+    (if include-diary
+        (setq items (append items (cc/extract-diary-items days-out))))
+
+    (if include-holidays
+        (setq items (append items (cc/extract-holiday-items days-out))))
+
+    (let ((sorted-items (sort items (lambda (x y) (time-less-p (nth 1 x) (nth 1 y))))))
+      (mapc (lambda (x)
+              (push
+               (format "[%s] happens %s"
+                       (cc/scrub-item-string (nth 0 x))
+                       (format-time-string "%Y-%m-%d" (nth 1 x)))
+               results))
+            sorted-items))
+
+
 
     (reverse results)))
 
@@ -128,7 +145,7 @@ otherwise nil."
            (calendar-absolute-from-gregorian (calendar-current-date days)))))
     (mapcar 'cc/diary-info holidays)))
 
-(defun cc/agenda-timeline (match scope &optional include-diary include-holidays)
+(defun cc/agenda-timeline (match scope &optional days-out include-diary include-holidays)
   (interactive)
   (let* ((headers (list))
          (footers (list))
@@ -147,7 +164,7 @@ otherwise nil."
 
     (mapconcat 'identity
                (append (reverse headers)
-                       (cc/agenda-timeline-items match scope include-diary include-holidays)
+                       (cc/agenda-timeline-items match scope days-out include-diary include-holidays)
                        (reverse footers))
                "\n")))
 
