@@ -834,12 +834,19 @@ See `cc/org-table-range' for more on RANGE object."
 
      (t
       (mapc (lambda (r)
-                (push (format "@%d$%d..@%d$%d" r c1 r c2) buflist))
-              rowrange)
+              (push (format "@%d$%d..@%d$%d" r c1 r c2) buflist))
+            rowrange)
 
       (format "vec(%s)"
-            (string-join (reverse buflist) ", "))))))
+              (string-join (reverse buflist) ", "))))))
 
+
+(defun cc/clear-mouse-overlay ()
+  "Clear secondary overlay in buffer.
+
+  Workaround fix for mouse rectangle selects."
+  (interactive)
+  (delete-overlay mouse-secondary-overlay))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

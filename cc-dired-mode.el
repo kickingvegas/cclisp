@@ -107,6 +107,7 @@
  (lambda ()
    (setq-local mouse-1-click-follows-link 'double)))
 
+(keymap-set dired-mode-map "<mouse-2>" #'dired-mouse-find-file)
 (keymap-set dired-mode-map "M-o" #'dired-omit-mode)
 (keymap-set dired-mode-map "C-M-o" #'casual-editkit-main-tmenu)
 (keymap-set dired-mode-map "E" #'wdired-change-to-wdired-mode)
