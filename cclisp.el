@@ -766,14 +766,21 @@ If the region is defined over multiple columns, then a Calc
 vector matrix is returned. See Info node `(org) Formula syntax
 for Calc' for more.
 
+If the buffer *Edit Formulas* is available (usually via
+`org-table-edit-formulas'), the reference will be inserted into
+it.
+
 See Info node `(org) References' for more on Org table field
 reference format."
   (interactive)
   (if (not (org-at-table-p))
       (error "Not in an Org table"))
 
-  (let ((msg (cc/org-table-reference-dwim)))
-
+  (let ((msg (cc/org-table-reference-dwim))
+        (formulas-buffer (get-buffer "*Edit Formulas*")))
+    (if formulas-buffer
+        (with-current-buffer formulas-buffer
+          (insert cc/last-org-table-reference)))
     (message "Range: %s, Copied %s" msg cc/last-org-table-reference)
     (kill-new cc/last-org-table-reference)))
 
@@ -790,13 +797,27 @@ clarity on region and mouse menu interaction.
 
 If the region is defined over multiple columns, then a Calc
 vector matrix is returned. See Info node `(org) Formula syntax
-for Calc' for more."
+for Calc' for more.
+
+If the buffer *Edit Formulas* is available (usually via
+`org-table-edit-formulas'), the reference will be inserted into
+it. If the point in *Edit Formulas* is at the beginning of line,
+it will treat the reference as a left hand side (lhs) assignment.
+
+See Info node `(org) References' for more on Org table field
+reference format."
   (interactive)
   (if (not (org-at-table-p))
       (error "Not in an Org table"))
 
   (when cc/last-org-table-reference
-    (let ((msg cc/last-org-table-reference))
+    (let ((msg cc/last-org-table-reference)
+          (formulas-buffer (get-buffer "*Edit Formulas*")))
+      (if formulas-buffer
+        (with-current-buffer formulas-buffer
+          (if (bolp)
+              (insert (format "%s = " msg))  ; treat reference as lhs assignment
+            (insert msg))))
       (message "Copied %s" msg)
       (kill-new msg))))
 
