@@ -323,6 +323,11 @@ from current buffer"])))))
                          :style toggle
                          :selected org-table-coordinate-overlays
                          :help "Toggle the display of row/column numbers in tables"])
+    (easy-menu-add-item menu nil
+                        ["Edit Table Formulas"
+                         org-table-edit-formulas
+                         :help " Edit the formulas of the current table in a separate buffer."])
+
     (easy-menu-add-item menu nil cc/insert-org-plot-menu)
     (easy-menu-add-item menu nil ["Run gnuplot"
                                   org-plot/gnuplot
