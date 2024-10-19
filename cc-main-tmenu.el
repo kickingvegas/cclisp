@@ -42,9 +42,8 @@
     ("s" "Save" save-buffer)]
 
    ["Edit"
+    :pad-keys t
     ("e" "Edit›" casual-editkit-edit-tmenu)
-    ("i" "Insert Character…" insert-char
-     :if-not casual-editkit-buffer-read-only-p)
     ("p" "Fill Paragraph" fill-paragraph
      :if-not casual-editkit-buffer-read-only-p)
     ("l" "Join line" join-line
@@ -55,7 +54,9 @@
      :if-not casual-editkit-buffer-read-only-p)
     ("I" "Korean Input"
      (lambda () (interactive)(set-input-method 'korean-hangul))
-     :transient nil)]
+     :transient nil)
+    ("E" "Emoji & Symbols›" casual-editkit-emoji-symbols-tmenu
+     :if-not casual-editkit-buffer-read-only-p)]
 
    ["Sexp"
     ("m" "Mark" mark-sexp)
@@ -71,10 +72,11 @@
     ("C" "Compile…" compile)
     ("g" "Magit Status" casual-editkit-select-magit-command
      :description casual-editkit-select-magit-command-description
-     :if casual-editkit-version-controlled-p)
-    ("h" "Highlight Symbol" symbol-overlay-put)
-    ("D" "Ediff Revision" cc/ediff-revision
-     :if casual-editkit-version-controlled-p :transient nil)]]
+     :if (lambda ()
+           (and (casual-editkit-package-magit-installed-p)
+                (casual-editkit-version-controlled-p))))
+    ("h" "Highlight Symbol" casual-editkit-symbol-overlay-put
+     :if casual-editkit-package-symbol-overlay-installed-p)]]
 
   [[;;"Bookmarks"
     ("B" "Bookmarks›" casual-editkit-bookmarks-tmenu)
