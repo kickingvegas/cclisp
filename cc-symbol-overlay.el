@@ -25,15 +25,15 @@
 ;;; Code:
 ;;(require 'symbol-overlay)
 ;;(require 'casual-lib)
-;; (require 'casual-symbol-overlay)
-;; (keymap-set symbol-overlay-map "C-o" #'casual-symbol-overlay-tmenu)
 
-(use-package casual-symbol-overlay
-  :ensure nil
-  :bind (:map
-         symbol-overlay-map
-         ("C-o" . casual-symbol-overlay-tmenu)))
+(require 'casual-symbol-overlay)
+(keymap-set symbol-overlay-map "C-o" #'casual-symbol-overlay-tmenu)
 
+;; (use-package casual-symbol-overlay
+;;   :ensure nil
+;;   :bind (:map
+;;          symbol-overlay-map
+;;          ("C-o" . casual-symbol-overlay-tmenu)))
 
 (provide 'cc-symbol-overlay)
 ;;; cc-symbol-overlay.el ends here
