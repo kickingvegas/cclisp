@@ -29,119 +29,48 @@
 (require 'google-translate-smooth-ui)
 (require 'webpaste)
 
-(transient-define-prefix cc/main-tmenu ()
-  "Main menu for Charles Choi."
-  [["File"
-    ("o" "Open›" casual-editkit-open-tmenu)
-    ("f" "Open file…" find-file)
-    ("d" "Open in Dired" dired-jump-other-window
-     :if (lambda () (buffer-file-name)))
-    ("b" "List Buffers" ibuffer)
-    ("R" "Recent Files" recentf-open-files)
-    ("j" "Goto Journal…" cc/select-journal-file)
-    ("s" "Save" save-buffer)]
+(defvar cc-main-tmenu-customize-enable t
+  "If t then enable Casual menu customizations.")
 
-   ["Edit"
-    :pad-keys t
-    ("e" "Edit›" casual-editkit-edit-tmenu)
-    ("p" "Fill Paragraph" fill-paragraph
-     :if-not casual-editkit-buffer-read-only-p)
-    ("l" "Join line" join-line
-     :transient nil
-     :if-not casual-editkit-buffer-read-only-p)
-    ("C-o" "Open line" open-line
-     :transient t
-     :if-not casual-editkit-buffer-read-only-p)
-    ("I" "Korean Input"
-     (lambda () (interactive)(set-input-method 'korean-hangul))
-     :transient nil)
-    ("E" "Emoji & Symbols›" casual-editkit-emoji-symbols-tmenu
-     :if-not casual-editkit-buffer-read-only-p)]
+(when (and cc-main-tmenu-customize-enable (not (featurep 'cc-main-tmenu)))
+  ;; modify `casual-editkit-main-tmenu'
+  (transient-append-suffix 'casual-editkit-main-tmenu "R"
+    '("j" "Goto Journal…" cc/select-journal-file))
 
-   ["Sexp"
-    ("m" "Mark" mark-sexp)
-    ("c" "Copy" casual-editkit-copy-sexp)
-    ("k" "Kill (Cut)" kill-sexp
-     :if-not casual-editkit-buffer-read-only-p)
-    ("t" "Transpose" transpose-sexps
-     :if-not casual-editkit-buffer-read-only-p)]
+  (transient-append-suffix 'casual-editkit-main-tmenu "C-o"
+    '("I" "Korean Input"
+      (lambda () (interactive)(set-input-method 'korean-hangul))
+      :transient nil))
 
-   ["Tools"
-    ("T" "Tools›" cc/tools-tmenu)
-    ("a" "Org Agenda" org-agenda)
-    ("C" "Compile…" compile)
-    ("g" "Magit Status" casual-editkit-select-magit-command
-     :description casual-editkit-select-magit-command-description
-     :if (lambda ()
-           (and (casual-editkit-package-magit-installed-p)
-                (casual-editkit-version-controlled-p))))
-    ("h" "Highlight Symbol" casual-editkit-symbol-overlay-put
-     :if casual-editkit-package-symbol-overlay-installed-p)]]
+  ;; modify `casual-editkit-tools-tmenu'
+  (transient-append-suffix 'casual-editkit-tools-tmenu "w"
+    '("P" "Password›" password-store-menu))
 
-  [[;;"Bookmarks"
-    ("B" "Bookmarks›" casual-editkit-bookmarks-tmenu)
-    ("J" "Jump to Bookmark…" bookmark-jump)]
+  (transient-append-suffix 'casual-editkit-tools-tmenu "M-e"
+    '("a" "Call" cc/call-nanp-phone-number
+      :inapt-if-not use-region-p))
 
-   [;;"Window"
-    ("w" "Window›" casual-editkit-windows-tmenu)
-    ("M-n" "New Frame" make-frame-command)]
+  (transient-append-suffix 'casual-editkit-tools-tmenu "a"
+    '("m" "Maps" cc/open-region-in-apple-maps
+      :inapt-if-not use-region-p))
 
-   [;;"Search/Replace"
-    ("/" "Search/Replace›" casual-editkit-search-tmenu)
-    ("P" "Project›" casual-editkit-project-tmenu)]
+  (transient-append-suffix 'casual-editkit-tools-tmenu "m"
+    '("M-s" "Say" cc/say-region
+      :inapt-if-not use-region-p))
 
-   [("M" "Macros›" casual-editkit-macro-tmenu)]]
+  (transient-append-suffix 'casual-editkit-tools-tmenu "M-s"
+    '("M-t" "Translate" google-translate-smooth-translate
+      :inapt-if-not use-region-p))
 
-  ;; casual-editkit-cursor-navigation-group
+  (transient-append-suffix 'casual-editkit-tools-tmenu "M-t"
+    '("M-p" "Webpaste" webpaste-paste-region
+      :inapt-if-not use-region-p))
 
-  [:class transient-row
-   (casual-lib-quit-one)
-   ("r" "Registers›" casual-editkit-registers-tmenu)
-   ("U" "Undo" undo :transient t)
-   ("," "Settings›" casual-editkit-settings-tmenu)
-   (casual-lib-quit-all)
+  (transient-append-suffix 'casual-editkit-tools-tmenu "z"
+    '("F" "Fireplace" fireplace))
 
-   ("x" "Exit Emacs" save-buffers-kill-emacs)])
-
-
-(transient-define-prefix cc/tools-tmenu ()
-  "Menu for ‘Tools’ commands.
-
-Tools specific to Charles Choi "
-  ["Tools"
-   ["Shells/REPLs"
-    ("s" "Shell" shell)
-    ("e" "Eshell" eshell)
-    ("i" "IELM" ielm)
-    ("t" "term" term)
-    ("p" "Python" run-python)]
-
-   ["Utilities"
-    ("c" "Calc" calc)
-    ("r" "RE-Builder" re-builder)
-    ("w" "Word Count" (lambda () (interactive) (call-interactively #'count-words)))
-    ("P" "Password›" password-store-menu)]
-
-   ["Almanac"
-    ("C" "World Clock" world-clock)
-    ("S" "Sunrise/Sunset" sunrise-sunset)
-    ("W" "Weather" weather)]
-
-   ["Region"
-    :if use-region-p
-    ("C" "Call" cc/call-nanp-phone-number)
-    ("m" "Maps" cc/open-region-in-apple-maps)
-    ("M-s" "Say" cc/say-region)
-    ("M-t" "Translate" google-translate-smooth-translate)
-    ("M-p" "Webpaste" webpaste-paste-region)]
-
-   ["Fun"
-    ("T" "Tetris" tetris)
-    ("z" "Zone" zone)
-    ("F" "Fireplace" fireplace)
-    ("Z" "Snow" snow)]]
-
-  casual-editkit-navigation-group)
+  (transient-append-suffix 'casual-editkit-tools-tmenu "F"
+    '("Z" "Snow" snow)))
 
 (provide 'cc-main-tmenu)
 ;;; cc-main-tmenu.el ends here

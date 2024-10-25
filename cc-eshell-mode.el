@@ -27,6 +27,7 @@
 (require 'company)
 (require 'hl-line)
 (require 'helm-eshell)
+(require 'eshell-git-prompt)
 
 (defvar eshell-mode-map)
 (defvar eshell-visual-options)
@@ -44,6 +45,10 @@
                               (replace-regexp-in-string
                                (concat "^" (getenv "HOME")) "~" (eshell/pwd)))
                             'face `(:foreground "orange red"))
+                (if (and (not (file-remote-p default-directory))
+                         (eshell-git-prompt--branch-name))
+                    (format " (%s)" (eshell-git-prompt--branch-name))
+                  "")
                 "\n┗━━ "
                 (if (= (user-uid) 0) "# " "$ "))))
 
