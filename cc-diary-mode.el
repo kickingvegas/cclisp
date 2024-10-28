@@ -30,5 +30,8 @@
 (add-hook 'diary-list-entries-hook #'diary-include-other-diary-files)
 (add-hook 'diary-list-entries-hook #'diary-sort-entries t)
 
+(add-hook 'diary-nongregorian-listing-hook 'diary-chinese-list-entries)
+(add-hook 'diary-nongregorian-marking-hook 'diary-chinese-mark-entries)
+
 (provide 'cc-diary-mode)
 ;;; cc-diary-mode.el ends here

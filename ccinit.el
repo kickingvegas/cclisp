@@ -100,6 +100,7 @@
 (require 'cc-calc-mode)
 (require 'cc-re-builder)
 (require 'cc-symbol-overlay)
+(require 'cc-calendar-mode)
 (require 'password-store-menu)
 
 ;;; Configure MELPA Packages

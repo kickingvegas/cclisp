@@ -208,6 +208,8 @@
  '(calendar-latitude 37.7643)
  '(calendar-location-name '(format "%s, San Francisco" "Inner Sunset"))
  '(calendar-longitude -122.4753)
+ '(calendar-mark-holidays-flag t)
+ '(calendar-move-hook '(calendar-update-mode-line))
  '(case-fold-search t)
  '(casual-lib-use-unicode t)
  '(cc-dired-listing-switches
