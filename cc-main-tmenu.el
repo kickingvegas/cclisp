@@ -50,7 +50,7 @@
     '("a" "Call" cc/call-nanp-phone-number
       :inapt-if-not use-region-p))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "a"
+  (transient-append-suffix 'casual-editkit-tools-tmenu "M"
     '("m" "Maps" cc/open-region-in-apple-maps
       :inapt-if-not use-region-p))
 
