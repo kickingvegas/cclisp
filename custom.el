@@ -320,30 +320,14 @@
        (saved . "Org Files"))
       ("cclisp"
        (directory . "cclisp"))
-      ("Casual EditKit"
-       (directory . "casual-editkit"))
-      ("Casual Symbol Overlay"
-       (directory . "casual-symbol-overlay"))
-      ("Casual Bookmarks"
-       (directory . "casual-bookmarks"))
-      ("Casual RE Builder"
-       (directory . "casual-re-builder"))
+      ("Casual"
+       (directory . "casual"))
       ("Casual Suite"
        (directory . "casual-suite"))
-      ("Casual Lib"
-       (directory . "casual-lib"))
       ("Casual Avy"
        (directory . "casual-avy"))
-      ("Casual Calc"
-       (directory . "casual-calc"))
-      ("Casual Dired"
-       (directory . "casual-dired"))
-      ("Casual IBuffer"
-       (directory . "casual-ibuffer"))
-      ("Casual Info"
-       (directory . "casual-info"))
-      ("Casual I-Search"
-       (directory . "casual-isearch"))
+      ("Casual Symbol Overlay"
+       (directory . "casual-symbol-overlay"))
       ("Elisp Packages"
        (or
         (directory . ".config/emacs/elpa")
@@ -383,32 +367,12 @@
      ("Casual"
       ("Casual"
        (directory . "casual"))
-      ("Casual EditKit"
-       (directory . "casual-editkit"))
-      ("Casual Symbol Overlay"
-       (directory . "casual-symbol-overlay"))
-      ("Casual Agenda"
-       (directory . "casual-agenda"))
-      ("Casual Bookmarks"
-       (directory . "casual-bookmarks"))
-      ("Casual RE Builder"
-       (directory . "casual-re-builder"))
-      ("Casual Suite"
-       (directory . "casual-suite"))
-      ("Casual Lib"
-       (directory . "casual-lib"))
       ("Casual Avy"
        (directory . "casual-avy"))
-      ("Casual Calc"
-       (directory . "casual-calc"))
-      ("Casual Dired"
-       (directory . "casual-dired"))
-      ("Casual IBuffer"
-       (directory . "casual-ibuffer"))
-      ("Casual Info"
-       (directory . "casual-info"))
-      ("Casual I-Search"
-       (directory . "casual-isearch"))
+      ("Casual Symbol Overlay"
+       (directory . "casual-symbol-overlay"))
+      ("Casual Suite"
+       (directory . "casual-suite"))
       ("Documentation"
        (or
         (mode . makefile-mode)
@@ -429,31 +393,19 @@
         (directory . ".config/emacs/elpa")
         (directory . "EmacsMac.app/Contents/Resources/lisp"))))))
  '(ibuffer-saved-filters
-   '(("Documentation"
+   '(("Casual"
+      (directory . "elisp/casual"))
+     ("Documentation"
       (or
        (mode . makefile-mode)
        (mode . Info-mode)
        (mode . help-mode)))
-     ("Casual EditKit"
-      (directory . "casual-editkit"))
      ("Casual Symbol Overlay"
       (directory . "casual-symbol-overlay"))
      ("Casual Suite"
       (directory . "casual-suite"))
-     ("Casual Lib"
-      (directory . "casual-lib"))
      ("Casual Avy"
       (directory . "casual-avy"))
-     ("Casual Calc"
-      (directory . "casual-calc"))
-     ("Casual Dired"
-      (directory . "casual-dired"))
-     ("Casual IBuffer"
-      (directory . "casual-ibuffer"))
-     ("Casual Info"
-      (directory . "casual-info"))
-     ("Casual I-Search"
-      (directory . "casual-isearch"))
      ("cclisp"
       (directory . "cclisp"))
      ("Desktop"
