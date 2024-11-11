@@ -47,10 +47,10 @@
     '("P" "Password›" password-store-menu))
 
   (transient-append-suffix 'casual-editkit-tools-tmenu "M-e"
-    '("a" "Call" cc/call-nanp-phone-number
+    '("C-p" "Call" cc/call-nanp-phone-number
       :inapt-if-not use-region-p))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "M"
+  (transient-append-suffix 'casual-editkit-tools-tmenu "C-p"
     '("m" "Maps" cc/open-region-in-apple-maps
       :inapt-if-not use-region-p))
 
