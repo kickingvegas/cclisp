@@ -26,6 +26,7 @@
 (require 'markdown-mode)
 (require 'face-remap)
 (require 'cc-save-hooks)
+(require 'cc-style-text-menu)
 (require 'org-table)
 (require 'imenu)
 (defvar markdown-mode-map)
@@ -43,6 +44,7 @@
 (keymap-set markdown-mode-map "M-v" #'markdown-outline-previous)
 (keymap-set markdown-mode-map "C-v" #'markdown-outline-next)
 (keymap-set markdown-mode-map "M-<f6>" #'markdown-toggle-inline-images)
+(keymap-set markdown-mode-map "C-/" #'cc/emphasize-dwim)
 ;; (define-key markdown-mode-map [f13] 'markdown-preview)
 
 (add-hook 'markdown-mode-hook #'cc/save-hook-delete-trailing-whitespace)
