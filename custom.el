@@ -622,6 +622,7 @@
  '(user-mail-address "kickingvegas@gmail.com")
  '(vc-follow-symlinks nil)
  '(vc-make-backup-files nil)
+ '(view-read-only t)
  '(warning-suppress-types '((comp)))
  '(wdired-allow-to-change-permissions t)
  '(wgrep-auto-save-buffer t)
