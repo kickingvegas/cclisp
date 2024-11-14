@@ -41,8 +41,17 @@
 ;; '(calendar-mark-holidays-flag t)
 ;; '(calendar-move-hook '(calendar-update-mode-line))
 
+(defun casual-calendar ()
+  "Call Casual Calendar main menu.
+
+Function for calling `casual-calendar-tmenu'. Calls
+`calendar-redraw' to fix window sizing."
+  (interactive)
+  (call-interactively #'casual-calendar-tmenu)
+  (calendar-redraw))
+
 (transient-define-prefix casual-calendar-tmenu ()
-  "calendar menu"
+  "Casual Calendar Main menu."
   casual-calendar--navigation-group
 
   [["Conversions"
@@ -77,7 +86,7 @@
    ("q" "Quit" calendar-exit)])
 
 (transient-define-prefix casual-calendar-diary-and-goto-tmenu ()
-  "goto menu"
+  "Casual Calendar Diary & Goto menu."
 
   ["Diary and Goto"
    ["Diary Insert"
@@ -95,7 +104,7 @@
   casual-calendar--menu-navigation-group)
 
 (transient-define-prefix casual-calendar-conversions-tmenu ()
-  "conversions menu"
+  "Casual Calendar Conversions menu."
 
   ["Calendars"
    [("a" "Astronomical›" casual-calendar-astro-tmenu)
@@ -126,7 +135,7 @@
    (casual-lib-quit-all)])
 
 (transient-define-prefix casual-calendar-lunar-tmenu ()
-  "Lunar calendar menu"
+  "Casual Calendar Lunar Calendar menu."
   ["Lunar (Chinese) Calendar"
    ["Date"
     ("c" "Date at cursor" calendar-chinese-print-date :transient t)
@@ -146,7 +155,7 @@
   casual-calendar--menu-navigation-group)
 
 (transient-define-prefix casual-calendar-astro-tmenu ()
-  "Astronomical calendar menu"
+  "Casual Calendar Astronomical calendar menu."
   ["Astronomical Calendar"
    ("c" "Day number at cursor" calendar-astro-print-day-number :transient t)
    ("G" "Goto…" calendar-astro-goto-day-number :transient t)]
@@ -155,7 +164,7 @@
   casual-calendar--menu-navigation-group)
 
 (transient-define-prefix casual-calendar-islamic-tmenu ()
-  "Islamic calendar menu"
+  "Casual Calendar Islamic calendar menu."
   ["Islamic Calendar"
    ("c" "Date at cursor" calendar-islamic-print-date :transient t)
    ("G" "Goto…" calendar-islamic-goto-date :transient t)]
@@ -164,7 +173,7 @@
   casual-calendar--menu-navigation-group)
 
 (transient-define-prefix casual-calendar-hebrew-tmenu ()
-  "Hebrew calendar menu"
+  "Casual Calendar Hebrew calendar menu."
   ["Hebrew Calendar"
    ("c" "Date at cursor" calendar-hebrew-print-date :transient t)
    ("G" "Goto…" calendar-hebrew-goto-date :transient t)]
@@ -173,7 +182,7 @@
   casual-calendar--menu-navigation-group)
 
 (transient-define-prefix casual-calendar-bahai-tmenu ()
-  "Bahai calendar menu"
+  "Casual Calendar Bahai calendar menu."
 
   ["Bahai Calendar"
    ("c" "Date at cursor" calendar-bahai-print-date :transient t)
@@ -183,7 +192,7 @@
   casual-calendar--menu-navigation-group)
 
 (transient-define-prefix casual-calendar-ethiopic-tmenu ()
-  "Ethiopic calendar menu"
+  "Casual Calendar Ethiopic calendar menu."
   ["Ethiopic Calendar"
    ("c" "Date at cursor" calendar-ethiopic-print-date :transient t)
    ("G" "Goto…" calendar-ethiopic-goto-date :transient t)]
@@ -192,7 +201,7 @@
   casual-calendar--menu-navigation-group)
 
 (transient-define-prefix casual-calendar-french-tmenu ()
-  "French revolutionary calendar menu"
+  "Casual Calendar French revolutionary calendar menu."
   ["French Revolutionary Calendar"
    ("c" "Date at cursor" calendar-french-print-date :transient t)
    ("G" "Goto…" calendar-french-goto-date :transient t)]
@@ -201,7 +210,7 @@
   casual-calendar--menu-navigation-group)
 
 (transient-define-prefix casual-calendar-julian-tmenu ()
-  "Julian calendar menu"
+  "Casual Calendar Julian calendar menu."
   ["Julian Calendar"
    ("c" "Date at cursor" calendar-julian-print-date :transient t)
    ("G" "Goto…" calendar-julian-goto-date :transient t)]
@@ -210,7 +219,7 @@
   casual-calendar--menu-navigation-group)
 
 (transient-define-prefix casual-calendar-coptic-tmenu ()
-  "Coptic calendar menu"
+  "Casual Calendar Coptic calendar menu."
   ["Coptic Calendar"
    ("c" "Date at cursor" calendar-coptic-print-date :transient t)
    ("G" "Goto…" calendar-coptic-goto-date :transient t)]
@@ -218,7 +227,7 @@
   casual-calendar--menu-navigation-group)
 
 (transient-define-prefix casual-calendar-persian-tmenu ()
-  "Persian calendar menu"
+  "Casual Calendar Persian calendar menu."
   ["Persian Calendar"
    ("c" "Date at cursor" calendar-persian-print-date :transient t)
    ("G" "Goto…" calendar-persian-goto-date :transient t)]
@@ -227,7 +236,7 @@
   casual-calendar--menu-navigation-group)
 
 (transient-define-prefix casual-calendar-mayan-tmenu ()
-  "Mayan calendar menu"
+  "Casual Calendar Mayan calendar menu."
   [" Calendar"
    ("c" "Date at cursor" calendar-mayan-print-date :transient t)
    ("G" "Goto long count…" calendar-mayan-goto-long-count-date :transient t)]
@@ -235,7 +244,7 @@
   casual-calendar--navigation-group
   casual-calendar--menu-navigation-group)
 
-(keymap-set calendar-mode-map "C-o" #'casual-calendar-tmenu)
+(keymap-set calendar-mode-map "C-o" #'casual-calendar)
 ; (add-hook 'calendar-mode-hook #'calendar-mark-holidays)
 (add-hook 'calendar-mode-hook #'diary-mark-entries)
 
