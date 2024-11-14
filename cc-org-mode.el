@@ -326,6 +326,8 @@ SUFFIX - string appended to prefix
 (keymap-set org-mode-map "M-j" #'cc/journal-entry)
 (keymap-set org-mode-map "C-v" #'org-next-visible-heading)
 (keymap-set org-mode-map "C-/" #'cc/emphasize-dwim)
+(keymap-set org-mode-map "C-_" #'cc/emphasize-dwim)
+(keymap-set org-mode-map "s-e" #'cc/emphasize-dwim)
 (keymap-set org-mode-map "C-6" #'org-goto)
 
 (add-hook 'org-agenda-finalize-hook 'hl-line-mode)
