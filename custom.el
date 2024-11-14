@@ -467,6 +467,7 @@
  '(markdown-header-scaling nil)
  '(mouse-autoselect-window 0.25)
  '(mouse-wheel-progressive-speed t)
+ '(ns-alternate-modifier 'super)
  '(org-agenda-files '("~/org/"))
  '(org-agenda-include-diary t)
  '(org-agenda-sorting-strategy
