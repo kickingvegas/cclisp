@@ -212,9 +212,6 @@
  '(calendar-move-hook '(calendar-update-mode-line))
  '(case-fold-search t)
  '(casual-lib-use-unicode t)
- '(cc-dired-listing-switches
-   '("--human-readable" "--group-directories-first" "--time-style=long-iso"))
- '(cchoi-use-unicode-symbols t)
  '(column-number-mode t)
  '(current-language-environment "English")
  '(cursor-type 'bar)
@@ -311,6 +308,8 @@
    '(("melpa app"
       ("melpa-app"
        (directory . "melpa-app"))
+      ("Org Agenda"
+      (name . "Org Agenda"))
       ("Documentation"
        (or
         (mode . makefile-mode)
@@ -333,10 +332,12 @@
         (directory . ".config/emacs/elpa")
         (directory . "EmacsMac.app/Contents/Resources/lisp"))))
      ("Org"
-      ("Documentation"
-       (saved . "Documentation"))
+      ("Org Agenda"
+      (name . "Org Agenda"))
       ("Org Files"
        (saved . "Org Files"))
+      ("Documentation"
+       (saved . "Documentation"))
       ("cclisp"
        (directory . "cclisp"))
       ("Elisp Packages"
@@ -378,6 +379,8 @@
         (mode . makefile-mode)
         (mode . Info-mode)
         (mode . help-mode)))
+      ("Org Agenda"
+       (name . "Org Agenda"))
       ("cclisp"
        (directory . "cclisp"))
       ("Desktop"
@@ -393,7 +396,9 @@
         (directory . ".config/emacs/elpa")
         (directory . "EmacsMac.app/Contents/Resources/lisp"))))))
  '(ibuffer-saved-filters
-   '(("Casual"
+   '(("Org Agenda"
+      (name . "Org Agenda"))
+     ("Casual"
       (directory . "elisp/casual"))
      ("Documentation"
       (or
