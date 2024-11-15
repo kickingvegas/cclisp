@@ -37,11 +37,7 @@
 (require 'project)
 (require 'ace-window)
 (require 'which-func)
-
-(defcustom cchoi-use-unicode-symbols nil
-  "If non-nil then use Unicode symbols whenever appropriate for labels."
-  :type 'boolean
-  :group 'cchoi)
+(require 'casual-lib)
 
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
@@ -868,6 +864,16 @@ See `cc/org-table-range' for more on RANGE object."
   Workaround fix for mouse rectangle selects."
   (interactive)
   (delete-overlay mouse-secondary-overlay))
+
+(defun cc/toggle-unicode ()
+  "Toggle Unicode symbols."
+  (interactive)
+  (if prettify-symbols-mode
+      (prettify-symbols-mode -1)
+    (prettify-symbols-mode nil))
+  (if casual-lib-use-unicode
+      (customize-set-variable 'casual-lib-use-unicode nil)
+    (customize-set-variable 'casual-lib-use-unicode t)))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

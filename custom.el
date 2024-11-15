@@ -212,9 +212,6 @@
  '(calendar-move-hook '(calendar-update-mode-line))
  '(case-fold-search t)
  '(casual-lib-use-unicode t)
- '(cc-dired-listing-switches
-   '("--human-readable" "--group-directories-first" "--time-style=long-iso"))
- '(cchoi-use-unicode-symbols t)
  '(column-number-mode t)
  '(current-language-environment "English")
  '(cursor-type 'bar)
@@ -311,6 +308,8 @@
    '(("melpa app"
       ("melpa-app"
        (directory . "melpa-app"))
+      ("Org Agenda"
+      (name . "Org Agenda"))
       ("Documentation"
        (or
         (mode . makefile-mode)
@@ -333,10 +332,12 @@
         (directory . ".config/emacs/elpa")
         (directory . "EmacsMac.app/Contents/Resources/lisp"))))
      ("Org"
-      ("Documentation"
-       (saved . "Documentation"))
+      ("Org Agenda"
+      (name . "Org Agenda"))
       ("Org Files"
        (saved . "Org Files"))
+      ("Documentation"
+       (saved . "Documentation"))
       ("cclisp"
        (directory . "cclisp"))
       ("Elisp Packages"
@@ -378,6 +379,8 @@
         (mode . makefile-mode)
         (mode . Info-mode)
         (mode . help-mode)))
+      ("Org Agenda"
+       (name . "Org Agenda"))
       ("cclisp"
        (directory . "cclisp"))
       ("Desktop"
@@ -393,7 +396,9 @@
         (directory . ".config/emacs/elpa")
         (directory . "EmacsMac.app/Contents/Resources/lisp"))))))
  '(ibuffer-saved-filters
-   '(("Casual"
+   '(("Org Agenda"
+      (name . "Org Agenda"))
+     ("Casual"
       (directory . "elisp/casual"))
      ("Documentation"
       (or
@@ -466,6 +471,8 @@
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
  '(mouse-autoselect-window 0.25)
+ '(mouse-wheel-progressive-speed t)
+ '(ns-alternate-modifier 'super)
  '(org-agenda-files '("~/org/"))
  '(org-agenda-include-diary t)
  '(org-agenda-sorting-strategy
@@ -585,6 +592,7 @@
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
    '(eshell-git-prompt password-store-menu modus-themes eldoc erc faceup flymake idlwave jsonrpc project soap-client tramp verilog-mode xref symbol-overlay org-ql flycheck-package package-lint iedit doct scpaste snow paredit orgtbl-aggregate transpose-frame diff-hl keycast edit-indirect ox-trac google-translate org wgrep js2-mode rainbow-mode use-package bind-key reveal-in-folder elfeed ob-swiftui ob-swift csv-mode company-restclient visual-regexp-steroids visual-regexp citar math-symbol-lists helm-bibtex ox-gist org-ref org-re-reveal webpaste company-org-block company eglot gnuplot ob-restclient restclient ox-slack good-scroll svg-clock disk-usage expand-region helm-pass password-store which-key org-outline-numbering org-superstar osx-dictionary spotlight ebib auto-complete plantuml-mode tj3-mode ledger-mode yasnippet-snippets yasnippet htmlize calfw kanban fireplace treemacs neotree smart-mode-line-powerline-theme pbcopy ox-jira ox-gfm helm-swoop helm ztree yaml-mode swift-mode sr-speedbar solarized-theme python-mode pkg-info markdown-mode magit json-mode graphviz-dot-mode google-this go-mode autopair))
+ '(pixel-scroll-precision-mode t)
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
  '(plantuml-indent-level 4)
@@ -620,6 +628,7 @@
  '(user-mail-address "kickingvegas@gmail.com")
  '(vc-follow-symlinks nil)
  '(vc-make-backup-files nil)
+ '(view-read-only t)
  '(warning-suppress-types '((comp)))
  '(wdired-allow-to-change-permissions t)
  '(wgrep-auto-save-buffer t)
@@ -641,7 +650,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((((type mac ns)) (:inherit nil :extend nil :stipple nil :background "mac:textBackgroundColor" :foreground "mac:textColor" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight medium :height 151 :width normal :foundry "nil" :family "Menlo")) (((type x pgtk)) (:extend nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Noto Sans Mono"))))
+ '(default ((((type mac)) (:inherit nil :extend nil :stipple nil :background "mac:textBackgroundColor" :foreground "mac:textColor" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight medium :height 151 :width normal :foundry "nil" :family "Menlo")) (((type ns)) (:inherit nil :extend nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight medium :height 151 :width normal :foundry "nil" :family "Menlo")) (((type x pgtk)) (:extend nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Noto Sans Mono"))))
  '(Man-overstrike ((((class color) (background light)) (:inherit bold :foreground "dark slate blue")) (((class color) (background dark)) (:inherit bold :foreground "gold")) (((type tty) (class color)) (:inherit bold :foreground "gold"))))
  '(Man-underline ((((type x mac ns) (class color) (background light)) (:inherit underline :foreground "magenta")) (((type x mac ns) (class color) (background dark)) (:inherit underline :foreground "lawn green")) (((type tty) (class color)) (:inherit underline :foreground "lawn green"))))
  '(calendar-today ((t (:foreground "magenta" :underline "dark violet" :height 1.0))))

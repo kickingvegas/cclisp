@@ -54,7 +54,7 @@
 ;;(keymap-global-set "\r" 'newline-and-indent)
 
 (keymap-global-set "<f1>" #'save-buffer)
-(keymap-global-set "<f2>" #'other-window)
+(keymap-global-set "<f2>" #'ibuffer)
 (keymap-global-set "A-<return>" #'other-window)
 (keymap-global-set "<f3>" #'save-buffers-kill-emacs)
 (keymap-global-set "M-<f3>" #'casual-editkit-windows-tmenu)
