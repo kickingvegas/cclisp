@@ -26,6 +26,7 @@
 (require 'org)
 (require 'org-capture)
 (require 'org-agenda)
+(require 'org-mouse)
 (require 'doct)
 (require 'org-superstar)
 (require 'face-remap)
