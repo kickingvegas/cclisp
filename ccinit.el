@@ -25,9 +25,13 @@
 ;;; Code:
 (setenv "CDPATH" ".:..:~")
 
-(when (eq window-system 'mac)
+(when (or (eq window-system 'mac) (eq window-system 'ns))
+  (setenv "PATH" (concat "/opt/local/bin:" (getenv "PATH")))
   (setenv "PATH" (concat "/opt/local/libexec/gnubin:" (getenv "PATH")))
-  (setq exec-path (push '"/opt/local/libexec/gnubin" exec-path)))
+  (setenv "PATH" (concat (getenv "HOME") "/bin:" (getenv "PATH")))
+  (add-to-list 'exec-path "/opt/local/bin")
+  (add-to-list 'exec-path "/opt/local/libexec/gnubin")
+  (add-to-list 'exec-path (concat (getenv "HOME") "/bin")))
 
 (require 'use-package)
 (require 'expand-region)
@@ -47,20 +51,22 @@
 ;;   (turn-on-pbcopy))
 
 ;;(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-(setq mouse-wheel-progressive-speed nil)
-(setq mouse-wheel-follow-mouse 't)
+;;(setq mouse-wheel-progressive-speed nil)
+;;(setq mouse-wheel-follow-mouse 't)
 ;;(setq scroll-step 1)
 
 (when (eq window-system 'mac)
     (setq mac-mouse-wheel-mode t)
     (setq mac-mouse-wheel-smooth-scroll t))
-;;(pixel-scroll-precision-mode 1)
+
 ;;(setq pixel-scroll-precision-large-scroll-height 10.0)
+
+(when (eq window-system 'ns)
+  (setq mac-command-modifier 'meta))
 
 ;;(require 'avy)
 (require 'cclisp)
 (require 'cc-ibuffer-mode)
-(require 'cc-diary-mode)
 (require 'cc-prog-mode)
 (require 'cc-emacs-lisp-mode)
 (require 'cc-text-mode)
@@ -75,6 +81,7 @@
 (require 'cc-js-mode)
 (require 'cc-tetris-mode)
 (require 'cc-eshell-mode)
+(require 'cc-shell-mode)
 (require 'cc-elfeed-mode)
 (require 'cc-google-translate)
 (require 'cc-repeat-mode)
@@ -100,6 +107,7 @@
 (require 'cc-calc-mode)
 (require 'cc-re-builder)
 (require 'cc-symbol-overlay)
+(require 'cc-calendar-mode)
 (require 'password-store-menu)
 
 ;;; Configure MELPA Packages

@@ -37,11 +37,7 @@
 (require 'project)
 (require 'ace-window)
 (require 'which-func)
-
-(defcustom cchoi-use-unicode-symbols nil
-  "If non-nil then use Unicode symbols whenever appropriate for labels."
-  :type 'boolean
-  :group 'cchoi)
+(require 'casual-lib)
 
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
@@ -868,6 +864,36 @@ See `cc/org-table-range' for more on RANGE object."
   Workaround fix for mouse rectangle selects."
   (interactive)
   (delete-overlay mouse-secondary-overlay))
+
+(defun cc/toggle-unicode ()
+  "Toggle Unicode symbols."
+  (interactive)
+  (if prettify-symbols-mode
+      (prettify-symbols-mode -1)
+    (prettify-symbols-mode nil))
+  (if casual-lib-use-unicode
+      (customize-set-variable 'casual-lib-use-unicode nil)
+    (customize-set-variable 'casual-lib-use-unicode t)))
+
+(defun cc/macports ()
+    "Run MacPorts."
+    (interactive)
+    (term "~/bin/port.sh")
+    (rename-buffer "*macports*"))
+
+(defun cc/--next-sexp-raw ()
+  "Raw implementation to move point to the beginning of the next sexp.
+
+This function has no error checking."
+  (forward-sexp 2)
+  (backward-sexp))
+
+(defun cc/next-sexp ()
+  "Move point to beginning of the next balanced expression (sexp)."
+  (interactive)
+  (condition-case nil
+      (cc/--next-sexp-raw)
+    (error (message "Unable to move point to next balanced expression (sexp)."))))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

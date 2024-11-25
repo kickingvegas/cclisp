@@ -208,11 +208,14 @@
  '(calendar-latitude 37.7643)
  '(calendar-location-name '(format "%s, San Francisco" "Inner Sunset"))
  '(calendar-longitude -122.4753)
+ '(calendar-mark-diary-entries-flag t)
+ '(calendar-mark-holidays-flag t)
+ '(calendar-move-hook
+   '(calendar-update-mode-line
+     (lambda nil
+       (diary-view-entries 1))))
  '(case-fold-search t)
  '(casual-lib-use-unicode t)
- '(cc-dired-listing-switches
-   '("--human-readable" "--group-directories-first" "--time-style=long-iso"))
- '(cchoi-use-unicode-symbols t)
  '(column-number-mode t)
  '(current-language-environment "English")
  '(cursor-type 'bar)
@@ -222,6 +225,10 @@
  '(dabbrev-upcase-means-case-search t)
  '(delete-by-moving-to-trash t)
  '(delete-selection-mode t)
+ '(diary-list-entries-hook '(diary-sort-entries))
+ '(diary-mark-entries-hook nil)
+ '(diary-nongregorian-listing-hook '(diary-chinese-list-entries))
+ '(diary-nongregorian-marking-hook '(diary-chinese-mark-entries))
  '(dired-auto-revert-buffer t)
  '(dired-dwim-target 'dired-dwim-target-next)
  '(dired-guess-shell-alist-user '(("" "open")))
@@ -309,6 +316,8 @@
    '(("melpa app"
       ("melpa-app"
        (directory . "melpa-app"))
+      ("Org Agenda"
+       (name . "Org Agenda"))
       ("Documentation"
        (or
         (mode . makefile-mode)
@@ -318,45 +327,31 @@
        (saved . "Org Files"))
       ("cclisp"
        (directory . "cclisp"))
-      ("Casual EditKit"
-       (directory . "casual-editkit"))
-      ("Casual Symbol Overlay"
-       (directory . "casual-symbol-overlay"))
-      ("Casual Bookmarks"
-       (directory . "casual-bookmarks"))
-      ("Casual RE Builder"
-       (directory . "casual-re-builder"))
+      ("Casual"
+       (directory . "casual"))
       ("Casual Suite"
        (directory . "casual-suite"))
-      ("Casual Lib"
-       (directory . "casual-lib"))
       ("Casual Avy"
        (directory . "casual-avy"))
-      ("Casual Calc"
-       (directory . "casual-calc"))
-      ("Casual Dired"
-       (directory . "casual-dired"))
-      ("Casual IBuffer"
-       (directory . "casual-ibuffer"))
-      ("Casual Info"
-       (directory . "casual-info"))
-      ("Casual I-Search"
-       (directory . "casual-isearch"))
+      ("Casual Symbol Overlay"
+       (directory . "casual-symbol-overlay"))
       ("Elisp Packages"
        (or
         (directory . ".config/emacs/elpa")
-        (directory . "EmacsMac.app/Contents/Resources/lisp"))))
+        (directory . "Emacs.app/Contents/Resources/lisp"))))
      ("Org"
-      ("Documentation"
-       (saved . "Documentation"))
+      ("Org Agenda"
+       (name . "Org Agenda"))
       ("Org Files"
        (saved . "Org Files"))
+      ("Documentation"
+       (saved . "Documentation"))
       ("cclisp"
        (directory . "cclisp"))
       ("Elisp Packages"
        (or
         (directory . ".config/emacs/elpa")
-        (directory . "EmacsMac.app/Contents/Resources/lisp"))))
+        (directory . "Emacs.app/Contents/Resources/lisp"))))
      ("Blog"
       ("devnull Blog"
        (or
@@ -377,41 +372,23 @@
       ("Elisp Packages"
        (or
         (directory . ".config/emacs/elpa")
-        (directory . "EmacsMac.app/Contents/Resources/lisp"))))
+        (directory . "Emacs.app/Contents/Resources/lisp"))))
      ("Casual"
       ("Casual"
        (directory . "casual"))
-      ("Casual EditKit"
-       (directory . "casual-editkit"))
-      ("Casual Symbol Overlay"
-       (directory . "casual-symbol-overlay"))
-      ("Casual Agenda"
-       (directory . "casual-agenda"))
-      ("Casual Bookmarks"
-       (directory . "casual-bookmarks"))
-      ("Casual RE Builder"
-       (directory . "casual-re-builder"))
-      ("Casual Suite"
-       (directory . "casual-suite"))
-      ("Casual Lib"
-       (directory . "casual-lib"))
       ("Casual Avy"
        (directory . "casual-avy"))
-      ("Casual Calc"
-       (directory . "casual-calc"))
-      ("Casual Dired"
-       (directory . "casual-dired"))
-      ("Casual IBuffer"
-       (directory . "casual-ibuffer"))
-      ("Casual Info"
-       (directory . "casual-info"))
-      ("Casual I-Search"
-       (directory . "casual-isearch"))
+      ("Casual Symbol Overlay"
+       (directory . "casual-symbol-overlay"))
+      ("Casual Suite"
+       (directory . "casual-suite"))
       ("Documentation"
        (or
         (mode . makefile-mode)
         (mode . Info-mode)
         (mode . help-mode)))
+      ("Org Agenda"
+       (name . "Org Agenda"))
       ("cclisp"
        (directory . "cclisp"))
       ("Desktop"
@@ -425,33 +402,23 @@
       ("Elisp Packages"
        (or
         (directory . ".config/emacs/elpa")
-        (directory . "EmacsMac.app/Contents/Resources/lisp"))))))
+        (directory . "Emacs.app/Contents/Resources/lisp"))))))
  '(ibuffer-saved-filters
-   '(("Documentation"
+   '(("Org Agenda"
+      (name . "Org Agenda"))
+     ("Casual"
+      (directory . "elisp/casual"))
+     ("Documentation"
       (or
        (mode . makefile-mode)
        (mode . Info-mode)
        (mode . help-mode)))
-     ("Casual EditKit"
-      (directory . "casual-editkit"))
      ("Casual Symbol Overlay"
       (directory . "casual-symbol-overlay"))
      ("Casual Suite"
       (directory . "casual-suite"))
-     ("Casual Lib"
-      (directory . "casual-lib"))
      ("Casual Avy"
       (directory . "casual-avy"))
-     ("Casual Calc"
-      (directory . "casual-calc"))
-     ("Casual Dired"
-      (directory . "casual-dired"))
-     ("Casual IBuffer"
-      (directory . "casual-ibuffer"))
-     ("Casual Info"
-      (directory . "casual-info"))
-     ("Casual I-Search"
-      (directory . "casual-isearch"))
      ("cclisp"
       (directory . "cclisp"))
      ("Desktop"
@@ -463,7 +430,7 @@
      ("Elisp Packages"
       (or
        (directory . ".config/emacs/elpa")
-       (directory . "EmacsMac.app/Contents/Resources/lisp")))
+       (directory . "Emacs.app/Contents/Resources/lisp")))
      ("programming"
       (or
        (derived-mode . prog-mode)
@@ -511,7 +478,9 @@
  '(mark-ring-max 6)
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
- '(mouse-autoselect-window 0.5)
+ '(mouse-autoselect-window 0.25)
+ '(mouse-wheel-progressive-speed t)
+ '(ns-alternate-modifier 'super)
  '(org-agenda-files '("~/org/"))
  '(org-agenda-include-diary t)
  '(org-agenda-sorting-strategy
@@ -523,6 +492,9 @@
  '(org-agenda-window-setup 'other-window)
  '(org-babel-python-command "python3")
  '(org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
+ '(org-clock-in-resume t)
+ '(org-clock-in-switch-to-state "IN_PROGRESS")
+ '(org-clock-out-switch-to-state "WAITING")
  '(org-clock-persist t)
  '(org-clock-sound "/System/Library/Sounds/Glass.aiff")
  '(org-confirm-babel-evaluate nil)
@@ -628,6 +600,7 @@
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
    '(eshell-git-prompt password-store-menu modus-themes eldoc erc faceup flymake idlwave jsonrpc project soap-client tramp verilog-mode xref symbol-overlay org-ql flycheck-package package-lint iedit doct scpaste snow paredit orgtbl-aggregate transpose-frame diff-hl keycast edit-indirect ox-trac google-translate org wgrep js2-mode rainbow-mode use-package bind-key reveal-in-folder elfeed ob-swiftui ob-swift csv-mode company-restclient visual-regexp-steroids visual-regexp citar math-symbol-lists helm-bibtex ox-gist org-ref org-re-reveal webpaste company-org-block company eglot gnuplot ob-restclient restclient ox-slack good-scroll svg-clock disk-usage expand-region helm-pass password-store which-key org-outline-numbering org-superstar osx-dictionary spotlight ebib auto-complete plantuml-mode tj3-mode ledger-mode yasnippet-snippets yasnippet htmlize calfw kanban fireplace treemacs neotree smart-mode-line-powerline-theme pbcopy ox-jira ox-gfm helm-swoop helm ztree yaml-mode swift-mode sr-speedbar solarized-theme python-mode pkg-info markdown-mode magit json-mode graphviz-dot-mode google-this go-mode autopair))
+ '(pixel-scroll-precision-mode t)
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
  '(plantuml-indent-level 4)
@@ -661,7 +634,9 @@
  '(trash-directory "~/.Trash")
  '(use-file-dialog nil)
  '(user-mail-address "kickingvegas@gmail.com")
+ '(vc-follow-symlinks nil)
  '(vc-make-backup-files nil)
+ '(view-read-only t)
  '(warning-suppress-types '((comp)))
  '(wdired-allow-to-change-permissions t)
  '(wgrep-auto-save-buffer t)
@@ -683,7 +658,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((((type mac ns)) (:inherit nil :extend nil :stipple nil :background "mac:textBackgroundColor" :foreground "mac:textColor" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight medium :height 151 :width normal :foundry "nil" :family "Menlo")) (((type x pgtk)) (:extend nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Noto Sans Mono"))))
+ '(default ((((type mac)) (:inherit nil :extend nil :stipple nil :background "mac:textBackgroundColor" :foreground "mac:textColor" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight medium :height 151 :width normal :foundry "nil" :family "Menlo")) (((type ns)) (:inherit nil :extend nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight medium :height 151 :width normal :foundry "nil" :family "Menlo")) (((type x pgtk)) (:extend nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Noto Sans Mono"))))
  '(Man-overstrike ((((class color) (background light)) (:inherit bold :foreground "dark slate blue")) (((class color) (background dark)) (:inherit bold :foreground "gold")) (((type tty) (class color)) (:inherit bold :foreground "gold"))))
  '(Man-underline ((((type x mac ns) (class color) (background light)) (:inherit underline :foreground "magenta")) (((type x mac ns) (class color) (background dark)) (:inherit underline :foreground "lawn green")) (((type tty) (class color)) (:inherit underline :foreground "lawn green"))))
  '(calendar-today ((t (:foreground "magenta" :underline "dark violet" :height 1.0))))

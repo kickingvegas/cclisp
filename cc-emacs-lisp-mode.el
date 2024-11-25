@@ -39,6 +39,10 @@
 (keymap-set emacs-lisp-mode-map "M-j" #'fill-paragraph)
 (keymap-set emacs-lisp-mode-map "M-n" #'cc/browse-forward-sexp)
 (keymap-set emacs-lisp-mode-map "M-p" #'cc/browse-backward-sexp)
+(keymap-set emacs-lisp-mode-map "C-<left>" #'backward-sexp)
+(keymap-set emacs-lisp-mode-map "C-<right>" #'forward-sexp)
+(keymap-set emacs-lisp-mode-map "C-<up>" #'backward-up-list)
+(keymap-set emacs-lisp-mode-map "C-<down>" #'down-list)
 
 (transient-define-prefix cc/edebug-tmenu ()
   :refresh-suffixes t

@@ -26,6 +26,7 @@
 (require 'org)
 (require 'org-capture)
 (require 'org-agenda)
+(require 'org-mouse)
 (require 'doct)
 (require 'org-superstar)
 (require 'face-remap)
@@ -268,6 +269,8 @@ SUFFIX - string appended to prefix
                             ("#+NAME:" . ?📇 )
                             ("#+TBLFM:" . ?🧮 )
                             ("#+PLOT:" . ?📊 )
+                            (":CREATED:" . ?𝛼 )
+                            ("CLOCK:" . ?⌛ )
                             ("[ ]" .  ?☐ )
                             ("[x]" . ?☑ )
                             ("[-]" . ?✈ ))))
@@ -325,7 +328,9 @@ SUFFIX - string appended to prefix
 (keymap-set org-mode-map "M-v" #'org-previous-visible-heading)
 (keymap-set org-mode-map "M-j" #'cc/journal-entry)
 (keymap-set org-mode-map "C-v" #'org-next-visible-heading)
-(keymap-set org-mode-map "C-/" #'org-emphasize)
+(keymap-set org-mode-map "C-/" #'cc/emphasize-dwim)
+(keymap-set org-mode-map "C-_" #'cc/emphasize-dwim)
+(keymap-set org-mode-map "s-e" #'cc/emphasize-dwim)
 (keymap-set org-mode-map "C-6" #'org-goto)
 
 (add-hook 'org-agenda-finalize-hook 'hl-line-mode)
@@ -333,7 +338,6 @@ SUFFIX - string appended to prefix
           (lambda ()
             (define-key org-agenda-mode-map
               [(double-mouse-1)] 'org-agenda-goto-mouse)))
-
 
 (keymap-set org-agenda-mode-map "<f1>" #'org-save-all-org-buffers)
 (keymap-set org-agenda-mode-map "M-p" #'org-agenda-previous-date-line)

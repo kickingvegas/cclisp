@@ -1,10 +1,9 @@
-;;; cc-diary-mode.el --- diary customization         -*- lexical-binding: t; -*-
+;;; cc-calendar-mode.el --- Calendar Configuration   -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2024  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
-
-;; Keywords: tools
+;; Keywords: calendar
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -24,11 +23,9 @@
 ;;
 
 ;;; Code:
+(require 'casual-calendar)
 
-(require 'diary-lib)
+(keymap-set calendar-mode-map "C-o" #'casual-calendar)
 
-(add-hook 'diary-list-entries-hook #'diary-include-other-diary-files)
-(add-hook 'diary-list-entries-hook #'diary-sort-entries t)
-
-(provide 'cc-diary-mode)
-;;; cc-diary-mode.el ends here
+(provide 'cc-calendar-mode)
+;;; cc-calendar-mode.el ends here

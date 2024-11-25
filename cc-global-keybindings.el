@@ -42,6 +42,7 @@
 (require 'casual-avy)
 (require 'cc-main-tmenu)
 (require 'casual-editkit)
+(require 'minibuffer)
 
 (keymap-global-set "C-=" #'er/expand-region)
 ;(keymap-global-set (kbd "M-g") 'goto-line)
@@ -54,7 +55,7 @@
 ;;(keymap-global-set "\r" 'newline-and-indent)
 
 (keymap-global-set "<f1>" #'save-buffer)
-(keymap-global-set "<f2>" #'other-window)
+(keymap-global-set "<f2>" #'ibuffer)
 (keymap-global-set "A-<return>" #'other-window)
 (keymap-global-set "<f3>" #'save-buffers-kill-emacs)
 (keymap-global-set "M-<f3>" #'casual-editkit-windows-tmenu)
@@ -167,6 +168,17 @@
 (keymap-global-set "C-<kp-6>" #'windmove-right)
 (keymap-global-set "C-<kp-0>" #'ace-select-window)
 (keymap-global-set "C-<kp-divide>" #'transpose-frame)
+
+(keymap-set minibuffer-mode-map "M-b" #'backward-sexp)
+(keymap-set minibuffer-mode-map "M-f" #'cc/next-sexp)
+
+(keymap-set minibuffer-local-shell-command-map "M-b" #'backward-sexp)
+(keymap-set minibuffer-local-shell-command-map "M-f" #'cc/next-sexp)
+
+(keymap-set minibuffer-mode-map "C-<left>" #'backward-sexp)
+(keymap-set minibuffer-mode-map "C-<right>" #'cc/next-sexp)
+(keymap-set minibuffer-mode-map "C-<up>" #'backward-up-list)
+(keymap-set minibuffer-mode-map "C-<down>" #'down-list)
 
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here

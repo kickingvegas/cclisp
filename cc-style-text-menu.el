@@ -83,6 +83,38 @@
          (markdown-insert-strike-through))
         (t nil)))
 
+(defun cc/emphasize-dwim ()
+  "DWIM emphasize text for Org or Markdown.
+
+This command will appropriately style either a region or the text
+the point is in depending on whether the current major mode is
+Org or Markdown. Selection of the emphasis style is done by
+mini-buffer command completion.
+
+If no region is defined, then the text amount is considered to be
+a balanced expression (sexp). A balanced expression is used as it
+can cover most cases of applying the style to text that is
+contiguous without spaces."
+  (interactive)
+  (let* ((styles (list "bold" "italic" "code"
+                       "underline" "verbatim" "strike" "remove"))
+         (choice (car (completing-read-multiple "Style: " styles))))
+    (when (not (use-region-p))
+      (beginning-of-thing 'sexp)
+      (mark-sexp))
+    (cond
+     ((string= choice "bold") (cc/emphasize-bold))
+     ((string= choice "italic") (cc/emphasize-italic))
+     ((string= choice "code") (cc/emphasize-code))
+     ((string= choice "verbatim") (cc/emphasize-verbatim))
+     ((string= choice "underline") (cc/emphasize-underline))
+     ((string= choice "strike") (cc/emphasize-strike-through))
+     ((string= choice "remove")
+      (if (derived-mode-p 'org-mode)
+          (org-emphasize ? )
+        (message "remove not supported for Markdown.")))
+     (t (message "ERROR: undefined choice: %s" choice)))))
+
 (easy-menu-define cc/emphasize-menu nil
   "Keymap for Emphasize Menu."
   '("Style"
