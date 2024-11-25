@@ -23,29 +23,9 @@
 ;;
 
 ;;; Code:
-(require 'calendar)
-(require 'casual-lib)
 (require 'casual-calendar)
 
-;; '(org-agenda-include-diary t)
-;; (add-hook 'diary-list-entries-hook #'diary-include-other-diary-files)
-;; (add-hook 'diary-list-entries-hook #'diary-sort-entries t)
-
-;; (add-hook 'diary-nongregorian-listing-hook 'diary-chinese-list-entries)
-;; (add-hook 'diary-nongregorian-marking-hook 'diary-chinese-mark-entries)
-;; (add-hook 'calendar-mode-hook #'diary-mark-entries)
-
-;; '(calendar-latitude 37.7643)
-;; '(calendar-location-name '(format "%s, San Francisco" "Inner Sunset"))
-;; '(calendar-longitude -122.4753)
-;; '(calendar-mark-holidays-flag t)
-;; '(calendar-move-hook '(calendar-update-mode-line))
-
-
-
 (keymap-set calendar-mode-map "C-o" #'casual-calendar)
-; (add-hook 'calendar-mode-hook #'calendar-mark-holidays)
-(add-hook 'calendar-mode-hook #'diary-mark-entries)
 
 (provide 'cc-calendar-mode)
 ;;; cc-calendar-mode.el ends here

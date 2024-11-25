@@ -208,8 +208,12 @@
  '(calendar-latitude 37.7643)
  '(calendar-location-name '(format "%s, San Francisco" "Inner Sunset"))
  '(calendar-longitude -122.4753)
+ '(calendar-mark-diary-entries-flag t)
  '(calendar-mark-holidays-flag t)
- '(calendar-move-hook '(calendar-update-mode-line))
+ '(calendar-move-hook
+   '(calendar-update-mode-line
+     (lambda nil
+       (diary-view-entries 1))))
  '(case-fold-search t)
  '(casual-lib-use-unicode t)
  '(column-number-mode t)
@@ -221,6 +225,10 @@
  '(dabbrev-upcase-means-case-search t)
  '(delete-by-moving-to-trash t)
  '(delete-selection-mode t)
+ '(diary-list-entries-hook '(diary-sort-entries))
+ '(diary-mark-entries-hook nil)
+ '(diary-nongregorian-listing-hook '(diary-chinese-list-entries))
+ '(diary-nongregorian-marking-hook '(diary-chinese-mark-entries))
  '(dired-auto-revert-buffer t)
  '(dired-dwim-target 'dired-dwim-target-next)
  '(dired-guess-shell-alist-user '(("" "open")))
@@ -309,7 +317,7 @@
       ("melpa-app"
        (directory . "melpa-app"))
       ("Org Agenda"
-      (name . "Org Agenda"))
+       (name . "Org Agenda"))
       ("Documentation"
        (or
         (mode . makefile-mode)
@@ -330,10 +338,10 @@
       ("Elisp Packages"
        (or
         (directory . ".config/emacs/elpa")
-        (directory . "EmacsMac.app/Contents/Resources/lisp"))))
+        (directory . "Emacs.app/Contents/Resources/lisp"))))
      ("Org"
       ("Org Agenda"
-      (name . "Org Agenda"))
+       (name . "Org Agenda"))
       ("Org Files"
        (saved . "Org Files"))
       ("Documentation"
@@ -343,7 +351,7 @@
       ("Elisp Packages"
        (or
         (directory . ".config/emacs/elpa")
-        (directory . "EmacsMac.app/Contents/Resources/lisp"))))
+        (directory . "Emacs.app/Contents/Resources/lisp"))))
      ("Blog"
       ("devnull Blog"
        (or
@@ -364,7 +372,7 @@
       ("Elisp Packages"
        (or
         (directory . ".config/emacs/elpa")
-        (directory . "EmacsMac.app/Contents/Resources/lisp"))))
+        (directory . "Emacs.app/Contents/Resources/lisp"))))
      ("Casual"
       ("Casual"
        (directory . "casual"))
@@ -394,7 +402,7 @@
       ("Elisp Packages"
        (or
         (directory . ".config/emacs/elpa")
-        (directory . "EmacsMac.app/Contents/Resources/lisp"))))))
+        (directory . "Emacs.app/Contents/Resources/lisp"))))))
  '(ibuffer-saved-filters
    '(("Org Agenda"
       (name . "Org Agenda"))
@@ -422,7 +430,7 @@
      ("Elisp Packages"
       (or
        (directory . ".config/emacs/elpa")
-       (directory . "EmacsMac.app/Contents/Resources/lisp")))
+       (directory . "Emacs.app/Contents/Resources/lisp")))
      ("programming"
       (or
        (derived-mode . prog-mode)

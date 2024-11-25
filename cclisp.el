@@ -875,5 +875,25 @@ See `cc/org-table-range' for more on RANGE object."
       (customize-set-variable 'casual-lib-use-unicode nil)
     (customize-set-variable 'casual-lib-use-unicode t)))
 
+(defun cc/macports ()
+    "Run MacPorts."
+    (interactive)
+    (term "~/bin/port.sh")
+    (rename-buffer "*macports*"))
+
+(defun cc/--next-sexp-raw ()
+  "Raw implementation to move point to the beginning of the next sexp.
+
+This function has no error checking."
+  (forward-sexp 2)
+  (backward-sexp))
+
+(defun cc/next-sexp ()
+  "Move point to beginning of the next balanced expression (sexp)."
+  (interactive)
+  (condition-case nil
+      (cc/--next-sexp-raw)
+    (error (message "Unable to move point to next balanced expression (sexp)."))))
+
 (provide 'cclisp)
 ;;; cclisp.el ends here

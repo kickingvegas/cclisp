@@ -28,6 +28,7 @@
 (require 'hl-line)
 (require 'helm-eshell)
 (require 'eshell-git-prompt)
+(require 'cclisp)
 
 (defvar eshell-mode-map)
 (defvar eshell-visual-options)
@@ -57,6 +58,12 @@
 (add-hook 'eshell-mode-hook (lambda ()
 			      (keymap-set eshell-mode-map "<tab>" 'company-complete)
 			      (keymap-set eshell-mode-map "C-r" 'helm-eshell-history)
+                              (keymap-set eshell-mode-map "M-b" #'backward-sexp)
+                              (keymap-set eshell-mode-map "M-f" #'cc/next-sexp)
+                              (keymap-set eshell-mode-map "C-<left>" #'backward-sexp)
+                              (keymap-set eshell-mode-map "C-<right>" #'cc/next-sexp)
+                              ;; (keymap-set eshell-mode-map "C-<up>" #'backward-up-list)
+                              ;; (keymap-set eshell-mode-map "C-<down>" #'down-list)
                               (setenv "NO_COLOR" "1")
                               (setenv "CLICOLOR" "0")))
 

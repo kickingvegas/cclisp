@@ -269,6 +269,8 @@ SUFFIX - string appended to prefix
                             ("#+NAME:" . ?📇 )
                             ("#+TBLFM:" . ?🧮 )
                             ("#+PLOT:" . ?📊 )
+                            (":CREATED:" . ?𝛼 )
+                            ("CLOCK:" . ?⌛ )
                             ("[ ]" .  ?☐ )
                             ("[x]" . ?☑ )
                             ("[-]" . ?✈ ))))
