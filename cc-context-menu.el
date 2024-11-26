@@ -73,7 +73,7 @@ CLICK - event"
 
         (easy-menu-add-item menu nil ["Count Words in Buffer"
                                       count-words
-                                      :help "Count words in buffer"]))))1
+                                      :help "Count words in buffer"]))))
 
 (defun cc/context-menu-reveal-markup-items (menu &optional inapt)
   "Menu items to populate MENU for reveal markup section if INAPT nil."
