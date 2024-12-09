@@ -893,7 +893,9 @@ This function has no error checking."
   (interactive)
   (condition-case nil
       (cc/--next-sexp-raw)
-    (error (message "Unable to move point to next balanced expression (sexp)."))))
+    (error (condition-case nil
+               (forward-sexp)
+             (error (message "Unable to move point to next balanced expression (sexp)."))))))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here
