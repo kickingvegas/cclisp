@@ -39,6 +39,7 @@
 (require 'cc-org-smart-quotes)
 (require 'imenu)
 (require 'casual-agenda)
+;;(require 'casual-calendar)
 
 (if (eq system-type 'darwin)
     (require 'ob-swiftui))
@@ -331,7 +332,15 @@ SUFFIX - string appended to prefix
 (keymap-set org-mode-map "C-/" #'cc/emphasize-dwim)
 (keymap-set org-mode-map "C-_" #'cc/emphasize-dwim)
 (keymap-set org-mode-map "s-e" #'cc/emphasize-dwim)
+(keymap-set org-mode-map "s-b" #'cc/emphasize-bold)
+(keymap-set org-mode-map "s-i" #'cc/emphasize-italic)
+(keymap-set org-mode-map "s-c" #'cc/emphasize-code)
+(keymap-set org-mode-map "s-u" #'cc/emphasize-underline)
+(keymap-set org-mode-map "s-r" #'cc/emphasize-remove)
+(keymap-set org-mode-map "s-s" #'cc/emphasize-strike-through)
+
 (keymap-set org-mode-map "C-6" #'org-goto)
+;; (keymap-set org-read-date-minibuffer-local-map "C-o" #'casual-calendar)
 
 (add-hook 'org-agenda-finalize-hook 'hl-line-mode)
 (add-hook 'org-agenda-finalize-hook

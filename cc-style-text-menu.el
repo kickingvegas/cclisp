@@ -36,6 +36,9 @@
 (defun cc/emphasize-bold ()
   "Mark region bold for Org or Markdown modes."
   (interactive)
+  (when (not (use-region-p))
+      (beginning-of-thing 'sexp)
+      (mark-sexp))
   (cond ((derived-mode-p 'org-mode)
          (org-emphasize ?*))
         ((derived-mode-p 'markdown-mode)
@@ -45,6 +48,9 @@
 (defun cc/emphasize-italic ()
   "Mark region italic for Org or Markdown modes."
   (interactive)
+  (when (not (use-region-p))
+      (beginning-of-thing 'sexp)
+      (mark-sexp))
   (cond ((derived-mode-p 'org-mode)
          (org-emphasize ?/))
         ((derived-mode-p 'markdown-mode)
@@ -54,6 +60,9 @@
 (defun cc/emphasize-code ()
   "Mark region code for Org or Markdown modes."
   (interactive)
+  (when (not (use-region-p))
+      (beginning-of-thing 'sexp)
+      (mark-sexp))
   (cond ((derived-mode-p 'org-mode)
          (org-emphasize ?~))
         ((derived-mode-p 'markdown-mode)
@@ -63,6 +72,9 @@
 (defun cc/emphasize-underline ()
   "Mark region underline for Org mode."
   (interactive)
+  (when (not (use-region-p))
+      (beginning-of-thing 'sexp)
+      (mark-sexp))
   (cond ((derived-mode-p 'org-mode)
          (org-emphasize ?_))
         (t nil)))
@@ -70,6 +82,9 @@
 (defun cc/emphasize-verbatim ()
   "Mark region verbatim for Org mode."
   (interactive)
+  (when (not (use-region-p))
+      (beginning-of-thing 'sexp)
+      (mark-sexp))
   (cond ((derived-mode-p 'org-mode)
          (org-emphasize ?=))
         (t nil)))
@@ -77,10 +92,25 @@
 (defun cc/emphasize-strike-through ()
   "Mark region strike-through for Org or Markdown modes."
   (interactive)
+  (when (not (use-region-p))
+      (beginning-of-thing 'sexp)
+      (mark-sexp))
   (cond ((derived-mode-p 'org-mode)
          (org-emphasize ?+))
         ((derived-mode-p 'markdown-mode)
          (markdown-insert-strike-through))
+        (t nil)))
+
+(defun cc/emphasize-remove ()
+  "Remove marked region."
+  (interactive)
+  (when (not (use-region-p))
+      (beginning-of-thing 'sexp)
+      (mark-sexp))
+  (cond ((derived-mode-p 'org-mode)
+         (org-emphasize ? ))
+        ((derived-mode-p 'markdown-mode)
+         (message "unsupported."))
         (t nil)))
 
 (defun cc/emphasize-dwim ()
