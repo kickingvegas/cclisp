@@ -118,14 +118,14 @@
 (keymap-global-set "M-z" #'undo)
 (keymap-global-set "<delete>" #'delete-forward-char)
 
-(when (string-equal (window-system) "mac")
-  (keymap-global-set "C-<tab>" #'mac-next-tab)
-  ;; this binding breaks terminal behavior
-  ;(keymap-global-set (kbd "M-]") 'mac-next-tab)
-  ;(keymap-global-set (kbd "M-[") 'mac-previous-tab)
-  (define-key-after global-map
-    [menu-bar file mac-toggle]
-    '("Toggle Tab Bar" . mac-toggle-tab-bar) 'close-tab))
+;; (when (string-equal (window-system) "mac")
+;;   (keymap-global-set "C-<tab>" #'mac-next-tab)
+;;   ;; this binding breaks terminal behavior
+;;   ;(keymap-global-set (kbd "M-]") 'mac-next-tab)
+;;   ;(keymap-global-set (kbd "M-[") 'mac-previous-tab)
+;;   (define-key-after global-map
+;;     [menu-bar file mac-toggle]
+;;     '("Toggle Tab Bar" . mac-toggle-tab-bar) 'close-tab))
 
 ;; Left Side Keys
 ;; (keymap-global-set (kbd "<f11>") 'shell)
@@ -158,6 +158,9 @@
 (keymap-global-unset "C-x f")
 ;;(global-unset-key (kbd "C-x f"))
 
+;; Find in files (rgrep)
+(keymap-global-set "M-F" #'rgrep)
+
 (global-set-key [vertical-scroll-bar down-mouse-1] #'scroll-bar-drag)
 
 ;; Window Navigation
@@ -179,6 +182,8 @@
 (keymap-set minibuffer-mode-map "C-<right>" #'cc/next-sexp)
 (keymap-set minibuffer-mode-map "C-<up>" #'backward-up-list)
 (keymap-set minibuffer-mode-map "C-<down>" #'down-list)
+
+
 
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here
