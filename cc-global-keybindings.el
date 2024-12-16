@@ -183,7 +183,5 @@
 (keymap-set minibuffer-mode-map "C-<up>" #'backward-up-list)
 (keymap-set minibuffer-mode-map "C-<down>" #'down-list)
 
-
-
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here

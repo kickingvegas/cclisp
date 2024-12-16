@@ -111,6 +111,7 @@
 (require 'cc-symbol-overlay)
 (require 'cc-calendar-mode)
 (require 'password-store-menu)
+(require 'cc-image-mode)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
