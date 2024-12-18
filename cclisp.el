@@ -84,13 +84,26 @@ A new frame will be created if `pop-up-frames' is t."
 (defun journal()
   "Alias to invoke `status-report' for Charles Choi."
   (interactive)
-  (status-report))
+  (cond
+   ((string= (system-name) "bingsu.local")
+    (status-report))
+
+   ((string= (system-name) "dev7")
+    (status-report-dev7))
+
+   (t
+    (status-report))))
 
 (defun status-report()
   "Open the daily journal file for Charles Choi and go to the end of buffer."
   (interactive)
   (find-file (format-time-string "~/org/%Y_%m_%d.org"))
   (goto-char (point-max)))
+
+(defun status-report-dev7 ()
+  "Open journal file on dev7."
+  (interactive)
+  (find-file "~/Documents/journal/journal.org"))
 
 (defun dictate()
    "Open a default text file to dictate into using macOS open."
@@ -856,7 +869,6 @@ See `cc/org-table-range' for more on RANGE object."
 
       (format "vec(%s)"
               (string-join (reverse buflist) ", "))))))
-
 
 (defun cc/clear-mouse-overlay ()
   "Clear secondary overlay in buffer.

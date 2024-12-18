@@ -168,6 +168,15 @@ which is done with `org-ctrl-c-ctrl-c'."
                :template ("%(datestamp2)"
                           "%?"))
 
+              ("Journal dev7"
+               :keys "J"
+               :type entry
+               :file "~/Documents/journal/journal.org"
+               :headline "Journal"
+               :empty-lines 1
+               :template ("%(datestamp2)"
+                          "%?"))
+
               ("Captee Capture"
                :keys "c"
                :type entry
@@ -406,11 +415,18 @@ SUFFIX - string appended to prefix
 (defun cc/journal-entry ()
   "Capture journal entry in Org."
   (interactive)
-  (org-capture nil "j"))
+
+  (cond
+   ((string= (system-name) "bingsu.local")
+    (org-capture nil "j"))
+
+   ((string= (system-name) "dev7")
+    (org-capture nil "J"))
+
+   (t (org-capture nil "j"))))
 
 (defalias 'cc/insert-org-keyword
    (kmacro "C-a # + M-x c o m p l e t e - s y m b o l <return>"))
-
 
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here
