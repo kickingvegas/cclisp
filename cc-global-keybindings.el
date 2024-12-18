@@ -60,9 +60,10 @@
 (keymap-global-set "<f3>" #'save-buffers-kill-emacs)
 (keymap-global-set "M-<f3>" #'casual-editkit-windows-tmenu)
 (keymap-global-set "<f4>" #'bookmark-jump)
-(keymap-global-set "<f5>" #'status-report)
+
 (keymap-global-set "S-<f5>" #'cc/select-journal-file)
 (keymap-global-set "A-<f5>" #'cc/org-search)
+(keymap-global-set "<f5>" #'journal)
 (keymap-global-set "<f6>" #'osx-dictionary-search-input)
 (keymap-global-set "<f7>" #'repeat)
 (keymap-global-set "M-<f7>" #'repeat-complex-command)
