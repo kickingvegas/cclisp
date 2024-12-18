@@ -56,14 +56,13 @@
 
 (keymap-global-set "<f1>" #'save-buffer)
 (keymap-global-set "<f2>" #'ibuffer)
-(keymap-global-set "A-<return>" #'other-window)
+(keymap-global-set "s-<return>" #'other-window)
 (keymap-global-set "<f3>" #'save-buffers-kill-emacs)
 (keymap-global-set "M-<f3>" #'casual-editkit-windows-tmenu)
 (keymap-global-set "<f4>" #'bookmark-jump)
-
 (keymap-global-set "S-<f5>" #'cc/select-journal-file)
-(keymap-global-set "A-<f5>" #'cc/org-search)
 (keymap-global-set "<f5>" #'journal)
+(keymap-global-set "s-<f5>" #'cc/org-search)
 (keymap-global-set "<f6>" #'osx-dictionary-search-input)
 (keymap-global-set "<f7>" #'repeat)
 (keymap-global-set "M-<f7>" #'repeat-complex-command)
@@ -119,14 +118,14 @@
 (keymap-global-set "M-z" #'undo)
 (keymap-global-set "<delete>" #'delete-forward-char)
 
-(when (string-equal (window-system) "mac")
-  (keymap-global-set "C-<tab>" #'mac-next-tab)
-  ;; this binding breaks terminal behavior
-  ;(keymap-global-set (kbd "M-]") 'mac-next-tab)
-  ;(keymap-global-set (kbd "M-[") 'mac-previous-tab)
-  (define-key-after global-map
-    [menu-bar file mac-toggle]
-    '("Toggle Tab Bar" . mac-toggle-tab-bar) 'close-tab))
+;; (when (string-equal (window-system) "mac")
+;;   (keymap-global-set "C-<tab>" #'mac-next-tab)
+;;   ;; this binding breaks terminal behavior
+;;   ;(keymap-global-set (kbd "M-]") 'mac-next-tab)
+;;   ;(keymap-global-set (kbd "M-[") 'mac-previous-tab)
+;;   (define-key-after global-map
+;;     [menu-bar file mac-toggle]
+;;     '("Toggle Tab Bar" . mac-toggle-tab-bar) 'close-tab))
 
 ;; Left Side Keys
 ;; (keymap-global-set (kbd "<f11>") 'shell)
@@ -135,10 +134,10 @@
 ;; Keypad Keys
 (keymap-global-set "M-<right>" #'forward-word)
 (keymap-global-set "M-<left>" #'backward-word)
-(keymap-global-set "A-<right>" #'forward-word)
-(keymap-global-set "A-<left>" #'backward-word)
-(keymap-global-set "A-<up>" #'scroll-one-line-down)
-(keymap-global-set "A-<down>" #'scroll-one-line-up)
+(keymap-global-set "s-<right>" #'forward-word)
+(keymap-global-set "s-<left>" #'backward-word)
+(keymap-global-set "s-<up>" #'scroll-one-line-down)
+(keymap-global-set "s-<down>" #'scroll-one-line-up)
 (keymap-global-set "C-<kp-add>" #'enlarge-window)
 (keymap-global-set "C-<kp-subtract>" #'shrink-window)
 (keymap-global-set "M-<kp-add>" #'enlarge-window-horizontally)
@@ -158,6 +157,9 @@
 
 (keymap-global-unset "C-x f")
 ;;(global-unset-key (kbd "C-x f"))
+
+;; Find in files (rgrep)
+(keymap-global-set "M-F" #'rgrep)
 
 (global-set-key [vertical-scroll-bar down-mouse-1] #'scroll-bar-drag)
 

@@ -28,9 +28,11 @@
 (when (or (eq window-system 'mac) (eq window-system 'ns))
   (setenv "PATH" (concat "/opt/local/bin:" (getenv "PATH")))
   (setenv "PATH" (concat "/opt/local/libexec/gnubin:" (getenv "PATH")))
+  (setenv "PATH" (concat "/opt/local/lib/ImageMagick7/bin:" (getenv "PATH")))
   (setenv "PATH" (concat (getenv "HOME") "/bin:" (getenv "PATH")))
   (add-to-list 'exec-path "/opt/local/bin")
   (add-to-list 'exec-path "/opt/local/libexec/gnubin")
+  (add-to-list 'exec-path "/opt/local/lib/ImageMagick7/bin")
   (add-to-list 'exec-path (concat (getenv "HOME") "/bin")))
 
 (require 'use-package)
@@ -109,6 +111,7 @@
 (require 'cc-symbol-overlay)
 (require 'cc-calendar-mode)
 (require 'password-store-menu)
+(require 'cc-image-mode)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
