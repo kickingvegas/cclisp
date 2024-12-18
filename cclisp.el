@@ -872,8 +872,8 @@ See `cc/org-table-range' for more on RANGE object."
       (prettify-symbols-mode -1)
     (prettify-symbols-mode nil))
   (if casual-lib-use-unicode
-      (customize-set-variable 'casual-lib-use-unicode nil)
-    (customize-set-variable 'casual-lib-use-unicode t)))
+      (setq-local casual-lib-use-unicode nil)
+    (setq-local casual-lib-use-unicode t)))
 
 (defun cc/macports ()
     "Run MacPorts."
