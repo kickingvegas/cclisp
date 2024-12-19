@@ -38,9 +38,16 @@
 (keymap-set emacs-lisp-mode-map "<f6>" #'cc/describe-function-point-is-in)
 (keymap-set emacs-lisp-mode-map "M-j" #'fill-paragraph)
 (keymap-set emacs-lisp-mode-map "M-n" #'cc/next-sexp)
-(keymap-set emacs-lisp-mode-map "M-p" #'cc/browse-backward-sexp)
+(keymap-set emacs-lisp-mode-map "M-p" #'backward-sexp)
 (keymap-set emacs-lisp-mode-map "C-<up>" #'backward-up-list)
 (keymap-set emacs-lisp-mode-map "C-<down>" #'down-list)
+(keymap-set emacs-lisp-mode-map "C-<left>" #'backward-sexp)
+(keymap-set emacs-lisp-mode-map "C-<right>" #'cc/next-sexp)
+
+(keymap-set emacs-lisp-mode-map "M-b" #'backward-sexp)
+(keymap-set emacs-lisp-mode-map "M-f" #'cc/next-sexp)
+(keymap-set emacs-lisp-mode-map "C-M-b" #'backward-word)
+(keymap-set emacs-lisp-mode-map "C-M-f" #'forward-word)
 
 (transient-define-prefix cc/edebug-tmenu ()
   :refresh-suffixes t

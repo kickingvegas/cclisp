@@ -172,11 +172,17 @@
 (keymap-global-set "C-<kp-0>" #'ace-select-window)
 (keymap-global-set "C-<kp-divide>" #'transpose-frame)
 
-(keymap-set minibuffer-mode-map "M-b" #'backward-sexp)
-(keymap-set minibuffer-mode-map "M-f" #'cc/next-sexp)
-
 (keymap-set minibuffer-local-shell-command-map "M-b" #'backward-sexp)
 (keymap-set minibuffer-local-shell-command-map "M-f" #'cc/next-sexp)
+(keymap-set minibuffer-local-shell-command-map "C-M-b" #'backward-word)
+(keymap-set minibuffer-local-shell-command-map "C-M-f" #'forward-word)
+(keymap-set minibuffer-local-shell-command-map "C-<left>" #'backward-sexp)
+(keymap-set minibuffer-local-shell-command-map "C-<right>" #'cc/next-sexp)
+
+(keymap-set minibuffer-mode-map "M-b" #'backward-sexp)
+(keymap-set minibuffer-mode-map "M-f" #'cc/next-sexp)
+(keymap-set minibuffer-mode-map "C-M-b" #'backward-word)
+(keymap-set minibuffer-mode-map "C-M-f" #'forward-word)
 
 (keymap-set minibuffer-mode-map "C-<left>" #'backward-sexp)
 (keymap-set minibuffer-mode-map "C-<right>" #'cc/next-sexp)
