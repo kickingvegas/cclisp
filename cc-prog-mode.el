@@ -67,17 +67,5 @@
 ;; 	  (local-set-key [f8] 'gud-next)
 ;; 	  (local-set-key [f9] 'gud-cont))))
 
-;; # Makefile
-(keymap-set makefile-mode-map "<f9>" #'compile)
-(keymap-set makefile-mode-map "C-6" #'imenu)
-
-(add-hook 'makefile-mode-hook #'makefile-gmake-mode)
-
-(add-hook 'makefile-mode-hook #'imenu-add-menubar-index)
-(add-hook 'makefile-mode-hook
-          (lambda ()
-            (setq-local imenu-auto-rescan t)
-            (setq-local imenu-sort-function #'imenu--sort-by-name)))
-
 (provide 'cc-prog-mode)
 ;;; cc-prog-mode.el ends here
