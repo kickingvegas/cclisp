@@ -79,7 +79,7 @@
 (keymap-global-set "C-c C-;" #'shell-command)
 (keymap-global-set "M-<f4>" #'calc)
 
-(keymap-global-set "<f13>" #'cc/ediff-revision)
+(keymap-global-set "<f13>" #'google-this)
 (keymap-global-set "M-<f13>" #'neotree-toggle)
 (keymap-global-set "C-<f13>" #'treemacs)
 (keymap-global-set "<f14>" #'eshell) ;regular
@@ -188,6 +188,8 @@
 (keymap-set minibuffer-mode-map "C-<right>" #'cc/next-sexp)
 (keymap-set minibuffer-mode-map "C-<up>" #'backward-up-list)
 (keymap-set minibuffer-mode-map "C-<down>" #'down-list)
+
+(keymap-global-set "M-\\" #'cycle-spacing)
 
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here
