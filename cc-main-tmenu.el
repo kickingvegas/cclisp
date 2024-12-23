@@ -42,8 +42,8 @@
       (lambda () (interactive)(set-input-method 'korean-hangul))
       :transient nil))
 
-  (transient-append-suffix 'casual-editkit-main-tmenu "C"
-    '("!" "Shell Command…" shell-command))
+  ;; (transient-append-suffix 'casual-editkit-main-tmenu "C"
+  ;;   '("!" "Shell Command…" shell-command))
 
   ;; modify `casual-editkit-tools-tmenu'
   (transient-append-suffix 'casual-editkit-tools-tmenu "w"
