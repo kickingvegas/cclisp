@@ -130,5 +130,7 @@
 (keymap-set image-dired-thumbnail-mode-map "n" #'image-dired-display-next)
 (keymap-set image-dired-thumbnail-mode-map "p" #'image-dired-display-previous)
 
+(add-hook 'wdired-mode-hook 'superword-mode)
+
 (provide 'cc-dired-mode)
 ;;; cc-dired-mode.el ends here
