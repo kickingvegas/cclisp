@@ -404,7 +404,21 @@
       ("Elisp Packages"
        (or
         (directory . ".config/emacs/elpa")
-        (directory . "Emacs.app/Contents/Resources/lisp"))))))
+        (directory . "Emacs.app/Contents/Resources/lisp"))))
+     ("Planning"
+      ("Org Agenda"
+       (name . "Org Agenda"))
+      ("Documentation"
+       (or
+        (mode . Man-mode)
+        (mode . Info-mode)
+        (mode . help-mode)))
+      ("cclisp"
+       (directory . "cclisp"))
+      ("Org Files"
+       (and
+        (directory . "/Users/cchoi/org")
+        (mode . org-mode))))))
  '(ibuffer-saved-filters
    '(("Org Agenda"
       (name . "Org Agenda"))
@@ -412,7 +426,7 @@
       (directory . "elisp/casual"))
      ("Documentation"
       (or
-       (mode . makefile-mode)
+       (mode . Man-mode)
        (mode . Info-mode)
        (mode . help-mode)))
      ("Casual Symbol Overlay"
@@ -601,7 +615,7 @@
      ("melpa" . "http://melpa.org/packages/")))
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
-   '(jsonian sqlite-mode-extras async eshell-git-prompt password-store-menu modus-themes eldoc erc faceup flymake idlwave jsonrpc project soap-client tramp verilog-mode xref symbol-overlay org-ql flycheck-package package-lint iedit doct scpaste snow paredit orgtbl-aggregate transpose-frame diff-hl keycast edit-indirect ox-trac google-translate org wgrep js2-mode rainbow-mode use-package bind-key reveal-in-folder elfeed ob-swiftui ob-swift csv-mode company-restclient visual-regexp-steroids visual-regexp citar math-symbol-lists helm-bibtex ox-gist org-ref org-re-reveal webpaste company-org-block company eglot gnuplot ob-restclient restclient ox-slack good-scroll svg-clock disk-usage expand-region helm-pass password-store which-key org-outline-numbering org-superstar osx-dictionary spotlight ebib auto-complete plantuml-mode tj3-mode ledger-mode yasnippet-snippets yasnippet htmlize calfw kanban fireplace treemacs neotree smart-mode-line-powerline-theme pbcopy ox-jira ox-gfm helm-swoop helm ztree yaml-mode swift-mode sr-speedbar solarized-theme python-mode pkg-info markdown-mode magit json-mode graphviz-dot-mode google-this go-mode autopair))
+   '(toc-org jsonian sqlite-mode-extras async eshell-git-prompt password-store-menu modus-themes eldoc erc faceup flymake idlwave jsonrpc project soap-client tramp verilog-mode xref symbol-overlay org-ql flycheck-package package-lint iedit doct scpaste snow paredit orgtbl-aggregate transpose-frame diff-hl keycast edit-indirect ox-trac google-translate org wgrep js2-mode rainbow-mode use-package bind-key reveal-in-folder elfeed ob-swiftui ob-swift csv-mode company-restclient visual-regexp-steroids visual-regexp citar math-symbol-lists helm-bibtex ox-gist org-ref org-re-reveal webpaste company-org-block company eglot gnuplot ob-restclient restclient ox-slack good-scroll svg-clock disk-usage expand-region helm-pass password-store which-key org-outline-numbering org-superstar osx-dictionary spotlight ebib auto-complete plantuml-mode tj3-mode ledger-mode yasnippet-snippets yasnippet htmlize calfw kanban fireplace treemacs neotree smart-mode-line-powerline-theme pbcopy ox-jira ox-gfm helm-swoop helm ztree yaml-mode swift-mode sr-speedbar solarized-theme python-mode pkg-info markdown-mode magit json-mode graphviz-dot-mode google-this go-mode autopair))
  '(pixel-scroll-precision-mode t)
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
@@ -670,7 +684,7 @@
  '(diff-added ((t (:inherit diff-changed :extend t :background "lawn green"))))
  '(elisp-shorthand-font-lock-face ((((type x w32 mac ns pgtk tty) (class color) (background dark)) (:inherit font-lock-keyword-face :foreground "cyan")) (((type x w32 mac ns pgtk) (class color) (background light)) (:background "white smoke" :foreground "medium violet red"))))
  '(eshell-prompt ((t (:foreground "#cc33ff" :weight bold))))
- '(fixed-pitch ((((type mac ns)) (:height 0.85 :family "Menlo")) (((type x pgtk)) (:height 0.85 :family "Noto Sans Mono"))))
+ '(fixed-pitch ((((type ns)) (:height 1.0 :family "Menlo")) (((type x pgtk)) (:height 1.0 :family "Noto Sans Mono"))))
  '(font-lock-comment-face ((((type x mac ns) (class color) (background light)) (:foreground "dim gray")) (((type x mac ns) (class color) (background dark)) (:foreground "dark gray")) (((type tty) (class color)) (:foreground "medium turquoise"))))
  '(font-lock-constant-face ((t (:height 1.0))))
  '(font-lock-function-name-face ((((type x mac ns) (class color) (background light)) (:foreground "Blue1")) (((type x mac ns) (class color) (background dark)) (:foreground "LightSkyBlue")) (((type tty) (class color)) (:foreground "yellow")) (t (:weight bold))))
@@ -686,10 +700,10 @@
  '(mode-line-inactive ((((type mac ns)) (:inherit mode-line :background "gray" :box (:line-width (5 . 5) :color "gray"))) (((type x pgtk)) (:inherit mode-line :background "gray")) (((type tty)) (:background "gray"))))
  '(org-agenda-done ((t (:foreground "snow4"))))
  '(org-agenda-structure ((((type x mac ns) (class color) (background light)) (:foreground "Blue1")) (((type x mac ns) (class color) (background dark)) (:foreground "LightSkyBlue")) (((type tty) (class color)) (:foreground "light sky blue")) (t (:weight bold))))
- '(org-block ((t (:inherit fixed-pitch))))
+ '(org-block ((t (:inherit fixed-pitch :extend t :height 0.85))))
  '(org-block-begin-line ((((type x mac ns) (class color) (background light)) (:inherit fixed-pitch :extend t :background "gray90" :foreground "gray50")) (((type x mac ns) (class color) (background dark)) (:inherit fixed-pitch :extend t :background "grey23" :foreground "tomato")) (((type tty)) (:background "grey23" :foreground "tomato"))))
  '(org-block-end-line ((t (:inherit org-block-begin-line))))
- '(org-code ((((type x mac ns) (class color)) (:inherit fixed-pitch)) (((type tty) (class color)) (:inherit fixed-pitch :background "color-238"))))
+ '(org-code ((((type x w32 ns pgtk haiku) (background light)) (:inherit fixed-pitch :background "aliceblue")) (((type tty)) (:background "slategrey"))))
  '(org-date ((((type mac ns) (class color) (background light)) (:foreground "dark violet" :underline t :family "Menlo")) (((type mac ns) (class color) (background dark)) (:foreground "dark turquoise" :underline t :family "Menlo")) (((type tty) (class color)) (:foreground "dark turquoise" :underline t))))
  '(org-document-info ((((class color) (background light)) (:foreground "midnight blue")) (((class color) (background dark)) (:foreground "pale turquoise")) (t nil) (((type tty) (class color)) (:foreground "pale turquoise"))))
  '(org-document-info-keyword ((t (:inherit fixed-pitch))))
@@ -700,7 +714,7 @@
  '(org-scheduled ((t (:foreground "#4455ff"))))
  '(org-scheduled-previously ((((type x mac ns) (class color) (background light)) (:foreground "dark violet" :weight bold)) (((type x mac ns) (class color) (background dark)) (:foreground "orchid")) (((type tty) (class color)) (:foreground "orchid"))))
  '(org-scheduled-today ((t (:foreground "#cc4499"))))
- '(org-table ((((type x mac ns) (class color) (background light)) (:inherit fixed-pitch :foreground "Blue1")) (((type x mac ns) (class color) (background dark)) (:inherit fixed-pitch :foreground "chartreuse")) (((type tty) (class color)) (:foreground "chartreuse"))))
+ '(org-table ((t (:inherit fixed-pitch :height 0.85))))
  '(outline-1 ((((type mac ns)) (:height 1.1 :family "Futura")) (((type x pgtk)) (:height 1.1 :family "Lato"))))
  '(outline-2 ((t (:inherit outline-1))))
  '(outline-3 ((t (:inherit outline-1))))
