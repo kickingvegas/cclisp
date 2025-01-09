@@ -347,6 +347,7 @@ SUFFIX - string appended to prefix
 (keymap-set org-mode-map "s-u" #'cc/emphasize-underline)
 (keymap-set org-mode-map "s-r" #'cc/emphasize-remove)
 (keymap-set org-mode-map "s-s" #'cc/emphasize-strike-through)
+(keymap-set org-mode-map "s-<tab>" #'completion-at-point)
 
 (keymap-set org-mode-map "C-6" #'org-goto)
 ;; (keymap-set org-read-date-minibuffer-local-map "C-o" #'casual-calendar)
@@ -372,6 +373,7 @@ SUFFIX - string appended to prefix
    (sqlite . t)
    (restclient . t)
    (plantuml . t)
+   (gnuplot . t)
    (swift . t)))
 
 (when (fboundp 'ob-swiftui-setup)
