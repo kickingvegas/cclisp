@@ -49,7 +49,8 @@
     (";" "Comment region" comment-region)
     (":" "Insert target…" makefile-insert-target-ref)
     ("f" "Insert function…" makefile-insert-gmake-function)
-    ("b" "Insert using browser" makefile-switch-to-browser)]
+    ("b" "Insert using browser" makefile-switch-to-browser)
+    ("a" "Automatic Variables›" casual-make-automatic-variables-tmenu)]
 
    ["Pickup as targets"
     ("E" "Everything" makefile-pickup-everything)
@@ -85,8 +86,7 @@
    (casual-lib-quit-one)
    (casual-lib-quit-all)])
 
-
-(transient-define-prefix casual-makefile-browser-tmenu ()
+(transient-define-prefix casual-make-browser-tmenu ()
   "Makefile browser menu.
 
 The Makefile “browser” is actually an editing interface to insert
@@ -118,8 +118,69 @@ Makefile."
    (casual-lib-quit-all)
    ("q" "Quit Browser" makefile-browser-quit)])
 
+
+(transient-define-prefix casual-make-automatic-variables-tmenu ()
+  "Makefile automatic variables menu.
+
+Menu for GNU Make automatic variables."
+
+  ["Automatic Variables (GNU Make)"
+   ["Target @"
+    ("$@" "Name" casual-make-insert-target-name)
+    ("$(@D)" "Directory" (lambda () (interactive) (insert "$(@D)")))
+    ("$(@F)" "File" (lambda () (interactive) (insert "$(@F)")))]
+
+   ["Implicit Stem *"
+    ("$*" "Stem" (lambda () (interactive) (insert "$*")))
+    ("$(*D)" "Directory" (lambda () (interactive) (insert "$(*D)")))
+    ("$(*F)" "File" (lambda () (interactive) (insert "$(*F)")))]
+
+   ["Archive %"
+    ("$%" "Archive" (lambda () (interactive) (insert "$%")))
+    ("$(%D)" "Directory" (lambda () (interactive) (insert "$(%D)")))
+    ("$(%F)" "File" (lambda () (interactive) (insert "$(%F)")))]]
+
+  ["Prerequisites"
+   ["First <"
+    ("$<" "First" (lambda () (interactive) (insert "$<")))
+    ("$(<D)" "Directory" (lambda () (interactive) (insert "$(<D)")))
+    ("$(<F)" "File" (lambda () (interactive) (insert "$(<F)")))]
+
+   ["Newer than Target ?"
+    ("$?" "All" (lambda () (interactive) (insert "$?")))
+    ("$(?D)" "Directory" (lambda () (interactive) (insert "$(?D)")))
+    ("$(?F)" "File" (lambda () (interactive) (insert "$(?F)")))]
+
+   ["Normalized ^"
+    ("$^" "All" (lambda () (interactive) (insert "$^")))
+    ("$(^D)" "Directory" (lambda () (interactive) (insert "$(^D)")))
+    ("$(^F)" "File" (lambda () (interactive) (insert "$(^F)")))]
+
+   ["Include Duplicates +"
+    ("$+" "All" (lambda () (interactive) (insert "$+")))
+    ("$(+D)" "Directory" (lambda () (interactive) (insert "$(+D)")))
+    ("$(+F)" "File" (lambda () (interactive) (insert "$(+F)")))]]
+
+  [:class transient-row
+   (casual-lib-quit-one)
+   (casual-lib-quit-all)
+   ("RET" "Dismiss" casual-lib-quit-all)
+   ("i" "Info" (lambda () (interactive) (info "(make) Automatic Variables")))])
+
+(defun casual-make-insert-target-name ()
+  "Insert the automatic make variable '$@' for the target name.
+
+This is typically the filename of the target rule.
+
+If the target is an archive member, then '$@' is the name of the
+archive file.
+
+For more info, refer to info node `(make) Automatic Variables'."
+  (interactive)
+  (insert "$@"))
+
 (keymap-set makefile-mode-map "M-m" #'casual-make-tmenu)
-(keymap-set makefile-browser-map "M-m" #'casual-makefile-browser-tmenu)
+(keymap-set makefile-browser-map "M-m" #'casual-make-browser-tmenu)
 
 (provide 'cc-make-mode)
 ;;; cc-make-mode.el ends here
