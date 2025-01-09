@@ -887,7 +887,7 @@ See `cc/org-table-range' for more on RANGE object."
       (setq-local casual-lib-use-unicode nil)
     (setq-local casual-lib-use-unicode t)))
 
-(defun cc/macports ()
+(defun macports ()
     "Run MacPorts."
     (interactive)
     (term "~/bin/port.sh")
@@ -910,6 +910,46 @@ This function has no error checking."
              (error
               (message
                "Unable to move point to next balanced expression (sexp)."))))))
+
+(defun cc/scratch-buffer ()
+  "Edit scratch buffer as a side window."
+  (interactive)
+  (split-window-horizontally)
+  (other-window 1)
+  (scratch-buffer))
+
+(defun cc/markdown-to-org-region (start end)
+  "Convert Markdown formatted text in region (START, END) to Org.
+
+This command requires that pandoc be installed."
+  (interactive "r")
+  (shell-command-on-region
+   start end
+   "pandoc -f markdown -t org --wrap=preserve" nil t))
+
+
+(defun cc/recent-rgrep (query)
+  "Recursively grep QUERY and sort results by recently modified file."
+  (interactive "sSearch for: ")
+
+  (save-excursion
+    (let* ((files (completing-read "In Files: "
+                                   '("*" "*.org" "*.c" "*.py" "*.js"
+                                     "*.css" "*.html" "*.rb" "*.sh" "*.el")))
+           (buffer (generate-new-buffer "*recent grep*")))
+      (set-buffer buffer)
+
+      (if (not (derived-mode-p 'grep-mode))
+          (grep-mode))
+
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (insert (shell-command-to-string (format "recent-grep.sh -f '%s' '%s'" files query))))
+
+      (goto-char (point-min))
+      (split-window-below)
+      (other-window 1)
+      (switch-to-buffer buffer))))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here
