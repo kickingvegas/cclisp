@@ -75,9 +75,9 @@
 (keymap-global-set "<f11>" #'bookmark-set-no-overwrite)
 
 (keymap-global-set "M-<f1>" #'cc/open-url)
-(keymap-global-set "M-<f2>" #'google-this)
-(keymap-global-set "C-c C-;" #'shell-command)
-(keymap-global-set "M-<f4>" #'calc)
+;;(keymap-global-set "M-<f2>" #'google-this)
+;;(keymap-global-set "C-c C-;" #'shell-command)
+(keymap-global-set "M-<f4>" #'google-this)
 
 (keymap-global-set "<f13>" #'google-this)
 (keymap-global-set "M-<f13>" #'neotree-toggle)
@@ -159,7 +159,7 @@
 ;;(global-unset-key (kbd "C-x f"))
 
 ;; Find in files (rgrep)
-(keymap-global-set "M-F" #'rgrep)
+(keymap-global-set "M-F" #'cc/recent-rgrep)
 
 (global-set-key [vertical-scroll-bar down-mouse-1] #'scroll-bar-drag)
 
@@ -190,6 +190,7 @@
 (keymap-set minibuffer-mode-map "C-<down>" #'down-list)
 
 (keymap-global-set "M-\\" #'cycle-spacing)
+(keymap-global-set "s-SPC" #'cycle-spacing)
 
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here

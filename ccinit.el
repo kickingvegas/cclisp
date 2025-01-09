@@ -113,6 +113,7 @@
 (require 'password-store-menu)
 (require 'cc-image-mode)
 (require 'cc-make-mode)
+(require 'cc-gh)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
