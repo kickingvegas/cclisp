@@ -921,35 +921,29 @@ This function has no error checking."
 (defun cc/markdown-to-org-region (start end)
   "Convert Markdown formatted text in region (START, END) to Org.
 
-This command requires that pandoc be installed."
+This command requires that pandoc (man page `pandoc(1)') be
+installed."
   (interactive "r")
   (shell-command-on-region
    start end
-   "pandoc -f markdown -t org --wrap=preserve" nil t))
+   "pandoc -f markdown -t org --wrap=preserve" t t))
 
 
 (defun cc/recent-rgrep (query)
   "Recursively grep QUERY and sort results by recently modified file."
   (interactive "sSearch for: ")
 
-  (save-excursion
-    (let* ((files (completing-read "In Files: "
-                                   '("*" "*.org" "*.c" "*.py" "*.js"
-                                     "*.css" "*.html" "*.rb" "*.sh" "*.el")))
-           (buffer (generate-new-buffer "*recent grep*")))
-      (set-buffer buffer)
+  (let* ((files (completing-read "In Files: "
+                                 '("*" "*.org" "*.c" "*.py" "*.js" "*.md"
+                                   "*.css" "*.html" "*.rb" "*.sh" "*.el")))
+         ;;(buffer (generate-new-buffer "*recent grep*"))
+         (dir default-directory)
 
-      (if (not (derived-mode-p 'grep-mode))
-          (grep-mode))
+         (command (format "recent-rgrep -f '%s' '%s'" files query)))
 
-      (let ((inhibit-read-only t))
-        (erase-buffer)
-        (insert (shell-command-to-string (format "recent-grep.sh -f '%s' '%s'" files query))))
-
-      (goto-char (point-min))
-      (split-window-below)
-      (other-window 1)
-      (switch-to-buffer buffer))))
+    (compilation-start command #'grep-mode)
+    (if (eq next-error-last-buffer (current-buffer))
+	(setq default-directory dir))))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here
