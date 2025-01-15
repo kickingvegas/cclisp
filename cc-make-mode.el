@@ -182,5 +182,8 @@ For more info, refer to info node `(make) Automatic Variables'."
 (keymap-set makefile-mode-map "M-m" #'casual-make-tmenu)
 (keymap-set makefile-browser-map "M-m" #'casual-make-browser-tmenu)
 
+(keymap-set makefile-mode-map "C-c m" #'casual-make-tmenu)
+(keymap-set makefile-browser-map "C-c m" #'casual-make-browser-tmenu)
+
 (provide 'cc-make-mode)
 ;;; cc-make-mode.el ends here

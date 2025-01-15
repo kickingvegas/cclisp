@@ -214,6 +214,7 @@
   [("RET" "Dismiss" transient-quit-all)])
 
 (keymap-set emacs-lisp-mode-map "M-m" #'cc/elisp-tmenu)
+(keymap-set emacs-lisp-mode-map "C-c m" #'cc/elisp-tmenu)
 
 (provide 'cc-emacs-lisp-mode)
 ;;; cc-emacs-lisp-mode.el ends here
