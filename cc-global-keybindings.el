@@ -160,6 +160,7 @@
 
 ;; Find in files (rgrep)
 (keymap-global-set "M-F" #'cc/recent-rgrep)
+;;(keymap-global-set "M-F" #'rgrep)
 
 (global-set-key [vertical-scroll-bar down-mouse-1] #'scroll-bar-drag)
 
