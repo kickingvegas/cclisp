@@ -928,49 +928,5 @@ installed."
    start end
    "pandoc -f markdown -t org --wrap=preserve" t t))
 
-(defcustom cc/glob-text-extensions
-  '("*"
-    "*.c"
-    "*.css"
-    "*.csv"
-    "*.dot"
-    "*.el"
-    "*.gnuplot"
-    "*.go"
-    "*.gv"
-    "*.htm"
-    "*.html"
-    "*.js"
-    "*.json"
-    "*.markdown"
-    "*.md"
-    "*.org"
-    "*.pl"
-    "*.plantuml"
-    "*.py"
-    "*.rb"
-    "*.sh"
-    "*.sql"
-    "*.swift"
-    "*.txt"
-    "*.xml")
-  "List of glob-conforming text extensions."
-  :group 'grep
-  :type '(repeat string))
-
-(defun cc/recent-rgrep (query)
-  "Recursively grep QUERY and sort results by recently modified file."
-  (interactive "sSearch for: ")
-
-  (let* ((file-pattern (completing-read "In Files: "
-                                        cc/glob-text-extensions))
-         (dir default-directory)
-         (command (format "recent-rgrep -f '%s' '%s'"
-                          file-pattern query)))
-
-    (compilation-start command #'grep-mode)
-    (if (eq next-error-last-buffer (current-buffer))
-	(setq default-directory dir))))
-
 (provide 'cclisp)
 ;;; cclisp.el ends here

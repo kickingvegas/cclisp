@@ -43,6 +43,7 @@
 (require 'cc-main-tmenu)
 (require 'casual-editkit)
 (require 'minibuffer)
+(require 'recent-rgrep)
 
 (keymap-global-set "C-=" #'er/expand-region)
 ;(keymap-global-set (kbd "M-g") 'goto-line)
@@ -159,7 +160,7 @@
 ;;(global-unset-key (kbd "C-x f"))
 
 ;; Find in files (rgrep)
-(keymap-global-set "M-F" #'cc/recent-rgrep)
+(keymap-global-set "M-F" #'recent-rgrep)
 ;;(keymap-global-set "M-F" #'rgrep)
 
 (global-set-key [vertical-scroll-bar down-mouse-1] #'scroll-bar-drag)
