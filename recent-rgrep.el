@@ -3,7 +3,10 @@
 ;; Copyright (C) 2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
+;; URL: https://github.com/kickingvegas/recent-rgrep
 ;; Keywords: tools
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "29.1"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -42,6 +45,7 @@
     "*.html"
     "*.js"
     "*.json"
+    "*.log"
     "*.m"
     "*.markdown"
     "*.md"
@@ -89,7 +93,10 @@ will be case-sensitive.
 * Implementation Details
 
 This command invokes the Bash script recent-rgrep which in turn
-invokes GNU grep to do a recursive search of QUERY.
+invokes grep to do a recursive search of QUERY.
+
+This script is configured to only look at non-binary files. It
+will also not look into SCM directories such as .git.
 
 * References
 
@@ -116,7 +123,6 @@ invokes GNU grep to do a recursive search of QUERY.
     (compilation-start (string-join (reverse commands) " ") #'grep-mode)
     (if (eq next-error-last-buffer (current-buffer))
 	(setq default-directory dir))))
-
 
 (provide 'recent-rgrep)
 ;;; recent-rgrep.el ends here
