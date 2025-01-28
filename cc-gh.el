@@ -24,6 +24,18 @@
 
 ;;; Code:
 (require 'seq)
+(require 'map)
+(require 'vtable)
+
+;; TODO: Rebind < and > to move point while staying in the same column.
+;;
+;; (length (vtable-objects (vtable-current-table)))
+;; (line-number-at-pos)
+
+;; TODO: Design bindings for table navigation. (n, p, P, N)
+;; TODO: Explore :objects-function for regenerating table
+;; TODO: Format column widths
+;; TODO: Make Transient menu for Org and Markdown export
 
 (defvar cc/gh--last-repo-history nil
   "Private variable to store last used GitHub repository name.")
@@ -182,7 +194,7 @@ gh."
   (if labels
       (let* ((temp-list (list)))
         (mapc (lambda (label)
-                (let* ((name (gethash "name" label)))
+                (let* ((name (map-elt label "name")))
                   (push name temp-list)))
               labels)
 
@@ -194,11 +206,96 @@ gh."
   (let* ((time-components (parse-time-string timestamp))
          (utc-time (encode-time time-components))
          (local-time (current-time-zone utc-time)))
-    (format-time-string "[%Y-%m-%d %H:%M:%S]" (apply 'encode-time time-components) local-time)))
+    (format-time-string "%Y-%m-%d %H:%M:%S" (apply 'encode-time time-components) local-time)))
 
 ;; ;; Example usage
 ;; (let ((utc-timestamp "2024-12-23T02:42:41Z"))
 ;;   (message "Local time: %s" (cc/gh-iso8601-to-local-org-time utc-timestamp)))
+
+
+
+;; (defvar-keymap vtable-map
+;;   "S" #'vtable-sort-by-current-column
+;;   "{" #'vtable-narrow-current-column
+;;   "}" #'vtable-widen-current-column
+;;   "g" #'vtable-revert-command
+;;   "M-<left>" #'vtable-previous-column
+;;   "M-<right>" #'vtable-next-column)
+
+(keymap-set vtable-map "TAB" #'vtable-next-column)
+(keymap-set vtable-map "<backtab>" #'vtable-previous-column)
+
+(defun cc/gh-browse-url (obj)
+  (let* ((url (map-elt obj "url")))
+    (browse-url url)))
+
+
+(defun cc/gh-list-issues-vtable ()
+  "Put current issues for a GitHub repository in a vtable.
+
+The command prompts the user for a GitHub repository, which if it
+exists will then retrieve the current list of issues for it via gh."
+  (interactive)
+
+  (let* ((repo (cc/gh-read-repo "repo: "))
+         (cmd-list (list))
+         (repo-buffer-name (format "*issues: %s*" repo)))
+    (push "gh" cmd-list)
+    (push "--repo" cmd-list)
+    (push (format "'%s'" repo) cmd-list)
+    (push "issue" cmd-list)
+    (push "list" cmd-list)
+    (push "--json" cmd-list)
+    (push "number,title,url,state,labels,createdAt,updatedAt,milestone" cmd-list)
+
+    (let* ((issues (json-parse-string
+                    (shell-command-to-string
+                     (string-join (seq-reverse cmd-list) " "))))
+           ;; (header (list '((:label . "#") (:span . 0))
+           ;;               '((:label . "Title") (:span . 40))
+           ;;               ;; '((:label . "State") (:span . 0))
+           ;;               '((:label . "Labels") (:span . 5))
+           ;;               ;; '((:label . "Milestone") (:span . 5))
+           ;;               '((:label . "Created") (:span . 11))
+           ;;               '((:label . "Updated") (:span . 11))))
+
+           ;;(header-labels (mapcar (lambda (x) (alist-get :label x)) header))
+           ;;(header-spans (mapcar (lambda (x) (alist-get :span x)) header))
+           ;; (numbers (list))
+           )
+
+      (unless (> (length issues) 0)
+        (error (format "Repository %s has no issues." repo)))
+
+
+      (get-buffer-create repo-buffer-name)
+      (switch-to-buffer (set-buffer repo-buffer-name))
+
+      (read-only-mode)
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (make-vtable
+         :columns '((:name "#")
+                    (:name "Title" :width 40)
+                    (:name "Labels")
+                    (:name "Updated" :primary descend)
+                    (:name "Created"))
+
+         :actions '("RET" cc/gh-browse-url
+                    "<double-mouse-1>" cc/gh-browse-url)
+         :objects (seq-into issues 'list)
+
+         :getter (lambda (issue column table)
+                   (pcase (vtable-column table column)
+                     ("#" (map-elt issue "number"))
+                     ("Title" (map-elt issue "title"))
+                     ("Labels" (cc/gh-format-labels (map-elt issue "labels")))
+                     ("Created" (cc/gh-iso8601-to-local-org-time (map-elt issue "createdAt")))
+                     ("Updated" (cc/gh-iso8601-to-local-org-time (map-elt issue "updatedAt")))
+                     ))
+         :keymap (define-keymap
+                   "q" #'quit-window))))))
+
 
 (provide 'cc-gh)
 ;;; cc-gh.el ends here
