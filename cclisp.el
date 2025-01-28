@@ -928,5 +928,17 @@ installed."
    start end
    "pandoc -f markdown -t org --wrap=preserve" t t))
 
+(defun cc/split-window-right ()
+  "Invoke `split-window-right', making the new window active."
+  (interactive)
+  (split-window-right)
+  (windmove-right))
+
+(defun cc/split-window-below ()
+  "Invoke `split-window-below', making the new window active."
+  (interactive)
+  (split-window-below)
+  (windmove-down))
+
 (provide 'cclisp)
 ;;; cclisp.el ends here

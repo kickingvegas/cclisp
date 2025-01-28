@@ -50,6 +50,8 @@
 (keymap-global-set "C-x v" #'view-file)
 (keymap-global-set "M-q" #'query-replace)
 (keymap-global-set "M-j" #'cc/journal-entry)
+(keymap-global-set "C-x 2" #'cc/split-window-below)
+(keymap-global-set "C-x 3" #'cc/split-window-right)
 
 ;;(keymap-global-set "\C-h" 'delete-backward-char)
 ;;(keymap-global-set "\C-xh" 'help-for-help)
