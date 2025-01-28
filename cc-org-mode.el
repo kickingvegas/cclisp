@@ -71,7 +71,9 @@ This function is intended to be passed into `doct' via the :function property."
 (defun cc/org-checkbox-in-progress ()
   "If point is on an Org list item, set it to be a checkbox in-progress."
   (interactive)
-  (org-ctrl-c-ctrl-c '(16)))
+  (if (org-at-item-checkbox-p)
+      (org-ctrl-c-ctrl-c '(16))
+    (org-ctrl-c-ctrl-c '(4))))
 
 (defun cc/org-toggle-list-is-checkbox ()
   "If point is on an Org list item, toggle if the list item is also a checkbox.
