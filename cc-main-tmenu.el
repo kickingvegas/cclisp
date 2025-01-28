@@ -28,6 +28,7 @@
 (require 'password-store-menu)
 (require 'google-translate-smooth-ui)
 (require 'webpaste)
+(require 'markdown-mode)
 
 (defvar cc-main-tmenu-customize-enable t
   "If t then enable Casual menu customizations.")
@@ -40,6 +41,12 @@
   (transient-append-suffix 'casual-editkit-main-tmenu "C-o"
     '("I" "Korean Input"
       (lambda () (interactive)(set-input-method 'korean-hangul))
+      :transient nil))
+
+  (transient-append-suffix 'casual-editkit-main-tmenu "I"
+    '("1" "Translate"
+      google-translate-smooth-translate
+      :inapt-if-not use-region-p
       :transient nil))
 
   ;; (transient-append-suffix 'casual-editkit-main-tmenu "C"
@@ -73,7 +80,14 @@
     '("F" "Fireplace" fireplace))
 
   (transient-append-suffix 'casual-editkit-tools-tmenu "F"
-    '("Z" "Snow" snow)))
+    '("Z" "Snow" snow))
+
+  (transient-append-suffix 'casual-editkit-narrow-tmenu '(0 0)
+   ["Markdown"
+    :if (lambda () (derived-mode-p 'markdown-mode))
+    ("s" "Subtree" markdown-narrow-to-subtree)
+    ("b" "Block" markdown-narrow-to-block)
+    ("p" "Page" markdown-narrow-to-page)]))
 
 (provide 'cc-main-tmenu)
 ;;; cc-main-tmenu.el ends here
