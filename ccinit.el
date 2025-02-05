@@ -113,28 +113,29 @@
 (require 'cc-image-mode)
 (require 'cc-make-mode)
 (require 'cc-gh)
-(require 'calle24)
+(when (eq window-system 'ns)
+  (require 'calle24))
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
 (keymap-set isearch-mode-map "C-o" #'casual-isearch-tmenu)
 
-(defvar cc-current-appearance (string-trim (shell-command-to-string "getappearance")))
+;; calle24 config
+(when (and (featurep 'calle24) (eq window-system 'ns))
+  (defvar cc-current-appearance (string-trim (shell-command-to-string "getappearance")))
+  (setq grep-mode-tool-bar-map (calle24-grep-tool-bar-config))
+  (cond
+   ((string-equal cc-current-appearance "dark")
+    (calle24-dark-mode))
+   (t
+    (ignore)))
 
-(setq grep-mode-tool-bar-map (calle24-grep-tool-bar-config))
-
-(cond
- ((string-equal cc-current-appearance "dark")
-  (calle24-dark-mode))
- (t
-  (ignore)))
-
-(add-hook 'compilation-mode-hook (lambda ()
-                                   (cond
-                                    ((string-equal cc-current-appearance "dark")
-                                     (calle24-update-tool-bar-appearance t))
-                                    (t
-                                     (ignore)))))
+  (add-hook 'compilation-mode-hook (lambda ()
+                                     (cond
+                                      ((string-equal cc-current-appearance "dark")
+                                       (calle24-update-tool-bar-appearance t))
+                                      (t
+                                       (ignore))))))
 
 (use-package hl-line
   :ensure nil
