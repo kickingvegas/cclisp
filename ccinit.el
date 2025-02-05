@@ -57,16 +57,15 @@
 ;;(setq mouse-wheel-follow-mouse 't)
 ;;(setq scroll-step 1)
 
-(when (eq window-system 'mac)
-    (setq mac-mouse-wheel-mode t)
-    (setq mac-mouse-wheel-smooth-scroll t))
+;; (when (eq window-system 'mac)
+;;     (setq mac-mouse-wheel-mode t)
+;;     (setq mac-mouse-wheel-smooth-scroll t))
 
 ;;(setq pixel-scroll-precision-large-scroll-height 10.0)
 
 (when (eq window-system 'ns)
   (setq mac-command-modifier 'meta))
 
-;;(require 'avy)
 (require 'cclisp)
 (require 'cc-ibuffer-mode)
 (require 'cc-prog-mode)
@@ -114,10 +113,28 @@
 (require 'cc-image-mode)
 (require 'cc-make-mode)
 (require 'cc-gh)
+(require 'calle24)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
 (keymap-set isearch-mode-map "C-o" #'casual-isearch-tmenu)
+
+(defvar cc-current-appearance (string-trim (shell-command-to-string "getappearance")))
+
+(setq grep-mode-tool-bar-map (calle24-grep-tool-bar-config))
+
+(cond
+ ((string-equal cc-current-appearance "dark")
+  (calle24-dark-mode))
+ (t
+  (ignore)))
+
+(add-hook 'compilation-mode-hook (lambda ()
+                                   (cond
+                                    ((string-equal cc-current-appearance "dark")
+                                     (calle24-update-tool-bar-appearance t))
+                                    (t
+                                     (ignore)))))
 
 (use-package hl-line
   :ensure nil
@@ -149,8 +166,8 @@
 (add-to-list 'auto-mode-alist '("\\.msc\\'" . graphviz-dot-mode))
 (add-to-list 'auto-mode-alist '("\\.xcconfig\\'" . conf-mode))
 
-(when (eq window-system 'mac)
-  (mac-toggle-tab-bar))
+;; (when (eq window-system 'mac)
+;;   (mac-toggle-tab-bar))
 
 (defun cc/tty-mouse ()
   (interactive)

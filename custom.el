@@ -484,6 +484,8 @@
    '((vc-prepare-patches-separately)
      (diff-add-log-use-relative-names . t)
      (vc-git-annotate-switches . "-w")))
+ '(image-load-path
+   '("~/.config/emacs/calle24/images" "/Applications/MacPorts/Emacs.app/Contents/Resources/etc/images/" data-directory load-path))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(isearch-lazy-count t)
