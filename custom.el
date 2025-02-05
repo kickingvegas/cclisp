@@ -558,6 +558,7 @@
  '(org-latex-prefer-user-labels t)
  '(org-log-done 'time)
  '(org-log-state-notes-insert-after-drawers t)
+ '(org-outline-path-complete-in-steps nil)
  '(org-plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar")
  '(org-re-reveal-theme "moon")
  '(org-show-notification-handler 'cc/display-notification)
