@@ -940,5 +940,10 @@ installed."
   (split-window-below)
   (windmove-down))
 
+(defun cc/reset-dictation ()
+  "Reset macOS dictation service corespeechd."
+  (interactive)
+  (process-lines "killall" "corespeechd"))
+
 (provide 'cclisp)
 ;;; cclisp.el ends here

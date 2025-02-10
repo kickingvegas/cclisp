@@ -649,6 +649,7 @@
  '(speedbar-show-unknown-files t)
  '(split-width-threshold nil)
  '(switch-to-buffer-obey-display-actions t)
+ '(text-scale-mode-step 1.05)
  '(tramp-terminal-type "tramp")
  '(transient-align-variable-pitch t)
  '(trash-directory "~/.Trash")
