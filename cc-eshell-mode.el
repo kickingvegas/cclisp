@@ -24,6 +24,7 @@
 
 ;;; Code:
 (require 'eshell)
+(require 'esh-mode)
 (require 'company)
 (require 'hl-line)
 (require 'helm-eshell)
