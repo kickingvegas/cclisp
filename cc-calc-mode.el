@@ -33,6 +33,8 @@
 (keymap-set calc-mode-map "C-o" #'casual-calc-tmenu)
 (keymap-set calc-alg-map "C-o" #'casual-calc-tmenu)
 
+(keymap-set calc-mode-map "<clear>" #'calc-pop)
+
 (defun cc/ptop ()
   "Print top of Calc stack."
   (interactive)

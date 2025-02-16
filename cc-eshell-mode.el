@@ -59,6 +59,7 @@
 			      (keymap-set eshell-mode-map "<tab>" 'company-complete)
 			      (keymap-set eshell-mode-map "C-r" 'helm-eshell-history)
                               (keymap-set eshell-mode-map "M-b" #'backward-sexp)
+                              (keymap-set eshell-mode-map "<clear>" #'eshell-kill-input)
                               (keymap-set eshell-mode-map "M-f" #'cc/next-sexp)
                               (keymap-set eshell-mode-map "C-<left>" #'backward-sexp)
                               (keymap-set eshell-mode-map "C-<right>" #'cc/next-sexp)
