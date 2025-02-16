@@ -123,6 +123,9 @@
 (keymap-global-set "M-z" #'undo)
 (keymap-global-set "<delete>" #'delete-forward-char)
 
+(if (eq window-system 'ns)
+  (keymap-global-set "s-<f3>" #'ns-do-show-character-palette))
+
 ;; (when (string-equal (window-system) "mac")
 ;;   (keymap-global-set "C-<tab>" #'mac-next-tab)
 ;;   ;; this binding breaks terminal behavior
