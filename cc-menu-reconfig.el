@@ -95,6 +95,12 @@ for REGEXP."
                      :visible (not buffer-read-only)]
                     "Fill")
 
+(easy-menu-add-item global-map '(menu-bar edit)
+                    ["Emoji & Symbols"
+                     ns-do-show-character-palette
+                     :help "Show macOS Character Palette."
+                     :visible (eq window-system 'ns)])
+
 ;;; Reconfigure Tools Menu
 
 (easy-menu-add-item global-map '(menu-bar tools)

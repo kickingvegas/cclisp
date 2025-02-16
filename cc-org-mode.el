@@ -173,6 +173,7 @@ which is done with `org-ctrl-c-ctrl-c'."
               ("Journal dev7"
                :keys "J"
                :type entry
+               :prepend t
                :file "~/Documents/journal/journal.org"
                :headline "Journal"
                :empty-lines 1
