@@ -551,7 +551,11 @@
      ("simpleresumecv" "\\documentclass[11pt]{simpleresumecv}"
       ("\\section{%s}" . "\\section*{%s}")
       ("\\subsection{%s}" . "\\subsection*{%s}")
-      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+     ("letter" "\\documentclass[11pt]{letter}"
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\\\subsection{%s}" . "\\\\subsection*{%s}")
+      ("\\\\subsubsection{%s}" . "\\\\subsubsection{*%s}"))))
  '(org-latex-compiler "xelatex")
  '(org-latex-pdf-process
    '("%latex -interaction nonstopmode --shell-escape -output-directory %o %f" "%latex -interaction nonstopmode --shell-escape -output-directory %o %f" "%latex -interaction nonstopmode --shell-escape -output-directory %o %f"))

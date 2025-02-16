@@ -26,10 +26,12 @@
 (setenv "CDPATH" ".:..:~")
 
 (when (or (eq window-system 'mac) (eq window-system 'ns))
+  (setenv "PATH" (concat "/Applications/Inkscape.app/Contents/MacOS:" (getenv "PATH")))
   (setenv "PATH" (concat "/opt/local/bin:" (getenv "PATH")))
   (setenv "PATH" (concat "/opt/local/libexec/gnubin:" (getenv "PATH")))
   (setenv "PATH" (concat "/opt/local/lib/ImageMagick7/bin:" (getenv "PATH")))
   (setenv "PATH" (concat (getenv "HOME") "/bin:" (getenv "PATH")))
+  (add-to-list 'exec-path "/Applications/Inkscape.app/Contents/MacOS")
   (add-to-list 'exec-path "/opt/local/bin")
   (add-to-list 'exec-path "/opt/local/libexec/gnubin")
   (add-to-list 'exec-path "/opt/local/lib/ImageMagick7/bin")
@@ -113,6 +115,7 @@
 (require 'cc-image-mode)
 (require 'cc-make-mode)
 (require 'cc-gh)
+(require 'ffap)
 (when (eq window-system 'ns)
   (require 'calle24))
 
@@ -122,20 +125,9 @@
 
 ;; calle24 config
 (when (and (featurep 'calle24) (eq window-system 'ns))
-  (defvar cc-current-appearance (string-trim (shell-command-to-string "getappearance")))
-  (setq grep-mode-tool-bar-map (calle24-grep-tool-bar-config))
-  (cond
-   ((string-equal cc-current-appearance "dark")
-    (calle24-dark-mode))
-   (t
-    (ignore)))
-
-  (add-hook 'compilation-mode-hook (lambda ()
-                                     (cond
-                                      ((string-equal cc-current-appearance "dark")
-                                       (calle24-update-tool-bar-appearance t))
-                                      (t
-                                       (ignore))))))
+  (calle24-refresh-appearance)
+  ;; TODO: make a state variable here.
+  (add-hook 'compilation-mode-hook #'calle24-refresh-appearance))
 
 (use-package hl-line
   :ensure nil
@@ -178,3 +170,5 @@
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line)))
 
 (password-store-menu-enable)
+
+(ffap-bindings)
