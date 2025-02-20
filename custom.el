@@ -487,6 +487,7 @@
  '(image-load-path
    '("~/.config/emacs/calle24/images" "/Applications/MacPorts/Emacs.app/Contents/Resources/etc/images/" "/snap/emacs/current/usr/share/emacs/29.4/etc/images/" data-directory load-path))
  '(indent-tabs-mode nil)
+ '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
  '(isearch-lazy-count t)
  '(lazy-count-prefix-format nil)
