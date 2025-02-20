@@ -23,6 +23,7 @@
 ;;
 
 (require 'ediff)
+(require 'casual-lib)
 ;;; Code:
 
 ;; these defvars are here to let cc-ediff-mode.el compile clean
@@ -136,6 +137,203 @@ the register."
 ;; !!!: CC Note: Why this is not `ediff-quit-hook' I do not know. But this works
 ;; for cleaning up ancillary buffers on quitting an Ediff session.
 (add-hook 'ediff-after-quit-hook-internal #'cc/restore-window-configuration-for-ediff)
+
+
+(transient-define-prefix casual-ediff-tmenu ()
+  :refresh-suffixes t
+  ["Casual Ediff"
+   ["A"
+    :if (lambda () (and ediff-buffer-A) (not ediff-buffer-C))
+    :description (lambda () (format "A: %s" (buffer-name ediff-buffer-A)))
+    ("a" "A→B" ediff-copy-A-to-B
+     :transient t
+     :if-not (lambda () (casual-ediff-buffer-read-only-p ediff-buffer-B)))
+    ("ra" "Restore A"
+     (lambda ()
+       (interactive)
+       (casual-ediff-restore-diff ?a)
+       (casual-ediff-save-buffer ?a))
+     :transient t
+     :if-not (lambda () (casual-ediff-buffer-read-only-p ediff-buffer-A))
+     :inapt-if-not (lambda () (buffer-modified-p ediff-buffer-A)))]
+
+   ["A"
+    :if (lambda () (and ediff-buffer-A ediff-buffer-C))
+    :description (lambda () (format "A: %s" (buffer-name ediff-buffer-A)))
+    ("ac" "A→C" ediff-copy-A-to-C
+     :transient t
+     :if-not (lambda () (casual-ediff-buffer-read-only-p ediff-buffer-C)))
+    ("ra" "Restore A"
+     (lambda ()
+       (interactive)
+       (casual-ediff-restore-diff ?a)
+       (casual-ediff-save-buffer ?a))
+     :transient t
+     :if-not (lambda () (casual-ediff-buffer-read-only-p ediff-buffer-A))
+     :inapt-if-not (lambda () (buffer-modified-p ediff-buffer-A)))]
+
+
+   ["Diff"
+    :if (lambda () (not ediff-buffer-C))
+    ("p" "↑" ediff-previous-difference :transient t)
+    ("n" "↓" ediff-next-difference :transient t)
+    ("!" "⟲" ediff-update-diffs :transient t)
+    ("|" "H/V" ediff-toggle-split
+     :transient t
+     :description (lambda ()
+                    (if (eq ediff-split-window-function 'split-window-vertically)
+                        "Split ――"
+                      "Split |")))
+    ("#" "Skip 𝑤𝑠" ediff-toggle-skip-similar :transient t
+     :description (lambda ()
+                    (if ediff-ignore-similar-regions
+                        "Include 𝑤𝑠"
+                      "Skip 𝑤𝑠")))]
+
+   ["B"
+    :if (lambda () (and ediff-buffer-B (not ediff-buffer-C)))
+    :description (lambda () (format "B: %s" (buffer-name ediff-buffer-B)))
+    ("b" "A←B" ediff-copy-B-to-A :transient t
+     :if-not (lambda () (casual-ediff-buffer-read-only-p ediff-buffer-A)))
+
+    ;; ("bc" "B→C" ediff-copy-B-to-C :transient t
+    ;;  :if-not (lambda () (casual-ediff-buffer-read-only-p ediff-buffer-C)))
+
+    ("wb" "Save B"
+     (lambda ()
+       (interactive)
+       (casual-ediff-save-buffer ?b))
+     :transient t
+     :if-not (lambda () (casual-ediff-buffer-read-only-p ediff-buffer-B))
+     :inapt-if-not (lambda () (buffer-modified-p ediff-buffer-B)))
+
+    ("rb" "Restore B"
+     (lambda ()
+       (interactive)
+       (casual-ediff-restore-diff ?b)
+       (casual-ediff-save-buffer ?b))
+     :transient t
+     :if-not (lambda () (casual-ediff-buffer-read-only-p ediff-buffer-B))
+     :inapt-if-not (lambda () (buffer-modified-p ediff-buffer-B)))]
+
+
+   ["B"
+    :if (lambda () (if (and ediff-buffer-B ediff-buffer-C) t nil))
+    :description (lambda () (format "B: %s" (buffer-name ediff-buffer-B)))
+    ("ba" "A←B" ediff-copy-B-to-A :transient t
+     :if-not (lambda () (casual-ediff-buffer-read-only-p ediff-buffer-A)))
+
+    ("bc" "B→C" ediff-copy-B-to-C :transient t
+     :if-not (lambda () (casual-ediff-buffer-read-only-p ediff-buffer-C)))
+
+    ("wb" "Save B"
+     (lambda ()
+       (interactive)
+       (casual-ediff-save-buffer ?b))
+     :transient t
+     :if (lambda ()
+           (if (string= (file-name-extension (buffer-name ediff-buffer-B)) "~{index}")
+               nil
+             (if (not (casual-ediff-buffer-read-only-p ediff-buffer-B))
+                 t
+               nil)))
+     :inapt-if-not (lambda () (buffer-modified-p ediff-buffer-B)))
+
+    ("rb" "Restore B"
+     (lambda ()
+       (interactive)
+       (casual-ediff-restore-diff ?b)
+       (casual-ediff-save-buffer ?b))
+     :transient t
+     :if (lambda ()
+           (if (string= (file-name-extension (buffer-name ediff-buffer-B)) "~{index}")
+               nil
+             (if (not (casual-ediff-buffer-read-only-p ediff-buffer-B))
+                 t
+               nil)))
+     :inapt-if-not (lambda () (buffer-modified-p ediff-buffer-B)))]
+
+   ["Diff"
+    :if (lambda () (and ediff-buffer-C t))
+    ("p" "↑" ediff-previous-difference :transient t)
+    ("n" "↓" ediff-next-difference :transient t)
+    ("!" "⟲" ediff-update-diffs :transient t)
+    ("|" "H/V" ediff-toggle-split
+     :description (lambda ()
+                    (if (eq ediff-split-window-function 'split-window-vertically)
+                        "Split ――"
+                      "Split |"))
+     :transient t)]
+
+   ["C"
+    :if (lambda () (if ediff-buffer-C t nil))
+    :description (lambda ()
+                   (if ediff-buffer-C
+                       (format "C: %s" (buffer-name ediff-buffer-C))
+                     ))
+
+    ("cb" "B←C" ediff-copy-C-to-B :transient t
+     :if (lambda ()
+           (if (not (casual-ediff-buffer-read-only-p ediff-buffer-B))
+               (if (string= (file-name-extension (buffer-name ediff-buffer-B)) "~{index}")
+                   nil
+                 t)
+             nil)))
+
+    ("ca" "A←C" ediff-copy-C-to-A :transient t
+     :if-not (lambda () (casual-ediff-buffer-read-only-p ediff-buffer-A)))
+
+    ("rc" "Restore C"
+     (lambda ()
+       (interactive)
+       (casual-ediff-restore-diff ?c)
+       (casual-ediff-save-buffer ?c))
+     :transient t
+     :if (lambda ()
+           (if (not (casual-ediff-buffer-read-only-p ediff-buffer-C))
+               (if (not (string= (buffer-name ediff-buffer-C) "*ediff-merge*"))
+                   t
+                 nil)
+             nil))
+     :inapt-if-not (lambda () (buffer-modified-p ediff-buffer-C)))
+
+    ;; Note: Ediff doesn't support combining merge conflicts from both. The
+    ;; workaround is to directly edit the C buffer.
+
+    ;; TODO: The buffer *ediff-merge* is already modified. How can you tell if it needs to be restored?
+
+    ("r" "Restore Merge"
+     (lambda ()
+       (interactive)
+       (ediff-restore-diff-in-merge-buffer nil))
+     :transient t
+     :if (lambda ()
+           (if (not (casual-ediff-buffer-read-only-p ediff-buffer-C))
+               (if (string= (buffer-name ediff-buffer-C) "*ediff-merge*")
+                   t
+                 nil)
+             nil)))]]
+
+  [:class transient-row
+   (casual-lib-quit-one)
+   ("q" "Quit Ediff" ediff-quit)])
+
+(defun casual-ediff-restore-diff (key)
+  (interactive)
+  (ediff-restore-diff nil key))
+
+(defun casual-ediff-save-buffer (key)
+  (interactive)
+  (setq last-command-event key)
+  (ediff-save-buffer nil))
+
+(defun casual-ediff-buffer-read-only-p (buf)
+  (with-current-buffer buf
+    (if buffer-read-only t nil)))
+
+(add-hook 'ediff-keymap-setup-hook
+          (lambda ()
+            (keymap-set ediff-mode-map "C-o" #'casual-ediff-tmenu)))
 
 (provide 'cc-ediff-mode)
 
