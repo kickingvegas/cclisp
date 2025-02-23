@@ -81,7 +81,7 @@ This function handles the actual diff behavior called by `ediff-revision'."
      (intern (format "ediff-%S-internal" ediff-version-control-package))
      rev1 rev2 nil)))
 
-(defun ediff-janitor (ask keep-variants)
+(defun cc/ediff-janitor (ask keep-variants)
   "Kill buffers A, B, and, possibly, C, if these buffers aren't modified.
 In merge jobs, buffer C is not deleted here, but rather according to
 `ediff-quit-merge-hook'.
@@ -120,6 +120,9 @@ CC MODIFICATION: This method overrides the original Ediff function."
     (if (and (boundp 'cc/ediff-revision-session-p)
              cc/ediff-revision-session-p)
         (setq cc/ediff-revision-session-p nil))))
+
+(advice-add 'ediff-janitor :override #'cc/ediff-janitor)
+;; (advice-remove 'ediff-janitor #'cc/ediff-janitor)
 
 (defun cc/stash-window-configuration-for-ediff ()
   "Store window configuration to register 🧊.
