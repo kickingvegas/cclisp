@@ -706,7 +706,7 @@
  '(markdown-markup-face ((t (:inherit shadow :slant normal :weight normal))))
  '(minibuffer-prompt ((((type x ns) (class color) (background light)) (:foreground "dark magenta")) (((type x ns) (class color) (background dark)) (:foreground "orange")) (((type tty)) (:foreground "cyan"))))
  '(mode-line ((((type ns)) (:background "#ff7700" :foreground "gray20" :box (:line-width (5 . 5) :color "#ff7700" :style flat-button) :height 1.0 :family "SF Compact Rounded")) (((type x pgtk)) (:background "#ff7700" :foreground "gray20" :height 1.0 :family "Gayathri")) (((type tty)) (:background "#ff7700" :foreground "gray20")) (((type tty)) (:background "#ff7700" :foreground "gray20"))))
- '(mode-line-inactive ((((type ns)) (:inherit mode-line :background "gray" :box (:line-width (5 . 5) :color "gray"))) (((type x pgtk)) (:inherit mode-line :background "gray")) (((type tty)) (:background "gray"))))
+ '(mode-line-inactive ((((type ns)) (:inherit mode-line :background "gray" :foreground "#686868" :box (:line-width (5 . 5) :color "gray"))) (((type x pgtk)) (:inherit mode-line :background "gray" :foreground "#686868")) (((type tty)) (:background "gray" :foreground "#686868"))))
  '(org-agenda-done ((t (:foreground "snow4"))))
  '(org-agenda-structure ((((type x ns) (class color) (background light)) (:foreground "Blue1")) (((type x ns) (class color) (background dark)) (:foreground "LightSkyBlue")) (((type tty) (class color)) (:foreground "light sky blue")) (t (:weight bold))))
  '(org-block ((t (:inherit fixed-pitch :extend t :height 0.85))))
