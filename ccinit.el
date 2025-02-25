@@ -102,7 +102,7 @@
 (require 'cc-magit-mode)
 (require 'cc-menu-reconfig)
 (require 'cc-grep-mode)
-(require 'kill-with-intelligence)
+;; (require 'kill-with-intelligence)
 (require 'cc-agenda-timeline)
 (require 'cc-truth-table)
 (require 'cc-digital-logic)
@@ -117,8 +117,7 @@
 (require 'cc-csv-mode)
 (require 'cc-gh)
 (require 'ffap)
-(when (eq window-system 'ns)
-  (require 'calle24))
+(require 'calle24)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
