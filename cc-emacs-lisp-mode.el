@@ -198,7 +198,12 @@
     ("D" "Directory" byte-recompile-directory)]
 
    ["Checkdoc"
-    ("c" "Checkdoc…" checkdoc)]]
+    ("c" "Checkdoc…" checkdoc)]
+
+   ["Find"
+    ("l" "Library…" find-library)
+    ("v" "Variable…" find-variable)
+    ("f" "Function…" find-function)]]
 
   ["Navigate"
    :pad-keys t
