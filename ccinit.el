@@ -114,6 +114,7 @@
 (require 'password-store-menu)
 (require 'cc-image-mode)
 (require 'cc-make-mode)
+(require 'cc-csv-mode)
 (require 'cc-gh)
 (require 'ffap)
 (when (eq window-system 'ns)
