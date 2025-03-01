@@ -102,7 +102,7 @@
 (require 'cc-magit-mode)
 (require 'cc-menu-reconfig)
 (require 'cc-grep-mode)
-;; (require 'kill-with-intelligence)
+(require 'kill-with-intelligence)
 (require 'cc-agenda-timeline)
 (require 'cc-truth-table)
 (require 'cc-digital-logic)
@@ -126,7 +126,6 @@
 ;; calle24 config
 (when (and (featurep 'calle24) (eq window-system 'ns))
   (calle24-refresh-appearance)
-  ;; TODO: make a state variable here.
   (add-hook 'compilation-mode-hook #'calle24-refresh-appearance))
 
 (use-package hl-line
