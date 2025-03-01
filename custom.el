@@ -147,6 +147,7 @@
  '(dired-listing-switches
    "-lh --group-directories-first --time-style=long-iso -g --no-group")
  '(dired-mouse-drag-files t)
+ '(dired-movement-style 'cycle)
  '(dired-use-ls-dired t)
  '(dired-vc-rename-file t)
  '(display-buffer-alist
@@ -315,6 +316,7 @@
  '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
  '(isearch-lazy-count t)
+ '(kill-whole-line t)
  '(lazy-count-prefix-format nil)
  '(lazy-count-suffix-format " [%s of %s]")
  '(locate-command "mdfind")
