@@ -256,7 +256,14 @@
 
 (add-hook 'edebug-eval-mode-hook
           (lambda ()
-            (setq-local tool-bar-map (cc/edebug-eval-mode-tool-bar-map))))
+            (setq-local tool-bar-map (cc/edebug-eval-mode-tool-bar-map))
+            (let ((appearance (calle24-get-macos-appearance)))
+              (cond
+               ((string= appearance "dark")
+                (calle24-update-tool-bar-appearance t))
+               ((string= appearance "light")
+                (calle24-update-tool-bar-appearance))
+               (t (calle24-update-tool-bar-appearance))))))
 
 (defun cc/edebug-mode-tool-bar-map ()
   "Configure Edebug Tool Bar Map."
@@ -515,7 +522,14 @@
 
 (add-hook 'edebug-mode-hook
           (lambda ()
-            (setq-local tool-bar-map (cc/edebug-mode-tool-bar-map))))
+            (setq-local tool-bar-map (cc/edebug-mode-tool-bar-map))
+            (let ((appearance (calle24-get-macos-appearance)))
+              (cond
+               ((string= appearance "dark")
+                (calle24-update-tool-bar-appearance t))
+               ((string= appearance "light")
+                (calle24-update-tool-bar-appearance))
+               (t (calle24-update-tool-bar-appearance))))))
 
 ;; TODO: handle dark mode images
 
