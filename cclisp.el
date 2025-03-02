@@ -940,5 +940,39 @@ installed."
   (split-window-below)
   (windmove-down))
 
+(defun cc/reset-dictation ()
+  "Reset macOS dictation service corespeechd."
+  (interactive)
+  (process-lines "killall" "corespeechd"))
+
+
+(defun cc/compile-info ()
+  "Build Info file from an Org file."
+  (interactive)
+  (let ((outfile (expand-file-name (file-name-with-extension buffer-file-name "info")))
+        ;; (texi (file-name-with-extension buffer-file-name "texi"))
+        )
+
+    (org-texinfo-export-to-info)
+    ;;(org-export-to-file 'texinfo texi)
+    ;;(process-lines "make" "run")
+    (if (get-buffer "*info*")
+        (kill-buffer "*info*"))
+    (info outfile)
+    (info-initialize)))
+
+(defun cc/whitespace-cleanup (&optional disable)
+  "Turn on whitespace cleanup"
+  (interactive)
+
+  (if disable
+      (progn
+        (setopt show-trailing-whitespace nil)
+        (remove-hook 'before-save-hook #'whitespace-cleanup))
+
+    (progn
+      (setopt show-trailing-whitespace t)
+      (add-hook 'before-save-hook #'whitespace-cleanup))))
+
 (provide 'cclisp)
 ;;; cclisp.el ends here

@@ -12,193 +12,103 @@
       (replace-regexp-in-string "[^A-Z0-9]" "_"
                                 (string-replace "+" "P"
                                                 (upcase
-                                                 (file-name-nondirectory buffer-file-name))))
+                                                 (file-name-nondirectory
+                                                  buffer-file-name))))
       "#ifndef " str n "#define " str "\12\12" _ "\12\12#endif")
-     (("\\.\\([Cc]\\|cc\\|cpp\\|cxx\\|c\\+\\+\\)\\'" . "C / C++ program")
-      nil "#include \""
-      (let
-          ((stem
-            (file-name-sans-extension buffer-file-name))
-           ret)
-        (dolist
-            (ext
-             '("H" "h" "hh" "hpp" "hxx" "h++")
-             ret)
-          (when
-              (file-exists-p
-               (concat stem "." ext))
-            (setq ret
-                  (file-name-nondirectory
-                   (concat stem "." ext))))))
+     (("\\.\\([Cc]\\|cc\\|cpp\\|cxx\\|c\\+\\+\\)\\'" . "C / C++ program") nil
+      "#include \""
+      (let ((stem (file-name-sans-extension buffer-file-name)) ret)
+        (dolist (ext '("H" "h" "hh" "hpp" "hxx" "h++") ret)
+          (when (file-exists-p (concat stem "." ext))
+            (setq ret (file-name-nondirectory (concat stem "." ext))))))
       & 34 | -10)
-     (("[Mm]akefile\\'" . "Makefile")
-      . "makefile.inc")
-     (html-mode lambda nil
-                (sgml-tag "html"))
-     (plain-tex-mode . "tex-insert.tex")
-     (bibtex-mode . "tex-insert.tex")
+     (("[Mm]akefile\\'" . "Makefile") . "makefile.inc")
+     (html-mode lambda nil (sgml-tag "html"))
+     (plain-tex-mode . "tex-insert.tex") (bibtex-mode . "tex-insert.tex")
      (latex-mode "options, RET: " "\\documentclass[" str & 93 | -1 123
-                 (read-string "class: ")
-                 "}\12"
-                 ("package, %s: " "\\usepackage["
-                  (read-string "options, RET: ")
+                 (read-string "class: ") "}\12"
+                 ("package, %s: " "\\usepackage[" (read-string "options, RET: ")
                   & 93 | -1 123 str "}\12")
                  _ "\12\\begin{document}\12" _ "\12\\end{document}")
-     (("/bin/.*[^/]\\'" . "Shell-Script mode magic number")
-      lambda nil
-      (if
-          (eq major-mode
-              (default-value 'major-mode))
-          (sh-mode)))
+     (("/bin/.*[^/]\\'" . "Shell-Script mode magic number") lambda nil
+      (if (eq major-mode (default-value 'major-mode)) (sh-mode)))
      (ada-mode . ada-header)
-     (("\\.[1-9]\\'" . "Man page skeleton")
-      "Short description: " ".\\\" Copyright (C), "
-      (format-time-string "%Y")
-      "  "
-      (getenv "ORGANIZATION")
-      |
-      (progn user-full-name)
+     (("\\.[1-9]\\'" . "Man page skeleton") "Short description: "
+      ".\\\" Copyright (C), " (format-time-string "%Y") "  "
+      (getenv "ORGANIZATION") | (progn user-full-name)
       "\12.\\\" You may distribute this file under the terms of the GNU Free\12.\\\" Documentation License.\12.TH "
-      (file-name-base
-       (buffer-file-name))
-      " "
-      (file-name-extension
-       (buffer-file-name))
-      " "
-      (format-time-string "%Y-%m-%d ")
-      "\12.SH NAME\12"
-      (file-name-base
-       (buffer-file-name))
-      " \\- " str "\12.SH SYNOPSIS\12.B "
-      (file-name-base
-       (buffer-file-name))
-      "\12" _ "\12.SH DESCRIPTION\12.SH OPTIONS\12.SH FILES\12.SH \"SEE ALSO\"\12.SH BUGS\12.SH AUTHOR\12"
+      (file-name-base (buffer-file-name)) " "
+      (file-name-extension (buffer-file-name)) " "
+      (format-time-string "%Y-%m-%d ") "\12.SH NAME\12"
+      (file-name-base (buffer-file-name)) " \\- " str "\12.SH SYNOPSIS\12.B "
+      (file-name-base (buffer-file-name)) "\12" _
+      "\12.SH DESCRIPTION\12.SH OPTIONS\12.SH FILES\12.SH \"SEE ALSO\"\12.SH BUGS\12.SH AUTHOR\12"
       (user-full-name)
-      '(if
-           (search-backward "&"
-                            (line-beginning-position)
-                            t)
-           (replace-match
-            (capitalize
-             (user-login-name))
-            t t))
-      '(end-of-line 1)
-      " <"
-      (progn user-mail-address)
-      ">\12")
-     (".dir-locals.el" nil ";;; Directory Local Variables\12" ";;; For more information see (info \"(emacs) Directory Variables\")\12\12" "(("
+      '(if (search-backward "&" (line-beginning-position) t)
+           (replace-match (capitalize (user-login-name)) t t))
+      '(end-of-line 1) " <" (progn user-mail-address) ">\12")
+     (".dir-locals.el" nil ";;; Directory Local Variables\12"
+      ";;; For more information see (info \"(emacs) Directory Variables\")\12\12"
+      "(("
       '(setq v1
-             (let
-                 (modes)
+             (let (modes)
                (mapatoms
-                (lambda
-                  (mode)
-                  (let
-                      ((name
-                        (symbol-name mode)))
-                    (when
-                        (string-match "-mode$" name)
-                      (push name modes)))))
+                (lambda (mode)
+                  (let ((name (symbol-name mode)))
+                    (when (string-match "-mode$" name) (push name modes)))))
                (sort modes 'string<)))
-      (completing-read "Local variables for mode: " v1 nil t)
-      " . (("
+      (completing-read "Local variables for mode: " v1 nil t) " . (("
       (let
           ((all-variables
             (apropos-internal ".*"
-                              (lambda
-                                (symbol)
-                                (and
-                                 (boundp symbol)
-                                 (get symbol 'variable-documentation))))))
+                              (lambda (symbol)
+                                (and (boundp symbol)
+                                     (get symbol 'variable-documentation))))))
         (completing-read "Variable to set: " all-variables))
-      " . "
-      (completing-read "Value to set it to: " nil)
-      "))))\12")
-     (("\\.el\\'" . "Emacs Lisp header")
-      "Short description: " ";;; "
-      (file-name-nondirectory
-       (buffer-file-name))
-      " --- " str
-      (make-string
-       (max 2
-            (- 80
-               (current-column)
-               27))
-       32)
-      "-*- lexical-binding: t; -*-"
-      '(setq lexical-binding t)
-      "\12\12;; Copyright (C) "
-      (format-time-string "%Y")
-      "  "
-      (getenv "ORGANIZATION")
-      |
-      (progn user-full-name)
-      "\12\12;; Author: "
+      " . " (completing-read "Value to set it to: " nil) "))))\12")
+     (("\\.el\\'" . "Emacs Lisp header") "Short description: " ";;; "
+      (file-name-nondirectory (buffer-file-name)) " --- " str
+      (make-string (max 2 (- 80 (current-column) 27)) 32)
+      "-*- lexical-binding: t; -*-" '(setq lexical-binding t)
+      "\12\12;; Copyright (C) " (format-time-string "%Y") "  "
+      (getenv "ORGANIZATION") | (progn user-full-name) "\12\12;; Author: "
       (user-full-name)
-      '(if
-           (search-backward "&"
-                            (line-beginning-position)
-                            t)
-           (replace-match
-            (capitalize
-             (user-login-name))
-            t t))
-      '(end-of-line 1)
-      " <"
-      (progn user-mail-address)
-      ">\12;; Keywords: "
+      '(if (search-backward "&" (line-beginning-position) t)
+           (replace-match (capitalize (user-login-name)) t t))
+      '(end-of-line 1) " <" (progn user-mail-address) ">\12;; Keywords: "
       '(require 'finder)
       '(setq v1
-             (mapcar
-              (lambda
-                (x)
-                (list
-                 (symbol-name
-                  (car x))))
-              finder-known-keywords)
+             (mapcar (lambda (x) (list (symbol-name (car x))))
+                     finder-known-keywords)
              v2
-             (mapconcat
-              (lambda
-                (x)
-                (format "%12s:  %s"
-                        (car x)
-                        (cdr x)))
-              finder-known-keywords "\12"))
-      ((let
-           ((minibuffer-help-form v2))
+             (mapconcat (lambda (x) (format "%12s:  %s" (car x) (cdr x)))
+                        finder-known-keywords "\12"))
+      ((let ((minibuffer-help-form v2))
          (completing-read "Keyword, C-h: " v1 nil t))
        str ", ")
-      & -2 "\12\12;; This program is free software; you can redistribute it and/or modify\12;; it under the terms of the GNU General Public License as published by\12;; the Free Software Foundation, either version 3 of the License, or\12;; (at your option) any later version.\12\12;; This program is distributed in the hope that it will be useful,\12;; but WITHOUT ANY WARRANTY; without even the implied warranty of\12;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\12;; GNU General Public License for more details.\12\12;; You should have received a copy of the GNU General Public License\12;; along with this program.  If not, see <https://www.gnu.org/licenses/>.\12\12;;; Commentary:\12\12;; " _ "\12\12;;; Code:\12\12\12\12(provide '"
-      (file-name-base
-       (buffer-file-name))
-      ")\12;;; "
-      (file-name-nondirectory
-       (buffer-file-name))
-      " ends here\12")
-     (("\\.texi\\(nfo\\)?\\'" . "Texinfo file skeleton")
-      "Title: " "\\input texinfo   @c -*-texinfo-*-\12@c %**start of header\12@setfilename "
-      (file-name-base
-       (buffer-file-name))
-      ".info\12" "@settitle " str "\12@c %**end of header\12@copying\12"
-      (setq short-description
-            (read-string "Short description: "))
-      ".\12\12" "Copyright @copyright{} "
-      (format-time-string "%Y")
-      "  "
-      (getenv "ORGANIZATION")
-      |
-      (progn user-full-name)
-      "\12\12@quotation\12Permission is granted to copy, distribute and/or modify this document\12under the terms of the GNU Free Documentation License, Version 1.3\12or any later version published by the Free Software Foundation;\12with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.\12A copy of the license is included in the section entitled ``GNU\12Free Documentation License''.\12\12A copy of the license is also available from the Free Software\12Foundation Web site at @url{https://www.gnu.org/licenses/fdl.html}.\12\12@end quotation\12\12The document was typeset with\12@uref{https://www.gnu.org/software/texinfo/, GNU Texinfo}.\12\12@end copying\12\12@titlepage\12@title " str "\12@subtitle " short-description "\12@author "
-      (getenv "ORGANIZATION")
-      |
-      (progn user-full-name)
-      " <"
+      & -2
+      "\12\12;; This program is free software; you can redistribute it and/or modify\12;; it under the terms of the GNU General Public License as published by\12;; the Free Software Foundation, either version 3 of the License, or\12;; (at your option) any later version.\12\12;; This program is distributed in the hope that it will be useful,\12;; but WITHOUT ANY WARRANTY; without even the implied warranty of\12;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\12;; GNU General Public License for more details.\12\12;; You should have received a copy of the GNU General Public License\12;; along with this program.  If not, see <https://www.gnu.org/licenses/>.\12\12;;; Commentary:\12\12;; "
+      _ "\12\12;;; Code:\12\12\12\12(provide '"
+      (file-name-base (buffer-file-name)) ")\12;;; "
+      (file-name-nondirectory (buffer-file-name)) " ends here\12")
+     (("\\.texi\\(nfo\\)?\\'" . "Texinfo file skeleton") "Title: "
+      "\\input texinfo   @c -*-texinfo-*-\12@c %**start of header\12@setfilename "
+      (file-name-base (buffer-file-name)) ".info\12" "@settitle " str
+      "\12@c %**end of header\12@copying\12"
+      (setq short-description (read-string "Short description: ")) ".\12\12"
+      "Copyright @copyright{} " (format-time-string "%Y") "  "
+      (getenv "ORGANIZATION") | (progn user-full-name)
+      "\12\12@quotation\12Permission is granted to copy, distribute and/or modify this document\12under the terms of the GNU Free Documentation License, Version 1.3\12or any later version published by the Free Software Foundation;\12with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.\12A copy of the license is included in the section entitled ``GNU\12Free Documentation License''.\12\12A copy of the license is also available from the Free Software\12Foundation Web site at @url{https://www.gnu.org/licenses/fdl.html}.\12\12@end quotation\12\12The document was typeset with\12@uref{https://www.gnu.org/software/texinfo/, GNU Texinfo}.\12\12@end copying\12\12@titlepage\12@title "
+      str "\12@subtitle " short-description "\12@author "
+      (getenv "ORGANIZATION") | (progn user-full-name) " <"
       (progn user-mail-address)
-      ">\12@page\12@vskip 0pt plus 1filll\12@insertcopying\12@end titlepage\12\12@c Output the table of the contents at the beginning.\12@contents\12\12@ifnottex\12@node Top\12@top " str "\12\12@insertcopying\12@end ifnottex\12\12@c Generate the nodes for this menu with `C-c C-u C-m'.\12@menu\12@end menu\12\12@c Update all node entries with `C-c C-u C-n'.\12@c Insert new nodes with `C-c C-c n'.\12@node Chapter One\12@chapter Chapter One\12\12" _ "\12\12@node Copying This Manual\12@appendix Copying This Manual\12\12@menu\12* GNU Free Documentation License::  License for copying this manual.\12@end menu\12\12@c Get fdl.texi from https://www.gnu.org/licenses/fdl.html\12@include fdl.texi\12\12@node Index\12@unnumbered Index\12\12@printindex cp\12\12@bye\12")
-     (("\\.py\\'" . "Python")
-      . "python3_script_skeleton_2024.py")
-     (("\\.sh\\'" . "Shell Script")
-      . "bash-template.sh")))
+      ">\12@page\12@vskip 0pt plus 1filll\12@insertcopying\12@end titlepage\12\12@c Output the table of the contents at the beginning.\12@contents\12\12@ifnottex\12@node Top\12@top "
+      str
+      "\12\12@insertcopying\12@end ifnottex\12\12@c Generate the nodes for this menu with `C-c C-u C-m'.\12@menu\12@end menu\12\12@c Update all node entries with `C-c C-u C-n'.\12@c Insert new nodes with `C-c C-c n'.\12@node Chapter One\12@chapter Chapter One\12\12"
+      _
+      "\12\12@node Copying This Manual\12@appendix Copying This Manual\12\12@menu\12* GNU Free Documentation License::  License for copying this manual.\12@end menu\12\12@c Get fdl.texi from https://www.gnu.org/licenses/fdl.html\12@include fdl.texi\12\12@node Index\12@unnumbered Index\12\12@printindex cp\12\12@bye\12")
+     (("\\.py\\'" . "Python") . "python3_script_skeleton_2024.py")
+     (("\\.sh\\'" . "Shell Script") . "bash-template.sh")))
  '(auto-insert-directory "~/Templates")
  '(auto-insert-mode t)
  '(bibtex-completion-bibliography '("~/org/bib/references.bib"))
@@ -211,9 +121,7 @@
  '(calendar-mark-diary-entries-flag t)
  '(calendar-mark-holidays-flag t)
  '(calendar-move-hook
-   '(calendar-update-mode-line
-     (lambda nil
-       (diary-view-entries 1))))
+   '(calendar-update-mode-line (lambda nil (diary-view-entries 1))))
  '(case-fold-search t)
  '(casual-lib-use-unicode t)
  '(column-number-mode t)
@@ -222,7 +130,9 @@
  '(current-language-environment "English")
  '(cursor-type 'bar)
  '(custom-safe-themes
-   '("fee7287586b17efbfda432f05539b58e86e059e78006ce9237b8732fde991b4c" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default))
+   '("fee7287586b17efbfda432f05539b58e86e059e78006ce9237b8732fde991b4c"
+     "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879"
+     "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default))
  '(dabbrev-case-fold-search 'case-fold-search)
  '(dabbrev-upcase-means-case-search t)
  '(delete-by-moving-to-trash t)
@@ -237,21 +147,16 @@
  '(dired-listing-switches
    "-lh --group-directories-first --time-style=long-iso -g --no-group")
  '(dired-mouse-drag-files t)
+ '(dired-movement-style 'cycle)
  '(dired-use-ls-dired t)
  '(dired-vc-rename-file t)
  '(display-buffer-alist
-   '(("\\*eshell\\*"
-      (display-buffer-at-bottom)
-      (window-height . 0.23)
+   '(("\\*eshell\\*" (display-buffer-at-bottom) (window-height . 0.23)
       (dedicated . t))
-     ("\\*Occur\\*"
-      (display-buffer-reuse-window display-buffer-below-selected)
-      (dedicated . t)
-      (body-function . select-window))
-     ("\\*grep\\*" nil
-      (body-function . select-window))
-     ("\\*shell\\*"
-      (display-buffer-reuse-window display-buffer-below-selected))))
+     ("\\*Occur\\*" (display-buffer-reuse-window display-buffer-below-selected)
+      (dedicated . t) (body-function . select-window))
+     ("\\*grep\\*" nil (body-function . select-window))
+     ("\\*shell\\*" (display-buffer-reuse-window display-buffer-below-selected))))
  '(display-time-day-and-date t)
  '(display-time-mode t)
  '(ebib-bibtex-dialect 'biblatex)
@@ -270,12 +175,16 @@
      ("https://www.theverge.com/rss/index.xml" tech verge)
      ("https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" nyt)
      ("https://feeds.arstechnica.com/arstechnica/index" tech ars)
-     ("http://feeds.washingtonpost.com/rss/national?itid=lk_inline_manual_32" wapo national)
-     ("http://feeds.washingtonpost.com/rss/world?itid=lk_inline_manual_36" wapo world)
-     ("http://feeds.washingtonpost.com/rss/business?itid=lk_inline_manual_37" wapo business)
+     ("http://feeds.washingtonpost.com/rss/national?itid=lk_inline_manual_32"
+      wapo national)
+     ("http://feeds.washingtonpost.com/rss/world?itid=lk_inline_manual_36" wapo
+      world)
+     ("http://feeds.washingtonpost.com/rss/business?itid=lk_inline_manual_37"
+      wapo business)
      ("https://rss.nytimes.com/services/xml/rss/nyt/World.xml" world nyt)
      ("https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml" arts nyt)
-     ("https://rss.nytimes.com/services/xml/rss/nyt/FashionandStyle.xml" style nyt)
+     ("https://rss.nytimes.com/services/xml/rss/nyt/FashionandStyle.xml" style
+      nyt)
      ("https://rss.nytimes.com/services/xml/rss/nyt/Health.xml" health nyt)
      ("https://rss.nytimes.com/services/xml/rss/nyt/Sports.xml" nyt sports)
      ("https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" tech nyt)
@@ -288,14 +197,16 @@
      ("https://erinkissane.com/feed.rss" opinion tech)
      ("https://www.avclub.com/rss" media)
      ("https://sf.eater.com/rss/index.xml" sf food)
-     ("https://missionlocal.org/feed" sf)
-     ("https://sfstandard.com/feed/" sf)))
+     ("https://missionlocal.org/feed" sf) ("https://sfstandard.com/feed/" sf)))
  '(eshell-modules-list
-   '(eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-term eshell-unix))
+   '(eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob
+                  eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script
+                  eshell-term eshell-unix))
  '(eshell-scroll-to-bottom-on-input 'this)
  '(eshell-scroll-to-bottom-on-output 'this)
  '(eshell-visual-commands
-   '("vi" "vim" "screen" "tmux" "top" "htop" "less" "more" "lynx" "links" "ncftp" "mutt" "pine" "tin" "trn" "elm" "gdu-go"))
+   '("vi" "vim" "screen" "tmux" "top" "htop" "less" "more" "lynx" "links" "ncftp"
+     "mutt" "pine" "tin" "trn" "elm" "gdu-go"))
  '(eshell-visual-options '(("git" "--help" "--paginate")))
  '(eshell-visual-subcommands '(("git" "log" "diff" "show") ("swift" "repl")))
  '(fill-column 80)
@@ -307,7 +218,12 @@
  '(hi-lock-auto-select-face t)
  '(highlight-nonselected-windows nil)
  '(hippie-expand-try-functions-list
-   '(try-expand-dabbrev try-expand-line try-expand-list try-expand-dabbrev-all-buffers try-complete-file-name-partially try-complete-file-name try-expand-all-abbrevs try-expand-dabbrev-from-kill try-complete-lisp-symbol-partially try-complete-lisp-symbol))
+   '(try-expand-dabbrev try-expand-line try-expand-list
+                        try-expand-dabbrev-all-buffers
+                        try-complete-file-name-partially try-complete-file-name
+                        try-expand-all-abbrevs try-expand-dabbrev-from-kill
+                        try-complete-lisp-symbol-partially
+                        try-complete-lisp-symbol))
  '(holiday-other-holidays '((holiday-fixed 6 19 "Juneteenth")))
  '(ibuffer-deletion-char 10005)
  '(ibuffer-locked-char 119923)
@@ -315,180 +231,92 @@
  '(ibuffer-modified-char 9998)
  '(ibuffer-read-only-char 8856)
  '(ibuffer-saved-filter-groups
-   '(("melpa app"
-      ("melpa-app"
-       (directory . "melpa-app"))
-      ("Org Agenda"
-       (name . "Org Agenda"))
+   '(("melpa app" ("melpa-app" (directory . "melpa-app"))
+      ("Org Agenda" (name . "Org Agenda"))
       ("Documentation"
-       (or
-        (mode . makefile-mode)
-        (mode . Info-mode)
-        (mode . help-mode)))
-      ("Org Files"
-       (saved . "Org Files"))
-      ("cclisp"
-       (directory . "cclisp"))
-      ("Casual"
-       (directory . "casual"))
-      ("Casual Suite"
-       (directory . "casual-suite"))
-      ("Casual Avy"
-       (directory . "casual-avy"))
-      ("Casual Symbol Overlay"
-       (directory . "casual-symbol-overlay"))
+       (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
+      ("Org Files" (saved . "Org Files")) ("cclisp" (directory . "cclisp"))
+      ("Casual" (directory . "casual"))
+      ("Casual Suite" (directory . "casual-suite"))
+      ("Casual Avy" (directory . "casual-avy"))
+      ("Casual Symbol Overlay" (directory . "casual-symbol-overlay"))
       ("Elisp Packages"
-       (or
-        (directory . ".config/emacs/elpa")
-        (directory . "Emacs.app/Contents/Resources/lisp"))))
-     ("Org"
-      ("Org Agenda"
-       (name . "Org Agenda"))
-      ("Org Files"
-       (saved . "Org Files"))
-      ("Documentation"
-       (saved . "Documentation"))
-      ("cclisp"
-       (directory . "cclisp"))
+       (or (directory . ".config/emacs/elpa")
+           (directory . "Emacs.app/Contents/Resources/lisp"))))
+     ("Org" ("Org Agenda" (name . "Org Agenda"))
+      ("Org Files" (saved . "Org Files"))
+      ("Documentation" (saved . "Documentation"))
+      ("cclisp" (directory . "cclisp"))
       ("Elisp Packages"
-       (or
-        (directory . ".config/emacs/elpa")
-        (directory . "Emacs.app/Contents/Resources/lisp"))))
+       (or (directory . ".config/emacs/elpa")
+           (directory . "Emacs.app/Contents/Resources/lisp"))))
      ("Blog"
       ("devnull Blog"
-       (or
-        (directory . "/Users/cchoi/org/posts")
-        (name . "*pelican*")
-        (directory . "devnull")))
+       (or (directory . "/Users/cchoi/org/posts") (name . "*pelican*")
+           (directory . "devnull")))
       ("Documentation"
-       (or
-        (mode . makefile-mode)
-        (mode . Info-mode)
-        (mode . help-mode)))
-      ("Org Files"
-       (and
-        (directory . "/Users/cchoi/org")
-        (mode . org-mode)))
-      ("cclisp"
-       (directory . "cclisp"))
+       (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
+      ("Org Files" (and (directory . "/Users/cchoi/org") (mode . org-mode)))
+      ("cclisp" (directory . "cclisp"))
       ("Elisp Packages"
-       (or
-        (directory . ".config/emacs/elpa")
-        (directory . "Emacs.app/Contents/Resources/lisp"))))
-     ("Casual"
-      ("Casual"
-       (directory . "casual"))
-      ("Casual Avy"
-       (directory . "casual-avy"))
-      ("Casual Symbol Overlay"
-       (directory . "casual-symbol-overlay"))
-      ("Casual Suite"
-       (directory . "casual-suite"))
+       (or (directory . ".config/emacs/elpa")
+           (directory . "Emacs.app/Contents/Resources/lisp"))))
+     ("Casual" ("Casual" (directory . "casual"))
+      ("Casual Avy" (directory . "casual-avy"))
+      ("Casual Symbol Overlay" (directory . "casual-symbol-overlay"))
+      ("Casual Suite" (directory . "casual-suite"))
       ("Documentation"
-       (or
-        (mode . makefile-mode)
-        (mode . Info-mode)
-        (mode . help-mode)))
-      ("Org Agenda"
-       (name . "Org Agenda"))
-      ("cclisp"
-       (directory . "cclisp"))
-      ("Desktop"
-       (directory . "/Users/cchoi/Desktop"))
-      ("Org Files"
-       (and
-        (directory . "/Users/cchoi/org")
-        (mode . org-mode)))
-      ("cclisp"
-       (directory . "cclisp"))
+       (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
+      ("Org Agenda" (name . "Org Agenda")) ("cclisp" (directory . "cclisp"))
+      ("Desktop" (directory . "/Users/cchoi/Desktop"))
+      ("Org Files" (and (directory . "/Users/cchoi/org") (mode . org-mode)))
+      ("cclisp" (directory . "cclisp"))
       ("Elisp Packages"
-       (or
-        (directory . ".config/emacs/elpa")
-        (directory . "Emacs.app/Contents/Resources/lisp"))))
-     ("Planning"
-      ("Org Agenda"
-       (name . "Org Agenda"))
+       (or (directory . ".config/emacs/elpa")
+           (directory . "Emacs.app/Contents/Resources/lisp"))))
+     ("Planning" ("Org Agenda" (name . "Org Agenda"))
       ("Documentation"
-       (or
-        (mode . Man-mode)
-        (mode . Info-mode)
-        (mode . help-mode)))
-      ("cclisp"
-       (directory . "cclisp"))
-      ("Org Files"
-       (and
-        (directory . "/Users/cchoi/org")
-        (mode . org-mode))))))
+       (or (mode . Man-mode) (mode . Info-mode) (mode . help-mode)))
+      ("cclisp" (directory . "cclisp"))
+      ("Org Files" (and (directory . "/Users/cchoi/org") (mode . org-mode))))))
  '(ibuffer-saved-filters
-   '(("Org Agenda"
-      (name . "Org Agenda"))
-     ("Casual"
-      (directory . "elisp/casual"))
+   '(("Org Agenda" (name . "Org Agenda")) ("Casual" (directory . "elisp/casual"))
      ("Documentation"
-      (or
-       (mode . Man-mode)
-       (mode . Info-mode)
-       (mode . help-mode)))
-     ("Casual Symbol Overlay"
-      (directory . "casual-symbol-overlay"))
-     ("Casual Suite"
-      (directory . "casual-suite"))
-     ("Casual Avy"
-      (directory . "casual-avy"))
-     ("cclisp"
-      (directory . "cclisp"))
-     ("Desktop"
-      (directory . "/Users/cchoi/Desktop"))
-     ("Org Files"
-      (and
-       (directory . "/Users/cchoi/org")
-       (mode . org-mode)))
+      (or (mode . Man-mode) (mode . Info-mode) (mode . help-mode)))
+     ("Casual Symbol Overlay" (directory . "casual-symbol-overlay"))
+     ("Casual Suite" (directory . "casual-suite"))
+     ("Casual Avy" (directory . "casual-avy")) ("cclisp" (directory . "cclisp"))
+     ("Desktop" (directory . "/Users/cchoi/Desktop"))
+     ("Org Files" (and (directory . "/Users/cchoi/org") (mode . org-mode)))
      ("Elisp Packages"
-      (or
-       (directory . ".config/emacs/elpa")
-       (directory . "Emacs.app/Contents/Resources/lisp")))
+      (or (directory . ".config/emacs/elpa")
+          (directory . "Emacs.app/Contents/Resources/lisp")))
      ("programming"
-      (or
-       (derived-mode . prog-mode)
-       (mode . ess-mode)
-       (mode . compilation-mode)))
-     ("text document"
-      (and
-       (derived-mode . text-mode)
-       (not
-        (starred-name))))
+      (or (derived-mode . prog-mode) (mode . ess-mode) (mode . compilation-mode)))
+     ("text document" (and (derived-mode . text-mode) (not (starred-name))))
      ("TeX"
-      (or
-       (derived-mode . tex-mode)
-       (mode . latex-mode)
-       (mode . context-mode)
-       (mode . ams-tex-mode)
-       (mode . bibtex-mode)))
+      (or (derived-mode . tex-mode) (mode . latex-mode) (mode . context-mode)
+          (mode . ams-tex-mode) (mode . bibtex-mode)))
      ("web"
-      (or
-       (derived-mode . sgml-mode)
-       (derived-mode . css-mode)
-       (mode . javascript-mode)
-       (mode . js2-mode)
-       (mode . scss-mode)
-       (derived-mode . haml-mode)
-       (mode . sass-mode)))
+      (or (derived-mode . sgml-mode) (derived-mode . css-mode)
+          (mode . javascript-mode) (mode . js2-mode) (mode . scss-mode)
+          (derived-mode . haml-mode) (mode . sass-mode)))
      ("gnus"
-      (or
-       (mode . message-mode)
-       (mode . mail-mode)
-       (mode . gnus-group-mode)
-       (mode . gnus-summary-mode)
-       (mode . gnus-article-mode)))))
+      (or (mode . message-mode) (mode . mail-mode) (mode . gnus-group-mode)
+          (mode . gnus-summary-mode) (mode . gnus-article-mode)))))
  '(ignored-local-variable-values
-   '((vc-prepare-patches-separately)
-     (diff-add-log-use-relative-names . t)
+   '((vc-prepare-patches-separately) (diff-add-log-use-relative-names . t)
      (vc-git-annotate-switches . "-w")))
  '(image-load-path
-   '("~/.config/emacs/calle24/images" "/Applications/MacPorts/Emacs.app/Contents/Resources/etc/images/" "/snap/emacs/current/usr/share/emacs/29.4/etc/images/" data-directory load-path))
+   '("~/.config/emacs/calle24/images"
+     "/Applications/MacPorts/Emacs.app/Contents/Resources/etc/images/"
+     "/snap/emacs/current/usr/share/emacs/29.4/etc/images/" data-directory
+     load-path))
  '(indent-tabs-mode nil)
+ '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
  '(isearch-lazy-count t)
+ '(kill-whole-line t)
  '(lazy-count-prefix-format nil)
  '(lazy-count-suffix-format " [%s of %s]")
  '(locate-command "mdfind")
@@ -536,25 +364,27 @@
       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
       ("\\paragraph{%s}" . "\\paragraph*{%s}")
       ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-     ("report" "\\documentclass[11pt]{report}"
-      ("\\part{%s}" . "\\part*{%s}")
-      ("\\chapter{%s}" . "\\chapter*{%s}")
-      ("\\section{%s}" . "\\section*{%s}")
+     ("report" "\\documentclass[11pt]{report}" ("\\part{%s}" . "\\part*{%s}")
+      ("\\chapter{%s}" . "\\chapter*{%s}") ("\\section{%s}" . "\\section*{%s}")
       ("\\subsection{%s}" . "\\subsection*{%s}")
       ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-     ("book" "\\documentclass[11pt]{book}"
-      ("\\part{%s}" . "\\part*{%s}")
-      ("\\chapter{%s}" . "\\chapter*{%s}")
-      ("\\section{%s}" . "\\section*{%s}")
+     ("book" "\\documentclass[11pt]{book}" ("\\part{%s}" . "\\part*{%s}")
+      ("\\chapter{%s}" . "\\chapter*{%s}") ("\\section{%s}" . "\\section*{%s}")
       ("\\subsection{%s}" . "\\subsection*{%s}")
       ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
      ("simpleresumecv" "\\documentclass[11pt]{simpleresumecv}"
       ("\\section{%s}" . "\\section*{%s}")
       ("\\subsection{%s}" . "\\subsection*{%s}")
-      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+     ("letter" "\\documentclass[11pt]{letter}"
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\\\subsection{%s}" . "\\\\subsection*{%s}")
+      ("\\\\subsubsection{%s}" . "\\\\subsubsection{*%s}"))))
  '(org-latex-compiler "xelatex")
  '(org-latex-pdf-process
-   '("%latex -interaction nonstopmode --shell-escape -output-directory %o %f" "%latex -interaction nonstopmode --shell-escape -output-directory %o %f" "%latex -interaction nonstopmode --shell-escape -output-directory %o %f"))
+   '("%latex -interaction nonstopmode --shell-escape -output-directory %o %f"
+     "%latex -interaction nonstopmode --shell-escape -output-directory %o %f"
+     "%latex -interaction nonstopmode --shell-escape -output-directory %o %f"))
  '(org-latex-prefer-user-labels t)
  '(org-log-done 'time)
  '(org-log-state-notes-insert-after-drawers t)
@@ -563,24 +393,12 @@
  '(org-re-reveal-theme "moon")
  '(org-show-notification-handler 'cc/display-notification)
  '(org-src-lang-modes
-   '(("ocaml" . tuareg)
-     ("elisp" . emacs-lisp)
-     ("ditaa" . artist)
-     ("asymptote" . asy)
-     ("dot" . graphviz-dot)
-     ("sqlite" . sql)
-     ("calc" . fundamental)
-     ("C" . c)
-     ("cpp" . c++)
-     ("C++" . c++)
-     ("screen" . shell-script)
-     ("shell" . sh)
-     ("bash" . sh)
-     ("plantuml" . plantuml)
-     ("swift" . swift)
-     ("swiftui" . swift)
-     ("graphviz" . graphviz)
-     ("mscgen" . mscgen)))
+   '(("ocaml" . tuareg) ("elisp" . emacs-lisp) ("ditaa" . artist)
+     ("asymptote" . asy) ("dot" . graphviz-dot) ("sqlite" . sql)
+     ("calc" . fundamental) ("C" . c) ("cpp" . c++) ("C++" . c++)
+     ("screen" . shell-script) ("shell" . sh) ("bash" . sh)
+     ("plantuml" . plantuml) ("swift" . swift) ("swiftui" . swift)
+     ("graphviz" . graphviz) ("mscgen" . mscgen)))
  '(org-startup-folded 'showeverything)
  '(org-startup-with-inline-images t)
  '(org-superstar-headline-bullets-list '(10687 10070 10040 10047))
@@ -588,37 +406,45 @@
  '(org-support-shift-select t)
  '(org-todo-keyword-faces
    '(("TODO" :background "pale green" :foreground "dark green" :box
-      (:line-width
-       (1 . 1)
-       :color "grey" :style "flat-button")
-      :inverse-video t :height 0.8)
+      (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
+      :height 0.8)
      ("IN_PROGRESS" :background "black" :foreground "light green" :box
-      (:line-width
-       (1 . 1)
-       :color "grey" :style "flat-button")
-      :inverse-video t :height 0.8)
+      (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
+      :height 0.8)
      ("WAITING" :background "navajo white" :foreground "dark goldenrod" :box
-      (:line-width
-       (1 . 1)
-       :color "grey" :style "flat-button")
-      :inverse-video t :height 0.8)
+      (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
+      :height 0.8)
      ("DONE" :background "gray52" :foreground "gray15" :box
-      (:line-width
-       (1 . 1)
-       :color "grey" :style "flat-button")
-      :inverse-video t :height 0.8)
+      (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
+      :height 0.8)
      ("CANCELED" :background "DeepPink1" :foreground "gray15" :box
-      (:line-width
-       (1 . 1)
-       :color "grey" :style "flat-button")
-      :inverse-video t :height 0.8)))
+      (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
+      :height 0.8)))
  '(org-use-speed-commands t)
  '(package-archives
    '(("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa" . "http://melpa.org/packages/")))
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
-   '(show-font vtable toc-org jsonian sqlite-mode-extras async eshell-git-prompt password-store-menu modus-themes eldoc erc faceup flymake idlwave jsonrpc project soap-client tramp verilog-mode xref symbol-overlay org-ql flycheck-package package-lint iedit doct scpaste snow paredit orgtbl-aggregate transpose-frame diff-hl keycast edit-indirect ox-trac google-translate org wgrep js2-mode rainbow-mode use-package bind-key reveal-in-folder elfeed ob-swiftui ob-swift csv-mode company-restclient visual-regexp-steroids visual-regexp citar math-symbol-lists helm-bibtex ox-gist org-ref org-re-reveal webpaste company-org-block company eglot gnuplot ob-restclient restclient ox-slack good-scroll svg-clock disk-usage expand-region helm-pass password-store which-key org-outline-numbering org-superstar osx-dictionary spotlight ebib auto-complete plantuml-mode tj3-mode ledger-mode yasnippet-snippets yasnippet htmlize calfw kanban fireplace treemacs neotree smart-mode-line-powerline-theme pbcopy ox-jira ox-gfm helm-swoop helm ztree yaml-mode swift-mode sr-speedbar solarized-theme python-mode pkg-info markdown-mode magit json-mode graphviz-dot-mode google-this go-mode autopair))
+   '(async auto-complete autopair bind-key calfw citar company company-org-block
+           company-restclient csv-mode diff-hl disk-usage doct ebib
+           edit-indirect editorconfig eglot eldoc elfeed erc eshell-git-prompt
+           expand-region faceup fireplace flycheck-package flymake gnuplot
+           go-mode good-scroll google-this google-translate graphviz-dot-mode
+           helm helm-bibtex helm-pass helm-swoop htmlize idlwave iedit js2-mode
+           json-mode jsonian jsonrpc kanban keycast ledger-mode magit
+           markdown-mode math-symbol-lists modus-themes neotree ob-restclient
+           ob-swift ob-swiftui org org-outline-numbering org-ql org-re-reveal
+           org-ref org-superstar orgtbl-aggregate osx-dictionary ox-gfm ox-gist
+           ox-jira ox-slack ox-trac package-lint paredit password-store
+           password-store-menu pbcopy pkg-info plantuml-mode project python-mode
+           rainbow-mode restclient reveal-in-folder scpaste show-font
+           smart-mode-line-powerline-theme snow soap-client solarized-theme
+           spotlight sqlite-mode-extras sr-speedbar svg-clock swift-mode
+           symbol-overlay tj3-mode toc-org tramp transpose-frame treemacs
+           use-package verilog-mode visual-regexp visual-regexp-steroids vtable
+           webpaste wgrep which-key window-tool-bar xref yaml-mode yasnippet
+           yasnippet-snippets ztree))
  '(pixel-scroll-precision-mode t)
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
@@ -628,15 +454,10 @@
  '(reb-re-syntax 'string)
  '(require-final-newline t)
  '(safe-local-variable-values
-   '((eval and buffer-file-name
-           (not
-            (eq major-mode 'package-recipe-mode))
-           (or
-            (require 'package-recipe-mode nil t)
-            (let
-                ((load-path
-                  (cons "../package-build" load-path)))
-              (require 'package-recipe-mode nil t)))
+   '((eval and buffer-file-name (not (eq major-mode 'package-recipe-mode))
+           (or (require 'package-recipe-mode nil t)
+               (let ((load-path (cons "../package-build" load-path)))
+                 (require 'package-recipe-mode nil t)))
            (package-recipe-mode))
      (vc-git-annotate-switches . "-w")))
  '(save-interprogram-paste-before-kill t)
@@ -649,6 +470,7 @@
  '(speedbar-show-unknown-files t)
  '(split-width-threshold nil)
  '(switch-to-buffer-obey-display-actions t)
+ '(text-scale-mode-step 1.05)
  '(tramp-terminal-type "tramp")
  '(transient-align-variable-pitch t)
  '(trash-directory "~/.Trash")
@@ -661,18 +483,12 @@
  '(wdired-allow-to-change-permissions t)
  '(wgrep-auto-save-buffer t)
  '(world-clock-list
-   '(("Pacific/Honolulu" "Honolulu")
-     ("America/Los_Angeles" "San Francisco")
-     ("America/Denver" "Denver")
-     ("America/Chicago" "Chicago")
-     ("America/New_York" "New York")
-     ("Europe/London" "London")
-     ("Europe/Berlin" "Barcelona • Paris • Berlin")
-     ("Europe/Kiev" "Kyiv")
-     ("Asia/Shanghai" "Shanghai")
-     ("Asia/Singapore" "Singapore")
-     ("Asia/Tokyo" "Tokyo")
-     ("Asia/Seoul" "Seoul"))))
+   '(("Pacific/Honolulu" "Honolulu") ("America/Los_Angeles" "San Francisco")
+     ("America/Denver" "Denver") ("America/Chicago" "Chicago")
+     ("America/New_York" "New York") ("Europe/London" "London")
+     ("Europe/Berlin" "Barcelona • Paris • Berlin") ("Europe/Kiev" "Kyiv")
+     ("Asia/Shanghai" "Shanghai") ("Asia/Singapore" "Singapore")
+     ("Asia/Tokyo" "Tokyo") ("Asia/Seoul" "Seoul"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -700,7 +516,7 @@
  '(markdown-markup-face ((t (:inherit shadow :slant normal :weight normal))))
  '(minibuffer-prompt ((((type x ns) (class color) (background light)) (:foreground "dark magenta")) (((type x ns) (class color) (background dark)) (:foreground "orange")) (((type tty)) (:foreground "cyan"))))
  '(mode-line ((((type ns)) (:background "#ff7700" :foreground "gray20" :box (:line-width (5 . 5) :color "#ff7700" :style flat-button) :height 1.0 :family "SF Compact Rounded")) (((type x pgtk)) (:background "#ff7700" :foreground "gray20" :box (:line-width (2 . 2) :color "#ff7700" :style flat-button) :height 1.0 :family "Latin Modern Sans")) (((type tty)) (:background "#ff7700" :foreground "gray20")) (((type tty)) (:background "#ff7700" :foreground "gray20"))))
- '(mode-line-inactive ((((type ns)) (:inherit mode-line :background "gray" :box (:line-width (5 . 5) :color "gray"))) (((type x pgtk)) (:inherit mode-line :background "gray" :box (:line-width (2 . 2) :color "gray" :style flat-button))) (((type tty)) (:background "gray"))))
+ '(mode-line-inactive ((((type ns)) (:inherit mode-line :background "gray" :foreground "#686868" :box (:line-width (5 . 5) :color "gray"))) (((type x pgtk)) (:inherit mode-line :background "gray" :foreground "#686868" :box (:line-width (2 . 2) :color "gray" :style flat-button))) (((type tty)) (:background "gray" :foreground "#686868"))))
  '(org-agenda-done ((t (:foreground "snow4"))))
  '(org-agenda-structure ((((type x ns) (class color) (background light)) (:foreground "Blue1")) (((type x ns) (class color) (background dark)) (:foreground "LightSkyBlue")) (((type tty) (class color)) (:foreground "light sky blue")) (t (:weight bold))))
  '(org-block ((t (:inherit fixed-pitch :extend t :height 0.85))))

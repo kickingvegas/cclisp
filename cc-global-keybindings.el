@@ -26,6 +26,7 @@
 ;;; Code:
 
 (require 'cc-ediff-mode)
+(require 'minibuffer)
 (require 'helm-buffers)
 (require 'neotree)
 (require 'bookmark)
@@ -57,6 +58,7 @@
 ;;(keymap-global-set "\C-xh" 'help-for-help)
 ;;(keymap-global-set "\r" 'newline-and-indent)
 
+(keymap-global-set "<clear>" #'kill-region)
 (keymap-global-set "<f1>" #'save-buffer)
 (keymap-global-set "<f2>" #'ibuffer)
 (keymap-global-set "s-<return>" #'other-window)
@@ -120,6 +122,9 @@
 (keymap-global-set "<PageUp>" #'scroll-up-command)
 (keymap-global-set "M-z" #'undo)
 (keymap-global-set "<delete>" #'delete-forward-char)
+
+;; (if (eq window-system 'ns)
+;;   (keymap-global-set "s-<f3>" #'ns-do-show-character-palette))
 
 ;; (when (string-equal (window-system) "mac")
 ;;   (keymap-global-set "C-<tab>" #'mac-next-tab)
@@ -192,6 +197,7 @@
 (keymap-set minibuffer-mode-map "C-<right>" #'cc/next-sexp)
 (keymap-set minibuffer-mode-map "C-<up>" #'backward-up-list)
 (keymap-set minibuffer-mode-map "C-<down>" #'down-list)
+(keymap-set minibuffer-mode-map "<clear>" #'delete-minibuffer-contents)
 
 (keymap-global-set "M-\\" #'cycle-spacing)
 (keymap-global-set "s-SPC" #'cycle-spacing)
