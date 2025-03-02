@@ -310,7 +310,7 @@
  '(image-load-path
    '("~/.config/emacs/calle24/images"
      "/Applications/MacPorts/Emacs.app/Contents/Resources/etc/images/"
-     "/snap/emacs/current/usr/share/emacs/29.4/etc/images/" data-directory
+     "/snap/emacs/current/usr/share/emacs/30.1/etc/images/" data-directory
      load-path))
  '(indent-tabs-mode nil)
  '(indicate-empty-lines t)
