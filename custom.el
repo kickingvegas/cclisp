@@ -549,4 +549,4 @@
  '(tab-bar ((t (:inherit variable-pitch :background "grey90" :foreground "black" :height 0.75))))
  '(tab-bar-tab ((t (:inherit tab-bar :box (:line-width 1 :color "dim gray")))))
  '(tab-bar-tab-inactive ((t (:inherit tab-bar-tab :background "gainsboro" :foreground "gray62" :box nil))))
- '(variable-pitch ((((type ns)) (:height 1.4 :family "Optima")) (((type x pgtk)) (:height 1.4 :family "Ubuntu")))))
+ '(variable-pitch ((((type ns)) (:height 1.4 :family "Optima")) (((type x pgtk)) (:height 1.4 :family "Linux Biolinum O")))))
