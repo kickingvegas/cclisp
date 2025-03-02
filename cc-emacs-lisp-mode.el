@@ -257,7 +257,7 @@
 (add-hook 'edebug-eval-mode-hook
           (lambda ()
             (setq-local tool-bar-map (cc/edebug-eval-mode-tool-bar-map))
-            (let ((appearance (calle24-get-macos-appearance)))
+            (let ((appearance (calle24-get-appearance)))
               (cond
                ((string= appearance "dark")
                 (calle24-update-tool-bar-appearance t))
@@ -287,6 +287,8 @@
      :visible (not (edebug-mode-p))
      :help "Set Initial Mode")
 
+    ;; (define-key-after tool-bar-map [separator-1] menu-bar-separator)
+
     (tool-bar-local-item
      "edebug/next-mode"
      #'edebug-next-mode #'edebug-next-mode map
@@ -312,6 +314,8 @@
      :visible (edebug-mode-p)
      :help "Go Mode")
 
+    ;; (define-key-after tool-bar-map [separator-2] menu-bar-separator)
+
     (tool-bar-local-item
      "edebug/step-mode"
      #'edebug-step-mode #'edebug-step-mode map
@@ -335,6 +339,8 @@
      #'edebug-step-out #'edebug-step-out map
      :visible (edebug-mode-p)
      :help "Step out sexp")
+
+    ;; (pdefine-key-after tool-bar-map [separator-3] menu-bar-separator)
 
     (tool-bar-local-item
      "edebug/eval-expression"
@@ -361,6 +367,8 @@
      :help "Watchlist")
 
     ;; (define-key-after map [separator-1] menu-bar-separator)
+
+    ;; (define-key-after tool-bar-map [separator-4] menu-bar-separator)
 
     (tool-bar-local-item
      "edebug/set-breakpoint"
@@ -392,6 +400,8 @@
      :visible (edebug-mode-p)
      :help "Unset All Breakpoints")
 
+    ;; (define-key-after tool-bar-map [separator-5] menu-bar-separator)
+
     (tool-bar-local-item
      "edebug/stop"
      #'edebug-stop #'edebug-stop map
@@ -409,6 +419,8 @@
      #'edebug-top-level-nonstop #'edebug-top-level-nonstop map
      :visible (edebug-mode-p)
      :help "Quit Edebug Nonstop")
+
+    ;; (define-key-after tool-bar-map [separator-6] menu-bar-separator)
 
     (tool-bar-local-item
      "help"
@@ -496,10 +508,10 @@
     (tool-bar-local-item-from-menu 'save-buffer "save" map nil
 			           :label "Save"
                                    :visible (not (edebug-mode-p)))
-    ;; (define-key-after (default-value 'tool-bar-map) [separator-1] menu-bar-separator)
+    ;; (define-key-after tool-bar-map [separator-1] menu-bar-separator)
     (tool-bar-local-item-from-menu 'undo "undo" map nil
                                    :visible (not (edebug-mode-p)))
-    ;; (define-key-after (default-value 'tool-bar-map) [separator-2] menu-bar-separator)
+    ;; (define-key-after tool-bar-map [separator-2] menu-bar-separator)
     (tool-bar-local-item-from-menu (lookup-key menu-bar-edit-menu [cut])
 			           "cut" map nil
                                    :vert-only t
@@ -511,7 +523,7 @@
     (tool-bar-local-item-from-menu (lookup-key menu-bar-edit-menu [paste])
 			           "paste" map nil :vert-only t
                                    :visible (not (edebug-mode-p)))
-    ;; (define-key-after (default-value 'tool-bar-map) [separator-3] menu-bar-separator)
+    ;; (define-key-after tool-bar-map [separator-3] menu-bar-separator)
     (tool-bar-local-item-from-menu 'isearch-forward "search"
 			           map nil
                                    :label "Search"
@@ -519,11 +531,10 @@
                                    :visible (not (edebug-mode-p)))
     map))
 
-
 (add-hook 'edebug-mode-hook
           (lambda ()
             (setq-local tool-bar-map (cc/edebug-mode-tool-bar-map))
-            (let ((appearance (calle24-get-macos-appearance)))
+            (let ((appearance (calle24-get-appearance)))
               (cond
                ((string= appearance "dark")
                 (calle24-update-tool-bar-appearance t))

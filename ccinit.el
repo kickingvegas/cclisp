@@ -124,7 +124,7 @@
 (keymap-set isearch-mode-map "C-o" #'casual-isearch-tmenu)
 
 ;; calle24 config
-(when (and (featurep 'calle24) (eq window-system 'ns))
+(when (featurep 'calle24)
   (calle24-refresh-appearance)
   (add-hook 'compilation-mode-hook #'calle24-refresh-appearance))
 
