@@ -437,14 +437,14 @@
            ob-swift ob-swiftui org org-outline-numbering org-ql org-re-reveal
            org-ref org-superstar orgtbl-aggregate osx-dictionary ox-gfm ox-gist
            ox-jira ox-slack ox-trac package-lint paredit password-store
-           password-store-menu pbcopy pkg-info plantuml-mode project python-mode
-           rainbow-mode restclient reveal-in-folder scpaste show-font
-           smart-mode-line-powerline-theme snow soap-client solarized-theme
-           spotlight sqlite-mode-extras sr-speedbar svg-clock swift-mode
-           symbol-overlay tj3-mode toc-org tramp transpose-frame treemacs
-           use-package verilog-mode visual-regexp visual-regexp-steroids vtable
-           webpaste wgrep which-key window-tool-bar xref yaml-mode yasnippet
-           yasnippet-snippets ztree))
+           password-store-menu pbcopy pkg-info plantuml-mode project python
+           python-mode rainbow-mode restclient reveal-in-folder scpaste
+           show-font smart-mode-line-powerline-theme snow soap-client
+           solarized-theme spotlight sqlite-mode-extras sr-speedbar svg-clock
+           swift-mode symbol-overlay tj3-mode toc-org tramp transpose-frame
+           treemacs use-package verilog-mode visual-regexp
+           visual-regexp-steroids vtable webpaste wgrep which-key
+           window-tool-bar xref yaml-mode yasnippet yasnippet-snippets ztree))
  '(pixel-scroll-precision-mode t)
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
