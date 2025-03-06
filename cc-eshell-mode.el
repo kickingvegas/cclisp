@@ -37,9 +37,7 @@
 (defvar eshell-visual-subcommands)
 (declare-function eshell/pwd "pwd" ())
 
-(setq eshell-prompt-regexp "┗━━ \\$ "
-      eshell-prompt-function
-      (lambda nil
+(defun cc/prompt-function ()
         (concat "\n┏━ "
                 (user-login-name) "@" (system-name) ":"
                 (propertize (if (string= (eshell/pwd) (getenv "HOME"))
@@ -52,12 +50,16 @@
                     (format " (%s)" (eshell-git-prompt--branch-name))
                   "")
                 "\n┗━━ "
-                (if (= (user-uid) 0) "# " "$ "))))
+                (if (= (user-uid) 0) "# " "$ ")))
+
+(setopt eshell-prompt-function #'cc/prompt-function)
+(setopt eshell-banner-message (format "Eshell ⌨️\n%s" (sunrise-sunset)))
 
 (add-hook 'eshell-mode-hook 'company-mode)
 (add-hook 'eshell-mode-hook 'hl-line-mode)
 (add-hook 'eshell-mode-hook (lambda ()
-			      (keymap-set eshell-mode-map "<tab>" 'company-complete)
+                              (keymap-set eshell-mode-map "<f1>" #'eshell-list-history)
+			      ;;(keymap-set eshell-mode-map "<tab>" 'company-complete)
 			      (keymap-set eshell-mode-map "C-r" 'helm-eshell-history)
                               (keymap-set eshell-mode-map "M-b" #'backward-sexp)
                               (keymap-set eshell-mode-map "<clear>" #'eshell-kill-input)
