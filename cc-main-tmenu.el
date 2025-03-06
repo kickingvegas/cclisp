@@ -29,6 +29,7 @@
 (require 'google-translate-smooth-ui)
 (require 'webpaste)
 (require 'markdown-mode)
+(require 'git-link)
 
 (defvar cc-main-tmenu-customize-enable t
   "If t then enable Casual menu customizations.")
@@ -55,6 +56,14 @@
   ;; modify `casual-editkit-tools-tmenu'
   (transient-append-suffix 'casual-editkit-tools-tmenu "w"
     '("P" "Password›" password-store-menu))
+
+  (transient-append-suffix 'casual-editkit-tools-tmenu "P"
+    '("l" "Git Link›" git-link-dispatch
+      :if casual-editkit-version-controlled-p))
+
+  (transient-append-suffix 'casual-editkit-tools-tmenu "l"
+    '("H" "Git Homepage›" git-link-homepage
+      :if casual-editkit-version-controlled-p))
 
   (transient-append-suffix 'casual-editkit-tools-tmenu "M-e"
     '("C-p" "Call" cc/call-nanp-phone-number
