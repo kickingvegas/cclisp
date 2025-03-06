@@ -24,8 +24,12 @@
 ;;; Code:
 
 (require 'magit)
+(require 'git-link)
 
 (add-hook 'magit-status-mode-hook (lambda () (toggle-truncate-lines -1)))
+
+(keymap-set magit-status-mode-map "<f1>" #'git-link-homepage)
+(keymap-set magit-status-mode-map "C-c m" #'git-link-dispatch)
 
 (provide 'cc-magit-mode)
 ;;; cc-magit-mode.el ends here
