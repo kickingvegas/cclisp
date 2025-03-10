@@ -31,6 +31,7 @@
 (require 'helm-eshell)
 (require 'eshell-git-prompt)
 (require 'cclisp)
+(require 'casual-lib)
 
 (defvar eshell-mode-map)
 (defvar eshell-visual-options)
@@ -71,6 +72,43 @@
                               ;; (keymap-set eshell-mode-map "C-<down>" #'down-list)
                               (setenv "NO_COLOR" "1")
                               (setenv "CLICOLOR" "0")))
+
+
+(transient-define-prefix casual-eshell-tmenu ()
+  "Transient menu for Eshell."
+  ["Casual Eshell"
+   ["Prompt"
+    ("p" "Previous" eshell-previous-prompt :transient t)
+    ("n" "Next" eshell-next-prompt :transient t)]
+
+   ["Argument"
+    ("b" "Backward" eshell-backward-argument :transient t)
+    ("f" "Forward" eshell-forward-argument :transient t)
+    ("y" "Repeat" eshell-repeat-argument :transient t)]
+
+   ["Output"
+    ("s" "Show" eshell-show-output)
+    ("S" "Show Max" eshell-show-maximum-output)
+    ("m" "Mark" eshell-mark-output)
+    ("D" "Delete" eshell-delete-output)]
+
+   ["Input"
+    ("k" "Kill Input" eshell-kill-input)
+    ("h" "History" eshell-list-history)]
+
+   ["Misc"
+    ("d" "Dired" dired-jump-other-window)
+    ("J" "Bookmark Jump…" bookmark-jump)
+    ("g" "Magit" magit-status :if casual-editkit-version-controlled-p)]]
+
+  [:class transient-row
+   (casual-lib-quit-one)
+   ("RET" "Dismiss" transient-quit-all)
+   (casual-lib-quit-all)])
+
+
+(keymap-set eshell-mode-map "C-o" #'casual-eshell-tmenu)
+
 
 (provide 'cc-eshell-mode)
 ;;; cc-eshell-mode.el ends here
