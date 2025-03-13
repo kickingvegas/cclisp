@@ -443,8 +443,8 @@
            reveal-in-folder scpaste show-font smart-mode-line-powerline-theme
            snow soap-client solarized-theme spotlight sqlite-mode-extras
            sr-speedbar svg-clock swift-mode symbol-overlay tj3-mode toc-org
-           tramp transpose-frame treemacs use-package verilog-mode visual-regexp
-           visual-regexp-steroids vtable webpaste wgrep which-key
+           track-changes tramp transpose-frame treemacs use-package verilog-mode
+           visual-regexp visual-regexp-steroids vtable webpaste wgrep which-key
            window-tool-bar xref yaml-mode yasnippet yasnippet-snippets ztree))
  '(pixel-scroll-precision-mode t)
  '(plantuml-default-exec-mode 'executable)
