@@ -313,6 +313,7 @@
      "/Applications/MacPorts/Emacs.app/Contents/Resources/etc/images/"
      "/snap/emacs/current/usr/share/emacs/30.1/etc/images/" data-directory
      load-path))
+ '(imenu-flatten 'annotation)
  '(indent-tabs-mode nil)
  '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
