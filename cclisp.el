@@ -1,6 +1,6 @@
 ;;; cclisp.el --- Utility Functions -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -30,22 +30,19 @@
 (require 'spotlight)
 (require 'org-capture)
 (require 'org-agenda)
+(require 'org-table)
 (require 'yasnippet)
 (require 'org-ql-view)
 (require 'calc)
 (require 'project)
 (require 'ace-window)
 (require 'which-func)
-
-(defcustom cchoi-use-unicode-symbols nil
-  "If non-nil then use Unicode symbols whenever appropriate for labels."
-  :type 'boolean
-  :group 'cchoi)
+(require 'casual-lib)
 
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
   (interactive)
-  (insert (format-time-string "*** %a %h %d %H:%M:%S %Z %Y")))
+  (insert (format-time-string "** %a %h %d %H:%M:%S %Z %Y")))
 
 (defun datestamp2 ()
   "Datestamp string using format used by date utility."
@@ -87,13 +84,26 @@ A new frame will be created if `pop-up-frames' is t."
 (defun journal()
   "Alias to invoke `status-report' for Charles Choi."
   (interactive)
-  (status-report))
+  (cond
+   ((string= (system-name) "bingsu.local")
+    (status-report))
+
+   ((string= (system-name) "dev7")
+    (status-report-dev7))
+
+   (t
+    (status-report))))
 
 (defun status-report()
   "Open the daily journal file for Charles Choi and go to the end of buffer."
   (interactive)
   (find-file (format-time-string "~/org/%Y_%m_%d.org"))
   (goto-char (point-max)))
+
+(defun status-report-dev7 ()
+  "Open journal file on dev7."
+  (interactive)
+  (find-file "~/Documents/journal/journal.org"))
 
 (defun dictate()
    "Open a default text file to dictate into using macOS open."
@@ -384,52 +394,6 @@ will use the word at point."
           (copy-directory filename target)
         (copy-file filename target)))))
 
-
-(defun cc/move-word-backward ()
-  "Move word to the right of point backward one word.
-Point must be at the beginning of word."
-  (interactive)
-  (transpose-words 1)
-  (forward-word -2))
-
-(defun cc/move-word-forward ()
-  "Move word to the right of point forward one word.
-Point must be at the beginning of word."
-  (interactive)
-  (forward-word 1)
-  (transpose-words 1)
-  (forward-word -1))
-
-(defun cc/move-sentence-backward ()
-  "Move sentence to the right of point backward one sentence.
-Point must be at the beginning of sentence."
-  (interactive)
-  (transpose-sentences 1)
-  (forward-sentence -2))
-
-(defun cc/move-sentence-forward ()
-  "Move sentence to the right of point forward one sentence.
-Point must be at the beginning of sentence."
-  (interactive)
-  (forward-sentence 1)
-  (transpose-sentences 1)
-  (forward-sentence -1))
-
-(defun cc/move-sexp-backward ()
-  "Move balanced expression (sexp) to the right of point backward one sexp.
-Point must be at the beginning of balanced expression (sexp)."
-  (interactive)
-  (transpose-sexps 1)
-  (forward-sexp -2))
-
-(defun cc/move-sexp-forward ()
-  "Move balanced expression (sexp) to the right of point forward one sexp.
-Point must be at the beginning of balanced expression (sexp)."
-  (interactive)
-  (forward-sexp 1)
-  (transpose-sexps 1)
-  (forward-sexp -1))
-
 (defun cc/display-notification (msg &optional title subtitle sound)
   "Display macOS notification via osascript with MSG, TITLE, SUBTITLE, SOUND.
 MSG - notification message
@@ -534,10 +498,12 @@ SOUND - sound file (optional)"
         (while (search-forward (car e) nil t)
           (replace-match (cdr e) nil t))))))
 
+;; TODO: obsolete
 (defun cc/dired-image-file-p ()
   "Predicate if current file in Dired is an image file."
   (string-match-p (image-dired--file-name-regexp) (dired-get-filename)))
 
+;; TODO: obsolete
 (defun cc/--image-info (filename)
   "Get image information of FILENAME via Imagemagick identify utility."
   (car
@@ -596,7 +562,7 @@ SOUND - sound file (optional)"
     (message result)))
 
 (defun melpa-package-status (package-name)
-  "Get current timestamp of a MELPA package.
+  "Get current timestamp of a MELPA PACKAGE-NAME.
 
 Invokes python script ‘melpa-package-status.py’."
   (interactive "sPackage Name: ")
@@ -611,7 +577,7 @@ Invokes python script ‘melpa-package-status.py’."
 point is in.
 
 Thanks to mwnaylor, PropagandaOfTheDude, and deaddyfreddy for
-helping write this function. "
+helping write this function."
   (interactive)
   (when-let ((interned (intern-soft (which-function))))
     (describe-function interned)))
@@ -647,6 +613,8 @@ then you should put a ‘q’ at the end of the key macro string."
   (kill-sexp))
 
 ;; Transient Labels
+
+;; TODO: obsolete
 (defun cc/--variable-to-checkbox (v)
   "Checkbox string representation of variable V.
 V is either nil or non-nil."
@@ -654,10 +622,12 @@ V is either nil or non-nil."
       (if v "☑︎" "◻︎")
     (if v "[x]" "[ ]")))
 
+;; TODO: obsolete
 (defun cc/--prefix-label (label prefix)
   "Label constructed with PREFIX and LABEL separated by a space."
   (format "%s %s" prefix label))
 
+;; TODO: obsolete
 (defun cc/--checkbox-label (v label)
   "Checkbox label using variable V and LABEL."
   (cc/--prefix-label label (cc/--variable-to-checkbox v)))
@@ -698,6 +668,311 @@ V is either nil or non-nil."
   (switch-to-buffer "*Help*")
   (occur "^.*<f[[:digit:]]*>")
   (delete-other-windows))
+
+(defalias 'cc/convert-to-menu-testcase
+  (kmacro "C-a C-f c a s u a l t - a d d - t e s t c a s e SPC M-] C-o k SPC # ' C-d M-] SPC t e s t - v e c t o r s C-n C-a"))
+
+(defun cc/find-test-file ()
+  "Open test file in other window."
+  (interactive)
+  (let* ((filename (file-name-nondirectory (buffer-file-name)))
+         (test-name (concat "../tests/test-" filename)))
+    (find-file-other-window test-name)
+    (transpose-frame)))
+
+;; Org Table Functions
+
+(defun cc/org-table-cell-at-point ()
+  "At point, return the cell object from an Org table.
+
+A cell object is defined to be a list containing the row and the
+column, successively."
+  (if (not (org-at-table-p))
+      (error "Not in a table"))
+
+  (let* ((row (org-table-current-dline))
+         (col (org-table-current-column)))
+    (list row col)))
+
+(defun cc/format-org-table-field-reference (cell)
+  "Format CELL object into @r$c format.
+
+CELL object obtained via `cc/org-table-cell-at-point'.
+
+See Info node `(org) References' for more on Org table field
+reference format."
+  (let ((row (nth 0 cell))
+        (col (nth 1 cell)))
+    (format "@%d$%d" row col)))
+
+(defun cc/org-table-range ()
+  "Return range object from a region defined within an Org table.
+
+A range object is a list of two cells computed via
+`cc/org-table-cell-at-point', the first being the cell at the
+start of the region and the last being the cell at the end of the
+region."
+  (if (not (and (org-at-table-p) (use-region-p)))
+      (error "Not in an Org table"))
+
+  (save-excursion
+    (let* ((end (cc/org-table-cell-at-point)))
+      (exchange-point-and-mark)
+      (let ((start (cc/org-table-cell-at-point)))
+        (list start end)))))
+
+(defvar cc/last-org-table-reference nil
+  "Last stored Org table reference.
+
+State variable to store an Org table reference (field or range)
+to be used in an Org table formula. This variable is set via
+`cc/org-table-reference-dwim'
+
+NOTE: This state variable to work-around my lack of clarity on
+region and mouse menu interaction.")
+
+(defun cc/org-table-reference-dwim ()
+  "Org table reference given point or region is defined.
+
+Return Org table reference (field or range) depending on whether
+a point or region is defined in an Org table.
+
+If the region is defined over multiple columns, then a Calc
+vector matrix is returned. See Info node `(org) Formula syntax
+for Calc' for more.
+
+Calling this function will set `cc/last-org-table-reference'.
+
+See Info node `(org) References' for more on Org table field
+reference format."
+  (if (not (org-at-table-p))
+      (error "Not in an Org table"))
+
+  (cond
+   ((use-region-p)
+
+    (let* ((range (cc/org-table-range))
+           (start (nth 0 range))
+           (end (nth 1 range))
+           (msg (format "%s..%s"
+                        (cc/format-org-table-field-reference start)
+                        (cc/format-org-table-field-reference end))))
+      (setq cc/last-org-table-reference (cc/org-table-range-to-reference range))
+      msg))
+
+   (t
+    (let ((msg (cc/format-org-table-field-reference (cc/org-table-cell-at-point))))
+      (setq cc/last-org-table-reference msg)
+      msg))))
+
+(defun cc/copy-org-table-reference-dwim ()
+  "Copy Org table reference (field or range) into kill ring.
+
+Given a point or region defined in an Org table, add to the
+`kill-ring' an Org table field or range reference.
+
+If the region is defined over multiple columns, then a Calc
+vector matrix is returned. See Info node `(org) Formula syntax
+for Calc' for more.
+
+If the buffer *Edit Formulas* is available (usually via
+`org-table-edit-formulas'), the reference will be inserted into
+it.
+
+See Info node `(org) References' for more on Org table field
+reference format."
+  (interactive)
+  (if (not (org-at-table-p))
+      (error "Not in an Org table"))
+
+  (let ((msg (cc/org-table-reference-dwim))
+        (formulas-buffer (get-buffer "*Edit Formulas*")))
+    (if formulas-buffer
+        (with-current-buffer formulas-buffer
+          (insert cc/last-org-table-reference)))
+    (message "Range: %s, Copied %s" msg cc/last-org-table-reference)
+    (kill-new cc/last-org-table-reference)))
+
+(defun cc/mouse-copy-org-table-reference-dwim ()
+  "Copy Org table reference (field or range) into kill ring via mouse.
+
+Given a point or region defined in an Org table, add to the
+`kill-ring' an Org table field or range reference.
+
+NOTE: This function is intended to be called from a mouse menu
+after `cc/copy-org-table-reference-dwim' is called which will set
+`cc/last-org-table-reference'. This is to work-around my lack of
+clarity on region and mouse menu interaction.
+
+If the region is defined over multiple columns, then a Calc
+vector matrix is returned. See Info node `(org) Formula syntax
+for Calc' for more.
+
+If the buffer *Edit Formulas* is available (usually via
+`org-table-edit-formulas'), the reference will be inserted into
+it. If the point in *Edit Formulas* is at the beginning of line,
+it will treat the reference as a left hand side (lhs) assignment.
+
+See Info node `(org) References' for more on Org table field
+reference format."
+  (interactive)
+  (if (not (org-at-table-p))
+      (error "Not in an Org table"))
+
+  (when cc/last-org-table-reference
+    (let ((msg cc/last-org-table-reference)
+          (formulas-buffer (get-buffer "*Edit Formulas*")))
+      (if formulas-buffer
+        (with-current-buffer formulas-buffer
+          (if (bolp)
+              (insert (format "%s = " msg))  ; treat reference as lhs assignment
+            (insert msg))))
+      (message "Copied %s" msg)
+      (kill-new msg))))
+
+(defun cc/org-table-range-to-reference (range)
+  "Convert RANGE object to Org table reference (field or range).
+
+If the region is defined over multiple columns, then a Calc
+vector matrix is returned. See Info node `(org) Formula syntax
+for Calc' for more.
+
+See `cc/org-table-range' for more on RANGE object."
+  (let* ((start (nth 0 range))
+         (end (nth 1 range))
+         (a (nth 0 start))
+         (b (nth 1 start))
+         (c (nth 0 end))
+         (d (nth 1 end))
+
+         (r1 (apply #'min (list a c)))
+         (c1 (apply #'min (list b d)))
+
+         (r2 (apply #'max (list a c)))
+         (c2 (apply #'max (list b d)))
+
+         (rowrange (number-sequence r1 r2))
+         (buflist (list)))
+
+
+    (cond
+     ((and (= r1 r2) (= c1 c2))
+      (format "@%d$%d" r1 c1 ))
+
+     ((or (= c1 c2) (= r1 r2))
+      (format "@%d$%d..@%d$%d" r1 c1 r2 c2))
+
+     (t
+      (mapc (lambda (r)
+              (push (format "@%d$%d..@%d$%d" r c1 r c2) buflist))
+            rowrange)
+
+      (format "vec(%s)"
+              (string-join (reverse buflist) ", "))))))
+
+(defun cc/clear-mouse-overlay ()
+  "Clear secondary overlay in buffer.
+
+  Workaround fix for mouse rectangle selects."
+  (interactive)
+  (delete-overlay mouse-secondary-overlay))
+
+(defun cc/toggle-unicode ()
+  "Toggle Unicode symbols."
+  (interactive)
+  (if prettify-symbols-mode
+      (prettify-symbols-mode -1)
+    (prettify-symbols-mode nil))
+  (if casual-lib-use-unicode
+      (setq-local casual-lib-use-unicode nil)
+    (setq-local casual-lib-use-unicode t)))
+
+(defun macports ()
+    "Run MacPorts."
+    (interactive)
+    (term "~/bin/port.sh")
+    (rename-buffer "*macports*"))
+
+(defun cc/--next-sexp-raw ()
+  "Raw implementation to move point to the beginning of the next sexp.
+
+This function has no error checking."
+  (forward-sexp 2)
+  (backward-sexp))
+
+(defun cc/next-sexp ()
+  "Move point to beginning of the next balanced expression (sexp)."
+  (interactive)
+  (condition-case nil
+      (cc/--next-sexp-raw)
+    (error (condition-case nil
+               (forward-sexp)
+             (error
+              (message
+               "Unable to move point to next balanced expression (sexp)."))))))
+
+(defun cc/scratch-buffer ()
+  "Edit scratch buffer as a side window."
+  (interactive)
+  (split-window-horizontally)
+  (other-window 1)
+  (scratch-buffer))
+
+(defun cc/markdown-to-org-region (start end)
+  "Convert Markdown formatted text in region (START, END) to Org.
+
+This command requires that pandoc (man page `pandoc(1)') be
+installed."
+  (interactive "r")
+  (shell-command-on-region
+   start end
+   "pandoc -f markdown -t org --wrap=preserve" t t))
+
+(defun cc/split-window-right ()
+  "Invoke `split-window-right', making the new window active."
+  (interactive)
+  (split-window-right)
+  (windmove-right))
+
+(defun cc/split-window-below ()
+  "Invoke `split-window-below', making the new window active."
+  (interactive)
+  (split-window-below)
+  (windmove-down))
+
+(defun cc/reset-dictation ()
+  "Reset macOS dictation service corespeechd."
+  (interactive)
+  (process-lines "killall" "corespeechd"))
+
+
+(defun cc/compile-info ()
+  "Build Info file from an Org file."
+  (interactive)
+  (let ((outfile (expand-file-name (file-name-with-extension buffer-file-name "info")))
+        ;; (texi (file-name-with-extension buffer-file-name "texi"))
+        )
+
+    (org-texinfo-export-to-info)
+    ;;(org-export-to-file 'texinfo texi)
+    ;;(process-lines "make" "run")
+    (if (get-buffer "*info*")
+        (kill-buffer "*info*"))
+    (info outfile)
+    (info-initialize)))
+
+(defun cc/whitespace-cleanup (&optional disable)
+  "Turn on whitespace cleanup"
+  (interactive)
+
+  (if disable
+      (progn
+        (setopt show-trailing-whitespace nil)
+        (remove-hook 'before-save-hook #'whitespace-cleanup))
+
+    (progn
+      (setopt show-trailing-whitespace t)
+      (add-hook 'before-save-hook #'whitespace-cleanup))))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

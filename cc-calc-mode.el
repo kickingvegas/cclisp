@@ -1,6 +1,6 @@
 ;;; cc-calc-mode.el --- Calc customization           -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024  Charles Choi
+;; Copyright (C) 2024-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -25,30 +25,30 @@
 ;;; Code:
 
 (require 'calc)
-(require 'calc-mode)
 (require 'calc-ext)
 (require 'casual-calc)
 
-(defun cc/confirm-before-calc-quit ()
-  "Raise confirm prompt before invoking `calc-quit'."
-  (interactive)
-  (if (y-or-n-p "Really Quit? ")
-      (calc-quit)
-    (message "all good")))
+(add-hook 'calc-mode-hook (lambda () (setq calc-gnuplot-default-device "aqua")))
+
+(keymap-set calc-mode-map "C-o" #'casual-calc-tmenu)
+(keymap-set calc-alg-map "C-o" #'casual-calc-tmenu)
+
+(keymap-set calc-mode-map "<clear>" #'calc-pop)
 
 (defun cc/ptop ()
   "Print top of Calc stack."
   (interactive)
   (kill-new (pp (calc-top))))
 
+;; (defun cc/confirm-before-calc-quit ()
+;;   "Raise confirm prompt before invoking `calc-quit'."
+;;   (interactive)
+;;   (if (y-or-n-p "Really Quit? ")
+;;       (calc-quit)
+;;     (message "all good")))
+
 ;; (keymap-set calc-mode-map "q" 'cc/confirm-before-calc-quit)
 ;; (add-hook 'calc-mode-hook #'calc-total-algebraic-mode)
-
-(keymap-set calc-mode-map "C-o" #'casual-calc-tmenu)
-(keymap-set calc-alg-map "C-o" #'casual-calc-tmenu)
-
-(when (eq window-system 'mac)
-  (setq calc-gnuplot-default-device "aqua"))
 
 (provide 'cc-calc-mode)
 ;;; cc-calc-mode.el ends here

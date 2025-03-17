@@ -1,9 +1,9 @@
-;;; cc-symbol-overlay.el --- Configuration for Symbol Overlay  -*- lexical-binding: t; -*-
+;;; cc-calendar-mode.el --- Calendar Configuration   -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
-;; Keywords: tools
+;; Keywords: calendar
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -23,17 +23,9 @@
 ;;
 
 ;;; Code:
-;;(require 'symbol-overlay)
-;;(require 'casual-lib)
+(require 'casual-calendar)
 
-(require 'casual-symbol-overlay)
-(keymap-set symbol-overlay-map "C-o" #'casual-symbol-overlay-tmenu)
+(keymap-set calendar-mode-map "C-o" #'casual-calendar)
 
-;; (use-package casual-symbol-overlay
-;;   :ensure nil
-;;   :bind (:map
-;;          symbol-overlay-map
-;;          ("C-o" . casual-symbol-overlay-tmenu)))
-
-(provide 'cc-symbol-overlay)
-;;; cc-symbol-overlay.el ends here
+(provide 'cc-calendar-mode)
+;;; cc-calendar-mode.el ends here

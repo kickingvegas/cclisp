@@ -1,6 +1,6 @@
 ;;; ccinit.el --- CC Emacs Init File -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -25,9 +25,17 @@
 ;;; Code:
 (setenv "CDPATH" ".:..:~")
 
-(when (eq window-system 'mac)
+(when (or (eq window-system 'mac) (eq window-system 'ns))
+  (setenv "PATH" (concat "/Applications/Inkscape.app/Contents/MacOS:" (getenv "PATH")))
+  (setenv "PATH" (concat "/opt/local/bin:" (getenv "PATH")))
   (setenv "PATH" (concat "/opt/local/libexec/gnubin:" (getenv "PATH")))
-  (setq exec-path (push '"/opt/local/libexec/gnubin" exec-path)))
+  (setenv "PATH" (concat "/opt/local/lib/ImageMagick7/bin:" (getenv "PATH")))
+  (setenv "PATH" (concat (getenv "HOME") "/bin:" (getenv "PATH")))
+  (add-to-list 'exec-path "/Applications/Inkscape.app/Contents/MacOS")
+  (add-to-list 'exec-path "/opt/local/bin")
+  (add-to-list 'exec-path "/opt/local/libexec/gnubin")
+  (add-to-list 'exec-path "/opt/local/lib/ImageMagick7/bin")
+  (add-to-list 'exec-path (concat (getenv "HOME") "/bin")))
 
 (require 'use-package)
 (require 'expand-region)
@@ -47,24 +55,26 @@
 ;;   (turn-on-pbcopy))
 
 ;;(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-(setq mouse-wheel-progressive-speed nil)
-(setq mouse-wheel-follow-mouse 't)
+;;(setq mouse-wheel-progressive-speed nil)
+;;(setq mouse-wheel-follow-mouse 't)
 ;;(setq scroll-step 1)
 
-(when (eq window-system 'mac)
-    (setq mac-mouse-wheel-mode t)
-    (setq mac-mouse-wheel-smooth-scroll t))
-;;(pixel-scroll-precision-mode 1)
+;; (when (eq window-system 'mac)
+;;     (setq mac-mouse-wheel-mode t)
+;;     (setq mac-mouse-wheel-smooth-scroll t))
+
 ;;(setq pixel-scroll-precision-large-scroll-height 10.0)
 
-;;(require 'avy)
+(when (eq window-system 'ns)
+  (setq mac-command-modifier 'meta))
+
 (require 'cclisp)
 (require 'cc-ibuffer-mode)
-(require 'cc-diary-mode)
 (require 'cc-prog-mode)
 (require 'cc-emacs-lisp-mode)
 (require 'cc-text-mode)
 (require 'cc-org-mode)
+(require 'cc-org-agenda)
 (require 'cc-markdown-mode)
 (require 'cc-objc-mode)
 (require 'cc-nxml-mode)
@@ -74,6 +84,7 @@
 (require 'cc-js-mode)
 (require 'cc-tetris-mode)
 (require 'cc-eshell-mode)
+(require 'cc-shell-mode)
 (require 'cc-elfeed-mode)
 (require 'cc-google-translate)
 (require 'cc-repeat-mode)
@@ -99,10 +110,29 @@
 (require 'cc-calc-mode)
 (require 'cc-re-builder)
 (require 'cc-symbol-overlay)
+(require 'cc-calendar-mode)
+(require 'password-store-menu)
+(require 'cc-image-mode)
+(require 'cc-make-mode)
+(require 'cc-csv-mode)
+(require 'cc-gh)
+(require 'ffap)
+(require 'calle24)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
-(keymap-set isearch-mode-map "<f2>" #'casual-isearch-tmenu)
+(keymap-set isearch-mode-map "C-o" #'casual-isearch-tmenu)
+
+;; calle24 config
+(when (featurep 'calle24)
+  (calle24-refresh-appearance)
+  (add-hook 'compilation-mode-hook #'calle24-refresh-appearance))
+
+(use-package hl-line
+  :ensure nil
+  :defer t
+  :hook ((bookmark-bmenu-mode . hl-line-mode)
+         (ibuffer-mode . hl-line-mode)))
 
 ;;; Local Customizations
 
@@ -128,8 +158,8 @@
 (add-to-list 'auto-mode-alist '("\\.msc\\'" . graphviz-dot-mode))
 (add-to-list 'auto-mode-alist '("\\.xcconfig\\'" . conf-mode))
 
-(when (eq window-system 'mac)
-  (mac-toggle-tab-bar))
+;; (when (eq window-system 'mac)
+;;   (mac-toggle-tab-bar))
 
 (defun cc/tty-mouse ()
   (interactive)
@@ -137,3 +167,7 @@
     (xterm-mouse-mode 1)
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line)))
+
+(password-store-menu-enable)
+
+(ffap-bindings)

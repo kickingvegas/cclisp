@@ -1,6 +1,6 @@
-;;; cc-symbol-overlay.el --- Configuration for Symbol Overlay  -*- lexical-binding: t; -*-
+;;; cc-image-mode.el --- image mode customization    -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024  Charles Choi
+;; Copyright (C) 2024-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -23,17 +23,9 @@
 ;;
 
 ;;; Code:
-;;(require 'symbol-overlay)
-;;(require 'casual-lib)
+(require 'casual-image)
 
-(require 'casual-symbol-overlay)
-(keymap-set symbol-overlay-map "C-o" #'casual-symbol-overlay-tmenu)
+(keymap-set image-mode-map "C-o" #'casual-image-tmenu)
 
-;; (use-package casual-symbol-overlay
-;;   :ensure nil
-;;   :bind (:map
-;;          symbol-overlay-map
-;;          ("C-o" . casual-symbol-overlay-tmenu)))
-
-(provide 'cc-symbol-overlay)
-;;; cc-symbol-overlay.el ends here
+(provide 'cc-image-mode)
+;;; cc-image-mode.el ends here

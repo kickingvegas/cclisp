@@ -28,5 +28,12 @@
 (keymap-set shell-mode-map "C-p" #'comint-previous-input)
 (keymap-set shell-mode-map "C-n" #'comint-next-input)
 
+(keymap-set shell-mode-map "M-b" #'backward-sexp)
+(keymap-set shell-mode-map "M-f" #'cc/next-sexp)
+(keymap-set shell-mode-map "C-<left>" #'backward-sexp)
+(keymap-set shell-mode-map "C-<right>" #'cc/next-sexp)
+;; (keymap-set shell-mode-map "C-<up>" #'backward-up-list)
+;; (keymap-set shell-mode-map "C-<down>" #'down-list)
+
 (provide 'cc-shell-mode)
 ;;; cc-shell-mode.el ends here

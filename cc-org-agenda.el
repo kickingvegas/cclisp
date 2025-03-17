@@ -1,9 +1,8 @@
-;;; cc-diary-mode.el --- diary customization         -*- lexical-binding: t; -*-
+;;; cc-org-agenda.el --- Org Agenda Configuration    -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2024  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
-
 ;; Keywords: tools
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -24,11 +23,20 @@
 ;;
 
 ;;; Code:
+(require 'casual-agenda)
+(require 'bookmark)
 
-(require 'diary-lib)
+(keymap-set org-agenda-mode-map "C-o" #'casual-agenda-tmenu)
+(keymap-set org-agenda-mode-map "M-j" #'org-agenda-clock-goto)
+(keymap-set org-agenda-mode-map "J" #'bookmark-jump)
 
-(add-hook 'diary-list-entries-hook #'diary-include-other-diary-files)
-(add-hook 'diary-list-entries-hook #'diary-sort-entries t)
+;; (use-package casual-agenda
+;;   :ensure nil
+;;   :bind (:map
+;;          org-agenda-mode-map
+;;          ("C-o" . casual-agenda-tmenu)
+;;          ("M-j" . org-agenda-clock-goto) ; optional
+;;          ("J" . bookmark-jump))) ; optional
 
-(provide 'cc-diary-mode)
-;;; cc-diary-mode.el ends here
+(provide 'cc-org-agenda)
+;;; cc-org-agenda.el ends here

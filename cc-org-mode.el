@@ -1,6 +1,6 @@
 ;;; cc-org-mode.el --- Org configuration -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -26,6 +26,7 @@
 (require 'org)
 (require 'org-capture)
 (require 'org-agenda)
+(require 'org-mouse)
 (require 'doct)
 (require 'org-superstar)
 (require 'face-remap)
@@ -36,6 +37,9 @@
 (require 'hl-line)
 (require 'prog-mode)
 (require 'cc-org-smart-quotes)
+(require 'imenu)
+(require 'casual-agenda)
+;;(require 'casual-calendar)
 
 (if (eq system-type 'darwin)
     (require 'ob-swiftui))
@@ -67,7 +71,9 @@ This function is intended to be passed into `doct' via the :function property."
 (defun cc/org-checkbox-in-progress ()
   "If point is on an Org list item, set it to be a checkbox in-progress."
   (interactive)
-  (org-ctrl-c-ctrl-c '(16)))
+  (if (org-at-item-checkbox-p)
+      (org-ctrl-c-ctrl-c '(16))
+    (org-ctrl-c-ctrl-c '(4))))
 
 (defun cc/org-toggle-list-is-checkbox ()
   "If point is on an Org list item, toggle if the list item is also a checkbox.
@@ -164,6 +170,16 @@ which is done with `org-ctrl-c-ctrl-c'."
                :template ("%(datestamp2)"
                           "%?"))
 
+              ("Journal dev7"
+               :keys "J"
+               :type entry
+               :prepend t
+               :file "~/Documents/journal/journal.org"
+               :headline "Journal"
+               :empty-lines 1
+               :template ("%(datestamp2)"
+                          "%?"))
+
               ("Captee Capture"
                :keys "c"
                :type entry
@@ -207,26 +223,30 @@ which is done with `org-ctrl-c-ctrl-c'."
            '((sequence "TODO(t)" "IN_PROGRESS(i)" "WAITING(w)" "|" "DONE(d)")
              (sequence "|" "CANCELED(c)")))
 
-(setq org-todo-keyword-faces
-      '(("TODO" . "red")
-        ("IN_PROGRESS" . "dark orange")
-        ("WAITING" . "dark orange")
-        ("DONE" . "sea green")
-        ("CANCELED" . (:foreground "blue" :weight bold))))
+;; (setq org-todo-keyword-faces
+;;       '(("TODO" . "red")
+;;         ("IN_PROGRESS" . "dark orange")
+;;         ("WAITING" . "dark orange")
+;;         ("DONE" . "sea green")
+;;         ("CANCELED" . (:foreground "blue" :weight bold))))
 
 (setq org-refile-targets
       '((nil :maxlevel . 3)
         (org-agenda-files :maxlevel . 3)))
 
-(setq org-log-done 'time)
+;;(setq org-log-done 'time)
 
-(add-hook 'org-mode-hook 'org-superstar-mode)
-(add-hook 'org-mode-hook 'variable-pitch-mode)
-(add-hook 'org-mode-hook 'org-indent-mode)
-(add-hook 'org-mode-hook 'org-clock-persistence-insinuate)
+(add-hook 'org-mode-hook #'org-superstar-mode)
+(add-hook 'org-mode-hook #'variable-pitch-mode)
+(add-hook 'org-mode-hook #'org-indent-mode)
+(add-hook 'org-mode-hook #'org-clock-persistence-insinuate)
 ;;(add-hook 'org-mode-hook #'cc/save-hook-delete-trailing-whitespace)
 (add-hook 'org-mode-hook (lambda ()
                            (cc/reconfig-org-smart-quotes-lang "en")))
+
+(setq org-imenu-depth 7)
+(add-hook 'org-mode-hook #'imenu-add-menubar-index)
+(add-hook 'org-mode-hook (lambda () (setq-local imenu-auto-rescan t)))
 
 (add-hook
  'org-mode-hook
@@ -256,6 +276,14 @@ SUFFIX - string appended to prefix
                             (":properties:" . ?⚙ )
                             (":end:" . ?🔚 )
                             (":logbook:" . ?📓 )
+                            ("[#A]" . ?🄰 )
+                            ("[#B]" . ?🄱 )
+                            ("[#C]" . ?🄲 )
+                            ("#+NAME:" . ?📇 )
+                            ("#+TBLFM:" . ?🧮 )
+                            ("#+PLOT:" . ?📊 )
+                            (":CREATED:" . ?𝛼 )
+                            ("CLOCK:" . ?⌛ )
                             ("[ ]" .  ?☐ )
                             ("[x]" . ?☑ )
                             ("[-]" . ?✈ ))))
@@ -313,8 +341,19 @@ SUFFIX - string appended to prefix
 (keymap-set org-mode-map "M-v" #'org-previous-visible-heading)
 (keymap-set org-mode-map "M-j" #'cc/journal-entry)
 (keymap-set org-mode-map "C-v" #'org-next-visible-heading)
-(keymap-set org-mode-map "C-/" #'org-emphasize)
+(keymap-set org-mode-map "C-/" #'cc/emphasize-dwim)
+(keymap-set org-mode-map "C-_" #'cc/emphasize-dwim)
+(keymap-set org-mode-map "s-e" #'cc/emphasize-dwim)
+(keymap-set org-mode-map "s-b" #'cc/emphasize-bold)
+(keymap-set org-mode-map "s-i" #'cc/emphasize-italic)
+(keymap-set org-mode-map "s-c" #'cc/emphasize-code)
+(keymap-set org-mode-map "s-u" #'cc/emphasize-underline)
+(keymap-set org-mode-map "s-r" #'cc/emphasize-remove)
+(keymap-set org-mode-map "s-s" #'cc/emphasize-strike-through)
+(keymap-set org-mode-map "s-<tab>" #'completion-at-point)
+
 (keymap-set org-mode-map "C-6" #'org-goto)
+;; (keymap-set org-read-date-minibuffer-local-map "C-o" #'casual-calendar)
 
 (add-hook 'org-agenda-finalize-hook 'hl-line-mode)
 (add-hook 'org-agenda-finalize-hook
@@ -322,17 +361,10 @@ SUFFIX - string appended to prefix
             (define-key org-agenda-mode-map
               [(double-mouse-1)] 'org-agenda-goto-mouse)))
 
-(defun cc/org-agenda-goto-now ()
-  "Redo agenda view and move point to current time '← now'."
-  (interactive)
-  (org-agenda-redo)
-  (org-agenda-goto-today)
-  (search-forward " now "))
-
 (keymap-set org-agenda-mode-map "<f1>" #'org-save-all-org-buffers)
 (keymap-set org-agenda-mode-map "M-p" #'org-agenda-previous-date-line)
 (keymap-set org-agenda-mode-map "M-n" #'org-agenda-next-date-line)
-(keymap-set org-agenda-mode-map "." #'cc/org-agenda-goto-now)
+(keymap-set org-agenda-mode-map "." #'casual-agenda-goto-now)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -344,6 +376,7 @@ SUFFIX - string appended to prefix
    (sqlite . t)
    (restclient . t)
    (plantuml . t)
+   (gnuplot . t)
    (swift . t)))
 
 (when (fboundp 'ob-swiftui-setup)
@@ -387,7 +420,18 @@ SUFFIX - string appended to prefix
 (defun cc/journal-entry ()
   "Capture journal entry in Org."
   (interactive)
-  (org-capture nil "j"))
+
+  (cond
+   ((string= (system-name) "bingsu.local")
+    (org-capture nil "j"))
+
+   ((string= (system-name) "dev7")
+    (org-capture nil "J"))
+
+   (t (org-capture nil "j"))))
+
+(defalias 'cc/insert-org-keyword
+   (kmacro "C-a # + M-x c o m p l e t e - s y m b o l <return>"))
 
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here

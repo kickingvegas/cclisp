@@ -1,6 +1,6 @@
 ;;; cc-global-keybindings.el --- Global Keybindings -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -26,6 +26,7 @@
 ;;; Code:
 
 (require 'cc-ediff-mode)
+(require 'minibuffer)
 (require 'helm-buffers)
 (require 'neotree)
 (require 'bookmark)
@@ -41,51 +42,58 @@
 (require 'magit-status)
 (require 'casual-avy)
 (require 'cc-main-tmenu)
+(require 'casual-editkit)
+(require 'minibuffer)
+(require 'recent-rgrep)
 
 (keymap-global-set "C-=" #'er/expand-region)
 ;(keymap-global-set (kbd "M-g") 'goto-line)
 (keymap-global-set "C-x v" #'view-file)
 (keymap-global-set "M-q" #'query-replace)
 (keymap-global-set "M-j" #'cc/journal-entry)
+(keymap-global-set "C-x 2" #'cc/split-window-below)
+(keymap-global-set "C-x 3" #'cc/split-window-right)
 
 ;;(keymap-global-set "\C-h" 'delete-backward-char)
 ;;(keymap-global-set "\C-xh" 'help-for-help)
 ;;(keymap-global-set "\r" 'newline-and-indent)
 
+(keymap-global-set "<clear>" #'kill-region)
 (keymap-global-set "<f1>" #'save-buffer)
-(keymap-global-set "<f2>" #'other-window)
-(keymap-global-set "A-<return>" #'other-window)
+(keymap-global-set "<f2>" #'ibuffer)
+(keymap-global-set "s-<return>" #'other-window)
 (keymap-global-set "<f3>" #'save-buffers-kill-emacs)
-(keymap-global-set "M-<f3>" #'cc/windows-tmenu)
+(keymap-global-set "M-<f3>" #'casual-editkit-windows-tmenu)
 (keymap-global-set "<f4>" #'bookmark-jump)
-(keymap-global-set "<f5>" #'status-report)
 (keymap-global-set "S-<f5>" #'cc/select-journal-file)
-(keymap-global-set "A-<f5>" #'cc/org-search)
+(keymap-global-set "<f5>" #'journal)
+(keymap-global-set "s-<f5>" #'cc/org-search)
 (keymap-global-set "<f6>" #'osx-dictionary-search-input)
 (keymap-global-set "<f7>" #'repeat)
 (keymap-global-set "M-<f7>" #'repeat-complex-command)
-(keymap-global-set "C-o" #'cc/main-tmenu)
+(keymap-global-set "C-o" #'casual-editkit-main-tmenu)
 (if (string-equal (window-system) "mac")
-    (keymap-global-set "<f10>" #'cc/main-tmenu))
+    (keymap-global-set "<f10>" #'casual-editkit-main-tmenu))
 
 (keymap-global-set "<f8>" #'org-capture)
 (keymap-global-set "<f9>" #'compile)
 (keymap-global-set "<f11>" #'bookmark-set-no-overwrite)
 
 (keymap-global-set "M-<f1>" #'cc/open-url)
-(keymap-global-set "M-<f2>" #'google-this)
-(keymap-global-set "C-c C-;" #'shell-command)
-(keymap-global-set "M-<f4>" #'helm-buffers-list)
+;;(keymap-global-set "M-<f2>" #'google-this)
+;;(keymap-global-set "C-c C-;" #'shell-command)
+(keymap-global-set "M-<f4>" #'google-this)
 
-(keymap-global-set "<f13>" #'cc/ediff-revision)
+(keymap-global-set "<f13>" #'google-this)
 (keymap-global-set "M-<f13>" #'neotree-toggle)
 (keymap-global-set "C-<f13>" #'treemacs)
 (keymap-global-set "<f14>" #'eshell) ;regular
 ;;(keymap-global-set (kbd "<f14>") 'save-buffer) ;logitech
 (keymap-global-set "<f15>" #'cc/ediff-revision)
 
-(keymap-global-set "<f16>" #'run-python)
-(keymap-global-set "M-<f16>" #'cc/switch-to-scratch)
+(keymap-global-set "<f16>" #'calc)
+(keymap-global-set "<f17>" #'run-python)
+(keymap-global-set "M-<f16>" #'cc/switch-to-scratch) ;; this need to be in main
 (keymap-global-set "C-x C-b" #'ibuffer)
 
 ;; Avy
@@ -115,14 +123,17 @@
 (keymap-global-set "M-z" #'undo)
 (keymap-global-set "<delete>" #'delete-forward-char)
 
-(when (string-equal (window-system) "mac")
-  (keymap-global-set "C-<tab>" #'mac-next-tab)
-  ;; this binding breaks terminal behavior
-  ;(keymap-global-set (kbd "M-]") 'mac-next-tab)
-  ;(keymap-global-set (kbd "M-[") 'mac-previous-tab)
-  (define-key-after global-map
-    [menu-bar file mac-toggle]
-    '("Toggle Tab Bar" . mac-toggle-tab-bar) 'close-tab))
+;; (if (eq window-system 'ns)
+;;   (keymap-global-set "s-<f3>" #'ns-do-show-character-palette))
+
+;; (when (string-equal (window-system) "mac")
+;;   (keymap-global-set "C-<tab>" #'mac-next-tab)
+;;   ;; this binding breaks terminal behavior
+;;   ;(keymap-global-set (kbd "M-]") 'mac-next-tab)
+;;   ;(keymap-global-set (kbd "M-[") 'mac-previous-tab)
+;;   (define-key-after global-map
+;;     [menu-bar file mac-toggle]
+;;     '("Toggle Tab Bar" . mac-toggle-tab-bar) 'close-tab))
 
 ;; Left Side Keys
 ;; (keymap-global-set (kbd "<f11>") 'shell)
@@ -131,14 +142,14 @@
 ;; Keypad Keys
 (keymap-global-set "M-<right>" #'forward-word)
 (keymap-global-set "M-<left>" #'backward-word)
-(keymap-global-set "A-<right>" #'forward-word)
-(keymap-global-set "A-<left>" #'backward-word)
-(keymap-global-set "A-<up>" #'scroll-one-line-down)
-(keymap-global-set "A-<down>" #'scroll-one-line-up)
+(keymap-global-set "s-<right>" #'forward-word)
+(keymap-global-set "s-<left>" #'backward-word)
+(keymap-global-set "s-<up>" #'scroll-one-line-down)
+(keymap-global-set "s-<down>" #'scroll-one-line-up)
 (keymap-global-set "C-<kp-add>" #'enlarge-window)
 (keymap-global-set "C-<kp-subtract>" #'shrink-window)
-(keymap-global-set "C-M-<kp-add>" #'enlarge-window-horizontally)
-(keymap-global-set "C-M-<kp-subtract>" #'shrink-window-horizontally)
+(keymap-global-set "M-<kp-add>" #'enlarge-window-horizontally)
+(keymap-global-set "M-<kp-subtract>" #'shrink-window-horizontally)
 (keymap-global-set "C-<kp-enter>" #'other-window)
 (keymap-global-set "M-<kp-enter>" #'switch-to-buffer)
 (keymap-global-set "C-<return>" #'other-window)
@@ -155,16 +166,41 @@
 (keymap-global-unset "C-x f")
 ;;(global-unset-key (kbd "C-x f"))
 
+;; Find in files (rgrep)
+(keymap-global-set "M-F" #'recent-rgrep)
+;;(keymap-global-set "M-F" #'rgrep)
+
 (global-set-key [vertical-scroll-bar down-mouse-1] #'scroll-bar-drag)
 
 ;; Window Navigation
-
 (keymap-global-set "C-<kp-8>" #'windmove-up)
 (keymap-global-set "C-<kp-5>" #'windmove-down)
 (keymap-global-set "C-<kp-2>" #'windmove-down)
 (keymap-global-set "C-<kp-4>" #'windmove-left)
 (keymap-global-set "C-<kp-6>" #'windmove-right)
 (keymap-global-set "C-<kp-0>" #'ace-select-window)
+(keymap-global-set "C-<kp-divide>" #'transpose-frame)
+
+(keymap-set minibuffer-local-shell-command-map "M-b" #'backward-sexp)
+(keymap-set minibuffer-local-shell-command-map "M-f" #'cc/next-sexp)
+(keymap-set minibuffer-local-shell-command-map "C-M-b" #'backward-word)
+(keymap-set minibuffer-local-shell-command-map "C-M-f" #'forward-word)
+(keymap-set minibuffer-local-shell-command-map "C-<left>" #'backward-sexp)
+(keymap-set minibuffer-local-shell-command-map "C-<right>" #'cc/next-sexp)
+
+(keymap-set minibuffer-mode-map "M-b" #'backward-sexp)
+(keymap-set minibuffer-mode-map "M-f" #'cc/next-sexp)
+(keymap-set minibuffer-mode-map "C-M-b" #'backward-word)
+(keymap-set minibuffer-mode-map "C-M-f" #'forward-word)
+
+(keymap-set minibuffer-mode-map "C-<left>" #'backward-sexp)
+(keymap-set minibuffer-mode-map "C-<right>" #'cc/next-sexp)
+(keymap-set minibuffer-mode-map "C-<up>" #'backward-up-list)
+(keymap-set minibuffer-mode-map "C-<down>" #'down-list)
+(keymap-set minibuffer-mode-map "<clear>" #'delete-minibuffer-contents)
+
+(keymap-global-set "M-\\" #'cycle-spacing)
+(keymap-global-set "s-SPC" #'cycle-spacing)
 
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here

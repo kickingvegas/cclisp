@@ -1,6 +1,6 @@
 ;;; cc-menu-reconfig.el --- Menu reconfiguration -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -94,6 +94,12 @@ WINDOW-2."]
 for REGEXP."
                      :visible (not buffer-read-only)]
                     "Fill")
+
+(easy-menu-add-item global-map '(menu-bar edit)
+                    ["Emoji & Symbols"
+                     ns-do-show-character-palette
+                     :help "Show macOS Character Palette."
+                     :visible (eq window-system 'ns)])
 
 ;;; Reconfigure Tools Menu
 

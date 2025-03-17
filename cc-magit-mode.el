@@ -1,6 +1,6 @@
 ;;; cc-magit-mode.el --- Magit configuration         -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -24,8 +24,43 @@
 ;;; Code:
 
 (require 'magit)
+(require 'git-link-transient)
+(require 'casual-lib)
+(require 'cc-gh)
 
 (add-hook 'magit-status-mode-hook (lambda () (toggle-truncate-lines -1)))
+
+(keymap-set magit-status-mode-map "<f1>" #'git-link-homepage)
+(keymap-set magit-status-mode-map "C-c m" #'git-link-dispatch)
+
+(transient-define-prefix cc/magit-tmenu ()
+
+  ["Magit"
+   ["Life-cycle"
+    ("b" "Branch›" magit-branch)
+    ("l" "Log›" magit-log)
+    ("r" "Rebase›" magit-rebase)]
+
+   ["Fetch/Pull"
+    ("f" "Fetch›" magit-fetch)
+    ("F" "Pull›" magit-pull)]
+   ["Push"
+    ("p" "Push›" magit-push)]
+
+   ["Misc"
+    ("c" "Compile…" compile)
+    ("d" "Dired" dired-jump-other-window)
+    ("J" "Jump…" bookmark-jump)]
+
+   ["gh"
+    ("i" "List Issues" cc/gh-list-issues-vtable)]]
+
+  [:class transient-row
+    (casual-lib-quit-one)
+    (casual-lib-quit-all)
+    ("q" "Quit" magit-mode-bury-buffer)])
+
+(keymap-set magit-status-mode-map "C-o" #'cc/magit-tmenu)
 
 (provide 'cc-magit-mode)
 ;;; cc-magit-mode.el ends here

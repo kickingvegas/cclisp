@@ -1,6 +1,6 @@
 ;;; cc-prog-mode.el --- Programming Customizations -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -48,13 +48,17 @@
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (add-hook 'prog-mode-hook #'cc/save-hook-delete-trailing-whitespace)
 (add-hook 'prog-mode-hook #'imenu-add-menubar-index)
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (setq-local imenu-auto-rescan t)
+            (setq-local imenu-sort-function #'imenu--sort-by-name)))
 
 (define-key prog-mode-map [remap indent-for-tab-command]
   #'company-indent-or-complete-common)
 (keymap-set prog-mode-map "C-a" #'back-to-indentation)
 (keymap-set prog-mode-map "C-6" #'imenu)
 
-(keymap-set compilation-mode-map "C-o" #'cc/main-tmenu)
+(keymap-set compilation-mode-map "C-o" #'casual-editkit-main-tmenu)
 
 ;; GUD - mode preferences
 ;; (setq gud-mode-hook
@@ -62,12 +66,6 @@
 ;; 	  (local-set-key [f7] 'gud-step)
 ;; 	  (local-set-key [f8] 'gud-next)
 ;; 	  (local-set-key [f9] 'gud-cont))))
-
-;; # Makefile
-(keymap-set makefile-mode-map "<f9>" #'compile)
-(keymap-set makefile-mode-map "C-6" #'imenu)
-
-(add-hook 'makefile-mode-hook #'imenu-add-menubar-index)
 
 (provide 'cc-prog-mode)
 ;;; cc-prog-mode.el ends here

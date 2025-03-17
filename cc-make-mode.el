@@ -1,6 +1,6 @@
-;;; cc-symbol-overlay.el --- Configuration for Symbol Overlay  -*- lexical-binding: t; -*-
+;;; cc-make-mode.el --- makefile-mode configuration   -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024  Charles Choi
+;; Copyright (C) 2024-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -23,17 +23,23 @@
 ;;
 
 ;;; Code:
-;;(require 'symbol-overlay)
-;;(require 'casual-lib)
+(require 'make-mode)
+(require 'compile)
+(require 'casual-make)
 
-(require 'casual-symbol-overlay)
-(keymap-set symbol-overlay-map "C-o" #'casual-symbol-overlay-tmenu)
+(keymap-set makefile-mode-map "<f9>" #'compile)
+(keymap-set makefile-mode-map "C-6" #'imenu)
 
-;; (use-package casual-symbol-overlay
-;;   :ensure nil
-;;   :bind (:map
-;;          symbol-overlay-map
-;;          ("C-o" . casual-symbol-overlay-tmenu)))
+;;(add-hook 'makefile-mode-hook #'makefile-gmake-mode)
 
-(provide 'cc-symbol-overlay)
-;;; cc-symbol-overlay.el ends here
+(add-hook 'makefile-mode-hook #'imenu-add-menubar-index)
+(add-hook 'makefile-mode-hook
+          (lambda ()
+            (setq-local imenu-auto-rescan t)
+            (setq-local imenu-sort-function #'imenu--sort-by-name)))
+
+(keymap-set makefile-mode-map "M-m" #'casual-make-tmenu)
+(keymap-set makefile-mode-map "C-c m" #'casual-make-tmenu)
+
+(provide 'cc-make-mode)
+;;; cc-make-mode.el ends here

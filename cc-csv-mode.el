@@ -1,6 +1,6 @@
-;;; cc-symbol-overlay.el --- Configuration for Symbol Overlay  -*- lexical-binding: t; -*-
+;;; cc-csv-mode.el --- CSV Mode Customization        -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024  Charles Choi
+;; Copyright (C) 2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -23,17 +23,25 @@
 ;;
 
 ;;; Code:
-;;(require 'symbol-overlay)
-;;(require 'casual-lib)
+(require 'csv-mode)
+(require 'casual-lib)
 
-(require 'casual-symbol-overlay)
-(keymap-set symbol-overlay-map "C-o" #'casual-symbol-overlay-tmenu)
+(add-hook 'csv-mode-hook
+          (lambda ()
+            (visual-line-mode -1)))
 
-;; (use-package casual-symbol-overlay
-;;   :ensure nil
-;;   :bind (:map
-;;          symbol-overlay-map
-;;          ("C-o" . casual-symbol-overlay-tmenu)))
 
-(provide 'cc-symbol-overlay)
-;;; cc-symbol-overlay.el ends here
+(transient-define-prefix casual-csv-tmenu ()
+  ["Casual CSV"
+
+   ["Display"
+    ("a" "Align" csv-align-fields)
+    ("u" "Unalign" csv-unalign-fields)]
+   ]
+  )
+
+(keymap-set csv-mode-map "M-m" #'casual-csv-tmenu)
+
+
+(provide 'cc-csv-mode)
+;;; cc-csv-mode.el ends here
