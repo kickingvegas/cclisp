@@ -1,6 +1,6 @@
 ;;; cclisp.el --- Utility Functions -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
