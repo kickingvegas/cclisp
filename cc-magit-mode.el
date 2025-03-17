@@ -1,6 +1,6 @@
 ;;; cc-magit-mode.el --- Magit configuration         -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -33,22 +33,27 @@
 (keymap-set magit-status-mode-map "<f1>" #'git-link-homepage)
 (keymap-set magit-status-mode-map "C-c m" #'git-link-dispatch)
 
-
 (transient-define-prefix cc/magit-tmenu ()
-  [["Magit"
+
+  ["Magit"
+   ["Life-cycle"
     ("b" "Branch›" magit-branch)
     ("l" "Log›" magit-log)
-    ("f" "Pull›" magit-pull)
-    ("p" "Push›" magit-push)]
+    ("r" "Rebase›" magit-rebase)]
 
-   ["gh"
-    ("i" "List Issues" cc/gh-list-issues-vtable)]
+   ["Fetch/Pull"
+    ("f" "Fetch›" magit-fetch)
+    ("F" "Pull›" magit-pull)]
+   ["Push"
+    ("p" "Push›" magit-push)]
 
    ["Misc"
     ("c" "Compile…" compile)
     ("d" "Dired" dired-jump-other-window)
     ("J" "Jump…" bookmark-jump)]
-   ]
+
+   ["gh"
+    ("i" "List Issues" cc/gh-list-issues-vtable)]]
 
   [:class transient-row
     (casual-lib-quit-one)
