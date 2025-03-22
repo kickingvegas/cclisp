@@ -137,7 +137,8 @@
 ;;; Local Customizations
 
 (when (and (string= (system-name) "bingsu.local") (display-graphic-p))
-  (server-start))
+  (server-start)
+  (require 'org-protocol))
 
 (eval-after-load "flyspell"
   '(progn
