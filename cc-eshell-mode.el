@@ -55,7 +55,7 @@
                 (if (= (user-uid) 0) "# " "$ ")))
 
 (setopt eshell-prompt-function #'cc/prompt-function)
-(setopt eshell-banner-message (format "Eshell ⌨️\n%s" (sunrise-sunset)))
+;;(setopt eshell-banner-message (format "Eshell ⌨️\n%s" (sunrise-sunset)))
 
 (add-hook 'eshell-mode-hook 'company-mode)
 (add-hook 'eshell-mode-hook 'hl-line-mode)

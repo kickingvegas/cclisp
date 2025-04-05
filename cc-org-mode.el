@@ -239,7 +239,7 @@ which is done with `org-ctrl-c-ctrl-c'."
 (add-hook 'org-mode-hook #'org-superstar-mode)
 (add-hook 'org-mode-hook #'variable-pitch-mode)
 (add-hook 'org-mode-hook #'org-indent-mode)
-(add-hook 'org-mode-hook #'org-clock-persistence-insinuate)
+;;(add-hook 'org-mode-hook #'org-clock-persistence-insinuate)
 ;;(add-hook 'org-mode-hook #'cc/save-hook-delete-trailing-whitespace)
 (add-hook 'org-mode-hook (lambda ()
                            (cc/reconfig-org-smart-quotes-lang "en")))
