@@ -57,6 +57,8 @@
   #'company-indent-or-complete-common)
 (keymap-set prog-mode-map "C-a" #'back-to-indentation)
 (keymap-set prog-mode-map "C-6" #'imenu)
+(keymap-set prog-mode-map "M-p" #'beginning-of-defun)
+(keymap-set prog-mode-map "M-n" #'end-of-defun)
 
 (keymap-set compilation-mode-map "C-o" #'casual-editkit-main-tmenu)
 

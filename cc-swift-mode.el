@@ -29,5 +29,8 @@
 (keymap-set swift-mode-map "M-[" #'backward-sexp)
 (keymap-set swift-mode-map "M-]" #'forward-sexp)
 
+(add-hook 'swift-mode-hook (lambda ()
+                             (setq fill-column 120)))
+
 (provide 'cc-swift-mode)
 ;;; cc-swift-mode.el ends here
