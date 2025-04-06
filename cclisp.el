@@ -974,5 +974,19 @@ installed."
       (setopt show-trailing-whitespace t)
       (add-hook 'before-save-hook #'whitespace-cleanup))))
 
+(defun cc/toggle-scrolling-config ()
+  "Tune scrolling behavior to support mouse or text based scrolling."
+  (interactive)
+
+  (if (equal scroll-conservatively 10)
+      (progn
+        (setopt scroll-conservatively 0)
+        (setopt scroll-margin 0)
+        (message "Reset to default"))
+    (progn
+        (setopt scroll-conservatively 10)
+        (setopt scroll-margin 15)
+        (message "Optimized for text scrolling"))))
+
 (provide 'cclisp)
 ;;; cclisp.el ends here
