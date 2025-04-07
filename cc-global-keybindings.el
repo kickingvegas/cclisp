@@ -153,6 +153,7 @@
 (keymap-global-set "C-<kp-enter>" #'other-window)
 (keymap-global-set "M-<kp-enter>" #'switch-to-buffer)
 (keymap-global-set "C-<return>" #'other-window)
+(keymap-global-set "C-`" #'other-window) ; Xcode
 
 ;; Mouse Button Bindings
 (keymap-global-set "<mouse-5>" #'next-buffer)
