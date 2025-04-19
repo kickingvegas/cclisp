@@ -71,8 +71,10 @@ This function is dependent upon this file being created by a daily cron job."
 
 (defun cc/--find-capture-point-in-current ()
   "Helper function to locate where to insert capture item in daily Org file."
-  (cc/--find-capture-point-in-file
-   (format-time-string cc/org-daily-header-template)))
+  (let* ((key (if (string= (system-name) "dev7")
+                  "Journal"
+                (format-time-string cc/org-daily-header-template))))
+    (cc/--find-capture-point-in-file key)))
 
 (defun cc/org-checkbox-in-progress ()
   "If point is on an Org list item, set it to be a checkbox in-progress."
