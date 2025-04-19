@@ -82,7 +82,7 @@ A new frame will be created if `pop-up-frames' is t."
       (switch-to-buffer new-shell-name))))
 
 (defun journal()
-  "Alias to invoke `status-report' for Charles Choi."
+  "Redirection for `status-report' for Charles Choi."
   (interactive)
   (cond
    ((string= (system-name) "bingsu.local")
