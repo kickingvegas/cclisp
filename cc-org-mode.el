@@ -203,6 +203,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                         '("%(datestamp2)"
                           "%?")
                         "\n")))
+           :prepend (string= (system-name "dev7"))
            :empty-lines 1)
 
           ("c"
