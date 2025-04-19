@@ -27,7 +27,6 @@
 (require 'org-capture)
 (require 'org-agenda)
 (require 'org-mouse)
-(require 'doct)
 (require 'org-superstar)
 (require 'face-remap)
 (require 'org-ql)
@@ -39,6 +38,8 @@
 (require 'cc-org-smart-quotes)
 (require 'imenu)
 (require 'casual-agenda)
+(require 'cc-style-text-menu)
+(require 'org-protocol)
 ;;(require 'casual-calendar)
 
 (if (eq system-type 'darwin)
@@ -55,7 +56,13 @@
 (defun cc/--current-org-default-notes-file ()
   "String path to current daily Org file.
 This function is dependent upon this file being created by a daily cron job."
-  (format-time-string "~/org/%Y_%m_%d.org"))
+  (cond
+   ;; ((string= (system-name) "bingsu.local")
+   ;;  (format-time-string "~/org/%Y_%m_%d.org"))
+   ((string= (system-name) "dev7")
+    "~/Documents/journal/journal.org")
+   (t
+    (format-time-string "~/org/%Y_%m_%d.org"))))
 
 (defun cc/--find-capture-point-in-file (key)
   "Move point to the end of the first instance of KEY in the current buffer."
@@ -63,8 +70,7 @@ This function is dependent upon this file being created by a daily cron job."
   (search-forward key))
 
 (defun cc/--find-capture-point-in-current ()
-  "Helper function to locate where to insert capture item in daily Org file.
-This function is intended to be passed into `doct' via the :function property."
+  "Helper function to locate where to insert capture item in daily Org file."
   (cc/--find-capture-point-in-file
    (format-time-string cc/org-daily-header-template)))
 
@@ -90,136 +96,198 @@ which is done with `org-ctrl-c-ctrl-c'."
          (properties (if suffix (append properties suffix) properties)))
     properties))
 
-;; Configure org-capture-templates using doct
-(setq org-capture-templates
-      (doct '(("Appointment"
-               :keys "a"
-               :type entry
-               :file cc/--current-org-default-notes-file
-               :function cc/--find-capture-point-in-current
-               :empty-lines 1
-               :template (lambda ()
-                           (cc/config-capture-template '("* %^{description}"
-                                                         "%^T")
-                                                       '("%?"))))
 
-              ("BeOrg TODO"
-               :keys "b"
-               :type entry
-               :file "~/org/refile-beorg.org"
-               :empty-lines 1
-               :template ("* TODO %^{description}"
+(setopt org-default-notes-file "~/org/notes.org")
+(setopt org-protocol-default-template-key "c")
+
+;; Configure org-capture-templates
+(setopt org-capture-templates
+        '(("a"
+           "Appointment"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("* %^{description}"
+                          "%^T"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%?")
+                        "\n")))
+           :empty-lines 1)
+
+          ("t"
+           "TODO"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("* TODO %^{description} %^G"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%?")
+                        "\n")))
+           :empty-lines 1)
+
+          ("s"
+           "Scheduled TODO"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("* TODO %^{description} %^G"
                           "SCHEDULED: %^T"
                           ":PROPERTIES:"
                           ":CREATED: %U"
                           ":END:"
-                          "%?"))
+                          "%?")
+                        "\n")))
+           :empty-lines 1)
 
-              ("TODO"
-               :keys "t"
-               :type entry
-               :empty-lines 1
-               :file cc/--current-org-default-notes-file
-               :function cc/--find-capture-point-in-current
-               :children (("Scheduled"
-                           :keys "s"
-                           :todo-state "TODO"
-                           :template (lambda ()
-                                       (cc/config-capture-template
-                                        '("* %{todo-state} %^{description} %^G"
-                                          "SCHEDULED: %^T")
-                                        '("%?"))))
+          ("p"
+           "Blog Post"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("* TODO Post: %^{description} :blog%^G"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%?")
+                        "\n")))
+           :empty-lines 1)
 
-                          ("Unscheduled"
-                           :keys "t"
-                           :todo-state "TODO"
-                           :template (lambda ()
-                                       (cc/config-capture-template
-                                        '("* %{todo-state} %^{description} %^G")
-                                        '("%?"))))
+          ("i"
+           "Issue"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("* TODO %^{description} %^G"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "\n** Title"
+                          "%?"
+                          "** Description\n"
+                          "** Environment\n"
+                          "** Steps to Reproduce\n"
+                          "** Expected Result\n"
+                          "** Actual Result\n")
+                        "\n")))
+           :empty-lines 1)
 
-                          ("Blog Post"
-                           :keys "p"
-                           :todo-state "TODO"
-                           :template (lambda ()
-                                       (cc/config-capture-template
-                                        '("* %{todo-state} Post: %^{description} :blog%^G")
-                                        '("%?"))))
+          ("j"
+           "Journal"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("%(datestamp2)"
+                          "%?")
+                        "\n")))
+           :empty-lines 1)
 
-                          ("Issue"
-                           :keys "i"
-                           :todo-state "TODO"
-                           :template (lambda ()
-                                       (cc/config-capture-template
-                                        '("* %{todo-state} %^{description} %^G")
-                                        '("\n** Title"
-                                          "%?"
-                                          "** Description\n"
-                                          "** Environment\n"
-                                          "** Steps to Reproduce\n"
-                                          "** Expected Result\n"
-                                          "** Actual Result\n"
-                                          ))))))
-
-              ("Journal"
-               :keys "j"
-               :type entry
-               :file cc/--current-org-default-notes-file
-               :function cc/--find-capture-point-in-current
-               :empty-lines 1
-               :template ("%(datestamp2)"
-                          "%?"))
-
-              ("Journal dev7"
-               :keys "J"
-               :type entry
-               :prepend t
-               :file "~/Documents/journal/journal.org"
-               :headline "Journal"
-               :empty-lines 1
-               :template ("%(datestamp2)"
-                          "%?"))
-
-              ("Captee Capture"
-               :keys "c"
-               :type entry
-               :file cc/--current-org-default-notes-file
-               :function cc/--find-capture-point-in-current
-               :empty-lines 1
-               :template ("* %:description"
+          ("c"
+           "Captee Capture"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("* %:description"
                           ":PROPERTIES:"
                           ":CREATED: %U"
                           ":END:"
                           "%:annotation"
                           "%i"
                           ""
-                          "%?"))
+                          "%?")
+                        "\n")))
+           :empty-lines 1)
 
-              ("WWDC Capture"
-               :keys "w"
-               :type entry
-               :file "~/org/wwdc24.org"
-               :headline "WWDC 24 Notes"
-               :empty-lines 1
-               :template ("* TODO %:description"
-                          "%:annotation"
-                          "%i"
-                          "%?"))
+          ("r"
+           "BeOrg Reminder"
+           entry
+           (file "~/org/beorg.org")
+           (function (lambda ()
+                       (string-join
+                        '("* TODO %^{description}"
+                          "SCHEDULED: %^T"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%?")
+                        "\n")))
+           :empty-lines 1)
 
-              ("Song"
-               :keys "o"
-               :type entry
-               :file "~/org/songs/songs.org"
-               :headline "Songs"
-               :prepend t
-               :template ("* %^{Song}"
+          ("n"
+           "Note"
+           entry
+           (file "")              ; this will persist in org-default-notes-file
+           (function (lambda ()
+                       (string-join
+                        '("* %^{description}"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%?")
+                        "\n")))
+           :empty-lines 1)
+
+          ("o"
+           "Song"
+           entry
+           (file+headline
+            "~/org/songs/songs.org"
+            "Songs")
+           (function (lambda ()
+                       (string-join
+                        '("* %^{Song}"
                           ":PROPERTIES:"
                           ":CREATED: %U"
                           ":ARTIST: %^{Artist}"
                           ":END:"
-                          "%?")))))
+                           "%?")
+                        "\n")))
+           :empty-lines 1
+           :prepend t)
 
-(setq org-todo-keywords
+          ("w"
+           "WWDC Capture"
+           entry
+           (file+headline
+            "~/org/wwdc25.org"
+            "WWDC 25 Notes")
+           (function (lambda ()
+                       (string-join
+                        '("* TODO %:description"
+                          "%:annotation"
+                          "%i"
+                          "%?")
+                        "\n")))
+           :empty-lines 1
+           :prepend t)
+          ))
+
+
+(setopt org-todo-keywords
            '((sequence "TODO(t)" "IN_PROGRESS(i)" "WAITING(w)" "|" "DONE(d)")
              (sequence "|" "CANCELED(c)")))
 
@@ -230,7 +298,7 @@ which is done with `org-ctrl-c-ctrl-c'."
 ;;         ("DONE" . "sea green")
 ;;         ("CANCELED" . (:foreground "blue" :weight bold))))
 
-(setq org-refile-targets
+(setopt org-refile-targets
       '((nil :maxlevel . 3)
         (org-agenda-files :maxlevel . 3)))
 
@@ -244,7 +312,7 @@ which is done with `org-ctrl-c-ctrl-c'."
 (add-hook 'org-mode-hook (lambda ()
                            (cc/reconfig-org-smart-quotes-lang "en")))
 
-(setq org-imenu-depth 7)
+(setopt org-imenu-depth 7)
 (add-hook 'org-mode-hook #'imenu-add-menubar-index)
 (add-hook 'org-mode-hook (lambda () (setq-local imenu-auto-rescan t)))
 
@@ -391,7 +459,7 @@ SUFFIX - string appended to prefix
 
 (require 'ox-publish)
 
-(setq org-publish-project-alist
+(setopt org-publish-project-alist
       `(("pages"
          :base-directory "~/Projects/Captee/Development/Captee/docs/help"
          :base-extension "org"
