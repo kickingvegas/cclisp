@@ -93,6 +93,7 @@
     ("D" "Delete" eshell-delete-output)]
 
    ["Input"
+    ("B" "Insert Buffer…" eshell-insert-buffer-name)
     ("k" "Kill Input" eshell-kill-input)
     ("h" "History" eshell-list-history)]
 
