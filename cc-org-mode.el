@@ -488,15 +488,7 @@ SUFFIX - string appended to prefix
 (defun cc/journal-entry ()
   "Capture journal entry in Org."
   (interactive)
-
-  (cond
-   ((string= (system-name) "bingsu.local")
-    (org-capture nil "j"))
-
-   ((string= (system-name) "dev7")
-    (org-capture nil "J"))
-
-   (t (org-capture nil "j"))))
+  (org-capture nil "j"))
 
 (defalias 'cc/insert-org-keyword
    (kmacro "C-a # + M-x c o m p l e t e - s y m b o l <return>"))
