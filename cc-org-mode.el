@@ -100,7 +100,7 @@ which is done with `org-ctrl-c-ctrl-c'."
 
 
 (setopt org-default-notes-file "~/org/notes.org")
-(setopt org-protocol-default-template-key "c")
+(setopt org-protocol-default-template-key "capture")
 
 ;; Configure org-capture-templates
 (setopt org-capture-templates
@@ -206,8 +206,9 @@ which is done with `org-ctrl-c-ctrl-c'."
            :prepend (string= (system-name "dev7"))
            :empty-lines 1)
 
-          ("c"
-           "Captee Capture"
+          ;; ("o" "Org Protocol Templates")
+          ("capture"
+           "Org Protocol Capture"
            entry
            (file+function
             cc/--current-org-default-notes-file
@@ -220,6 +221,69 @@ which is done with `org-ctrl-c-ctrl-c'."
                           ":END:"
                           "%:annotation"
                           "%i"
+                          ""
+                          "%?")
+                        "\n")))
+           :empty-lines 1)
+
+          ("capture-elisp"
+           "Org Protocol Elisp Source"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("* %:description"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%:annotation"
+                          "#+BEGIN_SRC elisp"
+                          "%i"
+                          "#+END_SRC"
+                          ""
+                          "%?")
+                        "\n")))
+           :empty-lines 1)
+
+          ("capture-python"
+           "Org Protocol Python Source"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("* %:description"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%:annotation"
+                          "#+BEGIN_SRC python"
+                          "%i"
+                          "#+END_SRC"
+                          ""
+                          "%?")
+                        "\n")))
+           :empty-lines 1)
+
+          ("capture-swift"
+           "Org Protocol Swift Source"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("* %:description"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%:annotation"
+                          "#+BEGIN_SRC swift"
+                          "%i"
+                          "#+END_SRC"
                           ""
                           "%?")
                         "\n")))
@@ -254,7 +318,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                         "\n")))
            :empty-lines 1)
 
-          ("o"
+          ("S"
            "Song"
            entry
            (file+headline
