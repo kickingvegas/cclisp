@@ -89,7 +89,7 @@ temporarily visible (Visible mode)"])
 
       (easy-menu-add-item menu nil
                           ["Paste Last Org Link"
-                           org-insert-last-stored-linkyy
+                           org-insert-last-stored-link
                            :enable (cc/org-stored-links-p)
                            :help "Insert the last link stored in org-stored-links"]))
 
