@@ -558,7 +558,19 @@ SUFFIX - string appended to prefix
   (org-capture nil "j"))
 
 (defalias 'cc/insert-org-keyword
-   (kmacro "C-a # + M-x c o m p l e t e - s y m b o l <return>"))
+  (kmacro "C-a # + M-x c o m p l e t e - s y m b o l <return>"))
+
+(defun cc/list-capture-template-keys ()
+  "List out capture template keys."
+  (interactive)
+  (let* ((templates (mapcar
+                     (lambda (x) (list (nth 0 x) (nth 1 x)))
+                     org-capture-templates))
+         (buflist (mapcar
+                   (lambda (x)
+                     (format "%17s %s" (nth 0 x) (nth 1 x)))
+                   templates)))
+    (message (string-join buflist "\n"))))
 
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here
