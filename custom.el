@@ -403,7 +403,7 @@
      ("screen" . shell-script) ("shell" . sh) ("bash" . sh)
      ("plantuml" . plantuml) ("swift" . swift) ("swiftui" . swift)
      ("graphviz" . graphviz) ("mscgen" . mscgen)))
- '(org-startup-folded 'showeverything)
+ '(org-startup-folded 'nofold)
  '(org-startup-with-inline-images t)
  '(org-superstar-headline-bullets-list '(10687 10070 10040 10047))
  '(org-superstar-leading-bullet 32)
