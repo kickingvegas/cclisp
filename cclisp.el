@@ -196,35 +196,24 @@ This function presumes that the buffer *pelican* is in the correct directory."
   (sleep-for 3)
   (shell-command "open http://localhost:8000"))
 
-(defun cc/blog ()
-  "One-step operation to develop a blog post for “notes from /dev/null”."
+(defun cc/devserver ()
+  "Open Pelican devserver for website chosen by completing read."
   (interactive)
-  (cond ((get-buffer "*pelican*")
-         (switch-to-buffer "*pelican*"))
-        (t
-         (shell-new)
-         (rename-buffer "*pelican*")
-         (process-send-string (get-buffer-process "*pelican*") "cd ~/Projects/pelican\n")
-         (process-send-string (get-buffer-process "*pelican*") "source .venv/bin/activate\n")
-         (process-send-string (get-buffer-process "*pelican*") "cd ~/Projects/devnull\n")
-         ()
-         (if (display-graphic-p)
-             (cc/launch-pelican)))))
+  (let* ((choice (completing-read "Server: " '("devnull" "captee" "scrim")))
+         (blog-path (concat "~/Projects/pelican/" choice))
+         (blog-buffer (format "*pelican-%s*" choice))
+         (cd-blog-path (format "cd %s\n" blog-path)))
 
-(defun cc/web-captee()
-  "One-step operation to startup a devserver for the Captee website."
-  (interactive)
-  (cond ((get-buffer "*pelican*")
-         (switch-to-buffer "*pelican*"))
-        (t
-         (shell-new)
-         (rename-buffer "*pelican*")
-         (process-send-string (get-buffer-process "*pelican*") "cd ~/Projects/pelican\n")
-         (process-send-string (get-buffer-process "*pelican*") "source .venv/bin/activate\n")
-         (process-send-string (get-buffer-process "*pelican*") "cd ~/Projects/pelican/captee\n")
-         ()
-         (if (display-graphic-p)
-             (cc/launch-pelican)))))
+    (if (get-buffer blog-buffer)
+        (switch-to-buffer blog-buffer)
+      (progn
+        (shell-new)
+        (rename-buffer blog-buffer)
+        (process-send-string (get-buffer-process blog-buffer) "cd ~/Projects/pelican\n")
+        (process-send-string (get-buffer-process blog-buffer) "source .venv/bin/activate\n")
+        (process-send-string (get-buffer-process blog-buffer) cd-blog-path)
+        (if (display-graphic-p)
+            (cc/launch-pelican))))))
 
 (defun cc/slugify (start end)
   "Slugify the region bounded by START and END."
