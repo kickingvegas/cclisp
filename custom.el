@@ -510,6 +510,7 @@
  '(calendar-weekend-header ((t (:inherit font-lock-comment-face))))
  '(comint-highlight-prompt ((((type x ns) (class color) (background light)) (:inherit minibuffer-prompt :foreground "dark magenta")) (((type x ns) (class color) (background dark)) (:inherit minibuffer-prompt :foreground "tomato")) (((type tty) (class color)) (:foreground "tomato"))))
  '(diff-added ((t (:inherit diff-changed :extend t :background "lawn green"))))
+ '(dired-broken-symlink ((((class color)) (:background "red1" :foreground "Orange" :weight bold)) (t (:underline t :slant italic :weight bold))))
  '(elisp-shorthand-font-lock-face ((((type x w32 ns pgtk tty) (class color) (background dark)) (:inherit font-lock-keyword-face :foreground "cyan")) (((type x w32 ns pgtk) (class color) (background light)) (:background "white smoke" :foreground "medium violet red"))))
  '(eshell-prompt ((t (:foreground "#cc33ff" :weight bold))))
  '(fixed-pitch ((((type ns)) (:height 1.0 :family "Menlo")) (((type x pgtk)) (:height 1.0 :family "Noto Sans Mono"))))
