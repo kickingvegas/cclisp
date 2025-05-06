@@ -119,6 +119,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                           ":END:"
                           "%?")
                         "\n")))
+           :prepend t
            :empty-lines 1)
 
           ("t"
@@ -135,6 +136,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                           ":END:"
                           "%?")
                         "\n")))
+           :prepend t
            :empty-lines 1)
 
           ("s"
@@ -152,6 +154,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                           ":END:"
                           "%?")
                         "\n")))
+           :prepend t
            :empty-lines 1)
 
           ("p"
@@ -168,6 +171,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                           ":END:"
                           "%?")
                         "\n")))
+           :prepend t
            :empty-lines 1)
 
           ("i"
@@ -190,6 +194,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                           "** Expected Result\n"
                           "** Actual Result\n")
                         "\n")))
+           :prepend t
            :empty-lines 1)
 
           ("j"
@@ -203,7 +208,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                         '("%(datestamp2)"
                           "%?")
                         "\n")))
-           :prepend (string= (system-name "dev7"))
+           :prepend t
            :empty-lines 1)
 
           ;; ("o" "Org Protocol Templates")
@@ -224,6 +229,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                           ""
                           "%?")
                         "\n")))
+           :prepend t
            :empty-lines 1)
 
           ("capture-elisp"
@@ -245,6 +251,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                           ""
                           "%?")
                         "\n")))
+           :prepend t
            :empty-lines 1)
 
           ("capture-python"
@@ -266,6 +273,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                           ""
                           "%?")
                         "\n")))
+           :prepend t
            :empty-lines 1)
 
           ("capture-swift"
@@ -287,6 +295,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                           ""
                           "%?")
                         "\n")))
+           :prepend t
            :empty-lines 1)
 
           ("r"
@@ -316,6 +325,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                           ":END:"
                           "%?")
                         "\n")))
+           :prepend t
            :empty-lines 1)
 
           ("S"
@@ -349,8 +359,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                           "%i"
                           "%?")
                         "\n")))
-           :empty-lines 1
-           :prepend t)
+           :empty-lines 1)
           ))
 
 
