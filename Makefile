@@ -37,3 +37,9 @@ create-pr:
 .PHONY: create-patch-pr
 create-patch-pr:
 	gh pr create --base main --fill
+
+.PHONY: create-release-pr
+create-release-pr: create-merge-development-branch
+	gh pr create --base main \
+--title "Merge development to main $(TIMESTAMP)" \
+--fill-verbose
