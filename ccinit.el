@@ -118,6 +118,7 @@
 (require 'cc-gh)
 (require 'ffap)
 (require 'calle24)
+(require 'scrim-utils)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
