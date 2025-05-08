@@ -39,6 +39,11 @@
 (require 'which-func)
 (require 'casual-lib)
 
+(defun cc/find-user-init-file ()
+  "Edit `user-init-file'."
+  (interactive)
+  (find-file user-init-file))
+
 (defun datestamp ()
   "Insert datestamp intended for Charles Choi org notes."
   (interactive)
