@@ -232,68 +232,64 @@ which is done with `org-ctrl-c-ctrl-c'."
            :prepend t
            :empty-lines 1)
 
-          ("capture-elisp"
-           "Org Protocol Elisp Source"
+          ("capture-source"
+           "Org Protocol Source"
            entry
            (file+function
             cc/--current-org-default-notes-file
             cc/--find-capture-point-in-current)
            (function (lambda ()
                        (string-join
-                        '("* %:description"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%:annotation"
-                          "#+BEGIN_SRC elisp"
-                          "%i"
-                          "#+END_SRC"
-                          ""
-                          "%?")
-                        "\n")))
-           :prepend t
-           :empty-lines 1)
-
-          ("capture-python"
-           "Org Protocol Python Source"
-           entry
-           (file+function
-            cc/--current-org-default-notes-file
-            cc/--find-capture-point-in-current)
-           (function (lambda ()
-                       (string-join
-                        '("* %:description"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%:annotation"
-                          "#+BEGIN_SRC python"
-                          "%i"
-                          "#+END_SRC"
-                          ""
-                          "%?")
-                        "\n")))
-           :prepend t
-           :empty-lines 1)
-
-          ("capture-swift"
-           "Org Protocol Swift Source"
-           entry
-           (file+function
-            cc/--current-org-default-notes-file
-            cc/--find-capture-point-in-current)
-           (function (lambda ()
-                       (string-join
-                        '("* %:description"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%:annotation"
-                          "#+BEGIN_SRC swift"
-                          "%i"
-                          "#+END_SRC"
-                          ""
-                          "%?")
+                        (list "* Source: %:description"
+                              ":PROPERTIES:"
+                              ":CREATED: %U"
+                              ":END:"
+                              "%:link"
+                              (concat "#+BEGIN_SRC %^{Language|elisp|"
+                                      (string-join (list "awk"
+                                                         "C"
+                                                         "cpp"
+                                                         "shell"
+                                                         "clojure"
+                                                         "css"
+                                                         "ditaa"
+                                                         "eshell"
+                                                         "F90"
+                                                         "forth"
+                                                         "gnuplot"
+                                                         "sed"
+                                                         "dot"
+                                                         "java"
+                                                         "haskell"
+                                                         "julia"
+                                                         "latex"
+                                                         "lisp"
+                                                         "lua"
+                                                         "makefile"
+                                                         "matlab"
+                                                         "max"
+                                                         "js"
+                                                         "ocaml"
+                                                         "octave"
+                                                         "org"
+                                                         "perl"
+                                                         "plantuml"
+                                                         "processing"
+                                                         "python"
+                                                         "R"
+                                                         "ruby"
+                                                         "sass"
+                                                         "scheme"
+                                                         "sql"
+                                                         "sqlite"
+                                                         "swift"
+                                                         "kotlin")
+                                                   "|")
+                                      "}")
+                              "%i"
+                              "#+END_SRC"
+                              ""
+                              "%?")
                         "\n")))
            :prepend t
            :empty-lines 1)
