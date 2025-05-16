@@ -199,23 +199,6 @@
      ("https://www.avclub.com/rss" media)
      ("https://sf.eater.com/rss/index.xml" sf food)
      ("https://missionlocal.org/feed" sf) ("https://sfstandard.com/feed/" sf)))
- '(erc-autojoin-channels-alist
-   '((Libera.Chat "#scrim" "#iphonedev" "#pelican" "#macports" "#emacs-til"
-                  "#org-mode" "#emacs" "#python")))
- '(erc-autojoin-timing 'ident)
- '(erc-fill-function 'erc-fill-static)
- '(erc-fill-static-center 22)
- '(erc-hide-list '("JOIN" "PART" "QUIT"))
- '(erc-lurker-hide-list '("JOIN" "PART" "QUIT"))
- '(erc-modules
-   '(autojoin button completion fill imenu irccontrols keep-place list match menu
-              move-to-prompt netsplit networks nicks readonly ring
-              scrolltobottom spelling stamp track))
- '(erc-nick "kickingvegas")
- '(erc-prompt "💬›")
- '(erc-prompt-for-nickserv-password nil)
- '(erc-server "irc.libera.chat")
- '(erc-try-new-nick-p nil)
  '(eshell-modules-list
    '(eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob
                   eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script
@@ -250,8 +233,7 @@
  '(ibuffer-modified-char 9998)
  '(ibuffer-read-only-char 8856)
  '(ibuffer-saved-filter-groups
-   '(("erc" ("erc" (mode . erc-mode)))
-     ("melpa app" ("melpa-app" (directory . "melpa-app"))
+   '(("melpa app" ("melpa-app" (directory . "melpa-app"))
       ("Org Agenda" (name . "Org Agenda"))
       ("Documentation"
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
@@ -530,7 +512,6 @@
  '(diff-added ((t (:inherit diff-changed :extend t :background "lawn green"))))
  '(dired-broken-symlink ((((class color)) (:background "red1" :foreground "Orange" :weight bold)) (t (:underline t :slant italic :weight bold))))
  '(elisp-shorthand-font-lock-face ((((type x w32 ns pgtk tty) (class color) (background dark)) (:inherit font-lock-keyword-face :foreground "cyan")) (((type x w32 ns pgtk) (class color) (background light)) (:background "white smoke" :foreground "medium violet red"))))
- '(erc-prompt-face ((((type x w32 ns pgtk) (class color) (background light)) (:foreground "black")) (((type x w32 ns pgtk) (class color) (background dark)) (:foreground "lightBlue2" :weight bold)) (((type tty) (class color)) (:foreground "lightBlue2"))))
  '(eshell-prompt ((t (:foreground "#cc33ff" :weight bold))))
  '(fixed-pitch ((((type ns)) (:height 1.0 :family "Menlo")) (((type x pgtk)) (:height 1.0 :family "Noto Sans Mono"))))
  '(font-lock-comment-face ((((type x ns) (class color) (background light)) (:foreground "dim gray")) (((type x ns) (class color) (background dark)) (:foreground "dark gray")) (((type tty) (class color)) (:foreground "medium turquoise"))))
