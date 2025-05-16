@@ -430,7 +430,7 @@
      ("melpa" . "http://melpa.org/packages/")))
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
-   '(async auto-complete autopair bind-key calfw calle24 citar company
+   '(async auto-complete autopair bind-key calfw calle24 casual-suite citar company
            company-org-block company-restclient csv-mode diff-hl disk-usage ebib
            edit-indirect editorconfig eglot eldoc elfeed erc eshell-git-prompt
            expand-region faceup fireplace flycheck-package flymake git-link
