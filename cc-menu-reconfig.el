@@ -101,6 +101,85 @@ for REGEXP."
                      :help "Show macOS Character Palette."
                      :visible (eq window-system 'ns)])
 
+;;; Reconfigure Help Menu
+
+(defun cc/new-info-frame ()
+  "Invoke `info' in new frame.
+
+This command creates a new frame populated by the `info' command."
+  (interactive)
+  (other-frame-prefix)
+  (call-interactively #'info))
+
+(defun cc/new-info-display-frame ()
+  "Create new Info manual instance (buffer) in a new frame.
+
+This command creates a new frame populated by the
+`info-display-manual' command."
+  (interactive)
+  (other-frame-prefix)
+  (call-interactively #'info-display-manual))
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Info in New Frame"
+                     cc/new-info-frame
+                     :help "Show Info manual in new frame."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["New Info in New Frame…"
+                     cc/new-info-display-frame
+                     :help "Show new Info manual in new frame."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Describe Key or Mouse…"
+                     describe-key
+                     :help "Describe key or mouse operation."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Emacs FAQ"
+                     view-emacs-FAQ
+                     :help "View Emacs FAQ."]
+                    'describe-copying)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Emacs News"
+                     view-emacs-news
+                     :help "View Emacs news about this release."]
+                    'describe-copying)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Emacs Known Problems"
+                     view-emacs-problems
+                     :help "View Emacs known problems."]
+                    'describe-copying)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Send Bug Report…"
+                     report-emacs-bug
+                     :help "Send Emacs bug report."]
+                    'describe-copying)
+
+(define-key global-map [menu-bar help-menu  emacs-tutorial] nil t)
+(define-key global-map [menu-bar help-menu  emacs-tutorial-language-specific] nil t)
+(define-key global-map [menu-bar help-menu  emacs-psychotherapist] nil t)
+(define-key global-map [menu-bar help-menu  more-manuals] nil t)
+(define-key global-map [menu-bar help-menu  emacs-manual] nil t)
+(define-key global-map [menu-bar help-menu  getting-new-versions] nil t)
+(define-key global-map [menu-bar help-menu  describe-copying] nil t)
+(define-key global-map [menu-bar help-menu  describe-no-warranty] nil t)
+(define-key global-map [menu-bar help-menu  about-gnu-project] nil t)
+(define-key global-map [menu-bar help-menu  external-packages] nil t)
+(define-key global-map [menu-bar help-menu  emacs-faq] nil t)
+(define-key global-map [menu-bar help-menu  emacs-news] nil t)
+(define-key global-map [menu-bar help-menu  emacs-known-problems] nil t)
+(define-key global-map [menu-bar help-menu  emacs-manual-bug] nil t)
+(define-key global-map [menu-bar help-menu  send-emacs-bug-report] nil t)
+(define-key global-map [menu-bar help-menu  getting-new-versions] nil t)
+(define-key global-map [menu-bar help-menu  about-gnu-project] nil t)
+
 ;;; Reconfigure Tools Menu
 
 (easy-menu-add-item global-map '(menu-bar tools)
