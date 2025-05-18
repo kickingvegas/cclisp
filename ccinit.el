@@ -115,6 +115,7 @@
 (require 'cc-image-mode)
 (require 'cc-make-mode)
 (require 'cc-csv-mode)
+(require 'cc-main-tmenu)
 (require 'cc-gh)
 (require 'ffap)
 (require 'calle24)

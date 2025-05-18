@@ -41,7 +41,6 @@
 (require 'ibuffer)
 (require 'magit-status)
 (require 'casual-avy)
-(require 'cc-main-tmenu)
 (require 'casual-editkit)
 (require 'minibuffer)
 (require 'recent-rgrep)

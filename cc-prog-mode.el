@@ -35,7 +35,7 @@
 (require 'flyspell)
 (require 'compile)
 (require 'imenu)
-(require 'cc-main-tmenu)
+(require 'casual-editkit)
 
 ;;; Code:
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)

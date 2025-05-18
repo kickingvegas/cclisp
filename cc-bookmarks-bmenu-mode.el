@@ -29,22 +29,9 @@
                     casual-bookmarks-main-menu
                     "Tools")
 
-(use-package bookmark
-  :ensure nil
-  :defer t)
-
-(use-package cc-main-tmenu
-  :ensure nil
-  :defer t)
-
-(use-package casual-bookmarks
-  :ensure nil
-  :bind (:map bookmark-bmenu-mode-map
-              ("C-o" . casual-bookmarks-tmenu)
-              ("S" . casual-bookmarks-sortby-tmenu)
-              ("J" . bookmark-jump)
-              ("C-M-o" . cc/main-menu))
-  :after (bookmark cc-main-tmenu))
+(keymap-set bookmark-bmenu-mode-map "C-o" #'casual-bookmarks-tmenu)
+(keymap-set bookmark-bmenu-mode-map "S" #'casual-bookmarks-sortby-tmenu)
+(keymap-set bookmark-bmenu-mode-map "J" #'bookmark-jump)
 
 (provide 'cc-bookmarks-bmenu-mode)
 ;;; cc-bookmarks-bmenu-mode.el ends here

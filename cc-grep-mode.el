@@ -26,7 +26,7 @@
 
 (require 'grep)
 (require 'hl-line)
-(require 'cc-main-tmenu)
+(require 'casual-editkit)
 
 (add-hook 'grep-mode-hook 'hl-line-mode)
 
