@@ -882,10 +882,16 @@ See `cc/org-table-range' for more on RANGE object."
     (setq-local casual-lib-use-unicode t)))
 
 (defun macports ()
-    "Run MacPorts."
-    (interactive)
-    (term "~/bin/port.sh")
-    (rename-buffer "*macports*"))
+  "Run MacPorts."
+  (interactive)
+  (term "~/bin/port.sh")
+  (rename-buffer "*macports*"))
+
+(defun swift-repl ()
+  "Swift repl."
+  (interactive)
+  (term "swift repl")
+  (rename-buffer "*swift*"))
 
 (defun cc/--next-sexp-raw ()
   "Raw implementation to move point to the beginning of the next sexp.

@@ -34,6 +34,7 @@
 (defvar cc-main-tmenu-customize-enable t
   "If t then enable Casual menu customizations.")
 
+;; (when cc-main-tmenu-customize-enable
 (when (and cc-main-tmenu-customize-enable (not (featurep 'cc-main-tmenu)))
   ;; modify `casual-editkit-main-tmenu'
   (transient-append-suffix 'casual-editkit-main-tmenu "R"
@@ -54,42 +55,46 @@
   ;;   '("!" "Shell Command…" shell-command))
 
   ;; modify `casual-editkit-tools-tmenu'
-  (transient-append-suffix 'casual-editkit-tools-tmenu "w"
-    '("P" "Password›" password-store-menu))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "P"
-    '("l" "Git Link›" git-link-dispatch
+  (transient-append-suffix 'casual-editkit-tools-tmenu "py"
+    '("sw" "Swift" swift-repl))
+
+  (transient-append-suffix 'casual-editkit-tools-tmenu "wc"
+    '("pa" "Password›" password-store-menu))
+
+  (transient-append-suffix 'casual-editkit-tools-tmenu "pa"
+    '("gl" "Git Link›" git-link-dispatch
       :if casual-editkit-version-controlled-p))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "l"
-    '("H" "Git Homepage›" git-link-homepage
+  (transient-append-suffix 'casual-editkit-tools-tmenu "gl"
+    '("gh" "Git Homepage" git-link-homepage
       :if casual-editkit-version-controlled-p))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "M-e"
-    '("C-p" "Call" cc/call-nanp-phone-number
+  (transient-append-suffix 'casual-editkit-tools-tmenu "ew"
+    '("ph" "Call" cc/call-nanp-phone-number
       :inapt-if-not use-region-p))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "C-p"
-    '("m" "Maps" cc/open-region-in-apple-maps
+  (transient-append-suffix 'casual-editkit-tools-tmenu "ph"
+    '("ma" "Maps" cc/open-region-in-apple-maps
       :inapt-if-not use-region-p))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "m"
-    '("M-s" "Say" cc/say-region
+  (transient-append-suffix 'casual-editkit-tools-tmenu "ma"
+    '("sa" "Say" cc/say-region
       :inapt-if-not use-region-p))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "M-s"
-    '("M-t" "Translate" google-translate-smooth-translate
+  (transient-append-suffix 'casual-editkit-tools-tmenu "sa"
+    '("tr" "Translate" google-translate-smooth-translate
       :inapt-if-not use-region-p))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "M-t"
-    '("M-p" "Webpaste" webpaste-paste-region
+  (transient-append-suffix 'casual-editkit-tools-tmenu "tr"
+    '("wp" "Webpaste" webpaste-paste-region
       :inapt-if-not use-region-p))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "z"
-    '("F" "Fireplace" fireplace))
+  (transient-append-suffix 'casual-editkit-tools-tmenu "zo"
+    '("fp" "Fireplace" fireplace))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "F"
-    '("Z" "Snow" snow))
+  (transient-append-suffix 'casual-editkit-tools-tmenu "fp"
+    '("sn" "Snow" snow))
 
   (transient-append-suffix 'casual-editkit-narrow-tmenu '(0 0)
    ["Markdown"
