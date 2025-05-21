@@ -90,9 +90,6 @@
 ;;(keymap-global-set (kbd "<f14>") 'save-buffer) ;logitech
 (keymap-global-set "<f15>" #'cc/ediff-revision)
 
-(keymap-global-set "<f16>" #'calc)
-(keymap-global-set "<f17>" #'run-python)
-(keymap-global-set "M-<f16>" #'cc/switch-to-scratch) ;; this need to be in main
 (keymap-global-set "C-x C-b" #'ibuffer)
 
 ;; Avy

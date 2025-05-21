@@ -294,11 +294,6 @@ ISO 8601."
   (interactive "r")
   (shell-command-on-region start end "say"))
 
-(defun cc/switch-to-scratch ()
-  "Switch to *scratch* buffer."
-  (interactive)
-  (switch-to-buffer "*scratch*"))
-
 (defun cc/ellipsis()
   "Insert an ellipsis."
   (interactive)
