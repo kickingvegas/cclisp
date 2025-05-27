@@ -957,7 +957,7 @@ installed."
     (info-initialize)))
 
 (defun cc/whitespace-cleanup (&optional disable)
-  "Turn on whitespace cleanup"
+  "Turn on whitespace cleanup with optional DISABLE."
   (interactive)
 
   (if disable
@@ -982,6 +982,21 @@ installed."
         (setopt scroll-conservatively 10)
         (setopt scroll-margin 15)
         (message "Optimized for text scrolling"))))
+
+(defun cc/--resize-frame (width height)
+  "Resize frame to WIDTH, HEIGHT."
+  (let* ((current (selected-frame)))
+    (set-frame-size current width height)))
+
+(defun cc/resize-frame-for-video ()
+  "Resize frame for 1024x768 video capture."
+  (interactive)
+  (cc/--resize-frame 108 39))
+
+(defun cc/resize-frame-for-tty ()
+  "Resize frame for terminal screenshot."
+  (interactive)
+  (cc/--resize-frame 86 28))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here
