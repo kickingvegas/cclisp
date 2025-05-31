@@ -65,7 +65,7 @@
 
 ;;(setq pixel-scroll-precision-large-scroll-height 10.0)
 
-(when (eq window-system 'ns)
+(when (and (eq window-system 'ns) (boundp 'mac-command-modifier))
   (setq mac-command-modifier 'meta))
 
 (require 'cclisp)
