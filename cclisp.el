@@ -998,5 +998,21 @@ installed."
   (interactive)
   (cc/--resize-frame 86 28))
 
+(defun cc/--dired-kill-image-buffer-before-delete (file &rest rest)
+  "Kill buffer associated with image FILE if necessary, ignoring REST."
+  (ignore rest)
+  (let* ((test-types (push 'jpg image-types))
+         (ext (file-name-extension file))
+         (buf (get-file-buffer file)))
+
+    (if (and buf (seq-contains-p test-types ext #'string-equal))
+        (progn
+          (message "Killed buffer %s" (buffer-name buf))
+          (kill-buffer buf)))))
+
+(advice-add 'dired-delete-file
+            :before #'cc/--dired-kill-image-buffer-before-delete)
+
+
 (provide 'cclisp)
 ;;; cclisp.el ends here

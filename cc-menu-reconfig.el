@@ -96,6 +96,12 @@ for REGEXP."
                     "Fill")
 
 (easy-menu-add-item global-map '(menu-bar edit)
+                    ["Colors"
+                     ns-popup-color-panel
+                     :help "Show macOS Color Picker."
+                     :visible (eq window-system 'ns)])
+
+(easy-menu-add-item global-map '(menu-bar edit)
                     ["Emoji & Symbols"
                      ns-do-show-character-palette
                      :help "Show macOS Character Palette."
@@ -130,6 +136,12 @@ This command creates a new frame populated by the
                     ["New Info in New Frame…"
                      cc/new-info-display-frame
                      :help "Show new Info manual in new frame."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Describe Symbol…"
+                     describe-symbol
+                     :help "Describe symbol."]
                     'emacs-tutorial)
 
 (easy-menu-add-item global-map '(menu-bar help-menu)

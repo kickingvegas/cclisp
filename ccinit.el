@@ -173,4 +173,6 @@
 
 (password-store-menu-enable)
 
+;;(setq window-system-default-frame-alist '((ns . ((ns-transparent-titlebar . t)))))
+
 (ffap-bindings)

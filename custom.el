@@ -475,6 +475,7 @@
  '(python-shell-interpreter "python3")
  '(reb-re-syntax 'string)
  '(require-final-newline t)
+ '(safe-local-variable-directories '("/Users/cchoi/Projects/vendor/worg/"))
  '(safe-local-variable-values
    '((eval and buffer-file-name (not (eq major-mode 'package-recipe-mode))
            (or (require 'package-recipe-mode nil t)
