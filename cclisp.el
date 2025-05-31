@@ -38,6 +38,9 @@
 (require 'ace-window)
 (require 'which-func)
 (require 'casual-lib)
+(require 'info)
+(require 'transpose-frame)
+(require 'dired)
 
 (defun cc/find-user-init-file ()
   "Edit `user-init-file'."
@@ -115,6 +118,7 @@ A new frame will be created if `pop-up-frames' is t."
    (interactive)
    (shell-command "open ~/Documents/Dictation.txt"))
 
+;; TODO: revisit storing web links
 (load-file (concat user-emacs-directory "url-bookmarks.el"))
 
 (defun cc/open-url ()
@@ -488,19 +492,19 @@ SOUND - sound file (optional)"
           (replace-match (cdr e) nil t))))))
 
 ;; TODO: obsolete
-(defun cc/dired-image-file-p ()
-  "Predicate if current file in Dired is an image file."
-  (string-match-p (image-dired--file-name-regexp) (dired-get-filename)))
+;; (defun cc/dired-image-file-p ()
+;;   "Predicate if current file in Dired is an image file."
+;;   (string-match-p (image-dired--file-name-regexp) (dired-get-filename)))
 
 ;; TODO: obsolete
-(defun cc/--image-info (filename)
-  "Get image information of FILENAME via Imagemagick identify utility."
-  (car
-   (process-lines
-    "identify"
-    "-format"
-    "%m %wx%h %b"
-    (expand-file-name filename))))
+;; (defun cc/--image-info (filename)
+;;   "Get image information of FILENAME via Imagemagick identify utility."
+;;   (car
+;;    (process-lines
+;;     "identify"
+;;     "-format"
+;;     "%m %wx%h %b"
+;;     (expand-file-name filename))))
 
 (defun cc/ssh (target)
   "Create ssh `term' to TARGET."
@@ -939,7 +943,6 @@ installed."
   "Reset macOS dictation service corespeechd."
   (interactive)
   (process-lines "killall" "corespeechd"))
-
 
 (defun cc/compile-info ()
   "Build Info file from an Org file."
