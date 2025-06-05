@@ -539,7 +539,7 @@
  '(font-lock-function-name-face ((((type x ns) (class color) (background light)) (:foreground "Blue1")) (((type x ns) (class color) (background dark)) (:foreground "LightSkyBlue")) (((type tty) (class color)) (:foreground "yellow")) (t (:weight bold))))
  '(highlight ((((type x ns pgtk) (class color) (background light)) (:background "alice blue")) (((type x ns pgtk) (class color) (background dark)) (:background "gray20")) (((type tty) (class color)) (:background "gray20")) (t (:inverse-video t))))
  '(hl-line ((t (:inherit highlight :extend t))))
- '(magit-section-highlight ((((class color) (background light)) (:extend t :background "grey95")) (((class color) (background dark)) (:extend t :background "grey20")) (((type tty) (class color)) (:extend t :background "grey20"))))
+ '(magit-section-highlight ((((type x w32 ns haiku) (class color) (background light)) (:extend t :background "grey95")) (((type x w32 ns pgtk) (class color) (background dark)) (:extend t :background "grey20")) (((type tty) (class color)) (:extend t :background "grey20"))))
  '(markdown-code-face ((t (:inherit fixed-pitch))))
  '(markdown-header-delimiter-face ((t (:inherit outline-1))))
  '(markdown-header-face ((t (:inherit outline-1))))
