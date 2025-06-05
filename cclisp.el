@@ -1016,6 +1016,27 @@ installed."
 (advice-add 'dired-delete-file
             :before #'cc/--dired-kill-image-buffer-before-delete)
 
+(defun cc/org-gen-custom-id ()
+  "Generate a UUID, insert it as an Org :CUSTOM_ID: property, and return link."
+  (interactive)
+  (let* ((custom-id (format "%s" (org-id-uuid)))
+         (components (org-heading-components))
+         (header (nth 4 components))
+         (org-link (format "[[#%s][%s]]" custom-id header)))
+
+    (save-excursion
+      (org-back-to-heading t)
+      (if (re-search-forward "^:CUSTOM_ID:" (save-excursion (outline-next-heading) (point)) t)
+          (progn
+            (beginning-of-line)
+            (kill-line)
+            (insert (format ":CUSTOM_ID: %s\n" custom-id)))
+        (org-set-property "CUSTOM_ID" custom-id)))
+    (kill-new org-link)
+    ;;(org-insert-link nil (format "#%s" custom-id) header)
+    (message "Copied %s" org-link)
+    org-link))
+
 
 (provide 'cclisp)
 ;;; cclisp.el ends here
