@@ -348,6 +348,7 @@
  '(markdown-header-scaling nil)
  '(mouse-autoselect-window nil)
  '(mouse-wheel-progressive-speed t)
+ '(mouse-yank-at-point t)
  '(ns-alternate-modifier 'super)
  '(org-agenda-files '("~/org/"))
  '(org-agenda-include-diary t)
