@@ -182,7 +182,11 @@ temporarily visible (Visible mode)"])
 
     (easy-menu-add-item menu nil ["Agenda - All TODOs"
                                   (lambda () (interactive)(org-agenda nil "n"))
-                                  :help "Show Org agenda with all TODO tasks."])))
+                                  :help "Show Org agenda with all TODO tasks."])
+
+    (easy-menu-add-item menu nil ["Scratch"
+                                  scratch-buffer
+                                  :help "Switch to the *scratch* buffer."])))
 
 (defun cc/context-menu-dictionary-items (menu &optional inapt)
   "Menu items to populate MENU for <replace> section if INAPT nil."
