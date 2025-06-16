@@ -4,6 +4,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Info-additional-directory-list '("/opt/local/share/info"))
+ '(Info-hide-note-references 'hide)
+ '(Info-refill-paragraphs t)
  '(Info-scroll-prefer-subnodes nil)
  '(Man-notify-method 'aggressive)
  '(apropos-do-all t)
@@ -232,6 +234,9 @@
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
  '(global-mark-ring-max 8)
+ '(gnuplot-echo-command-line-flag nil)
+ '(gnuplot-image-format "svg")
+ '(gnuplot-info-display 'frame)
  '(graphviz-dot-indent-width 4)
  '(graphviz-dot-preview-extension "svg")
  '(hi-lock-auto-select-face t)
