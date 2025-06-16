@@ -30,6 +30,7 @@
 (require 'webpaste)
 (require 'markdown-mode)
 (require 'git-link)
+(require 'gnuplot)
 
 (defvar cc-main-tmenu-customize-enable t
   "If t then enable Casual menu customizations.")
@@ -58,6 +59,9 @@
 
   (transient-append-suffix 'casual-editkit-tools-tmenu "py"
     '("sw" "Swift" swift-repl))
+
+  (transient-append-suffix 'casual-editkit-tools-tmenu "sw"
+    '("gp" "Gnuplot" run-gnuplot))
 
   (transient-append-suffix 'casual-editkit-tools-tmenu "wc"
     '("pa" "Password›" password-store-menu))
