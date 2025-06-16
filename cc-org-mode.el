@@ -91,6 +91,7 @@ which is done with `org-ctrl-c-ctrl-c'."
   (org-ctrl-c-ctrl-c '(4)))
 
 (defun cc/config-capture-template (&optional prefix suffix)
+  "Configure capture template with PREFIX, SUFFIX."
   (let* ((properties (list ":PROPERTIES:"
                            ":CREATED: %U"
                            ":END:"))
@@ -101,6 +102,86 @@ which is done with `org-ctrl-c-ctrl-c'."
 
 (setopt org-default-notes-file "~/org/notes.org")
 (setopt org-protocol-default-template-key "capture")
+
+(defvar cc/org--capture-languages
+  (list
+   "C"
+   "F90"
+   "R"
+   "awk"
+   "clojure"
+   "cpp"
+   "css"
+   "ditaa"
+   "dot"
+   "elisp"
+   "eshell"
+   "forth"
+   "gnuplot"
+   "haskell"
+   "java"
+   "js"
+   "julia"
+   "kotlin"
+   "latex"
+   "lisp"
+   "lua"
+   "makefile"
+   "matlab"
+   "max"
+   "ocaml"
+   "octave"
+   "org"
+   "perl"
+   "plantuml"
+   "processing"
+   "python"
+   "ruby"
+   "sass"
+   "scheme"
+   "sed"
+   "shell"
+   "sql"
+   "sqlite"
+   "swift"
+   "swiftui"
+   )
+  "List of supported Org capture languages.")
+
+(defun cc/org--code-select-body ()
+  "Body capture code in `kill-ring' head with language prompt."
+  (cc/org--capture-code-body-from-kill-ring
+   (cc/org--capture-code-choices "elisp")))
+
+(defun cc/org--code-elisp-body ()
+  "Body capture Elisp code in `kill-ring' head."
+  (cc/org--capture-code-body-from-kill-ring "elisp :lexical no"))
+
+(defun cc/org--code-swift-body ()
+  "Body capture Swift code in `kill-ring' head."
+  (cc/org--capture-code-body-from-kill-ring "swift"))
+
+(defun cc/org--code-swiftui-body ()
+  "Body capture SwiftUI code in `kill-ring' head."
+  (cc/org--capture-code-body-from-kill-ring "swiftui"))
+
+(defun cc/org--capture-code-body-from-kill-ring (lang)
+  "Generate capture body for LANG code at head of the `kill-ring'."
+  (string-join
+   (list
+    (concat "#+BEGIN_SRC " lang)
+    "%c"
+    "#+END_SRC")
+   "\n"))
+
+(defun cc/org--capture-code-choices (lang)
+  "Create selection of programming language choices with default LANG."
+  (concat
+   "%^{Language|"
+   lang
+   "|"
+   (string-join cc/org--capture-languages "|")
+   "}"))
 
 ;; Configure org-capture-templates
 (setopt org-capture-templates
@@ -157,6 +238,9 @@ which is done with `org-ctrl-c-ctrl-c'."
            :prepend t
            :empty-lines 1)
 
+          ("c" "Code")
+
+
           ("p"
            "Blog Post"
            entry
@@ -211,88 +295,6 @@ which is done with `org-ctrl-c-ctrl-c'."
            :prepend t
            :empty-lines 1)
 
-          ;; ("o" "Org Protocol Templates")
-          ("capture"
-           "Org Protocol Capture"
-           entry
-           (file+function
-            cc/--current-org-default-notes-file
-            cc/--find-capture-point-in-current)
-           (function (lambda ()
-                       (string-join
-                        '("* %:description"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%:annotation"
-                          "%i"
-                          ""
-                          "%?")
-                        "\n")))
-           :prepend t
-           :empty-lines 1)
-
-          ("capture-source"
-           "Org Protocol Source"
-           entry
-           (file+function
-            cc/--current-org-default-notes-file
-            cc/--find-capture-point-in-current)
-           (function (lambda ()
-                       (string-join
-                        (list "* Source: %:description"
-                              ":PROPERTIES:"
-                              ":CREATED: %U"
-                              ":END:"
-                              "%:link"
-                              (concat "#+BEGIN_SRC %^{Language|elisp|"
-                                      (string-join (list "awk"
-                                                         "C"
-                                                         "cpp"
-                                                         "shell"
-                                                         "clojure"
-                                                         "css"
-                                                         "ditaa"
-                                                         "eshell"
-                                                         "F90"
-                                                         "forth"
-                                                         "gnuplot"
-                                                         "sed"
-                                                         "dot"
-                                                         "java"
-                                                         "haskell"
-                                                         "julia"
-                                                         "latex"
-                                                         "lisp"
-                                                         "lua"
-                                                         "makefile"
-                                                         "matlab"
-                                                         "max"
-                                                         "js"
-                                                         "ocaml"
-                                                         "octave"
-                                                         "org"
-                                                         "perl"
-                                                         "plantuml"
-                                                         "processing"
-                                                         "python"
-                                                         "R"
-                                                         "ruby"
-                                                         "sass"
-                                                         "scheme"
-                                                         "sql"
-                                                         "sqlite"
-                                                         "swift"
-                                                         "kotlin")
-                                                   "|")
-                                      "}")
-                              "%i"
-                              "#+END_SRC"
-                              ""
-                              "%?")
-                        "\n")))
-           :prepend t
-           :empty-lines 1)
 
           ("r"
            "BeOrg Reminder"
@@ -342,8 +344,10 @@ which is done with `org-ctrl-c-ctrl-c'."
            :empty-lines 1
            :prepend t)
 
-          ("w"
-           "WWDC Capture"
+          ;; ("o" "Org Protocol Templates")
+
+          ("wwdc"
+           "WWDC Session (Org Protocol)"
            entry
            (file+headline
             "~/org/wwdc25.org"
@@ -355,9 +359,66 @@ which is done with `org-ctrl-c-ctrl-c'."
                           "%i"
                           "%?")
                         "\n")))
+           :immediate-finish 1
+           :empty-lines 1)
+
+          ("journal"
+           "Journal (Org Protocol)"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("%(datestamp2)"
+                          "%i")
+                        "\n")))
+           :prepend t
+           :empty-lines 1)
+
+          ("capture"
+           "Capture (Org Protocol)"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("* %:description"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "%:annotation"
+                          "%i"
+                          ""
+                          "%?")
+                        "\n")))
+           :prepend t
+           :empty-lines 1)
+
+          ("code"
+           "Source Code (Org Protocol)"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        (list "* Source: %:description"
+                              ":PROPERTIES:"
+                              ":CREATED: %U"
+                              ":END:"
+                              "%:link"
+                              (concat "#+BEGIN_SRC "
+                                      (cc/org--capture-code-choices "elisp"))
+                              "%i"
+                              "#+END_SRC"
+                              ""
+                              "%?")
+                        "\n")))
+           :prepend t
            :empty-lines 1)
           ))
-
 
 (setopt org-todo-keywords
            '((sequence "TODO(t)" "IN_PROGRESS(i)" "WAITING(w)" "|" "DONE(d)")
@@ -392,7 +453,47 @@ which is done with `org-ctrl-c-ctrl-c'."
  'org-mode-hook
  (lambda ()
    (add-to-list (make-local-variable 'company-backends)
-                'company-org-block)))
+                'company-org-block)
+
+   (add-to-list 'org-capture-templates
+                '("cc"
+                  "Code"
+                  plain
+                  (here)
+                  (function cc/org--code-select-body)
+                  :empty-lines 1
+                  :immediate-finish 1)
+                t)
+
+   (add-to-list 'org-capture-templates
+                '("ce"
+                  "Elisp"
+                  plain
+                  (here)
+                  (function cc/org--code-elisp-body)
+                  :empty-lines 1
+                  :immediate-finish 1)
+                t)
+
+   (add-to-list 'org-capture-templates
+                '("cs"
+                  "Swift"
+                  plain
+                  (here)
+                  (function cc/org--code-swift-body)
+                  :empty-lines 1
+                  :immediate-finish 1)
+                t)
+
+   (add-to-list 'org-capture-templates
+                '("cu"
+                  "SwiftUI"
+                  plain
+                  (here)
+                  (function cc/org--code-swiftui-body)
+                  :empty-lines 1
+                  :immediate-finish 1)
+                t)))
 
 (defun cc/--prettify-components (prefix suffix)
   "Generate a components argument for `prettify-symbols-alist'.
