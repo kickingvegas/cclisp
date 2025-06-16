@@ -118,6 +118,7 @@
 (require 'cc-main-tmenu)
 (require 'cc-erc-mode)
 (require 'cc-gh)
+(require 'cc-gnuplot-mode)
 (require 'ffap)
 (require 'calle24)
 (require 'scrim-utils)
