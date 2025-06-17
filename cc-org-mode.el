@@ -538,7 +538,11 @@ SUFFIX - string appended to prefix
                              "export"
                              "quote"
                              "src"
-                             "verse")))
+                             "verse"
+                             "minipage"
+                             "infobox"
+                             "warningbox"
+                             "blindtext")))
        (dolist (e base-list)
          (push (cons (concat "#+begin_" e)
                      (cc/--prettify-components ?⎧ e)) prettify-symbols-alist)
