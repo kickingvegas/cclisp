@@ -151,6 +151,12 @@ This command creates a new frame populated by the
                     'emacs-tutorial)
 
 (easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Library Commentary…"
+                     finder-commentary
+                     :help "Show commentary for Elisp library."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
                     ["Emacs FAQ"
                      view-emacs-FAQ
                      :help "View Emacs FAQ."]
