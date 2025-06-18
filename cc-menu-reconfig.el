@@ -109,33 +109,34 @@ for REGEXP."
 
 ;;; Reconfigure Help Menu
 
-(defun cc/new-info-frame ()
-  "Invoke `info' in new frame.
-
-This command creates a new frame populated by the `info' command."
-  (interactive)
+(defun cc/--command-in-new-frame (cmd)
+  "Invoke CMD in a new frame.
+This command creates a new frame populated by CMD."
   (other-frame-prefix)
-  (call-interactively #'info))
-
-(defun cc/new-info-display-frame ()
-  "Create new Info manual instance (buffer) in a new frame.
-
-This command creates a new frame populated by the
-`info-display-manual' command."
-  (interactive)
-  (other-frame-prefix)
-  (call-interactively #'info-display-manual))
+  (call-interactively cmd))
 
 (easy-menu-add-item global-map '(menu-bar help-menu)
                     ["Info in New Frame"
-                     cc/new-info-frame
+                     (lambda ()
+                       (interactive)
+                       (cc/--command-in-new-frame #'info))
                      :help "Show Info manual in new frame."]
                     'emacs-tutorial)
 
 (easy-menu-add-item global-map '(menu-bar help-menu)
                     ["New Info in New Frame…"
-                     cc/new-info-display-frame
+                     (lambda ()
+                       (interactive)
+                       (cc/--command-in-new-frame #'info-display-manual))
                      :help "Show new Info manual in new frame."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Man Page in New Frame…"
+                     (lambda ()
+                       (interactive)
+                       (cc/--command-in-new-frame #'man))
+                     :help "Show man page in new frame."]
                     'emacs-tutorial)
 
 (easy-menu-add-item global-map '(menu-bar help-menu)

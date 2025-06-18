@@ -253,14 +253,13 @@ containing a match for regex"]))))
                                   ibuffer
                                   :help "List all buffers"])
 
-    ;; (easy-menu-add-item menu nil ["Previous Buffer"
-    ;;                               previous-buffer
-    ;;                               :help "Go to previous buffer"])
+    (easy-menu-add-item menu nil ["Previous Buffer"
+                                  previous-buffer
+                                  :help "Go to previous buffer"])
 
-    ;; (easy-menu-add-item menu nil ["Next Buffer"
-    ;;                               next-buffer
-    ;;                               :help "Go to next buffer"])
-    ))
+    (easy-menu-add-item menu nil ["Next Buffer"
+                                  next-buffer
+                                  :help "Go to next buffer"])))
 
 
 (defun cc/context-menu-open-in-items (menu &optional inapt)
