@@ -128,6 +128,7 @@
 
 (transient-define-prefix casual-man-tmenu ()
   ["Man"
+   :description (lambda () (format "Man: %s" Man-page-mode-string))
    ["Section"
     ("[" "Previous Section" Man-previous-section :transient t)
     ("]" "Next Section" Man-next-section :transient t)
@@ -144,14 +145,12 @@
 
    ["Page"
     ("M-n" "Next" Man-next-manpage)
-    ("M-p" "Previous" Man-previous-manpage)]
-
-   ["Misc"
-    ("u" "Update" Man-update-manpage)
-    ("m" "Man…" man)]]
+    ("M-p" "Previous" Man-previous-manpage)]]
 
   [:class transient-row
           (casual-lib-quit-one)
+          ("u" "Update" Man-update-manpage)
+          ("m" "Man…" man)
           ("q" "Quit" Man-kill)
           (casual-lib-quit-all)])
 
