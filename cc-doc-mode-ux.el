@@ -113,13 +113,47 @@
 (keymap-set Man-mode-map "M-j" #'scroll-up-line)
 (keymap-set Man-mode-map "M-k" #'scroll-down-line)
 ;; Bind j and k to navigate forward and backward paragraphs
-(keymap-set Man-mode-map "j" #'casual-info-browse-forward-paragraph)
-(keymap-set Man-mode-map "k" #'casual-info-browse-backward-paragraph)
+(keymap-set Man-mode-map "n" #'casual-info-browse-forward-paragraph)
+(keymap-set Man-mode-map "p" #'casual-info-browse-backward-paragraph)
+(keymap-set Man-mode-map "[" #'Man-previous-section)
+(keymap-set Man-mode-map "]" #'Man-next-section)
+
 ;; Bind K to kill buffer to replace override of default k above
 (keymap-set Man-mode-map "K" #'Man-kill)
+(keymap-set Man-mode-map "C-o" #'casual-man-tmenu)
+
 
 (add-hook 'Man-mode-hook #'hl-line-mode)
 (add-hook 'Man-mode-hook #'scroll-lock-mode)
+
+(transient-define-prefix casual-man-tmenu ()
+  ["Man"
+   ["Section"
+    ("[" "Previous Section" Man-previous-section :transient t)
+    ("]" "Next Section" Man-next-section :transient t)
+    ("g" "Goto Section" Man-goto-section)
+    ("s" "See Also" Man-goto-see-also-section)]
+
+   ["Navigation"
+    ("." "Beginning" beginning-of-buffer :transient t)
+    ("n" "Forward Paragraph" casual-info-browse-forward-paragraph :transient t)
+    ("p" "Backward Paragraph" casual-info-browse-backward-paragraph :transient t)]
+
+   ["Link"
+    ("r" "Follow" Man-follow-manual-reference)]
+
+   ["Page"
+    ("M-n" "Next" Man-next-manpage)
+    ("M-p" "Previous" Man-previous-manpage)]
+
+   ["Misc"
+    ("u" "Update" Man-update-manpage)
+    ("m" "Man…" man)]]
+
+  [:class transient-row
+          (casual-lib-quit-one)
+          ("q" "Quit" Man-kill)
+          (casual-lib-quit-all)])
 
 (provide 'cc-doc-mode-ux)
 
