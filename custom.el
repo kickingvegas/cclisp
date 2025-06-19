@@ -8,6 +8,7 @@
  '(Info-refill-paragraphs t)
  '(Info-scroll-prefer-subnodes nil)
  '(Man-notify-method 'aggressive)
+ '(Man-switches "-a")
  '(apropos-do-all t)
  '(auto-insert-alist
    '((("\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'" . "C / C++ header")
