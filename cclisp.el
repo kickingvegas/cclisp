@@ -939,12 +939,12 @@ installed."
   (split-window-below)
   (windmove-down))
 
-(defun cc/reset-dictation ()
+(defun cc/dictation-reset ()
   "Reset macOS dictation service corespeechd."
   (interactive)
   (process-lines "killall" "corespeechd"))
 
-(defun cc/compile-info ()
+(defun cc/info-compile ()
   "Build Info file from an Org file."
   (interactive)
   (let ((outfile (expand-file-name (file-name-with-extension buffer-file-name "info")))
@@ -991,12 +991,12 @@ installed."
   (let* ((current (selected-frame)))
     (set-frame-size current width height)))
 
-(defun cc/resize-frame-for-video ()
+(defun cc/frame-resize-for-video ()
   "Resize frame for 1024x768 video capture."
   (interactive)
   (cc/--resize-frame 108 39))
 
-(defun cc/resize-frame-for-tty ()
+(defun cc/frame-resize-for-tty ()
   "Resize frame for terminal screenshot."
   (interactive)
   (cc/--resize-frame 86 28))
