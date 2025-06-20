@@ -670,7 +670,7 @@ SUFFIX - string appended to prefix
 (defalias 'cc/insert-org-keyword
   (kmacro "C-a # + M-x c o m p l e t e - s y m b o l <return>"))
 
-(defun cc/list-capture-template-keys ()
+(defun cc/org-capture-template-keys ()
   "List out capture template keys."
   (interactive)
   (let* ((templates (mapcar

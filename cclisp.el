@@ -116,7 +116,7 @@ A new frame will be created if `pop-up-frames' is t."
 (defun dictate()
    "Open a default text file to dictate into using macOS open."
    (interactive)
-   (shell-command "open ~/Documents/Dictation.txt"))
+   (shell-command "open ~/Documents/Dictation.rtf"))
 
 ;; TODO: revisit storing web links
 (load-file (concat user-emacs-directory "url-bookmarks.el"))

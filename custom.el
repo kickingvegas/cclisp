@@ -433,6 +433,21 @@
  '(org-superstar-headline-bullets-list '(10687 10070 10040 10047))
  '(org-superstar-leading-bullet 32)
  '(org-support-shift-select t)
+ '(org-texinfo-classes
+   '(("info" "@documentencoding AUTO\12@documentlanguage AUTO"
+      ("@chapter %s" "@unnumbered %s" "@chapheading %s" "@appendix %s")
+      ("@section %s" "@unnumberedsec %s" "@heading %s" "@appendixsec %s")
+      ("@subsection %s" "@unnumberedsubsec %s" "@subheading %s"
+       "@appendixsubsec %s")
+      ("@subsubsection %s" "@unnumberedsubsubsec %s" "@subsubheading %s"
+       "@appendixsubsubsec %s"))
+     ("casual" "@documentencoding AUTO\12@documentlanguage AUTO"
+      ("@chapter %s" "@unnumbered %s" "@chapheading %s" "@appendix %s")
+      ("@section %s" "@unnumberedsec %s" "@subheading %s" "@appendixsec %s")
+      ("@subsection %s" "@unnumberedsubsec %s" "@subheading %s"
+       "@appendixsubsec %s")
+      ("@subsubsection %s" "@unnumberedsubsubsec %s" "@subsubheading %s"
+       "@appendixsubsubsec %s"))))
  '(org-todo-keyword-faces
    '(("TODO" :background "pale green" :foreground "dark green" :box
       (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
