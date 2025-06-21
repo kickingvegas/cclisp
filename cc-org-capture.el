@@ -161,7 +161,6 @@ This function is dependent upon this file being created by a daily cron job."
                           ":END:"
                           "%?")
                         "\n")))
-           :prepend t
            :empty-lines 1)
 
           ("t"
@@ -178,7 +177,6 @@ This function is dependent upon this file being created by a daily cron job."
                           ":END:"
                           "%?")
                         "\n")))
-           :prepend t
            :empty-lines 1)
 
           ("s"
@@ -196,7 +194,6 @@ This function is dependent upon this file being created by a daily cron job."
                           ":END:"
                           "%?")
                         "\n")))
-           :prepend t
            :empty-lines 1)
 
           ("c" "Code")
@@ -216,7 +213,6 @@ This function is dependent upon this file being created by a daily cron job."
                           ":END:"
                           "%?")
                         "\n")))
-           :prepend t
            :empty-lines 1)
 
           ("i"
@@ -239,7 +235,6 @@ This function is dependent upon this file being created by a daily cron job."
                           "** Expected Result\n"
                           "** Actual Result\n")
                         "\n")))
-           :prepend t
            :empty-lines 1)
 
           ("j"
@@ -253,9 +248,21 @@ This function is dependent upon this file being created by a daily cron job."
                         '("%(datestamp2)"
                           "%?")
                         "\n")))
-           :prepend t
            :empty-lines 1)
 
+          ("J"
+           "Journal - Prepend"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("%(datestamp2)"
+                          "%?")
+                        "\n")))
+           :prepend t
+           :empty-lines 1)
 
           ("r"
            "BeOrg Reminder"
@@ -302,10 +309,10 @@ This function is dependent upon this file being created by a daily cron job."
                           ":END:"
                            "%?")
                         "\n")))
-           :empty-lines 1
-           :prepend t)
+           :prepend t
+           :empty-lines 1)
 
-          ;; ("o" "Org Protocol Templates")
+          ;; Org protocol templates (no prefix)
 
           ("wwdc"
            "WWDC Session (Org Protocol)"
@@ -334,7 +341,6 @@ This function is dependent upon this file being created by a daily cron job."
                         '("%(datestamp2)"
                           "%i")
                         "\n")))
-           :prepend t
            :empty-lines 1)
 
           ("capture"
@@ -354,7 +360,6 @@ This function is dependent upon this file being created by a daily cron job."
                           ""
                           "%?")
                         "\n")))
-           :prepend t
            :empty-lines 1)
 
           ("code"
@@ -377,7 +382,6 @@ This function is dependent upon this file being created by a daily cron job."
                               ""
                               "%?")
                         "\n")))
-           :prepend t
            :empty-lines 1)
           ))
 
