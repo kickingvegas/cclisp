@@ -1,6 +1,6 @@
 ;;; cc-context-menu.el --- Context Menu Customization -*- lexical-binding: t -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -205,17 +205,13 @@ temporarily visible (Visible mode)"])
     (if (use-region-p)
         (easy-menu-add-item menu nil
                             ["Find word in buffer (occur)"
-                             ;;occur-word-at-mouse
-                             occur-symbol-at-mouse
-                             :visible (not buffer-read-only)
-                             :label (cc/context-menu-last-word-in-region
-                                     "Occur")
-                             :help "Show all lines in the current buffer containing \
-a match for selected word"])
+                             cc/occur-selected-region
+                             :label (cc/context-menu-label "Occur")
+                             :help "Show all lines in the current buffer \
+containing a match for selected word"])
       (easy-menu-add-item menu nil
-                          ["Occur…"
-                           occur
-                           :visible (not buffer-read-only)
+                          ["Occur Symbol…"
+                           occur-symbol-at-mouse
                            :help "Show all lines in the current buffer \
 containing a match for regex"]))))
 

@@ -74,6 +74,14 @@ SUBMENU is a keymap."
       (setq buf (concat prefix " “" (buffer-substring start end) "”")))
     buf))
 
+(defun cc/occur-selected-region ()
+  "Occur selected region."
+  (interactive)
+  (let* ((start (region-beginning))
+         (end (region-end))
+         (regex (buffer-substring-no-properties start end)))
+    (occur regex)))
+
 (defun cc/context-menu-last-word-in-region (prefix)
   "Generate context menu label with last word in region prepended by PREFIX."
   (let*  ((start (region-beginning))
