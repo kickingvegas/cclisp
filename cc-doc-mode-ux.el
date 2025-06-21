@@ -33,6 +33,7 @@
 (require 'cclisp)
 (require 'casual-lib)
 (require 'casual-man)
+(require 'casual-help)
 
 (defun cc/confirm-before-quit-window ()
   "Raise confirm prompt before invoking `quit-window'."
@@ -87,6 +88,9 @@
 ;; Bind side mouse buttons on Logitech mouse
 (keymap-set help-mode-map "<mouse-5>" #'help-go-forward)
 (keymap-set help-mode-map "<mouse-4>" #'help-go-back)
+
+;; Add Casual Help
+(keymap-set help-mode-map "C-o" #'casual-help-tmenu)
 
 (add-hook 'help-mode-hook #'hl-line-mode)
 (add-hook 'help-mode-hook #'scroll-lock-mode)
