@@ -77,6 +77,8 @@
 ;; Bind p and n to paragraph navigation
 (keymap-set help-mode-map "p" #'casual-lib-browse-backward-paragraph)
 (keymap-set help-mode-map "n" #'casual-lib-browse-forward-paragraph)
+(keymap-set help-mode-map "P" #'help-goto-previous-page)
+(keymap-set help-mode-map "N" #'help-goto-next-page)
 ;; Bind <f1> to help
 (keymap-set help-mode-map "<f1>" #'describe-mode)
 ;; Bind M-j, M-k to scrolling up/down line

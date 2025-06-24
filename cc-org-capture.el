@@ -198,8 +198,7 @@ This function is dependent upon this file being created by a daily cron job."
 
           ("c" "Code")
 
-
-          ("p"
+          ("P"
            "Blog Post"
            entry
            (file+function
@@ -213,6 +212,23 @@ This function is dependent upon this file being created by a daily cron job."
                           ":END:"
                           "%?")
                         "\n")))
+           :empty-lines 1)
+
+          ("p"
+           "Plan - Daily"
+           entry
+           (file+function
+            cc/--current-org-default-notes-file
+            cc/--find-capture-point-in-current)
+           (function (lambda ()
+                       (string-join
+                        '("* Daily Planning [/] :living:"
+                          ":PROPERTIES:"
+                          ":CREATED: %U"
+                          ":END:"
+                          "- [ ] %?")
+                        "\n")))
+           :prepend t
            :empty-lines 1)
 
           ("i"
