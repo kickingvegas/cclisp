@@ -57,7 +57,7 @@
 (setopt eshell-prompt-function #'cc/prompt-function)
 ;;(setopt eshell-banner-message (format "Eshell ⌨️\n%s" (sunrise-sunset)))
 
-(add-hook 'eshell-mode-hook 'company-mode)
+;;(add-hook 'eshell-mode-hook 'company-mode)
 (add-hook 'eshell-mode-hook 'hl-line-mode)
 (add-hook 'eshell-mode-hook (lambda ()
                               (keymap-set eshell-mode-map "<f1>" #'eshell-list-history)
@@ -97,19 +97,28 @@
     ("k" "Kill Input" eshell-kill-input)
     ("h" "History" eshell-list-history)]
 
+   ["Process"
+    ("Pi" "Interrupt" eshell-interrupt-process)
+    ("Pq" "Quit" eshell-quit-process)
+    ("Pk" "Kill" eshell-kill-process)]
+
    ["Misc"
     ("d" "Dired" dired-jump-other-window)
+    ("a" "Aliases" (lambda ()
+                     (interactive)
+                     (find-file eshell-aliases-file)))
     ("J" "Bookmark Jump…" bookmark-jump)
     ("g" "Magit" magit-status :if casual-editkit-version-controlled-p)]]
 
   [:class transient-row
    (casual-lib-quit-one)
+   ("i" "Info Commands" (lambda ()
+                          (interactive)
+                          (info "(eshell) List of Built-ins")))
    ("RET" "Dismiss" transient-quit-all)
    (casual-lib-quit-all)])
 
-
 (keymap-set eshell-mode-map "C-o" #'casual-eshell-tmenu)
-
 
 (provide 'cc-eshell-mode)
 ;;; cc-eshell-mode.el ends here

@@ -348,6 +348,7 @@
  '(lazy-count-prefix-format nil)
  '(lazy-count-suffix-format " [%s of %s]")
  '(locate-command "mdfind")
+ '(magit-copy-revision-abbreviated t)
  '(magit-save-repository-buffers 'dontask)
  '(mark-ring-max 6)
  '(markdown-command "multimarkdown")
