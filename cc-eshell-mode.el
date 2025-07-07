@@ -31,7 +31,7 @@
 (require 'helm-eshell)
 (require 'eshell-git-prompt)
 (require 'cclisp)
-(require 'casual-lib)
+(require 'casual-eshell)
 
 (defvar eshell-mode-map)
 (defvar eshell-visual-options)
@@ -42,10 +42,7 @@
 (defun cc/prompt-function ()
         (concat "\n┏━ "
                 (user-login-name) "@" (system-name) ":"
-                (propertize (if (string= (eshell/pwd) (getenv "HOME"))
-                                "~"
-                              (replace-regexp-in-string
-                               (concat "^" (getenv "HOME")) "~" (eshell/pwd)))
+                (propertize (casual-eshell-tilde-path (eshell/pwd))
                             'face `(:foreground "orange red"))
                 (if (and (not (file-remote-p default-directory))
                          (eshell-git-prompt--branch-name))
@@ -72,51 +69,6 @@
                               ;; (keymap-set eshell-mode-map "C-<down>" #'down-list)
                               (setenv "NO_COLOR" "1")
                               (setenv "CLICOLOR" "0")))
-
-
-(transient-define-prefix casual-eshell-tmenu ()
-  "Transient menu for Eshell."
-  ["Casual Eshell"
-   ["Prompt"
-    ("p" "Previous" eshell-previous-prompt :transient t)
-    ("n" "Next" eshell-next-prompt :transient t)]
-
-   ["Argument"
-    ("b" "Backward" eshell-backward-argument :transient t)
-    ("f" "Forward" eshell-forward-argument :transient t)
-    ("y" "Repeat" eshell-repeat-argument :transient t)]
-
-   ["Output"
-    ("s" "Show" eshell-show-output)
-    ("S" "Show Max" eshell-show-maximum-output)
-    ("m" "Mark" eshell-mark-output)
-    ("D" "Delete" eshell-delete-output)]
-
-   ["Input"
-    ("B" "Insert Buffer…" eshell-insert-buffer-name)
-    ("k" "Kill Input" eshell-kill-input)
-    ("h" "History" eshell-list-history)]
-
-   ["Process"
-    ("Pi" "Interrupt" eshell-interrupt-process)
-    ("Pq" "Quit" eshell-quit-process)
-    ("Pk" "Kill" eshell-kill-process)]
-
-   ["Misc"
-    ("d" "Dired" dired-jump-other-window)
-    ("a" "Aliases" (lambda ()
-                     (interactive)
-                     (find-file eshell-aliases-file)))
-    ("J" "Bookmark Jump…" bookmark-jump)
-    ("g" "Magit" magit-status :if casual-editkit-version-controlled-p)]]
-
-  [:class transient-row
-   (casual-lib-quit-one)
-   ("i" "Info Commands" (lambda ()
-                          (interactive)
-                          (info "(eshell) List of Built-ins")))
-   ("RET" "Dismiss" transient-quit-all)
-   (casual-lib-quit-all)])
 
 (keymap-set eshell-mode-map "C-o" #'casual-eshell-tmenu)
 
