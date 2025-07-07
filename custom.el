@@ -256,37 +256,26 @@
  '(ibuffer-modified-char 9998)
  '(ibuffer-read-only-char 8856)
  '(ibuffer-saved-filter-groups
-   '(("erc" ("erc" (mode . erc-mode)))
-     ("melpa app" ("melpa-app" (directory . "melpa-app"))
-      ("Org Agenda" (name . "Org Agenda"))
-      ("Documentation"
+   '(("main"
+      ("org-agenda" (name . "Org Agenda"))
+      ("org" (and (directory . "/Users/cchoi/org") (mode . org-mode)))
+      ("documentation"
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
-      ("Org Files" (saved . "Org Files")) ("cclisp" (directory . "cclisp"))
-      ("Casual" (directory . "casual"))
-      ("Casual Suite" (directory . "casual-suite"))
-      ("Casual Avy" (directory . "casual-avy"))
-      ("Casual Symbol Overlay" (directory . "casual-symbol-overlay"))
-      ("Elisp Packages"
-       (or (directory . ".config/emacs/elpa")
-           (directory . "Emacs.app/Contents/Resources/lisp"))))
-     ("Org" ("Org Agenda" (name . "Org Agenda"))
-      ("Org Files" (saved . "Org Files"))
-      ("Documentation" (saved . "Documentation"))
+      ("erc" (mode . erc-mode))
+      ("casual" (directory . "casual"))
+      ("calle24" (directory . "calle24"))
+      ("casual-suite" (directory . "casual-suite"))
+      ("casual-avy" (directory . "casual-avy"))
+      ("casual-symbol-overlay" (directory . "casual-symbol-overlay"))
+      ("desktop" (directory . "/Users/cchoi/Desktop"))
+      ("downloads" (directory . "/Users/cchoi/Downloads"))
       ("cclisp" (directory . "cclisp"))
-      ("Elisp Packages"
+      ("elisp"
        (or (directory . ".config/emacs/elpa")
-           (directory . "Emacs.app/Contents/Resources/lisp"))))
-     ("Blog"
-      ("devnull Blog"
+           (directory . "Emacs.app/Contents/Resources/lisp")))
+      ("devnull"
        (or (directory . "/Users/cchoi/org/posts") (name . "*pelican*")
-           (directory . "devnull")))
-      ("Documentation"
-       (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
-      ("Org Files" (and (directory . "/Users/cchoi/org") (mode . org-mode)))
-      ("cclisp" (directory . "cclisp"))
-      ("Elisp Packages"
-       (or (directory . ".config/emacs/elpa")
-           (directory . "Emacs.app/Contents/Resources/lisp"))))
+           (directory . "devnull"))))
      ("Casual" ("Casual" (directory . "casual"))
       ("Casual Avy" (directory . "casual-avy"))
       ("Casual Symbol Overlay" (directory . "casual-symbol-overlay"))
