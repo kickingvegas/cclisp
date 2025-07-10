@@ -256,20 +256,18 @@
  '(ibuffer-modified-char 9998)
  '(ibuffer-read-only-char 8856)
  '(ibuffer-saved-filter-groups
-   '(("main"
-      ("org-agenda" (name . "Org Agenda"))
+   '(("main" ("org-agenda" (name . "Org Agenda"))
       ("org" (and (directory . "/Users/cchoi/org") (mode . org-mode)))
       ("documentation"
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
-      ("erc" (mode . erc-mode))
-      ("casual" (directory . "casual"))
+      ("erc" (mode . erc-mode)) ("casual" (directory . "casual"))
       ("calle24" (directory . "calle24"))
       ("casual-suite" (directory . "casual-suite"))
       ("casual-avy" (directory . "casual-avy"))
       ("casual-symbol-overlay" (directory . "casual-symbol-overlay"))
       ("desktop" (directory . "/Users/cchoi/Desktop"))
       ("downloads" (directory . "/Users/cchoi/Downloads"))
-      ("cclisp" (directory . "cclisp"))
+      ("cclisp" (directory . "cclisp")) ("worg" (directory . "worg"))
       ("elisp"
        (or (directory . ".config/emacs/elpa")
            (directory . "Emacs.app/Contents/Resources/lisp")))
@@ -350,7 +348,7 @@
  '(org-agenda-include-diary t)
  '(org-agenda-sorting-strategy
    '((agenda habit-down time-up priority-down category-up)
-     (todo todo-state-down priority-down timestamp-down category-up)
+     (todo priority-down scheduled-down todo-state-down timestamp-down)
      (tags todo-state-down priority-down timestamp-down category-up)
      (search todo-state-down priority-down timestamp-down time-up category-up)))
  '(org-agenda-start-with-log-mode '(closed clock))
