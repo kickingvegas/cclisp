@@ -144,10 +144,27 @@ Structure type is defined in `org-structure-template-alist'."
   "Generate capture body for LANG code at head of the `kill-ring'."
   (string-join
    (list
-    (concat "#+BEGIN_SRC " lang)
+    (cc-org-capture--src-block-begin lang)
     (if kill-ring "%c" "")
-    "#+END_SRC")
+    (cc-org-capture--src-block-end))
    "\n"))
+
+(defun cc-org-capture--src-block-begin (&optional lang mode)
+  "Annotate begin of source code block for given LANG and MODE."
+  (let* ((lang (if lang lang "elisp"))
+         (mode (if mode mode major-mode)))
+    (cond
+     ((eq (derived-mode-p mode) 'org-mode) (concat "#+BEGIN_SRC" " " lang))
+     ((eq (derived-mode-p mode) 'markdown-mode) (concat "```" lang))
+     (t (concat "#+BEGIN_SRC" " " lang)))))
+
+(defun cc-org-capture--src-block-end (&optional mode)
+  "Annotate end of source code block for given MODE."
+  (let* ((mode (if mode mode major-mode)))
+    (cond
+     ((eq (derived-mode-p mode) 'org-mode) "#+END_SRC")
+     ((eq (derived-mode-p mode) 'markdown-mode) "```")
+     (t "#+END_SRC"))))
 
 (defun cc-org-capture--code-choices (lang)
   "Create selection of programming language choices with default LANG."
