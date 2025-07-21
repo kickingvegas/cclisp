@@ -517,6 +517,19 @@ Structure type is defined in `org-structure-template-alist'."
                   :immediate-finish 1)
                 t)))
 
+(setopt org-protocol-project-alist
+        '(("Worg"
+           :base-url "https://orgmode.org/worg/"
+           :working-directory "~/Projects/vendor/worg/"
+           :online-suffix ".html"
+           :working-suffix ".org")
+
+          ("devnull"
+           :base-url "http://yummymelon.com/devnull/"
+           :working-directory "~/Projects/devnull/content/remap/"
+           :online-suffix ".html"
+           :working-suffix ".md")))
+
 (defun cc-org-capture-template-keys ()
   "List out capture template keys."
   (interactive)

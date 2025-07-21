@@ -101,6 +101,7 @@
 (require 'cc-global-keybindings)
 (require 'cc-magit-mode)
 (require 'cc-menu-reconfig)
+(require 'cc-compile-mode)
 (require 'cc-grep-mode)
 (require 'kill-with-intelligence)
 (require 'cc-agenda-timeline)

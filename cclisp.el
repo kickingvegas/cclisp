@@ -959,6 +959,33 @@ installed."
     (info outfile)
     (info-initialize)))
 
+
+(defun cc/casual-info-compile ()
+  "Build Casual Info file."
+  (interactive)
+  (let* ((outfile "~/Projects/elisp/casual/docs/casual.info")
+         (current (current-buffer)))
+    (find-file "~/Projects/elisp/casual/docs/casual.org")
+    (org-texinfo-export-to-info)
+    (if (get-buffer "*info*")
+        (kill-buffer "*info*"))
+    (info outfile)
+    (info-initialize)
+    (switch-to-buffer current)))
+
+(defun cc/load-casual-info ()
+  "Load Casual info file."
+  (interactive)
+  (info "~/Projects/elisp/casual/docs/casual.info")
+  (info-initialize))
+
+(defun cc/show-global-map-keys (keypath)
+  "Show formatted keys for keymap in `global-map' given KEYPATH."
+  (interactive)
+  (mapcar (lambda (x) (format "%s" x))
+          (mapcar (lambda (x) (if (listp x) (car x)))
+                  (cdr (lookup-key global-map keypath)))))
+
 (defun cc/whitespace-cleanup (&optional disable)
   "Turn on whitespace cleanup with optional DISABLE."
   (interactive)
