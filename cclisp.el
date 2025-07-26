@@ -892,6 +892,7 @@ See `cc/org-table-range' for more on RANGE object."
   (term "swift repl")
   (rename-buffer "*swift*"))
 
+;; TODO: obsolete
 (defun cc/--next-sexp-raw ()
   "Raw implementation to move point to the beginning of the next sexp.
 
@@ -899,6 +900,7 @@ This function has no error checking."
   (forward-sexp 2)
   (backward-sexp))
 
+;; TODO: obsolete
 (defun cc/next-sexp ()
   "Move point to beginning of the next balanced expression (sexp)."
   (interactive)
