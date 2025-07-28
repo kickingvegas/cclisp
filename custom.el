@@ -257,6 +257,7 @@
  '(ibuffer-read-only-char 8856)
  '(ibuffer-saved-filter-groups
    '(("main" ("org-agenda" (name . "Org Agenda"))
+      ("posts" (directory . "/Users/cchoi/org/posts"))
       ("org" (and (directory . "/Users/cchoi/org") (mode . org-mode)))
       ("documentation"
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
