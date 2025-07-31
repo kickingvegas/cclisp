@@ -25,6 +25,7 @@
 
 ;;; Code:
 
+(require 'mouse)
 (require 'cc-ediff-mode)
 (require 'minibuffer)
 (require 'helm-buffers)
@@ -198,6 +199,7 @@
 
 (keymap-global-set "M-\\" #'cycle-spacing)
 (keymap-global-set "s-SPC" #'cycle-spacing)
+(keymap-global-set "<mode-line> C-<mouse-3>" #'tear-off-window)
 
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here

@@ -282,5 +282,39 @@ SUFFIX - string appended to prefix
 
 (require 'cc-org-capture)
 
+(transient-define-prefix cc/org-mode-tmenu ()
+  ["Org"
+   ["State"
+    ("t" "TODO" org-todo)]
+
+   ["Edit"
+    ("b" "Add Block" org-insert-structure-template)
+    ("c" "Capture" org-capture)]
+
+   ["Annotate"
+    ("p" "Property" org-set-property)
+    (":" "Tags" org-set-tags-command)
+    ("n" "Note" org-add-note)]
+
+   ["Schedule"
+    ("s" "Schedule…" org-schedule)
+    ("d" "Deadline…" org-deadline)]
+
+   ["Clock"
+    ("I" "In" org-clock-in
+     :if-not org-clocking-p)
+    ("O" "Out" org-clock-out
+     :if org-clocking-p)]
+
+   ["Timestamp"
+    ("." "Add" org-timestamp)
+    ("i" "Inactive" org-timestamp-inactive)]]
+
+  [:class transient-row
+   (casual-lib-quit-one)
+   (casual-lib-quit-all)])
+
+(keymap-set org-mode-map "M-m" #'cc/org-mode-tmenu)
+
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here
