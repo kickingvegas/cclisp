@@ -25,6 +25,7 @@
 ;;; Code:
 (setenv "CDPATH" ".:..:~")
 
+;; Configuration when launched via Finder.
 (when (or (eq window-system 'mac) (eq window-system 'ns))
   (setenv "PATH" (concat "/Applications/Inkscape.app/Contents/MacOS:" (getenv "PATH")))
   (setenv "PATH" (concat "/opt/local/bin:" (getenv "PATH")))
