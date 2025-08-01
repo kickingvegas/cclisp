@@ -306,6 +306,10 @@ SUFFIX - string appended to prefix
     ("O" "Out" org-clock-out
      :if org-clocking-p)]
 
+   ["Link"
+    ("l" "Insert" org-insert-link)
+    ("L" "Insert" org-insert-last-stored-link)]
+
    ["Timestamp"
     ("." "Add" org-timestamp)
     ("i" "Inactive" org-timestamp-inactive)]]
