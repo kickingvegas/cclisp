@@ -47,7 +47,11 @@
 (add-hook 'prog-mode-hook 'hl-line-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (add-hook 'prog-mode-hook #'cc/save-hook-delete-trailing-whitespace)
-(add-hook 'prog-mode-hook #'imenu-add-menubar-index)
+(add-hook 'prog-mode-hook (lambda nil
+                            (condition-case err (imenu-add-menubar-index)
+                              (imenu-unavailable
+                               (message (error-message-string err))))))
+
 (add-hook 'prog-mode-hook
           (lambda ()
             (setq-local imenu-auto-rescan t)
@@ -65,9 +69,9 @@
 ;; GUD - mode preferences
 ;; (setq gud-mode-hook
 ;;       '((lambda ()
-;; 	  (local-set-key [f7] 'gud-step)
-;; 	  (local-set-key [f8] 'gud-next)
-;; 	  (local-set-key [f9] 'gud-cont))))
+;;        (local-set-key [f7] 'gud-step)
+;;        (local-set-key [f8] 'gud-next)
+;;        (local-set-key [f9] 'gud-cont))))
 
 (provide 'cc-prog-mode)
 ;;; cc-prog-mode.el ends here
