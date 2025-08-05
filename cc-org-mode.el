@@ -285,11 +285,19 @@ SUFFIX - string appended to prefix
 (transient-define-prefix cc/org-mode-tmenu ()
   ["Org"
    ["State"
-    ("t" "TODO" org-todo)]
+    ("t" "TODO" org-todo)
+    ("I" "Clock In" org-clock-in
+     :if-not org-clocking-p)
+    ("O" "Clock Out" org-clock-out
+     :if org-clocking-p)]
 
    ["Edit"
     ("b" "Add Block" org-insert-structure-template)
     ("c" "Capture" org-capture)]
+
+   ["Link"
+    ("l" "Insert" org-insert-link)
+    ("L" "Last" org-insert-last-stored-link)]
 
    ["Annotate"
     ("p" "Property" org-set-property)
@@ -299,16 +307,6 @@ SUFFIX - string appended to prefix
    ["Schedule"
     ("s" "Schedule…" org-schedule)
     ("d" "Deadline…" org-deadline)]
-
-   ["Clock"
-    ("I" "In" org-clock-in
-     :if-not org-clocking-p)
-    ("O" "Out" org-clock-out
-     :if org-clocking-p)]
-
-   ["Link"
-    ("l" "Insert" org-insert-link)
-    ("L" "Insert" org-insert-last-stored-link)]
 
    ["Timestamp"
     ("." "Add" org-timestamp)
