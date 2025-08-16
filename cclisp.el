@@ -23,6 +23,7 @@
 ;; Utility functions by Charles Choi
 
 ;;; Code:
+(require 'window)
 (require 'ediff)
 (require 'map)
 (require 'transient)
@@ -1066,6 +1067,24 @@ installed."
     (message "Copied %s" org-link)
     org-link))
 
+(defun cc/backward-page-at-top (&optional count)
+  "Move backward COUNT pages, scrolling point to top of window."
+  (interactive)
+  (backward-page count)
+  (recenter-top-bottom 0))
+
+(defun cc/forward-page-at-top (&optional count)
+  "Move forward COUNT pages, scrolling point to top of window."
+  (interactive)
+  (forward-page count)
+  (recenter-top-bottom 0))
+
+(defun cc/line-feed ()
+  "Insert line feed."
+  (interactive)
+  (insert "\n")
+  (if (derived-mode-p 'emacs-lisp-mode)
+      (insert ";; -------------------------------------------------------------------\n")))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

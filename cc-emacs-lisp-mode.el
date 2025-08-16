@@ -32,8 +32,26 @@
 
 ;;; Code:
 
+;; Does this work?
 (add-hook 'emacs-lisp-mode #'enable-paredit-mode)
 (add-hook 'emacs-lisp-mode #'flycheck-mode)
+
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (setq-local imenu-generic-expression
+                        (push
+                         (list "Structs" "(cl-defstruct (*\\([[:alnum:]-]*\\)" 1)
+                         imenu-generic-expression))
+
+            (setq-local imenu-generic-expression
+                        (push
+                         (list "Transient Prefixes" "(transient-define-prefix \\([[:alnum:]-]*\\)" 1)
+                         imenu-generic-expression))
+
+            (setq-local imenu-generic-expression
+                        (push
+                         (list "Transient Groups" "(transient-define-group \\([[:alnum:]-]*\\)" 1)
+                         imenu-generic-expression))))
 
 (keymap-set emacs-lisp-mode-map "M-[" #'backward-sexp)
 (keymap-set emacs-lisp-mode-map "M-]" #'forward-sexp)
@@ -50,6 +68,10 @@
 (keymap-set emacs-lisp-mode-map "M-f" #'cc/next-sexp)
 (keymap-set emacs-lisp-mode-map "C-M-b" #'backward-word)
 (keymap-set emacs-lisp-mode-map "C-M-f" #'forward-word)
+
+(keymap-set emacs-lisp-mode-map "<prior>" #'cc/backward-page-at-top)
+(keymap-set emacs-lisp-mode-map "<next>" #'cc/forward-page-at-top)
+
 
 (transient-define-prefix cc/edebug-tmenu ()
   :refresh-suffixes t
