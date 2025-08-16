@@ -291,26 +291,27 @@ SUFFIX - string appended to prefix
     ("O" "Clock Out" org-clock-out
      :if org-clocking-p)]
 
-   ["Edit"
-    ("b" "Add Block" org-insert-structure-template)
-    ("c" "Capture" org-capture)]
+   ["Timestamp"
+    ("." "Add" org-timestamp)
+    ("i" "Inactive" org-timestamp-inactive)]
 
    ["Link"
     ("l" "Insert" org-insert-link)
     ("L" "Last" org-insert-last-stored-link)]
 
-   ["Annotate"
-    ("p" "Property" org-set-property)
-    (":" "Tags" org-set-tags-command)
-    ("n" "Note" org-add-note)]
-
    ["Schedule"
     ("s" "Schedule…" org-schedule)
     ("d" "Deadline…" org-deadline)]
 
-   ["Timestamp"
-    ("." "Add" org-timestamp)
-    ("i" "Inactive" org-timestamp-inactive)]]
+   ["Edit"
+    ("b" "Add Block" org-insert-structure-template)
+    ("c" "Capture" org-capture)
+    ("C" "Clone" org-clone-subtree-with-time-shift)]
+
+   ["Annotate"
+    ("p" "Property" org-set-property)
+    (":" "Tags" org-set-tags-command)
+    ("n" "Note" org-add-note)]]
 
   [:class transient-row
    (casual-lib-quit-one)
