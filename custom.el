@@ -479,7 +479,7 @@
            transpose-frame treemacs use-package verilog-mode visual-regexp
            visual-regexp-steroids vtable webpaste wgrep which-key
            window-tool-bar xref yaml-mode yasnippet yasnippet-snippets ztree))
- '(pixel-scroll-precision-mode t)
+ '(pixel-scroll-precision-mode nil)
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
  '(plantuml-indent-level 4)
@@ -500,6 +500,7 @@
  '(savehist-mode t)
  '(scroll-bar-mode t)
  '(scroll-conservatively 0)
+ '(scroll-error-top-bottom t)
  '(scroll-margin 0)
  '(scroll-step 4)
  '(send-mail-function 'mailclient-send-it)
