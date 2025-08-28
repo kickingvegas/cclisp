@@ -26,12 +26,20 @@
 (require 'gnuplot)
 (require 'casual-gnuplot)
 
+;; Comint
 (keymap-set gnuplot-comint-mode-map "C-o" #'casual-gnuplot-tmenu)
-(keymap-set gnuplot-mode-map "M-m" #'casual-gnuplot-tmenu)
+(keymap-set gnuplot-comint-mode-map "TAB" #'completion-at-point)
 
 (add-hook 'gnuplot-comint-mode-hook #'casual-gnuplot-init-typefaces)
-(add-hook 'gnuplot-mode-hook #'casual-gnuplot-init-typefaces)
+(add-hook 'gnuplot-comint-mode-hook #'casual-gnuplot-init-terminals)
+(add-hook 'gnuplot-comint-mode-hook #'casual-gnuplot-init-colors)
 
+;; Mode
+(keymap-set gnuplot-mode-map "M-m" #'casual-gnuplot-tmenu)
+
+(add-hook 'gnuplot-mode-hook #'casual-gnuplot-init-typefaces)
+(add-hook 'gnuplot-mode-hook #'casual-gnuplot-init-terminals)
+(add-hook 'gnuplot-mode-hook #'casual-gnuplot-init-colors)
 
 (provide 'cc-gnuplot-mode)
 ;;; cc-gnuplot-mode.el ends here
