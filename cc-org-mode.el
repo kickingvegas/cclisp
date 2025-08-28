@@ -300,18 +300,19 @@ SUFFIX - string appended to prefix
     ("L" "Last" org-insert-last-stored-link)]
 
    ["Schedule"
-    ("s" "Schedule…" org-schedule)
-    ("d" "Deadline…" org-deadline)]
-
-   ["Edit"
-    ("b" "Add Block" org-insert-structure-template)
-    ("c" "Capture" org-capture)
-    ("C" "Clone" org-clone-subtree-with-time-shift)]
+    ("C-s" "Schedule…" org-schedule)
+    ("C-d" "Deadline…" org-deadline)]
 
    ["Annotate"
     ("p" "Property" org-set-property)
-    (":" "Tags" org-set-tags-command)
-    ("n" "Note" org-add-note)]]
+    (":" "Tags" org-set-tags-command)]]
+
+  ["Edit"
+   [("b" "Add Block" org-insert-structure-template)]
+   [("c" "Capture" org-capture)]
+   [("s" "Sort" org-sort)]
+   [("C" "Clone" org-clone-subtree-with-time-shift)]
+   [("n" "Note" org-add-note)]]
 
   [:class transient-row
    (casual-lib-quit-one)
