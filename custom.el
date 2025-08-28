@@ -261,8 +261,9 @@
       ("org" (and (directory . "/Users/cchoi/org") (mode . org-mode)))
       ("documentation"
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
-      ("erc" (mode . erc-mode)) ("casual" (directory . "casual"))
-      ("calle24" (directory . "calle24"))
+      ("erc" (mode . erc-mode))
+      ("casual-gnuplot" (directory . "casual-gnuplot"))
+      ("casual" (directory . "casual")) ("calle24" (directory . "calle24"))
       ("casual-suite" (directory . "casual-suite"))
       ("casual-avy" (directory . "casual-avy"))
       ("casual-symbol-overlay" (directory . "casual-symbol-overlay"))
@@ -461,23 +462,23 @@
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
    '(async auto-complete bind-key calfw calle24 citar company company-org-block
-           company-restclient csv-mode diff-hl disk-usage ebib edit-indirect
-           editorconfig eglot eldoc elfeed erc eshell-git-prompt expand-region
-           faceup fireplace flycheck-package flymake git-link gnuplot go-mode
-           good-scroll google-this google-translate graphviz-dot-mode helm
-           helm-bibtex helm-pass helm-swoop htmlize idlwave iedit js2-mode
-           json-mode jsonian jsonrpc kanban keycast ledger-mode magit
-           markdown-mode math-symbol-lists modus-themes neotree ob-restclient
-           ob-swift ob-swiftui org org-outline-numbering org-ql org-re-reveal
-           org-ref org-superstar orgtbl-aggregate osx-dictionary ox-gfm ox-gist
-           ox-jira ox-slack ox-trac package-lint paredit password-store
-           password-store-menu pbcopy pkg-info plantuml-mode project python
-           python-mode rainbow-mode restclient reveal-in-folder scpaste
-           show-font smart-mode-line-powerline-theme snow soap-client
-           solarized-theme spotlight sqlite-mode-extras sr-speedbar svg-clock
-           swift-mode symbol-overlay tj3-mode toc-org track-changes tramp
-           transpose-frame treemacs use-package verilog-mode visual-regexp
-           visual-regexp-steroids vtable webpaste wgrep which-key
+           company-restclient countdown csv-mode diff-hl disk-usage ebib
+           edit-indirect editorconfig eglot eldoc elfeed erc eshell-git-prompt
+           expand-region faceup fireplace flycheck-package flymake git-link
+           gnuplot go-mode good-scroll google-this google-translate
+           graphviz-dot-mode helm helm-bibtex helm-pass helm-swoop htmlize
+           idlwave iedit js2-mode json-mode jsonian jsonrpc kanban keycast
+           ledger-mode magit markdown-mode math-symbol-lists modus-themes
+           neotree ob-restclient ob-swift ob-swiftui org org-outline-numbering
+           org-ql org-re-reveal org-ref org-superstar orgtbl-aggregate
+           osx-dictionary ox-gfm ox-gist ox-jira ox-slack ox-trac package-lint
+           paredit password-store password-store-menu pbcopy pkg-info
+           plantuml-mode project python python-mode rainbow-mode restclient
+           reveal-in-folder scpaste show-font smart-mode-line-powerline-theme
+           snow soap-client solarized-theme spotlight sqlite-mode-extras
+           sr-speedbar svg-clock swift-mode symbol-overlay tj3-mode toc-org
+           track-changes tramp transpose-frame treemacs use-package verilog-mode
+           visual-regexp visual-regexp-steroids vtable webpaste wgrep which-key
            window-tool-bar xref yaml-mode yasnippet yasnippet-snippets ztree))
  '(pixel-scroll-precision-mode nil)
  '(plantuml-default-exec-mode 'executable)
@@ -569,7 +570,7 @@
  '(org-block-end-line ((t (:inherit org-block-begin-line))))
  '(org-code ((((type x w32 ns pgtk haiku) (background light)) (:inherit fixed-pitch :background "aliceblue")) (((type x w32 ns pgtk haiku) (background dark)) (:inherit fixed-pitch :background "#272727")) (((type tty)) (:background "slategrey"))))
  '(org-date ((((type x ns) (class color) (background light)) (:foreground "dark violet" :underline t :family "Menlo")) (((type ns) (class color) (background dark)) (:foreground "dark turquoise" :underline t :family "Menlo")) (((type tty) (class color)) (:foreground "dark turquoise" :underline t))))
- '(org-document-info ((((class color) (background light)) (:foreground "midnight blue")) (((class color) (background dark)) (:foreground "pale turquoise")) (t nil) (((type tty) (class color)) (:foreground "pale turquoise"))))
+ '(org-document-info ((((type x w32 ns pgtk) (class color) (background light)) (:foreground "midnight blue")) (((type x w32 ns pgtk) (class color) (background dark)) (:foreground "pale turquoise")) (t nil) (((type tty) (class color)) (:foreground "pale turquoise"))))
  '(org-document-info-keyword ((t (:inherit fixed-pitch))))
  '(org-document-title ((((type x ns) (class color) (background light)) (:foreground "midnight blue" :weight bold)) (((type x ns) (class color) (background dark)) (:foreground "pale turquoise" :weight bold)) (t (:weight bold)) (((type tty) (class color)) (:foreground "pale turquoise"))))
  '(org-formula ((t (:inherit fixed-pitch :foreground "Firebrick"))))
