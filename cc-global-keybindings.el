@@ -45,6 +45,7 @@
 (require 'casual-editkit)
 (require 'minibuffer)
 (require 'recent-rgrep)
+(require 'ace-window)
 
 (keymap-global-set "C-=" #'er/expand-region)
 ;(keymap-global-set (kbd "M-g") 'goto-line)
@@ -61,7 +62,7 @@
 (keymap-global-set "<clear>" #'kill-region)
 (keymap-global-set "<f1>" #'save-buffer)
 (keymap-global-set "<f2>" #'ibuffer)
-(keymap-global-set "s-<return>" #'other-window)
+(keymap-global-set "s-<return>" #'ace-window)
 (keymap-global-set "<f3>" #'save-buffers-kill-emacs)
 (keymap-global-set "M-<f3>" #'casual-editkit-windows-tmenu)
 (keymap-global-set "<f4>" #'bookmark-jump)
