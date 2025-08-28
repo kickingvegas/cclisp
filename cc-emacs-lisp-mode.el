@@ -72,6 +72,8 @@
 (keymap-set emacs-lisp-mode-map "<prior>" #'cc/backward-page-at-top)
 (keymap-set emacs-lisp-mode-map "<next>" #'cc/forward-page-at-top)
 
+(keymap-set emacs-lisp-mode-map "C-<prior>" #'pages-previous-page)
+(keymap-set emacs-lisp-mode-map "C-<next>" #'pages-next-page)
 
 (transient-define-prefix cc/edebug-tmenu ()
   :refresh-suffixes t

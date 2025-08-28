@@ -42,6 +42,7 @@
 (require 'info)
 (require 'transpose-frame)
 (require 'dired)
+(require 'page-ext)
 
 (defun cc/find-user-init-file ()
   "Edit `user-init-file'."
@@ -1070,14 +1071,21 @@ installed."
 (defun cc/backward-page-at-top (&optional count)
   "Move backward COUNT pages, scrolling point to top of window."
   (interactive)
-  (backward-page count)
-  (recenter-top-bottom 0))
+
+  (if (buffer-narrowed-p)
+      (pages-previous-page count)
+    (progn
+      (backward-page count)
+      (recenter-top-bottom 0))))
 
 (defun cc/forward-page-at-top (&optional count)
   "Move forward COUNT pages, scrolling point to top of window."
   (interactive)
-  (forward-page count)
-  (recenter-top-bottom 0))
+  (if (buffer-narrowed-p)
+      (pages-next-page count)
+    (progn
+      (forward-page count)
+      (recenter-top-bottom 0))))
 
 (defun cc/line-feed ()
   "Insert line feed."
