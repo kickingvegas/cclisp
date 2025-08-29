@@ -461,7 +461,7 @@
      ("melpa" . "http://melpa.org/packages/")))
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
-   '(async auto-complete bind-key calfw calle24 citar company company-org-block
+   '(async auto-complete bind-key calfw calle24 company company-org-block
            company-restclient countdown csv-mode diff-hl disk-usage ebib
            edit-indirect editorconfig eglot eldoc elfeed erc eshell-git-prompt
            expand-region faceup fireplace flycheck-package flymake git-link
@@ -470,15 +470,15 @@
            idlwave iedit js2-mode json-mode jsonian jsonrpc kanban keycast
            ledger-mode magit markdown-mode math-symbol-lists modus-themes
            neotree ob-restclient ob-swift ob-swiftui org org-outline-numbering
-           org-ql org-re-reveal org-ref org-superstar orgtbl-aggregate
-           osx-dictionary ox-gfm ox-gist ox-jira ox-slack ox-trac package-lint
-           paredit password-store password-store-menu pbcopy pkg-info
-           plantuml-mode project python python-mode rainbow-mode restclient
-           reveal-in-folder scpaste show-font smart-mode-line-powerline-theme
-           snow soap-client solarized-theme spotlight sqlite-mode-extras
-           sr-speedbar svg-clock swift-mode symbol-overlay tj3-mode toc-org
-           track-changes tramp transpose-frame treemacs use-package verilog-mode
-           visual-regexp visual-regexp-steroids vtable webpaste wgrep which-key
+           org-ql org-re-reveal org-superstar orgtbl-aggregate osx-dictionary
+           ox-gfm ox-gist ox-jira ox-slack ox-trac package-lint paredit
+           password-store password-store-menu pbcopy pkg-info plantuml-mode
+           project python python-mode rainbow-mode restclient reveal-in-folder
+           scpaste show-font smart-mode-line-powerline-theme snow soap-client
+           solarized-theme spotlight sqlite-mode-extras sr-speedbar svg-clock
+           swift-mode symbol-overlay tj3-mode toc-org track-changes tramp
+           transpose-frame treemacs use-package verilog-mode visual-regexp
+           visual-regexp-steroids vtable webpaste wgrep which-key
            window-tool-bar xref yaml-mode yasnippet yasnippet-snippets ztree))
  '(pixel-scroll-precision-mode nil)
  '(plantuml-default-exec-mode 'executable)
