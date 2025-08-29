@@ -285,18 +285,18 @@ SUFFIX - string appended to prefix
 (transient-define-prefix cc/org-mode-tmenu ()
   ["Org"
    ["State"
-    ("t" "TODO" org-todo)
+    ("t" "TODO…" org-todo)
     ("I" "Clock In" org-clock-in
      :if-not org-clocking-p)
     ("O" "Clock Out" org-clock-out
      :if org-clocking-p)]
 
    ["Timestamp"
-    ("." "Add" org-timestamp)
-    ("i" "Inactive" org-timestamp-inactive)]
+    ("." "Add…" org-timestamp)
+    ("i" "Inactive…" org-timestamp-inactive)]
 
    ["Link"
-    ("l" "Insert" org-insert-link)
+    ("l" "Insert…" org-insert-link)
     ("L" "Last" org-insert-last-stored-link)]
 
    ["Schedule"
@@ -304,15 +304,20 @@ SUFFIX - string appended to prefix
     ("C-d" "Deadline…" org-deadline)]
 
    ["Annotate"
-    ("p" "Property" org-set-property)
-    (":" "Tags" org-set-tags-command)]]
+    ("p" "Property…" org-set-property)
+    (":" "Tags…" org-set-tags-command)]
+
+   ["Mark"
+    ("me" "Element" org-mark-element)
+    ("ms" "Subtree" org-mark-subtree)]]
 
   ["Edit"
    [("b" "Add Block" org-insert-structure-template)]
    [("c" "Capture" org-capture)]
    [("s" "Sort" org-sort)]
    [("C" "Clone" org-clone-subtree-with-time-shift)]
-   [("n" "Note" org-add-note)]]
+   [("n" "Note" org-add-note)]
+   [("v" "Copy Visible" org-copy-visible)]]
 
   [:class transient-row
    (casual-lib-quit-one)
