@@ -312,11 +312,12 @@ SUFFIX - string appended to prefix
     ("ms" "Subtree" org-mark-subtree)]]
 
   ["Edit"
-   [("b" "Add Block" org-insert-structure-template)]
-   [("c" "Capture" org-capture)]
-   [("s" "Sort" org-sort)]
-   [("C" "Clone" org-clone-subtree-with-time-shift)]
-   [("n" "Note" org-add-note)]
+   [("b" "Add Block…" org-insert-structure-template)
+    ("r" "Insert Cite…" org-cite-insert)]
+   [("c" "Capture…" org-capture)]
+   [("s" "Sort…" org-sort)]
+   [("C" "Clone…" org-clone-subtree-with-time-shift)]
+   [("n" "Note…" org-add-note)]
    [("v" "Copy Visible" org-copy-visible)]]
 
   [:class transient-row
