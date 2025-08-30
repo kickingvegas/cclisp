@@ -124,6 +124,7 @@
 (require 'ffap)
 (require 'calle24)
 (require 'scrim-utils)
+(require 'numeri)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
