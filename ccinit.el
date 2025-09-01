@@ -121,6 +121,7 @@
 (require 'cc-erc-mode)
 (require 'cc-gh)
 (require 'cc-gnuplot-mode)
+(require 'cc-bibtex-mode)
 (require 'ffap)
 (require 'calle24)
 (require 'scrim-utils)
