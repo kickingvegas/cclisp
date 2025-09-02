@@ -24,10 +24,36 @@
 
 ;;; Code:
 (require 'erc-nicks)
+(require 'casual-lib)
 
 (defun cc/configure-erc-tty ()
   (if (not (display-graphic-p))
       (setopt erc-nicks-bg-color "black")))
+
+(transient-define-prefix casual-erc-tmenu ()
+  "Transient menu for erc."
+
+  ["Casual: ERC"
+
+   ["Channel"
+    ("s" "Switch…" erc-switch-to-buffer :transient t)
+    ("x" "Clear" erc-kill-input)
+    ("a" "BoL" erc-bol)]
+
+   ["Misc"
+    ("n" "Names" erc-channel-names :transient t)
+    ("f" "Toggle Flood" erc-toggle-flood-control :transient t)
+    ("b" "Toggle Bufbar" erc-bufbar-mode :transient t)]
+   ]
+
+  [:class transient-row
+   (casual-lib-quit-one)
+   ("RET" "Dismiss" transient-quit-all)
+   (casual-lib-quit-all)
+   ("Q" "Quit" erc-quit-server)])
+
+(keymap-set erc-mode-map "M-m" #'casual-erc-tmenu)
+(keymap-set erc-mode-map "C-c m" #'casual-erc-tmenu)
 
 (cc/configure-erc-tty)
 
