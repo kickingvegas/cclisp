@@ -261,35 +261,38 @@
       ("org" (and (directory . "org") (mode . org-mode)))
       ("documentation"
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
-      ("erc" (mode . erc-mode))
+      ("erc" (mode . erc-mode)) ("numeri" (directory . "Projects/elisp/numeri"))
       ("casual-gnuplot" (directory . "Projects/elisp/casual-gnuplot"))
       ("casual-suite" (directory . "Projects/elisp/casual-suite"))
       ("casual-avy" (directory . "Projects/elisp/casual-avy"))
-      ("casual-symbol-overlay" (directory . "Projects/elisp/casual-symbol-overlay"))
+      ("casual-symbol-overlay"
+       (directory . "Projects/elisp/casual-symbol-overlay"))
       ("casual" (directory . "Projects/elisp/casual"))
       ("calle24" (directory . "Projects/elisp/calle24"))
       ("desktop" (directory . "Desktop"))
       ("downloads" (directory . "Downloads"))
-      ("cclisp" (directory . "emacs/cclisp")) ("worg" (directory . "Projects/vendor/worg"))
+      ("cclisp" (directory . "emacs/cclisp"))
+      ("worg" (directory . "Projects/vendor/worg"))
       ("elisp"
        (or (directory . ".config/emacs/elpa")
            (directory . "Emacs.app/Contents/Resources/lisp")))
-      ("devnull"
-       (or (name . "*pelican*")
-           (directory . "Projects/devnull"))))
+      ("devnull" (or (name . "*pelican*") (directory . "Projects/devnull"))))
      ("planning" ("Org Agenda" (name . "Org Agenda"))
       ("Documentation"
        (or (mode . Man-mode) (mode . Info-mode) (mode . help-mode)))
       ("cclisp" (directory . "emacs/cclisp"))
       ("Org Files" (and (directory . "org") (mode . org-mode))))))
  '(ibuffer-saved-filters
-   '(("Org Agenda" (name . "Org Agenda")) ("Casual" (directory . "Projects/elisp/casual"))
+   '(("numeri" (directory . "Projects/elisp/numeri"))
+     ("Org Agenda" (name . "Org Agenda"))
+     ("Casual" (directory . "Projects/elisp/casual"))
      ("Documentation"
       (or (mode . Man-mode) (mode . Info-mode) (mode . help-mode)))
-     ("Casual Symbol Overlay" (directory . "Projects/elisp/casual-symbol-overlay"))
+     ("Casual Symbol Overlay"
+      (directory . "Projects/elisp/casual-symbol-overlay"))
      ("Casual Suite" (directory . "Projects/elisp/casual-suite"))
-     ("Casual Avy" (directory . "Projects/elisp/casual-avy")) ("cclisp" (directory . "cclisp"))
-     ("Desktop" (directory . "Desktop"))
+     ("Casual Avy" (directory . "Projects/elisp/casual-avy"))
+     ("cclisp" (directory . "cclisp")) ("Desktop" (directory . "Desktop"))
      ("Org Files" (and (directory . "org") (mode . org-mode)))
      ("Elisp Packages"
       (or (directory . ".config/emacs/elpa")
