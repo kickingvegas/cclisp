@@ -23,7 +23,7 @@
 ;;
 
 (require 'elisp-mode)
-(require 'paredit)
+;;(require 'paredit)
 (require 'flycheck)
 (require 'edebug)
 (require 'cclisp)
@@ -32,9 +32,10 @@
 
 ;;; Code:
 
-;; Does this work?
-(add-hook 'emacs-lisp-mode #'enable-paredit-mode)
-(add-hook 'emacs-lisp-mode #'flycheck-mode)
+;;(add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
+(add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
+(add-hook 'emacs-lisp-mode-hook #'prettify-symbols-mode)
+
 
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
