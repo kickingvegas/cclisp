@@ -26,19 +26,18 @@
 (require 'erc-nicks)
 (require 'casual-lib)
 
-(defun cc/configure-erc-tty ()
-  (if (not (display-graphic-p))
-      (setopt erc-nicks-bg-color "black")))
-
 (transient-define-prefix casual-erc-tmenu ()
   "Transient menu for erc."
 
   ["Casual: ERC"
-
    ["Channel"
     ("s" "Switch…" erc-switch-to-buffer :transient t)
     ("x" "Clear" erc-kill-input)
     ("a" "BoL" erc-bol)]
+
+   ["Navigation"
+    ("<prior>" "Page Up" scroll-down-command :transient t)
+    ("<next>" "Page Down" scroll-up-command :transient t)]
 
    ["Misc"
     ("n" "Names" erc-channel-names :transient t)
@@ -47,13 +46,19 @@
    ]
 
   [:class transient-row
-   (casual-lib-quit-one)
-   ("RET" "Dismiss" transient-quit-all)
-   (casual-lib-quit-all)
-   ("Q" "Quit" erc-quit-server)])
+          (casual-lib-quit-one)
+          ("RET" "Dismiss" transient-quit-all)
+          (casual-lib-quit-all)
+          ("Q" "Quit" erc-quit-server)])
+
+(defun cc/configure-erc-tty ()
+  "Set ERC nickname background to black on TTY."
+  (if (not (display-graphic-p))
+      (setopt erc-nicks-bg-color "black")))
 
 (keymap-set erc-mode-map "M-m" #'casual-erc-tmenu)
 (keymap-set erc-mode-map "C-c m" #'casual-erc-tmenu)
+(keymap-set erc-mode-map "<f1>" #'erc-switch-to-buffer)
 
 (cc/configure-erc-tty)
 
