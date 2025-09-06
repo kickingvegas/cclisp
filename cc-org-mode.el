@@ -128,7 +128,7 @@ SUFFIX - string appended to prefix
                             ("[#A]" . ?🄰 )
                             ("[#B]" . ?🄱 )
                             ("[#C]" . ?🄲 )
-                            ("#+name:" . ?📇 )
+                            ;; ("#+name:" . ?📇 )
                             ("#+tblfm:" . ?🧮 )
                             ("#+plot:" . ?📊 )
                             (":created:" . ?𝛼 )
@@ -315,8 +315,10 @@ SUFFIX - string appended to prefix
   ["Edit"
    [("b" "Add Block…" org-insert-structure-template)
     ("r" "Insert Cite…" org-cite-insert)]
-   [("c" "Capture…" org-capture)]
-   [("s" "Sort…" org-sort)]
+   [("c" "Capture…" org-capture)
+    ("P" "Toggle Prettify" prettify-symbols-mode)]
+   [("s" "Sort…" org-sort)
+    ("e" "Export…" org-export-dispatch)]
    [("C" "Clone…" org-clone-subtree-with-time-shift)]
    [("n" "Note…" org-add-note)]
    [("v" "Copy Visible" org-copy-visible)]]

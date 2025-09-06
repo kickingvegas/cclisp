@@ -44,9 +44,14 @@
      ("^" "Up" eww-up-url :transient t)
      ("t" "Top" eww-top-url :transient t)]
 
+    ["Navigate"
+     ("p" "↑ ¶" casual-lib-browse-backward-paragraph :transient t)
+     ("n" "↓ ¶" casual-lib-browse-forward-paragraph :transient t)]
+
     ["Link"
      ("j" "Next" shr-next-link :transient t)
-     ("k" "Previous" shr-previous-link :transient t)]
+     ("k" "Previous" shr-previous-link :transient t)
+     ("RET" "Follow" eww-follow-link :transient t)]
 
     ["Bookmarks"
      ("ba" "Add" eww-add-bookmark)
@@ -56,6 +61,8 @@
      ]
 
     ["Misc"
+     ("c" "Copy URL" eww-copy-page-url)
+     ("a" "Copy Alt URL" eww-copy-alternate-url)
      ("&" "Launch External" eww-browse-with-external-browser)
      ("M-l" "Open URL" eww)
      ("g" "Reload" eww-reload)]]
@@ -76,11 +83,12 @@
 (keymap-set eww-mode-map "M-]" #'eww-forward-url)
 (keymap-set eww-mode-map "M-[" #'eww-back-url)
 
-(keymap-set eww-mode-map "M-n" #'casual-lib-browse-forward-paragraph)
-(keymap-set eww-mode-map "M-p" #'casual-lib-browse-backward-paragraph)
+(keymap-set eww-mode-map "n" #'casual-lib-browse-forward-paragraph)
+(keymap-set eww-mode-map "p" #'casual-lib-browse-backward-paragraph)
+;;(keymap-set eww-mode-map "p" #'backward-paragraph)
 
-(keymap-set eww-mode-map "n" #'next-line)
-(keymap-set eww-mode-map "p" #'previous-line)
+;; (keymap-set eww-mode-map "n" #'next-line)
+;; (keymap-set eww-mode-map "p" #'previous-line)
 
 (keymap-set eww-mode-map "M-l" #'eww)
 

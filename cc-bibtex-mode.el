@@ -29,6 +29,11 @@
 (require 'hl-line)
 (require 'casual-lib)
 
+(defun cc/bibtex-previous-field ()
+  (interactive)
+  (forward-line -2)
+  (bibtex-next-field nil))
+
 (transient-define-prefix casual-bibtex-tmenu ()
   "Transient menu for bibtex."
   :refresh-suffixes t
@@ -36,22 +41,26 @@
   ["Casual BibTeX"
    ["Field"
     :pad-keys t
-    ("c" "Copy" bibtex-copy-field-as-kill :transient t)
-    ("x" "Clear" bibtex-empty-field :transient t)
+    ("c" "Copy" bibtex-copy-field-as-kill :transient nil)
+    ("x" "Clear" bibtex-empty-field :transient nil)
     ("a" "Add…" bibtex-make-field :transient nil)
-    ("<DEL>" "Delete" bibtex-kill-field :transient t)
-    ("o" "Remove OPT/ALT" bibtex-remove-OPT-or-ALT :transient t)]
+    ("<DEL>" "Delete" bibtex-kill-field :transient nil)
+    ("o" "Remove OPT/ALT" bibtex-remove-OPT-or-ALT :transient nil)]
 
    ["Entry"
     :pad-keys t
-    ("C" "Copy" bibtex-copy-entry-as-kill :transient t)
-    ("k" "Kill" bibtex-kill-entry :transient t)
+    ("C" "Copy" bibtex-copy-entry-as-kill :transient nil)
+    ("k" "Kill" bibtex-kill-entry :transient nil)
+
+    ("A" "Add…" bibtex-entry :transient nil)
+    ("u" "Update" bibtex-entry-update :transient nil)
+    ("m" "Mark" bibtex-mark-entry :transient nil)
+    ("f" "Fill" bibtex-fill-entry :transient nil)
+    ("C-c" "Clean" bibtex-clean-entry :transient nil)]
+
+   ["Yank"
     ("y" "Yank" bibtex-yank :transient t)
-    ("A" "Add…" bibtex-entry :transient t)
-    ("u" "Update" bibtex-entry-update :transient t)
-    ("m" "Mark" bibtex-mark-entry :transient t)
-    ("f" "Fill" bibtex-fill-entry :transient t)
-    ("C-c" "Clean" bibtex-clean-entry :transient t)]
+    ("M-y" "Yank Pop" bibtex-yank-pop :transient t)]
 
    ["Navigation"
     :pad-keys t
@@ -71,10 +80,10 @@
     ("s" "Sort" bibtex-sort-buffer :transient t)
     ("N" "Narrow" bibtex-narrow-to-entry
      :if-not buffer-narrowed-p
-     :transient t)
+     :transient nil)
     ("w" "Widen" widen
      :if buffer-narrowed-p
-     :transient t)
+     :transient nil)
     ("O" "Occur…" occur)]]
 
   [:class transient-row
@@ -83,12 +92,14 @@
           ("U" "Undo" undo :transient t)
           (casual-lib-quit-all)])
 
+
 (add-hook 'bibtex-mode-hook 'hl-line-mode)
 
 (keymap-set bibtex-mode-map "C-o" #'casual-bibtex-tmenu)
 (keymap-set bibtex-mode-map "<TAB>" #'bibtex-next-field)
 (keymap-set bibtex-mode-map "<backtab>" #'previous-line)
 
+(keymap-set bibtex-mode-map "C-n" #'bibtex-next-field)
 (keymap-set bibtex-mode-map "M-n" #'bibtex-next-entry)
 (keymap-set bibtex-mode-map "M-p" #'bibtex-previous-entry)
 
