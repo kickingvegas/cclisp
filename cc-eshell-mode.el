@@ -32,6 +32,7 @@
 (require 'eshell-git-prompt)
 (require 'cclisp)
 (require 'casual-eshell)
+(require 'with-editor)
 
 (defvar eshell-mode-map)
 (defvar eshell-visual-options)
@@ -56,6 +57,7 @@
 
 ;;(add-hook 'eshell-mode-hook 'company-mode)
 (add-hook 'eshell-mode-hook 'hl-line-mode)
+(add-hook 'eshell-mode-hook 'with-editor-export-editor)
 (add-hook 'eshell-mode-hook (lambda ()
                               (keymap-set eshell-mode-map "<f1>" #'eshell-list-history)
 			      ;;(keymap-set eshell-mode-map "<tab>" 'company-complete)
