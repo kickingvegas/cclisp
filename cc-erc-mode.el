@@ -24,7 +24,8 @@
 
 ;;; Code:
 (require 'erc-nicks)
-(require 'casual-lib)
+(require 'erc-backend)
+(require 'casual-editkit)
 
 (transient-define-prefix casual-erc-tmenu ()
   "Transient menu for erc."
@@ -34,6 +35,21 @@
     ("s" "Switch…" erc-switch-to-buffer :transient t)
     ("x" "Clear" erc-kill-input)
     ("a" "BoL" erc-bol)]
+
+   ["Edit"
+    ("e" "Edit›" casual-editkit-edit-tmenu)
+    ("E" "Emoji & Symbols›" casual-editkit-emoji-symbols-tmenu
+     :if-not casual-editkit-buffer-read-only-p)
+    ("B" "Bookmarks›" casual-editkit-bookmarks-tmenu)
+    ]
+
+   ["Sexp"
+    ("m" "Mark" mark-sexp)
+    ("c" "Copy" casual-editkit-copy-sexp)
+    ("k" "Kill (Cut)" kill-sexp
+     :if-not casual-editkit-buffer-read-only-p)
+    ("t" "Transpose" transpose-sexps
+     :if-not casual-editkit-buffer-read-only-p)]
 
    ["Navigation"
     ("<prior>" "Page Up" scroll-down-command :transient t)
@@ -58,9 +74,29 @@
 
 (keymap-set erc-mode-map "M-m" #'casual-erc-tmenu)
 (keymap-set erc-mode-map "C-c m" #'casual-erc-tmenu)
+(keymap-set erc-mode-map "C-o" #'casual-erc-tmenu)
 (keymap-set erc-mode-map "<f1>" #'erc-switch-to-buffer)
 
 (cc/configure-erc-tty)
+
+(defun cc/redact (str)
+  "Redact STR."
+  (let* ((first (substring str 0 1))
+         (last (substring str -1))
+         (count (length str))
+         (result (concat first (make-string (- count 2) ?*) last)))
+    result))
+
+(defun cc/erc-redact (_ parsed)
+  (let* ((msg (erc-response.contents parsed))
+         (expletives '("Nigger" "Kike" "Chink" "Fag" "Faggot" "Gook" "Coon")))
+    (when (stringp msg)
+      (dolist (e expletives)
+        (setq msg (replace-regexp-in-string e (cc/redact e) msg)))
+      (setf (erc-response.contents parsed) msg)
+      nil)))
+
+(add-hook #'erc-server-PRIVMSG-functions #'cc/erc-redact)
 
 (provide 'cc-erc-mode)
 ;;; cc-erc-mode.el ends here
