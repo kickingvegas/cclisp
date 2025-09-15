@@ -44,7 +44,7 @@
     ("c" "Copy" bibtex-copy-field-as-kill :transient nil)
     ("x" "Clear" bibtex-empty-field :transient nil)
     ("a" "Add…" bibtex-make-field :transient nil)
-    ("<DEL>" "Delete" bibtex-kill-field :transient nil)
+    ("DEL" "Delete" bibtex-kill-field :transient nil)
     ("o" "Remove OPT/ALT" bibtex-remove-OPT-or-ALT :transient nil)]
 
    ["Entry"
@@ -108,6 +108,9 @@
 
 (keymap-set bibtex-mode-map "C-c C-o" #'bibtex-url)
 
+(keymap-set bibtex-mode-map "<clear>" #'bibtex-empty-field)
+(keymap-set bibtex-mode-map "M-<clear>" #'bibtex-kill-field)
+(keymap-set bibtex-mode-map "M-DEL" #'bibtex-kill-field)
 
 (provide 'cc-bibtex-mode)
 ;;; cc-bibtex-mode.el ends here
