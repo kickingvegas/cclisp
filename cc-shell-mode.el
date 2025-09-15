@@ -23,8 +23,12 @@
 ;;
 
 ;;; Code:
+(require 'shell)
+(require 'term)
+(require 'with-editor)
 
 (add-hook 'shell-mode-hook 'context-menu-mode)
+(add-hook 'shell-mode-hook 'with-editor-export-editor)
 (keymap-set shell-mode-map "C-p" #'comint-previous-input)
 (keymap-set shell-mode-map "C-n" #'comint-next-input)
 
@@ -34,6 +38,8 @@
 (keymap-set shell-mode-map "C-<right>" #'cc/next-sexp)
 ;; (keymap-set shell-mode-map "C-<up>" #'backward-up-list)
 ;; (keymap-set shell-mode-map "C-<down>" #'down-list)
+
+(add-hook 'term-mode-hook 'with-editor-export-editor)
 
 (provide 'cc-shell-mode)
 ;;; cc-shell-mode.el ends here
