@@ -479,6 +479,7 @@
  '(py-shell-name "python3" t)
  '(python-shell-interpreter "python3")
  '(reb-re-syntax 'string)
+ '(remote-file-name-inhibit-delete-by-moving-to-trash t)
  '(require-final-newline t)
  '(safe-local-variable-directories '("/Users/cchoi/Projects/vendor/worg/"))
  '(safe-local-variable-values

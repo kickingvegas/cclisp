@@ -65,12 +65,5 @@
 
 (add-hook 'wdired-mode-hook 'superword-mode)
 
-(add-hook 'dired-mode-hook
-  (lambda ()
-    (when (and (boundp 'default-directory)
-               (tramp-tramp-file-p default-directory))
-      (message "Dired is running on a TRAMP remote directory!")
-      (setq-local delete-by-moving-to-trash nil))))
-
 (provide 'cc-dired-mode)
 ;;; cc-dired-mode.el ends here
