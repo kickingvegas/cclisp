@@ -175,6 +175,9 @@ Structure type is defined in `org-structure-template-alist'."
    (string-join cc-org-capture--src-languages "|")
    "}"))
 
+(defun cc-org-capture--bibtex-date ()
+  "Enter date for bibtex entry."
+  (format-time-string "%Y-%m-%d"))
 
 ;; Set default Org protocol capture template
 (setopt org-protocol-default-template-key "capture")
@@ -472,7 +475,25 @@ Structure type is defined in `org-structure-template-alist'."
                               "%?")
                         "\n")))
            :empty-lines 1)
-          ))
+
+          ("bib"
+           "BibTex Entry"
+           plain
+           (file "~/org/bib/references.bib")
+           (function (lambda ()
+                       (string-join
+                        (list "@Online {,"
+                              "author = {%^{Author(s)}},"
+                              "title = {%:description},"
+                              "url = {%:link},"
+                              "date = {%<%Y-%m-%d>%?},"
+                              "notes = {"
+                              "%i"
+                              "}"
+                              "}")
+                        "\n")))
+           :prepend t
+           :empty-lines-after 1)))
 
 (add-hook
  'org-mode-hook
