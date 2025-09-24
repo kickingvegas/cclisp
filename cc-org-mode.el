@@ -290,7 +290,8 @@ SUFFIX - string appended to prefix
     ("I" "Clock In" org-clock-in
      :if-not org-clocking-p)
     ("O" "Clock Out" org-clock-out
-     :if org-clocking-p)]
+     :if org-clocking-p)
+    ("R" "Clock Report" org-clock-report)]
 
    ["Timestamp"
     ("." "Add…" org-timestamp)

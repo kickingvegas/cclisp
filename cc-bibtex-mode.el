@@ -29,11 +29,12 @@
 
 (add-hook 'bibtex-mode-hook 'hl-line-mode)
 
-(keymap-set bibtex-mode-map "C-o" #'casual-bibtex-tmenu)
+(keymap-set bibtex-mode-map "M-m" #'casual-bibtex-tmenu)
 (keymap-set bibtex-mode-map "<TAB>" #'bibtex-next-field)
 (keymap-set bibtex-mode-map "<backtab>" #'previous-line)
 
 (keymap-set bibtex-mode-map "C-n" #'bibtex-next-field)
+;; (keymap-set bibtex-mode-map "C-p" #'previous-line)
 (keymap-set bibtex-mode-map "M-n" #'bibtex-next-entry)
 (keymap-set bibtex-mode-map "M-p" #'bibtex-previous-entry)
 
@@ -41,11 +42,14 @@
 (keymap-set bibtex-mode-map "<next>" #'bibtex-next-entry)
 
 (keymap-set bibtex-mode-map "C-c C-o" #'bibtex-url)
-(keymap-set bibtex-mode-map "C-c C-c" #'casual-bibtex-fill-and-clean)
+
+(keymap-set bibtex-mode-map "C-a" #'casual-bibtex-beginning-of-field)
+(keymap-set bibtex-mode-map "C-e" #'casual-bibtex-end-of-field)
 
 (keymap-set bibtex-mode-map "<clear>" #'bibtex-empty-field)
 (keymap-set bibtex-mode-map "M-<clear>" #'bibtex-kill-field)
 (keymap-set bibtex-mode-map "M-DEL" #'bibtex-kill-field)
+
 
 (provide 'cc-bibtex-mode)
 ;;; cc-bibtex-mode.el ends here

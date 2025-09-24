@@ -32,11 +32,12 @@
 (transient-define-prefix casual-eww-tmenu ()
    "Transient menu for eww."
    :refresh-suffixes t
-   ["Casual: EWW"
+   ["Casual EWW"
     ["History"
+     :pad-keys t
      ("M-[" "Previous" eww-forward-url :transient t)
      ("M-]" "Next" eww-back-url :transient t)
-     ("H" "History" eww-list-histories :transient t)]
+     ("H" "History" eww-list-histories :transient nil)]
 
     ["Document"
      ("[" "Back" eww-previous-url :transient t)
@@ -45,15 +46,20 @@
      ("t" "Top" eww-top-url :transient t)]
 
     ["Navigate"
+     :pad-keys t
      ("p" "↑ ¶" casual-lib-browse-backward-paragraph :transient t)
-     ("n" "↓ ¶" casual-lib-browse-forward-paragraph :transient t)]
+     ("n" "↓ ¶" casual-lib-browse-forward-paragraph :transient t)
+     ("SPC" "↓ Scroll" scroll-up-command :transient t)
+     ("S-SPC" "↑ Scroll" scroll-down-command :transient t)]
 
     ["Link"
+     :pad-keys t
      ("j" "Next" shr-next-link :transient t)
      ("k" "Previous" shr-previous-link :transient t)
      ("RET" "Follow" eww-follow-link :transient t)]
 
     ["Bookmarks"
+     :pad-keys t
      ("ba" "Add" eww-add-bookmark)
      ("B" "List" eww-list-bookmarks)
      ("bn" "Next" eww-next-bookmark)
@@ -61,10 +67,11 @@
      ]
 
     ["Misc"
+     :pad-keys t
      ("c" "Copy URL" eww-copy-page-url)
      ("a" "Copy Alt URL" eww-copy-alternate-url)
-     ("&" "Launch External" eww-browse-with-external-browser)
      ("M-l" "Open URL" eww)
+     ("C-o" "Launch External" eww-browse-with-external-browser)
      ("g" "Reload" eww-reload)]]
 
    [:class transient-row
