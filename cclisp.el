@@ -223,6 +223,7 @@ This function presumes that the buffer *pelican* is in the correct directory."
         (process-send-string (get-buffer-process blog-buffer) "cd ~/Projects/pelican\n")
         (process-send-string (get-buffer-process blog-buffer) "source .venv/bin/activate\n")
         (process-send-string (get-buffer-process blog-buffer) cd-blog-path)
+        (setq-local default-directory blog-path)
         (if (display-graphic-p)
             (cc/launch-pelican))))))
 
