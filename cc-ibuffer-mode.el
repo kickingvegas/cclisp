@@ -56,6 +56,9 @@
 (keymap-set ibuffer-mode-map "<double-mouse-1>" #'ibuffer-visit-buffer)
 (keymap-set ibuffer-mode-map "M-<double-mouse-1>" #'ibuffer-visit-buffer-other-window)
 
+(keymap-set ibuffer-mode-map "<f1>" #'ibuffer-jump-to-filter-group)
+(keymap-set ibuffer-mode-map "<f2>" #'ibuffer-jump-to-buffer)
+
 (keymap-set ibuffer-mode-map "C-o" #'casual-ibuffer-tmenu)
 (keymap-set ibuffer-mode-map "F" #'casual-ibuffer-filter-tmenu)
 (keymap-set ibuffer-mode-map "s" #'casual-ibuffer-sortby-tmenu)
