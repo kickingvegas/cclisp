@@ -587,5 +587,8 @@ Structure type is defined in `org-structure-template-alist'."
         t
       nil)))
 
+(defalias 'cc/org-capture-template-keys #'cc-org-capture-template-keys)
+(defalias 'cc/org-protocol-capture-template-keys #'cc-org-capture-protocol-template-keys)
+
 (provide 'cc-org-capture)
 ;;; cc-org-capture.el ends here
