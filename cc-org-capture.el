@@ -484,6 +484,7 @@ Structure type is defined in `org-structure-template-alist'."
                        (string-join
                         (list "@Online {,"
                               "author = {%^{Author(s)}},"
+                              "organization = {%^{Organization}},"
                               "title = {%:description},"
                               "url = {%:link},"
                               "date = {%<%Y-%m-%d>%?},"
