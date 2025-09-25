@@ -75,7 +75,7 @@
       :if casual-editkit-version-controlled-p))
 
   (transient-append-suffix 'casual-editkit-tools-tmenu "ew"
-    '("ph" "Call" cc/call-nanp-phone-number
+    '("ph" "Phone" cc/call-nanp-phone-number
       :inapt-if-not use-region-p))
 
   (transient-append-suffix 'casual-editkit-tools-tmenu "ph"
