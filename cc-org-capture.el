@@ -477,7 +477,7 @@ Structure type is defined in `org-structure-template-alist'."
            :empty-lines 1)
 
           ("bib"
-           "BibTex Entry"
+           "BibTex Online Entry"
            plain
            (file "~/org/bib/references.bib")
            (function (lambda ()
