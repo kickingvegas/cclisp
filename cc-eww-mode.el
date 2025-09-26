@@ -25,6 +25,7 @@
 ;;; Code:
 (require 'eww)
 (require 'hl-line)
+(require 'bookmark)
 (require 'casual-lib)
 
 (add-hook 'eww-mode-hook #'hl-line-mode)
@@ -72,7 +73,8 @@
      ("a" "Copy Alt URL" eww-copy-alternate-url)
      ("M-l" "Open URL" eww)
      ("C-o" "Launch External" eww-browse-with-external-browser)
-     ("g" "Reload" eww-reload)]]
+     ("g" "Reload" eww-reload)
+     ("J" "Jump to Bookmark…" bookmark-jump)]]
 
    [:class transient-row
            (casual-lib-quit-one)

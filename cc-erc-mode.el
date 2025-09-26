@@ -23,12 +23,13 @@
 ;;
 
 ;;; Code:
+(require 'bookmark)
 (require 'erc-nicks)
 (require 'erc-backend)
 (require 'casual-editkit)
 
 (transient-define-prefix casual-erc-tmenu ()
-  "Transient menu for erc."
+  "Transient menu for ERC."
 
   ["Casual: ERC"
    ["Channel"
@@ -58,8 +59,9 @@
    ["Misc"
     ("n" "Names" erc-channel-names :transient t)
     ("f" "Toggle Flood" erc-toggle-flood-control :transient t)
-    ("b" "Toggle Bufbar" erc-bufbar-mode :transient t)]
-   ]
+    ("b" "Toggle Bufbar" erc-bufbar-mode :transient t)]]
+
+  [("J" "Jump to Bookmark…" bookmark-jump)]
 
   [:class transient-row
           (casual-lib-quit-one)
