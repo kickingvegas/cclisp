@@ -114,8 +114,8 @@
 (add-hook 'shortdoc-mode-hook #'scroll-lock-mode)
 
 ;; # Man
-;; Bind <f1> to help
-(keymap-set Man-mode-map "<f1>" #'describe-mode)
+;; Bind <f1> to man
+(keymap-set Man-mode-map "<f1>" #'man)
 ;; Bind M-j, M-k to scrolling up/down line
 (keymap-set Man-mode-map "M-j" #'scroll-up-line)
 (keymap-set Man-mode-map "M-k" #'scroll-down-line)

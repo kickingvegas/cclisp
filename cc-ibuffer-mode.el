@@ -52,9 +52,12 @@
 (add-hook 'ibuffer-mode-hook #'hl-line-mode)
 (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)
 
-(keymap-set ibuffer-mode-map "<mouse-1>" #'mouse-set-point)
-(keymap-set ibuffer-mode-map "<double-mouse-1>" #'ibuffer-visit-buffer)
-(keymap-set ibuffer-mode-map "M-<double-mouse-1>" #'ibuffer-visit-buffer-other-window)
+(keymap-set ibuffer-name-map "<mouse-1>" #'mouse-set-point)
+(keymap-set ibuffer-name-map "<double-mouse-1>" #'ibuffer-mouse-visit-buffer)
+(keymap-set ibuffer-name-map "<mouse-2>" #'ibuffer-mouse-toggle-mark)
+
+(keymap-set ibuffer-mode-filter-group-map "<mouse-1>" #'ibuffer-mouse-toggle-filter-group)
+(keymap-set ibuffer-mode-filter-group-map "<mouse-2>" #'ibuffer-mouse-toggle-mark)
 
 (keymap-set ibuffer-mode-map "<f1>" #'ibuffer-jump-to-filter-group)
 (keymap-set ibuffer-mode-map "<f2>" #'ibuffer-jump-to-buffer)
