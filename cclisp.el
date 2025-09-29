@@ -23,6 +23,7 @@
 ;; Utility functions by Charles Choi
 
 ;;; Code:
+(require 'window)
 (require 'ediff)
 (require 'map)
 (require 'transient)
@@ -38,6 +39,10 @@
 (require 'ace-window)
 (require 'which-func)
 (require 'casual-lib)
+(require 'info)
+(require 'transpose-frame)
+(require 'dired)
+(require 'page-ext)
 
 (defun cc/find-user-init-file ()
   "Edit `user-init-file'."
@@ -113,8 +118,9 @@ A new frame will be created if `pop-up-frames' is t."
 (defun dictate()
    "Open a default text file to dictate into using macOS open."
    (interactive)
-   (shell-command "open ~/Documents/Dictation.txt"))
+   (shell-command "open ~/Documents/Dictation.rtf"))
 
+;; TODO: revisit storing web links
 (load-file (concat user-emacs-directory "url-bookmarks.el"))
 
 (defun cc/open-url ()
@@ -217,6 +223,7 @@ This function presumes that the buffer *pelican* is in the correct directory."
         (process-send-string (get-buffer-process blog-buffer) "cd ~/Projects/pelican\n")
         (process-send-string (get-buffer-process blog-buffer) "source .venv/bin/activate\n")
         (process-send-string (get-buffer-process blog-buffer) cd-blog-path)
+        (setq-local default-directory blog-path)
         (if (display-graphic-p)
             (cc/launch-pelican))))))
 
@@ -293,11 +300,6 @@ ISO 8601."
   "Pass region bounded by START and END to macOS say command."
   (interactive "r")
   (shell-command-on-region start end "say"))
-
-(defun cc/switch-to-scratch ()
-  "Switch to *scratch* buffer."
-  (interactive)
-  (switch-to-buffer "*scratch*"))
 
 (defun cc/ellipsis()
   "Insert an ellipsis."
@@ -493,19 +495,19 @@ SOUND - sound file (optional)"
           (replace-match (cdr e) nil t))))))
 
 ;; TODO: obsolete
-(defun cc/dired-image-file-p ()
-  "Predicate if current file in Dired is an image file."
-  (string-match-p (image-dired--file-name-regexp) (dired-get-filename)))
+;; (defun cc/dired-image-file-p ()
+;;   "Predicate if current file in Dired is an image file."
+;;   (string-match-p (image-dired--file-name-regexp) (dired-get-filename)))
 
 ;; TODO: obsolete
-(defun cc/--image-info (filename)
-  "Get image information of FILENAME via Imagemagick identify utility."
-  (car
-   (process-lines
-    "identify"
-    "-format"
-    "%m %wx%h %b"
-    (expand-file-name filename))))
+;; (defun cc/--image-info (filename)
+;;   "Get image information of FILENAME via Imagemagick identify utility."
+;;   (car
+;;    (process-lines
+;;     "identify"
+;;     "-format"
+;;     "%m %wx%h %b"
+;;     (expand-file-name filename))))
 
 (defun cc/ssh (target)
   "Create ssh `term' to TARGET."
@@ -882,11 +884,18 @@ See `cc/org-table-range' for more on RANGE object."
     (setq-local casual-lib-use-unicode t)))
 
 (defun macports ()
-    "Run MacPorts."
-    (interactive)
-    (term "~/bin/port.sh")
-    (rename-buffer "*macports*"))
+  "Run MacPorts."
+  (interactive)
+  (term "~/bin/port.sh")
+  (rename-buffer "*macports*"))
 
+(defun swift-repl ()
+  "Swift repl."
+  (interactive)
+  (term "swift repl")
+  (rename-buffer "*swift*"))
+
+;; TODO: obsolete
 (defun cc/--next-sexp-raw ()
   "Raw implementation to move point to the beginning of the next sexp.
 
@@ -894,6 +903,7 @@ This function has no error checking."
   (forward-sexp 2)
   (backward-sexp))
 
+;; TODO: obsolete
 (defun cc/next-sexp ()
   "Move point to beginning of the next balanced expression (sexp)."
   (interactive)
@@ -934,13 +944,12 @@ installed."
   (split-window-below)
   (windmove-down))
 
-(defun cc/reset-dictation ()
+(defun cc/dictation-reset ()
   "Reset macOS dictation service corespeechd."
   (interactive)
   (process-lines "killall" "corespeechd"))
 
-
-(defun cc/compile-info ()
+(defun cc/info-compile ()
   "Build Info file from an Org file."
   (interactive)
   (let ((outfile (expand-file-name (file-name-with-extension buffer-file-name "info")))
@@ -955,8 +964,35 @@ installed."
     (info outfile)
     (info-initialize)))
 
+
+(defun cc/casual-info-compile ()
+  "Build Casual Info file."
+  (interactive)
+  (let* ((outfile "~/Projects/elisp/casual/docs/casual.info")
+         (current (current-buffer)))
+    (find-file "~/Projects/elisp/casual/docs/casual.org")
+    (org-texinfo-export-to-info)
+    (if (get-buffer "*info*")
+        (kill-buffer "*info*"))
+    (info outfile)
+    (info-initialize)
+    (switch-to-buffer current)))
+
+(defun cc/load-casual-info ()
+  "Load Casual info file."
+  (interactive)
+  (info "~/Projects/elisp/casual/docs/casual.info")
+  (info-initialize))
+
+(defun cc/show-global-map-keys (keypath)
+  "Show formatted keys for keymap in `global-map' given KEYPATH."
+  (interactive)
+  (mapcar (lambda (x) (format "%s" x))
+          (mapcar (lambda (x) (if (listp x) (car x)))
+                  (cdr (lookup-key global-map keypath)))))
+
 (defun cc/whitespace-cleanup (&optional disable)
-  "Turn on whitespace cleanup"
+  "Turn on whitespace cleanup with optional DISABLE."
   (interactive)
 
   (if disable
@@ -981,6 +1017,83 @@ installed."
         (setopt scroll-conservatively 10)
         (setopt scroll-margin 15)
         (message "Optimized for text scrolling"))))
+
+(defun cc/--resize-frame (width height)
+  "Resize frame to WIDTH, HEIGHT."
+  (let* ((current (selected-frame)))
+    (set-frame-size current width height)))
+
+(defun cc/frame-resize-for-video ()
+  "Resize frame for 1024x768 video capture."
+  (interactive)
+  (cc/--resize-frame 108 39))
+
+(defun cc/frame-resize-for-tty ()
+  "Resize frame for terminal screenshot."
+  (interactive)
+  (cc/--resize-frame 86 28))
+
+(defun cc/--dired-kill-image-buffer-before-delete (file &rest rest)
+  "Kill buffer associated with image FILE if necessary, ignoring REST."
+  (ignore rest)
+  (let* ((test-types (push 'jpg image-types))
+         (ext (file-name-extension file))
+         (buf (get-file-buffer file)))
+
+    (if (and buf (seq-contains-p test-types ext #'string-equal))
+        (progn
+          (message "Killed buffer %s" (buffer-name buf))
+          (kill-buffer buf)))))
+
+(advice-add 'dired-delete-file
+            :before #'cc/--dired-kill-image-buffer-before-delete)
+
+(defun cc/org-gen-custom-id ()
+  "Generate a UUID, insert it as an Org :CUSTOM_ID: property, and return link."
+  (interactive)
+  (let* ((custom-id (format "%s" (org-id-uuid)))
+         (components (org-heading-components))
+         (header (nth 4 components))
+         (org-link (format "[[#%s][%s]]" custom-id header)))
+
+    (save-excursion
+      (org-back-to-heading t)
+      (if (re-search-forward "^:CUSTOM_ID:" (save-excursion (outline-next-heading) (point)) t)
+          (progn
+            (beginning-of-line)
+            (kill-line)
+            (insert (format ":CUSTOM_ID: %s\n" custom-id)))
+        (org-set-property "CUSTOM_ID" custom-id)))
+    (kill-new org-link)
+    ;;(org-insert-link nil (format "#%s" custom-id) header)
+    (message "Copied %s" org-link)
+    org-link))
+
+(defun cc/backward-page-at-top (&optional count)
+  "Move backward COUNT pages, scrolling point to top of window."
+  (interactive)
+
+  (if (buffer-narrowed-p)
+      (pages-previous-page count)
+    (progn
+      (backward-page count)
+      (recenter-top-bottom 0))))
+
+(defun cc/forward-page-at-top (&optional count)
+  "Move forward COUNT pages, scrolling point to top of window."
+  (interactive)
+  (if (buffer-narrowed-p)
+      (pages-next-page count)
+    (progn
+      (forward-page count)
+      (recenter-top-bottom 0))))
+
+(defun cc/line-feed ()
+  "Insert line feed."
+  (interactive)
+  (insert "\n")
+  (if (derived-mode-p 'emacs-lisp-mode)
+      (insert ";; -------------------------------------------------------------------\n")))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

@@ -1,4 +1,4 @@
-;;; cc-bookmarks-bmenu-mode.el --- Bookmarks Bmenu Mode Config  -*- lexical-binding: t; -*-
+;;; cc-compile-mode.el --- grep mode customization      -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024  Charles Choi
 
@@ -23,15 +23,20 @@
 ;;
 
 ;;; Code:
-(require 'casual-bookmarks)
 
-(easy-menu-add-item global-map '(menu-bar)
-                    casual-bookmarks-main-menu
-                    "Tools")
+(require 'compile)
+(require 'hl-line)
+(require 'casual-compile)
 
-(keymap-set bookmark-bmenu-mode-map "C-o" #'casual-bookmarks-tmenu)
-(keymap-set bookmark-bmenu-mode-map "S" #'casual-bookmarks-sortby-tmenu)
-(keymap-set bookmark-bmenu-mode-map "J" #'bookmark-jump)
+(add-hook 'compilation-mode-hook 'hl-line-mode)
 
-(provide 'cc-bookmarks-bmenu-mode)
-;;; cc-bookmarks-bmenu-mode.el ends here
+(keymap-set compilation-mode-map "C-o" #'casual-compile-tmenu)
+(keymap-set compilation-mode-map "M-m" #'casual-compile-tmenu)
+(keymap-set compilation-mode-map "k" #'compilation-previous-error)
+(keymap-set compilation-mode-map "j" #'compilation-next-error)
+(keymap-set compilation-mode-map "o" #'compilation-display-error)
+(keymap-set compilation-mode-map "[" #'compilation-previous-file)
+(keymap-set compilation-mode-map "]" #'compilation-next-file)
+
+(provide 'cc-compile-mode)
+;;; cc-compile-mode.el ends here

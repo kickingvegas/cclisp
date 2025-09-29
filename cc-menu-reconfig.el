@@ -96,6 +96,12 @@ for REGEXP."
                     "Fill")
 
 (easy-menu-add-item global-map '(menu-bar edit)
+                    ["Colors"
+                     ns-popup-color-panel
+                     :help "Show macOS Color Picker."
+                     :visible (eq window-system 'ns)])
+
+(easy-menu-add-item global-map '(menu-bar edit)
                     ["Emoji & Symbols"
                      ns-do-show-character-palette
                      :help "Show macOS Character Palette."
@@ -103,39 +109,52 @@ for REGEXP."
 
 ;;; Reconfigure Help Menu
 
-(defun cc/new-info-frame ()
-  "Invoke `info' in new frame.
-
-This command creates a new frame populated by the `info' command."
-  (interactive)
+(defun cc/--command-in-new-frame (cmd)
+  "Invoke CMD in a new frame.
+This command creates a new frame populated by CMD."
   (other-frame-prefix)
-  (call-interactively #'info))
-
-(defun cc/new-info-display-frame ()
-  "Create new Info manual instance (buffer) in a new frame.
-
-This command creates a new frame populated by the
-`info-display-manual' command."
-  (interactive)
-  (other-frame-prefix)
-  (call-interactively #'info-display-manual))
+  (call-interactively cmd))
 
 (easy-menu-add-item global-map '(menu-bar help-menu)
                     ["Info in New Frame"
-                     cc/new-info-frame
+                     (lambda ()
+                       (interactive)
+                       (cc/--command-in-new-frame #'info))
                      :help "Show Info manual in new frame."]
                     'emacs-tutorial)
 
 (easy-menu-add-item global-map '(menu-bar help-menu)
                     ["New Info in New Frame…"
-                     cc/new-info-display-frame
+                     (lambda ()
+                       (interactive)
+                       (cc/--command-in-new-frame #'info-display-manual))
                      :help "Show new Info manual in new frame."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Man Page in New Frame…"
+                     (lambda ()
+                       (interactive)
+                       (cc/--command-in-new-frame #'man))
+                     :help "Show man page in new frame."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Describe Symbol…"
+                     describe-symbol
+                     :help "Describe symbol."]
                     'emacs-tutorial)
 
 (easy-menu-add-item global-map '(menu-bar help-menu)
                     ["Describe Key or Mouse…"
                      describe-key
                      :help "Describe key or mouse operation."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Library Commentary…"
+                     finder-commentary
+                     :help "Show commentary for Elisp library."]
                     'emacs-tutorial)
 
 (easy-menu-add-item global-map '(menu-bar help-menu)

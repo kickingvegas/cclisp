@@ -25,6 +25,7 @@
 ;;; Code:
 (setenv "CDPATH" ".:..:~")
 
+;; Configuration when launched via Finder.
 (when (or (eq window-system 'mac) (eq window-system 'ns))
   (setenv "PATH" (concat "/Applications/Inkscape.app/Contents/MacOS:" (getenv "PATH")))
   (setenv "PATH" (concat "/opt/local/bin:" (getenv "PATH")))
@@ -65,7 +66,7 @@
 
 ;;(setq pixel-scroll-precision-large-scroll-height 10.0)
 
-(when (eq window-system 'ns)
+(when (and (eq window-system 'ns) (boundp 'mac-command-modifier))
   (setq mac-command-modifier 'meta))
 
 (require 'cclisp)
@@ -101,6 +102,7 @@
 (require 'cc-global-keybindings)
 (require 'cc-magit-mode)
 (require 'cc-menu-reconfig)
+(require 'cc-compile-mode)
 (require 'cc-grep-mode)
 (require 'kill-with-intelligence)
 (require 'cc-agenda-timeline)
@@ -115,10 +117,16 @@
 (require 'cc-image-mode)
 (require 'cc-make-mode)
 (require 'cc-csv-mode)
+(require 'cc-main-tmenu)
+(require 'cc-erc-mode)
 (require 'cc-gh)
+(require 'cc-gnuplot-mode)
+(require 'cc-bibtex-mode)
+(require 'cc-eww-mode)
 (require 'ffap)
 (require 'calle24)
 (require 'scrim-utils)
+(require 'numeri)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
@@ -171,5 +179,7 @@
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line)))
 
 (password-store-menu-enable)
+
+;;(setq window-system-default-frame-alist '((ns . ((ns-transparent-titlebar . t)))))
 
 (ffap-bindings)

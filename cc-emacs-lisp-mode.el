@@ -23,16 +23,36 @@
 ;;
 
 (require 'elisp-mode)
-(require 'paredit)
+;;(require 'paredit)
 (require 'flycheck)
 (require 'edebug)
 (require 'cclisp)
 (require 'calle24)
+(require 'casual-elisp)
 
 ;;; Code:
 
-(add-hook 'emacs-lisp-mode #'enable-paredit-mode)
-(add-hook 'emacs-lisp-mode #'flycheck-mode)
+;;(add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
+(add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
+(add-hook 'emacs-lisp-mode-hook #'prettify-symbols-mode)
+
+
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (setq-local imenu-generic-expression
+                        (push
+                         (list "Structs" "(cl-defstruct (*\\([[:alnum:]-]*\\)" 1)
+                         imenu-generic-expression))
+
+            (setq-local imenu-generic-expression
+                        (push
+                         (list "Transient Prefixes" "(transient-define-prefix \\([[:alnum:]-]*\\)" 1)
+                         imenu-generic-expression))
+
+            (setq-local imenu-generic-expression
+                        (push
+                         (list "Transient Groups" "(transient-define-group \\([[:alnum:]-]*\\)" 1)
+                         imenu-generic-expression))))
 
 (keymap-set emacs-lisp-mode-map "M-[" #'backward-sexp)
 (keymap-set emacs-lisp-mode-map "M-]" #'forward-sexp)
@@ -49,6 +69,12 @@
 (keymap-set emacs-lisp-mode-map "M-f" #'cc/next-sexp)
 (keymap-set emacs-lisp-mode-map "C-M-b" #'backward-word)
 (keymap-set emacs-lisp-mode-map "C-M-f" #'forward-word)
+
+(keymap-set emacs-lisp-mode-map "<prior>" #'cc/backward-page-at-top)
+(keymap-set emacs-lisp-mode-map "<next>" #'cc/forward-page-at-top)
+
+(keymap-set emacs-lisp-mode-map "C-<prior>" #'pages-previous-page)
+(keymap-set emacs-lisp-mode-map "C-<next>" #'pages-next-page)
 
 (transient-define-prefix cc/edebug-tmenu ()
   :refresh-suffixes t
@@ -186,41 +212,9 @@
 
 (keymap-set edebug-eval-mode-map "<f8>" #'cc/edebug-watch-tmenu)
 
-(transient-define-prefix cc/elisp-tmenu ()
-  ["Emacs Lisp"
-   ["Evaluate"
-    ("x" "Last Sexp" eval-last-sexp)
-    ("L" "Buffer or Region" elisp-eval-region-or-buffer)
-    ("d" "Defun" eval-defun)]
 
-   ["Byte-Compile"
-    ("B" "File…" elisp-byte-compile-file)
-    ("b" "Buffer" elisp-byte-compile-buffer)
-    ("D" "Directory" byte-recompile-directory)]
-
-   ["Checkdoc"
-    ("c" "Checkdoc…" checkdoc)]
-
-   ["Find"
-    ("l" "Library…" find-library)
-    ("v" "Variable…" find-variable)
-    ("f" "Function…" find-function)]]
-
-  ["Navigate"
-   :pad-keys t
-   [("<left>" "←" backward-char :transient t)
-    ("C-<left>" "(←" backward-sexp :transient t)]
-   [("<right>" "→" forward-char :transient t)
-    ("C-<right>" "→)" cc/next-sexp :transient t)]
-   [("<up>" "↑" previous-line :transient t)
-    ("C-<up>" "(↰" backward-up-list :transient t)]
-   [("<down>" "↓" next-line :transient t)
-    ("C-<down>" "⤵(" down-list :transient t)]]
-
-  [("RET" "Dismiss" transient-quit-all)])
-
-(keymap-set emacs-lisp-mode-map "M-m" #'cc/elisp-tmenu)
-(keymap-set emacs-lisp-mode-map "C-c m" #'cc/elisp-tmenu)
+(keymap-set emacs-lisp-mode-map "M-m" #'casual-elisp-tmenu)
+(keymap-set emacs-lisp-mode-map "C-c m" #'casual-elisp-tmenu)
 
 
 (defun cc/edebug-eval-mode-tool-bar-map ()

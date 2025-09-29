@@ -53,29 +53,6 @@
 (defvar cc/org-daily-header-template "CC Notes - %a %b %d %Y"
   "Custom daily Org header template.")
 
-(defun cc/--current-org-default-notes-file ()
-  "String path to current daily Org file.
-This function is dependent upon this file being created by a daily cron job."
-  (cond
-   ;; ((string= (system-name) "bingsu.local")
-   ;;  (format-time-string "~/org/%Y_%m_%d.org"))
-   ((string= (system-name) "dev7")
-    "~/Documents/journal/journal.org")
-   (t
-    (format-time-string "~/org/%Y_%m_%d.org"))))
-
-(defun cc/--find-capture-point-in-file (key)
-  "Move point to the end of the first instance of KEY in the current buffer."
-  (goto-char (point-min))
-  (search-forward key))
-
-(defun cc/--find-capture-point-in-current ()
-  "Helper function to locate where to insert capture item in daily Org file."
-  (let* ((key (if (string= (system-name) "dev7")
-                  "Journal"
-                (format-time-string cc/org-daily-header-template))))
-    (cc/--find-capture-point-in-file key)))
-
 (defun cc/org-checkbox-in-progress ()
   "If point is on an Org list item, set it to be a checkbox in-progress."
   (interactive)
@@ -90,274 +67,7 @@ which is done with `org-ctrl-c-ctrl-c'."
   (interactive)
   (org-ctrl-c-ctrl-c '(4)))
 
-(defun cc/config-capture-template (&optional prefix suffix)
-  (let* ((properties (list ":PROPERTIES:"
-                           ":CREATED: %U"
-                           ":END:"))
-         (properties (if prefix (append prefix properties) properties))
-         (properties (if suffix (append properties suffix) properties)))
-    properties))
-
-
 (setopt org-default-notes-file "~/org/notes.org")
-(setopt org-protocol-default-template-key "capture")
-
-;; Configure org-capture-templates
-(setopt org-capture-templates
-        '(("a"
-           "Appointment"
-           entry
-           (file+function
-            cc/--current-org-default-notes-file
-            cc/--find-capture-point-in-current)
-           (function (lambda ()
-                       (string-join
-                        '("* %^{description}"
-                          "%^T"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%?")
-                        "\n")))
-           :prepend t
-           :empty-lines 1)
-
-          ("t"
-           "TODO"
-           entry
-           (file+function
-            cc/--current-org-default-notes-file
-            cc/--find-capture-point-in-current)
-           (function (lambda ()
-                       (string-join
-                        '("* TODO %^{description} %^G"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%?")
-                        "\n")))
-           :prepend t
-           :empty-lines 1)
-
-          ("s"
-           "Scheduled TODO"
-           entry
-           (file+function
-            cc/--current-org-default-notes-file
-            cc/--find-capture-point-in-current)
-           (function (lambda ()
-                       (string-join
-                        '("* TODO %^{description} %^G"
-                          "SCHEDULED: %^T"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%?")
-                        "\n")))
-           :prepend t
-           :empty-lines 1)
-
-          ("p"
-           "Blog Post"
-           entry
-           (file+function
-            cc/--current-org-default-notes-file
-            cc/--find-capture-point-in-current)
-           (function (lambda ()
-                       (string-join
-                        '("* TODO Post: %^{description} :blog%^G"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%?")
-                        "\n")))
-           :prepend t
-           :empty-lines 1)
-
-          ("i"
-           "Issue"
-           entry
-           (file+function
-            cc/--current-org-default-notes-file
-            cc/--find-capture-point-in-current)
-           (function (lambda ()
-                       (string-join
-                        '("* TODO %^{description} %^G"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "\n** Title"
-                          "%?"
-                          "** Description\n"
-                          "** Environment\n"
-                          "** Steps to Reproduce\n"
-                          "** Expected Result\n"
-                          "** Actual Result\n")
-                        "\n")))
-           :prepend t
-           :empty-lines 1)
-
-          ("j"
-           "Journal"
-           entry
-           (file+function
-            cc/--current-org-default-notes-file
-            cc/--find-capture-point-in-current)
-           (function (lambda ()
-                       (string-join
-                        '("%(datestamp2)"
-                          "%?")
-                        "\n")))
-           :prepend t
-           :empty-lines 1)
-
-          ;; ("o" "Org Protocol Templates")
-          ("capture"
-           "Org Protocol Capture"
-           entry
-           (file+function
-            cc/--current-org-default-notes-file
-            cc/--find-capture-point-in-current)
-           (function (lambda ()
-                       (string-join
-                        '("* %:description"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%:annotation"
-                          "%i"
-                          ""
-                          "%?")
-                        "\n")))
-           :prepend t
-           :empty-lines 1)
-
-          ("capture-source"
-           "Org Protocol Source"
-           entry
-           (file+function
-            cc/--current-org-default-notes-file
-            cc/--find-capture-point-in-current)
-           (function (lambda ()
-                       (string-join
-                        (list "* Source: %:description"
-                              ":PROPERTIES:"
-                              ":CREATED: %U"
-                              ":END:"
-                              "%:link"
-                              (concat "#+BEGIN_SRC %^{Language|elisp|"
-                                      (string-join (list "awk"
-                                                         "C"
-                                                         "cpp"
-                                                         "shell"
-                                                         "clojure"
-                                                         "css"
-                                                         "ditaa"
-                                                         "eshell"
-                                                         "F90"
-                                                         "forth"
-                                                         "gnuplot"
-                                                         "sed"
-                                                         "dot"
-                                                         "java"
-                                                         "haskell"
-                                                         "julia"
-                                                         "latex"
-                                                         "lisp"
-                                                         "lua"
-                                                         "makefile"
-                                                         "matlab"
-                                                         "max"
-                                                         "js"
-                                                         "ocaml"
-                                                         "octave"
-                                                         "org"
-                                                         "perl"
-                                                         "plantuml"
-                                                         "processing"
-                                                         "python"
-                                                         "R"
-                                                         "ruby"
-                                                         "sass"
-                                                         "scheme"
-                                                         "sql"
-                                                         "sqlite"
-                                                         "swift"
-                                                         "kotlin")
-                                                   "|")
-                                      "}")
-                              "%i"
-                              "#+END_SRC"
-                              ""
-                              "%?")
-                        "\n")))
-           :prepend t
-           :empty-lines 1)
-
-          ("r"
-           "BeOrg Reminder"
-           entry
-           (file "~/org/beorg.org")
-           (function (lambda ()
-                       (string-join
-                        '("* TODO %^{description}"
-                          "SCHEDULED: %^T"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%?")
-                        "\n")))
-           :empty-lines 1)
-
-          ("n"
-           "Note"
-           entry
-           (file "")              ; this will persist in org-default-notes-file
-           (function (lambda ()
-                       (string-join
-                        '("* %^{description}"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":END:"
-                          "%?")
-                        "\n")))
-           :prepend t
-           :empty-lines 1)
-
-          ("S"
-           "Song"
-           entry
-           (file+headline
-            "~/org/songs/songs.org"
-            "Songs")
-           (function (lambda ()
-                       (string-join
-                        '("* %^{Song}"
-                          ":PROPERTIES:"
-                          ":CREATED: %U"
-                          ":ARTIST: %^{Artist}"
-                          ":END:"
-                           "%?")
-                        "\n")))
-           :empty-lines 1
-           :prepend t)
-
-          ("w"
-           "WWDC Capture"
-           entry
-           (file+headline
-            "~/org/wwdc25.org"
-            "WWDC 25 Notes")
-           (function (lambda ()
-                       (string-join
-                        '("* TODO %:description"
-                          "%:annotation"
-                          "%i"
-                          "%?")
-                        "\n")))
-           :empty-lines 1)
-          ))
-
 
 (setopt org-todo-keywords
            '((sequence "TODO(t)" "IN_PROGRESS(i)" "WAITING(w)" "|" "DONE(d)")
@@ -387,7 +97,6 @@ which is done with `org-ctrl-c-ctrl-c'."
 (setopt org-imenu-depth 7)
 (add-hook 'org-mode-hook #'imenu-add-menubar-index)
 (add-hook 'org-mode-hook (lambda () (setq-local imenu-auto-rescan t)))
-
 (add-hook
  'org-mode-hook
  (lambda ()
@@ -419,11 +128,12 @@ SUFFIX - string appended to prefix
                             ("[#A]" . ?🄰 )
                             ("[#B]" . ?🄱 )
                             ("[#C]" . ?🄲 )
-                            ("#+NAME:" . ?📇 )
-                            ("#+TBLFM:" . ?🧮 )
-                            ("#+PLOT:" . ?📊 )
-                            (":CREATED:" . ?𝛼 )
-                            ("CLOCK:" . ?⌛ )
+                            ;; ("#+name:" . ?📇 )
+                            ("#+tblfm:" . ?🧮 )
+                            ("#+plot:" . ?📊 )
+                            (":created:" . ?𝛼 )
+                            ("clock:" . ?⌛ )
+                            ("#+print_bibliography:" . ?📚 )
                             ("[ ]" .  ?☐ )
                             ("[x]" . ?☑ )
                             ("[-]" . ?✈ ))))
@@ -437,7 +147,11 @@ SUFFIX - string appended to prefix
                              "export"
                              "quote"
                              "src"
-                             "verse")))
+                             "verse"
+                             "minipage"
+                             "infobox"
+                             "warningbox"
+                             "blindtext")))
        (dolist (e base-list)
          (push (cons (concat "#+begin_" e)
                      (cc/--prettify-components ?⎧ e)) prettify-symbols-alist)
@@ -560,22 +274,61 @@ SUFFIX - string appended to prefix
 (defun cc/journal-entry ()
   "Capture journal entry in Org."
   (interactive)
-  (org-capture nil "j"))
+  (if (string= (system-name) "dev7")
+      (org-capture nil "J")
+    (org-capture nil "j")))
 
 (defalias 'cc/insert-org-keyword
   (kmacro "C-a # + M-x c o m p l e t e - s y m b o l <return>"))
 
-(defun cc/list-capture-template-keys ()
-  "List out capture template keys."
-  (interactive)
-  (let* ((templates (mapcar
-                     (lambda (x) (list (nth 0 x) (nth 1 x)))
-                     org-capture-templates))
-         (buflist (mapcar
-                   (lambda (x)
-                     (format "%17s %s" (nth 0 x) (nth 1 x)))
-                   templates)))
-    (message (string-join buflist "\n"))))
+(require 'cc-org-capture)
+
+(transient-define-prefix cc/org-mode-tmenu ()
+  ["Org"
+   ["State"
+    ("t" "TODO…" org-todo)
+    ("I" "Clock In" org-clock-in
+     :if-not org-clocking-p)
+    ("O" "Clock Out" org-clock-out
+     :if org-clocking-p)
+    ("R" "Clock Report" org-clock-report)]
+
+   ["Timestamp"
+    ("." "Add…" org-timestamp)
+    ("i" "Inactive…" org-timestamp-inactive)]
+
+   ["Link"
+    ("l" "Insert…" org-insert-link)
+    ("L" "Last" org-insert-last-stored-link)]
+
+   ["Schedule"
+    ("C-s" "Schedule…" org-schedule)
+    ("C-d" "Deadline…" org-deadline)]
+
+   ["Annotate"
+    ("p" "Property…" org-set-property)
+    (":" "Tags…" org-set-tags-command)]
+
+   ["Mark"
+    ("me" "Element" org-mark-element)
+    ("ms" "Subtree" org-mark-subtree)]]
+
+  ["Edit"
+   [("b" "Add Block…" org-insert-structure-template)
+    ("r" "Insert Cite…" org-cite-insert)]
+   [("c" "Capture…" org-capture)
+    ("P" "Toggle Prettify" prettify-symbols-mode)]
+   [("s" "Sort…" org-sort)
+    ("e" "Export…" org-export-dispatch)]
+   [("C" "Clone…" org-clone-subtree-with-time-shift)]
+   [("n" "Note…" org-add-note)]
+   [("v" "Copy Visible" org-copy-visible)]]
+
+  [:class transient-row
+   (casual-lib-quit-one)
+   (casual-lib-quit-all)])
+
+(keymap-set org-mode-map "M-m" #'cc/org-mode-tmenu)
 
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here

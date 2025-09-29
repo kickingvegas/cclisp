@@ -24,13 +24,22 @@
 
 ;;; Code:
 
+(require 'compile)
 (require 'grep)
 (require 'hl-line)
-(require 'cc-main-tmenu)
+;; (require 'casual-editkit)
+;; (add-hook 'grep-mode-hook 'hl-line-mode)
+;; (keymap-set grep-mode-map "C-o" #'casual-editkit-main-tmenu)
 
-(add-hook 'grep-mode-hook 'hl-line-mode)
+(require 'casual-compile)
+(keymap-set grep-mode-map "C-o" #'casual-compile-tmenu)
+(keymap-set grep-mode-map "M-m" #'casual-compile-tmenu)
 
-(keymap-set grep-mode-map "C-o" #'casual-editkit-main-tmenu)
+(keymap-set grep-mode-map "k" #'compilation-previous-error)
+(keymap-set grep-mode-map "j" #'compilation-next-error)
+(keymap-set grep-mode-map "o" #'compilation-display-error)
+(keymap-set grep-mode-map "[" #'compilation-previous-file)
+(keymap-set grep-mode-map "]" #'compilation-next-file)
 
 (provide 'cc-grep-mode)
 ;;; cc-grep-mode.el ends here
