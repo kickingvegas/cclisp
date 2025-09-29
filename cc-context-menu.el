@@ -245,15 +245,15 @@ containing a match for regex"]))))
   (when (not inapt)
     (cc/context-menu-item-separator menu buffer-navigation-separator)
 
-    (easy-menu-add-item menu nil ["List All Buffers"
+    (easy-menu-add-item menu nil ["≣ List All Buffers"
                                   ibuffer
                                   :help "List all buffers"])
 
-    (easy-menu-add-item menu nil ["Previous Buffer"
+    (easy-menu-add-item menu nil ["← Buffer"
                                   previous-buffer
                                   :help "Go to previous buffer"])
 
-    (easy-menu-add-item menu nil ["Next Buffer"
+    (easy-menu-add-item menu nil ["→ Buffer"
                                   next-buffer
                                   :help "Go to next buffer"])))
 
