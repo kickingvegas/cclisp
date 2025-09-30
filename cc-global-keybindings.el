@@ -25,6 +25,7 @@
 
 ;;; Code:
 
+(require 'mouse)
 (require 'cc-ediff-mode)
 (require 'minibuffer)
 (require 'helm-buffers)
@@ -41,10 +42,10 @@
 (require 'ibuffer)
 (require 'magit-status)
 (require 'casual-avy)
-(require 'cc-main-tmenu)
 (require 'casual-editkit)
 (require 'minibuffer)
 (require 'recent-rgrep)
+(require 'ace-window)
 
 (keymap-global-set "C-=" #'er/expand-region)
 ;(keymap-global-set (kbd "M-g") 'goto-line)
@@ -61,7 +62,7 @@
 (keymap-global-set "<clear>" #'kill-region)
 (keymap-global-set "<f1>" #'save-buffer)
 (keymap-global-set "<f2>" #'ibuffer)
-(keymap-global-set "s-<return>" #'other-window)
+(keymap-global-set "s-<return>" #'ace-window)
 (keymap-global-set "<f3>" #'save-buffers-kill-emacs)
 (keymap-global-set "M-<f3>" #'casual-editkit-windows-tmenu)
 (keymap-global-set "<f4>" #'bookmark-jump)
@@ -91,9 +92,6 @@
 ;;(keymap-global-set (kbd "<f14>") 'save-buffer) ;logitech
 (keymap-global-set "<f15>" #'cc/ediff-revision)
 
-(keymap-global-set "<f16>" #'calc)
-(keymap-global-set "<f17>" #'run-python)
-(keymap-global-set "M-<f16>" #'cc/switch-to-scratch) ;; this need to be in main
 (keymap-global-set "C-x C-b" #'ibuffer)
 
 ;; Avy
@@ -202,6 +200,7 @@
 
 (keymap-global-set "M-\\" #'cycle-spacing)
 (keymap-global-set "s-SPC" #'cycle-spacing)
+(keymap-global-set "<mode-line> C-<mouse-3>" #'tear-off-window)
 
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here

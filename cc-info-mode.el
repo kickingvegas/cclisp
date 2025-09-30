@@ -24,8 +24,8 @@
 
 ;;; Code:
 (require 'info)
-(require 'cc-main-tmenu)
 (require 'casual-info)
+(require 'casual-editkit)
 
 (defun cc/clone-in-new-tab ()
   (interactive)

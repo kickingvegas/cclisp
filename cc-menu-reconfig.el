@@ -96,10 +96,108 @@ for REGEXP."
                     "Fill")
 
 (easy-menu-add-item global-map '(menu-bar edit)
+                    ["Colors"
+                     ns-popup-color-panel
+                     :help "Show macOS Color Picker."
+                     :visible (eq window-system 'ns)])
+
+(easy-menu-add-item global-map '(menu-bar edit)
                     ["Emoji & Symbols"
                      ns-do-show-character-palette
                      :help "Show macOS Character Palette."
                      :visible (eq window-system 'ns)])
+
+;;; Reconfigure Help Menu
+
+(defun cc/--command-in-new-frame (cmd)
+  "Invoke CMD in a new frame.
+This command creates a new frame populated by CMD."
+  (other-frame-prefix)
+  (call-interactively cmd))
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Info in New Frame"
+                     (lambda ()
+                       (interactive)
+                       (cc/--command-in-new-frame #'info))
+                     :help "Show Info manual in new frame."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["New Info in New Frame…"
+                     (lambda ()
+                       (interactive)
+                       (cc/--command-in-new-frame #'info-display-manual))
+                     :help "Show new Info manual in new frame."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Man Page in New Frame…"
+                     (lambda ()
+                       (interactive)
+                       (cc/--command-in-new-frame #'man))
+                     :help "Show man page in new frame."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Describe Symbol…"
+                     describe-symbol
+                     :help "Describe symbol."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Describe Key or Mouse…"
+                     describe-key
+                     :help "Describe key or mouse operation."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Library Commentary…"
+                     finder-commentary
+                     :help "Show commentary for Elisp library."]
+                    'emacs-tutorial)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Emacs FAQ"
+                     view-emacs-FAQ
+                     :help "View Emacs FAQ."]
+                    'describe-copying)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Emacs News"
+                     view-emacs-news
+                     :help "View Emacs news about this release."]
+                    'describe-copying)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Emacs Known Problems"
+                     view-emacs-problems
+                     :help "View Emacs known problems."]
+                    'describe-copying)
+
+(easy-menu-add-item global-map '(menu-bar help-menu)
+                    ["Send Bug Report…"
+                     report-emacs-bug
+                     :help "Send Emacs bug report."]
+                    'describe-copying)
+
+(define-key global-map [menu-bar help-menu  emacs-tutorial] nil t)
+(define-key global-map [menu-bar help-menu  emacs-tutorial-language-specific] nil t)
+(define-key global-map [menu-bar help-menu  emacs-psychotherapist] nil t)
+(define-key global-map [menu-bar help-menu  more-manuals] nil t)
+(define-key global-map [menu-bar help-menu  emacs-manual] nil t)
+(define-key global-map [menu-bar help-menu  getting-new-versions] nil t)
+(define-key global-map [menu-bar help-menu  describe-copying] nil t)
+(define-key global-map [menu-bar help-menu  describe-no-warranty] nil t)
+(define-key global-map [menu-bar help-menu  about-gnu-project] nil t)
+(define-key global-map [menu-bar help-menu  external-packages] nil t)
+(define-key global-map [menu-bar help-menu  emacs-faq] nil t)
+(define-key global-map [menu-bar help-menu  emacs-news] nil t)
+(define-key global-map [menu-bar help-menu  emacs-known-problems] nil t)
+(define-key global-map [menu-bar help-menu  emacs-manual-bug] nil t)
+(define-key global-map [menu-bar help-menu  send-emacs-bug-report] nil t)
+(define-key global-map [menu-bar help-menu  getting-new-versions] nil t)
+(define-key global-map [menu-bar help-menu  about-gnu-project] nil t)
 
 ;;; Reconfigure Tools Menu
 

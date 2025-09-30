@@ -1,6 +1,6 @@
 ;;; cc-context-menu.el --- Context Menu Customization -*- lexical-binding: t -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -56,7 +56,7 @@ CLICK - event"
     (cc/context-menu-occur-items menu)
     (cc/context-menu-vc-items menu (not (vc-responsible-backend default-directory t)))
     (cc/context-menu-region-actions-items menu (not (use-region-p)))
-    (cc/context-menu-reveal-markup-items menu)
+    (cc/context-menu-markup-items menu)
     (cc/context-menu-timekeeping-items menu)
     (cc/context-menu-word-count-items menu (not (derived-mode-p 'text-mode)))
     (easy-menu-add-item menu nil cc/wgrep-menu)
@@ -75,15 +75,22 @@ CLICK - event"
                                       count-words
                                       :help "Count words in buffer"]))))
 
-(defun cc/context-menu-reveal-markup-items (menu &optional inapt)
+(defun cc/context-menu-markup-items (menu &optional inapt)
   "Menu items to populate MENU for reveal markup section if INAPT nil."
   (when (not inapt)
     (cond
      ((derived-mode-p 'org-mode)
       (cc/context-menu-item-separator menu org-mode-operations-separator)
       (easy-menu-add-item menu nil
-                          ["Toggle Reveal Markup"
+                          ["Toggle Inline Images"
+                           org-toggle-inline-images
+                           :help "Toggle inline images"])
+
+      (easy-menu-add-item menu nil
+                          ["Show Markup"
                            visible-mode
+                           :style toggle
+                           :selected visible-mode
                            :help "Toggle making all invisible text \
 temporarily visible (Visible mode)"])
 
@@ -96,8 +103,10 @@ temporarily visible (Visible mode)"])
      ((derived-mode-p 'markdown-mode)
       (cc/context-menu-item-separator menu markdown-mode-operations-separator)
       (easy-menu-add-item menu nil
-                          ["Toggle Reveal Markup"
+                          ["Hide Markup"
                            markdown-toggle-markup-hiding
+                           :style toggle
+                           :selected markdown-hide-markup
                            :help "Toggle the display or hiding of markup"])))))
 
 (defun cc/context-menu-vc-items (menu &optional inapt)
@@ -173,7 +182,11 @@ temporarily visible (Visible mode)"])
 
     (easy-menu-add-item menu nil ["Agenda - All TODOs"
                                   (lambda () (interactive)(org-agenda nil "n"))
-                                  :help "Show Org agenda with all TODO tasks."])))
+                                  :help "Show Org agenda with all TODO tasks."])
+
+    (easy-menu-add-item menu nil ["Scratch"
+                                  scratch-buffer
+                                  :help "Switch to the *scratch* buffer."])))
 
 (defun cc/context-menu-dictionary-items (menu &optional inapt)
   "Menu items to populate MENU for <replace> section if INAPT nil."
@@ -192,17 +205,13 @@ temporarily visible (Visible mode)"])
     (if (use-region-p)
         (easy-menu-add-item menu nil
                             ["Find word in buffer (occur)"
-                             ;;occur-word-at-mouse
-                             occur-symbol-at-mouse
-                             :visible (not buffer-read-only)
-                             :label (cc/context-menu-last-word-in-region
-                                     "Occur")
-                             :help "Show all lines in the current buffer containing \
-a match for selected word"])
+                             cc/occur-selected-region
+                             :label (cc/context-menu-label "Occur")
+                             :help "Show all lines in the current buffer \
+containing a match for selected word"])
       (easy-menu-add-item menu nil
-                          ["Occur…"
-                           occur
-                           :visible (not buffer-read-only)
+                          ["Occur Symbol…"
+                           occur-symbol-at-mouse
                            :help "Show all lines in the current buffer \
 containing a match for regex"]))))
 
@@ -236,15 +245,15 @@ containing a match for regex"]))))
   (when (not inapt)
     (cc/context-menu-item-separator menu buffer-navigation-separator)
 
-    (easy-menu-add-item menu nil ["List All Buffers"
+    (easy-menu-add-item menu nil ["≣ List All Buffers"
                                   ibuffer
                                   :help "List all buffers"])
 
-    (easy-menu-add-item menu nil ["Previous Buffer"
+    (easy-menu-add-item menu nil ["← Buffer"
                                   previous-buffer
                                   :help "Go to previous buffer"])
 
-    (easy-menu-add-item menu nil ["Next Buffer"
+    (easy-menu-add-item menu nil ["→ Buffer"
                                   next-buffer
                                   :help "Go to next buffer"])))
 
