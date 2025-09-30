@@ -120,7 +120,7 @@
 (require 'cc-main-tmenu)
 (require 'cc-erc-mode)
 (require 'cc-gh)
-(require 'cc-gnuplot-mode)
+;;(require 'cc-gnuplot-mode)
 (require 'cc-bibtex-mode)
 (require 'cc-eww-mode)
 (require 'ffap)
