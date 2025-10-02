@@ -82,6 +82,7 @@
            (casual-lib-quit-all)])
 
 (keymap-set eww-mode-map "C-o" #'casual-eww-tmenu)
+(keymap-set eww-mode-map "C-c C-o" #'eww-browse-with-external-browser)
 
 (keymap-set eww-mode-map "j" #'shr-next-link)
 (keymap-set eww-mode-map "k" #'shr-previous-link)

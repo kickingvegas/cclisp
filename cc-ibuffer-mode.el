@@ -38,7 +38,9 @@
 (keymap-set ibuffer-name-map "<mouse-2>" #'ibuffer-mouse-toggle-mark)
 
 (keymap-set ibuffer-mode-filter-group-map
-            "<mouse-1>" #'ibuffer-mouse-toggle-filter-group)
+            "<mouse-1>" #'mouse-set-point)
+(keymap-set ibuffer-mode-filter-group-map
+            "<double-mouse-1>" #'ibuffer-mouse-toggle-filter-group)
 (keymap-set ibuffer-mode-filter-group-map
             "<mouse-2>" #'ibuffer-mouse-toggle-mark)
 
