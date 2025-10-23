@@ -54,7 +54,7 @@
   (let* ((args (list a b))
          (args (append c args))
          (bool-args (mapcar 'digital-value-to-bool args)))
-    (digital-bool-to-value (seq-reduce '(lambda (x y) (and x y)) bool-args t))))
+    (digital-bool-to-value (seq-reduce #'(lambda (x y) (and x y)) bool-args t))))
 
 (defun digital-nand (a b &rest c)
   "Digital nand operation on operands A, B and if available sequence C."
@@ -62,14 +62,14 @@
          (args (append c args))
          (bool-args (mapcar 'digital-value-to-bool args)))
     (digital-bool-to-value
-     (not (seq-reduce '(lambda (x y) (and x y)) bool-args t)))))
+     (not (seq-reduce #'(lambda (x y) (and x y)) bool-args t)))))
 
 (defun digital-or (a b &rest c)
   "Digital or operation on operands A, B and if available sequence C."
   (let* ((args (list a b))
          (args (append c args))
          (bool-args (mapcar 'digital-value-to-bool args)))
-    (digital-bool-to-value (seq-reduce '(lambda (x y) (or x y)) bool-args nil))))
+    (digital-bool-to-value (seq-reduce #'(lambda (x y) (or x y)) bool-args nil))))
 
 (defun digital-nor (a b &rest c)
   "Digital nor operation on operands A, B and if available sequence C."
@@ -77,7 +77,7 @@
          (args (append c args))
          (bool-args (mapcar 'digital-value-to-bool args)))
     (digital-bool-to-value
-     (not (seq-reduce '(lambda (x y) (or x y)) bool-args nil)))))
+     (not (seq-reduce #'(lambda (x y) (or x y)) bool-args nil)))))
 
 (defun digital-xor (a b)
   "Digital xor operation on operands A and B."
