@@ -28,7 +28,7 @@
 (require 'map)
 (require 'transient)
 (require 'bookmark)
-(require 'spotlight)
+;; (require 'spotlight)
 (require 'org-capture)
 (require 'org-agenda)
 (require 'org-table)

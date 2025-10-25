@@ -25,7 +25,7 @@
 ;;; Code:
 (require 'casual-editkit)
 (require 'cclisp)
-(require 'password-store-menu)
+;; (require 'password-store-menu)
 (require 'google-translate-smooth-ui)
 (require 'webpaste)
 (require 'markdown-mode)
@@ -63,10 +63,10 @@
   (transient-append-suffix 'casual-editkit-tools-tmenu "sw"
     '("gp" "Gnuplot" run-gnuplot))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "wc"
-    '("pa" "Password›" password-store-menu))
+  ;; (transient-append-suffix 'casual-editkit-tools-tmenu "wc"
+  ;;   '("pa" "Password›" password-store-menu))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "pa"
+  (transient-append-suffix 'casual-editkit-tools-tmenu "wc"
     '("gl" "Git Link›" git-link-dispatch
       :if casual-editkit-version-controlled-p))
 
@@ -97,8 +97,8 @@
   (transient-append-suffix 'casual-editkit-tools-tmenu "zo"
     '("fp" "Fireplace" fireplace))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "fp"
-    '("sn" "Snow" snow))
+  ;; (transient-append-suffix 'casual-editkit-tools-tmenu "fp"
+  ;;   '("sn" "Snow" snow))
 
   (transient-append-suffix 'casual-editkit-narrow-tmenu '(0 0)
    ["Markdown"
