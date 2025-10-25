@@ -453,7 +453,7 @@
  '(org-use-speed-commands t)
  '(package-archives
    '(("gnu" . "http://elpa.gnu.org/packages/")
-     ("melpa-stable" . "https://stable.melpa.org/packages/")))
+     ("melpa" . "https://melpa.org/packages/")))
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
    '(async auto-complete bind-key calfw calle24 citeproc company company-org-block

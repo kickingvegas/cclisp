@@ -231,8 +231,7 @@ SUFFIX - string appended to prefix
    ;; (restclient . t)
    (plantuml . t)
    (gnuplot . t)
-   ;; (swift . t)
-   ))
+   (swift . t)))
 
 (when (fboundp 'ob-swiftui-setup)
   (ob-swiftui-setup))
