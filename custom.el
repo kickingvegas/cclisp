@@ -265,6 +265,7 @@
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
       ("casual-gnuplot project" (directory . "Projects/casual-gnuplot"))
       ("erc" (mode . erc-mode)) ("numeri" (directory . "Projects/elisp/numeri"))
+      ("scrim" (directory . "Projects/scrim/Development/scrim"))
       ("casual-gnuplot" (directory . "Projects/elisp/casual-gnuplot"))
       ("casual-suite" (directory . "Projects/elisp/casual-suite"))
       ("casual-avy" (directory . "Projects/elisp/casual-avy"))
@@ -279,7 +280,7 @@
       ("elisp"
        (or (directory . ".config/emacs/elpa")
            (directory . "Emacs.app/Contents/Resources/lisp")))
-      ("devnull" (or (name . "*pelican*") (directory . "Projects/devnull"))))
+      ("devnull" (or (name . "*pelican-devnull*") (directory . "Projects/pelican/devnull"))))
      ("planning" ("Org Agenda" (name . "Org Agenda"))
       ("Documentation"
        (or (mode . Man-mode) (mode . Info-mode) (mode . help-mode)))
