@@ -31,6 +31,7 @@
 (require 'markdown-mode)
 (require 'git-link)
 (require 'gnuplot)
+(require 'casual-ediff)
 
 (defvar cc-main-tmenu-customize-enable t
   "If t then enable Casual menu customizations.")
@@ -50,6 +51,14 @@
     '("1" "Translate"
       google-translate-smooth-translate
       :inapt-if-not use-region-p
+      :transient nil))
+
+  (transient-append-suffix 'casual-editkit-main-tmenu "g"
+    '("V" "Ediff Revision"
+      casual-ediff-revision
+      :if (lambda ()
+           (and (casual-editkit-package-magit-installed-p)
+                (casual-editkit-version-controlled-p)))
       :transient nil))
 
   ;; (transient-append-suffix 'casual-editkit-main-tmenu "C"
