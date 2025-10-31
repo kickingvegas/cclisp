@@ -1033,6 +1033,12 @@ installed."
   (interactive)
   (cc/--resize-frame 86 28))
 
+(defun cc/frame-resize-for-desktop ()
+  "Resize frame for desktop usage."
+  (interactive)
+  (cc/--resize-frame 157 88)
+  (set-frame-position (selected-frame) 780 39))
+
 (defun cc/--dired-kill-image-buffer-before-delete (file &rest rest)
   "Kill buffer associated with image FILE if necessary, ignoring REST."
   (ignore rest)
