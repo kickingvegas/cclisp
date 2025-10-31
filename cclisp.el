@@ -886,8 +886,12 @@ See `cc/org-table-range' for more on RANGE object."
 (defun macports ()
   "Run MacPorts."
   (interactive)
-  (term "~/bin/port.sh")
-  (rename-buffer "*macports*"))
+  (let* ((mbuffer (get-buffer "*macports*")))
+    (if mbuffer
+        (switch-to-buffer mbuffer)
+      (progn
+        (term "~/bin/port.sh")
+        (rename-buffer "*macports*")))))
 
 (defun swift-repl ()
   "Swift repl."
