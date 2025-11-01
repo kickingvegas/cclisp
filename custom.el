@@ -264,8 +264,8 @@
       ("documentation"
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
       ("casual" (directory . "Projects/elisp/casual/"))
-      ("casual-gnuplot project" (directory . "Projects/casual-gnuplot/")) ("erc" (mode . erc-mode))
-      ("numeri" (directory . "Projects/elisp/numeri"))
+      ("casual-gnuplot project" (directory . "Projects/casual-gnuplot/"))
+      ("erc" (mode . erc-mode)) ("numeri" (directory . "Projects/elisp/numeri"))
       ("scrim" (directory . "Projects/scrim/Development/scrim"))
       ("casual-gnuplot" (directory . "Projects/elisp/casual-gnuplot/"))
       ("casual-suite" (directory . "Projects/elisp/casual-suite/"))
@@ -280,7 +280,8 @@
       ("elisp"
        (or (directory . ".config/emacs/elpa")
            (directory . "Emacs.app/Contents/Resources/lisp")))
-      ("devnull" (or (name . "*pelican-devnull*") (directory . "Projects/pelican/devnull"))))
+      ("devnull"
+       (or (name . "*pelican-devnull*") (directory . "Projects/pelican/devnull"))))
      ("planning" ("Org Agenda" (name . "Org Agenda"))
       ("Documentation"
        (or (mode . Man-mode) (mode . Info-mode) (mode . help-mode)))
@@ -456,7 +457,7 @@
      ("melpa" . "https://melpa.org/packages/")))
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
-   '(async auto-complete bind-key calfw calle24 citeproc company company-org-block
+   '(async auto-complete bind-key calfw citeproc company company-org-block
            countdown csv-mode diff-hl disk-usage ebib edit-indirect editorconfig
            eglot eldoc elfeed erc eshell-git-prompt expand-region faceup
            fireplace flycheck-package flymake git-link gnuplot go-mode
