@@ -123,6 +123,7 @@
 ;;(require 'cc-gnuplot-mode)
 (require 'cc-bibtex-mode)
 (require 'cc-eww-mode)
+(require 'cc-debbugs-mode)
 (require 'ffap)
 (require 'calle24)
 (require 'scrim-utils)

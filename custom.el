@@ -457,10 +457,10 @@
      ("melpa" . "https://melpa.org/packages/")))
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
-   '(async auto-complete bind-key calfw citeproc company company-org-block
-           countdown csv-mode diff-hl disk-usage ebib edit-indirect editorconfig
-           eglot eldoc elfeed erc eshell-git-prompt expand-region faceup
-           fireplace flycheck-package flymake git-link gnuplot go-mode
+   '(async auto-complete bind-key calfw calle24 citeproc company company-org-block
+           countdown csv-mode debbugs diff-hl disk-usage ebib edit-indirect
+           editorconfig eglot eldoc elfeed erc eshell-git-prompt expand-region
+           faceup fireplace flycheck-package flymake git-link gnuplot go-mode
            good-scroll google-this google-translate graphviz-dot-mode helm
            helm-bibtex helm-pass helm-swoop htmlize idlwave iedit js2-mode
            json-mode jsonian jsonrpc kanban keycast ledger-mode magit
