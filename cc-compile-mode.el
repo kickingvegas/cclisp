@@ -27,8 +27,10 @@
 (require 'compile)
 (require 'hl-line)
 (require 'casual-compile)
+(require 'goto-addr)
 
-(add-hook 'compilation-mode-hook 'hl-line-mode)
+(add-hook 'compilation-mode-hook #'hl-line-mode)
+(add-hook 'compilation-mode-hook #'goto-address-mode)
 
 (keymap-set compilation-mode-map "C-o" #'casual-compile-tmenu)
 (keymap-set compilation-mode-map "M-m" #'casual-compile-tmenu)

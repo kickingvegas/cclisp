@@ -35,6 +35,7 @@
 (require 'flyspell)
 (require 'compile)
 (require 'imenu)
+(require 'goto-addr)
 (require 'casual-editkit)
 
 ;;; Code:
@@ -46,6 +47,7 @@
 (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
 (add-hook 'prog-mode-hook 'hl-line-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+(add-hook 'prog-mode-hook 'goto-address-prog-mode)
 (add-hook 'prog-mode-hook #'cc/save-hook-delete-trailing-whitespace)
 (add-hook 'prog-mode-hook (lambda nil
                             (condition-case err (imenu-add-menubar-index)

@@ -26,9 +26,12 @@
 (require 'shell)
 (require 'term)
 (require 'with-editor)
+(require 'goto-addr)
 
-(add-hook 'shell-mode-hook 'context-menu-mode)
-(add-hook 'shell-mode-hook 'with-editor-export-editor)
+(add-hook 'shell-mode-hook #'context-menu-mode)
+(add-hook 'shell-mode-hook #'with-editor-export-editor)
+(add-hook 'shell-mode-hook #'goto-address-mode)
+
 (keymap-set shell-mode-map "C-p" #'comint-previous-input)
 (keymap-set shell-mode-map "C-n" #'comint-next-input)
 
