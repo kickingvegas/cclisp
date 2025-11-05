@@ -244,8 +244,8 @@ This function presumes that the buffer *pelican* is in the correct directory."
   (unless (use-region-p)
     (error "No region selected."))
 
-  (let* ((pat "\\(\\[![[:alpha:]]*\\]\\)(\\(images/.*\\))")
-         (rpat "<p align='center'>\n<img src='{static}\\2'/>\n</p>"))
+  (let* ((pat "\\(!\\[img\\]\\)(\\(images/.*\\))")
+         (rpat "<p align='center'>\n<img src='{static}\\2' alt='' />\n</p>"))
     (save-excursion
       (replace-regexp-in-region pat rpat start end))))
 
