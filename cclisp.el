@@ -227,6 +227,28 @@ This function presumes that the buffer *pelican* is in the correct directory."
         (if (display-graphic-p)
             (cc/launch-pelican))))))
 
+(defun cc/pelican-fix-image-src-refs (start end)
+  "Fix HTML image src references in region bounded by START and END."
+  (interactive "r")
+  (unless (use-region-p)
+    (error "No region selected."))
+
+  (let* ((pat "src=\\([\\\"']\\)\\(images/.*\\)\\([\\\"']\\)")
+         (rpat "src=\\1{static}\\2\\3"))
+    (save-excursion
+      (replace-regexp-in-region pat rpat start end))))
+
+(defun cc/convert-md-image-to-html (start end)
+  "Convert Markdown image to HTML in region bounded by START and END."
+  (interactive "r")
+  (unless (use-region-p)
+    (error "No region selected."))
+
+  (let* ((pat "\\(\\[![[:alpha:]]*\\]\\)(\\(images/.*\\))")
+         (rpat "<p align='center'>\n<img src='{static}\\2'/>\n</p>"))
+    (save-excursion
+      (replace-regexp-in-region pat rpat start end))))
+
 (defun cc/slugify (start end)
   "Slugify the region bounded by START and END."
   (interactive "r")
