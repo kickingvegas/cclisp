@@ -1,9 +1,8 @@
-;;; cc-ediff-mode.el --- Ediff configuration -*- lexical-binding: t; -*-
+;;; cc-debbugs-mode.el --- Debbugs Customization     -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
-
 ;; Keywords: tools
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -20,17 +19,23 @@
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
 ;;
 
 ;;; Code:
-(require 'ediff)
-(require 'casual-ediff)
+(require 'debbugs-gnu)
+(require 'hl-line)
+(require 'gnus-sum)
 
-(casual-ediff-install)
+(add-hook 'debbugs-gnu-mode-hook #'hl-line-mode)
 
-(add-hook 'ediff-keymap-setup-hook
-          (lambda ()
-            (keymap-set ediff-mode-map "C-o" #'casual-ediff-tmenu)))
+(keymap-set gnus-summary-mode-map "p" #'gnus-summary-prev-article)
+(keymap-set gnus-summary-mode-map "n" #'gnus-summary-next-article)
 
-(provide 'cc-ediff-mode)
-;;; cc-ediff-mode.el ends here
+(keymap-set gnus-summary-mode-map "P" #'gnus-summary-prev-unread-article)
+(keymap-set gnus-summary-mode-map "N" #'gnus-summary-next-unread-article)
+
+
+
+(provide 'cc-debbugs-mode)
+;;; cc-debbugs-mode.el ends here

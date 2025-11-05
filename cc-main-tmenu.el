@@ -25,12 +25,13 @@
 ;;; Code:
 (require 'casual-editkit)
 (require 'cclisp)
-(require 'password-store-menu)
+;; (require 'password-store-menu)
 (require 'google-translate-smooth-ui)
 (require 'webpaste)
 (require 'markdown-mode)
 (require 'git-link)
 (require 'gnuplot)
+(require 'casual-ediff)
 
 (defvar cc-main-tmenu-customize-enable t
   "If t then enable Casual menu customizations.")
@@ -52,6 +53,14 @@
       :inapt-if-not use-region-p
       :transient nil))
 
+  (transient-append-suffix 'casual-editkit-main-tmenu "g"
+    '("V" "Ediff Revision"
+      casual-ediff-revision
+      :if (lambda ()
+           (and (casual-editkit-package-magit-installed-p)
+                (casual-editkit-version-controlled-p)))
+      :transient nil))
+
   ;; (transient-append-suffix 'casual-editkit-main-tmenu "C"
   ;;   '("!" "Shell Command…" shell-command))
 
@@ -63,10 +72,10 @@
   (transient-append-suffix 'casual-editkit-tools-tmenu "sw"
     '("gp" "Gnuplot" run-gnuplot))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "wc"
-    '("pa" "Password›" password-store-menu))
+  ;; (transient-append-suffix 'casual-editkit-tools-tmenu "wc"
+  ;;   '("pa" "Password›" password-store-menu))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "pa"
+  (transient-append-suffix 'casual-editkit-tools-tmenu "wc"
     '("gl" "Git Link›" git-link-dispatch
       :if casual-editkit-version-controlled-p))
 
@@ -97,8 +106,8 @@
   (transient-append-suffix 'casual-editkit-tools-tmenu "zo"
     '("fp" "Fireplace" fireplace))
 
-  (transient-append-suffix 'casual-editkit-tools-tmenu "fp"
-    '("sn" "Snow" snow))
+  ;; (transient-append-suffix 'casual-editkit-tools-tmenu "fp"
+  ;;   '("sn" "Snow" snow))
 
   (transient-append-suffix 'casual-editkit-narrow-tmenu '(0 0)
    ["Markdown"

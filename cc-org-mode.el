@@ -228,7 +228,7 @@ SUFFIX - string appended to prefix
    (shell . t)
    (sql . t)
    (sqlite . t)
-   (restclient . t)
+   ;; (restclient . t)
    (plantuml . t)
    (gnuplot . t)
    (swift . t)))

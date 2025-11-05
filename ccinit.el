@@ -113,7 +113,7 @@
 (require 'cc-re-builder)
 (require 'cc-symbol-overlay)
 (require 'cc-calendar-mode)
-(require 'password-store-menu)
+;; (require 'password-store-menu)
 (require 'cc-image-mode)
 (require 'cc-make-mode)
 (require 'cc-csv-mode)
@@ -123,6 +123,7 @@
 ;;(require 'cc-gnuplot-mode)
 (require 'cc-bibtex-mode)
 (require 'cc-eww-mode)
+(require 'cc-debbugs-mode)
 (require 'ffap)
 (require 'calle24)
 (require 'scrim-utils)
@@ -178,7 +179,7 @@
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line)))
 
-(password-store-menu-enable)
+;; (password-store-menu-enable)
 
 ;;(setq window-system-default-frame-alist '((ns . ((ns-transparent-titlebar . t)))))
 

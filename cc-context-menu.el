@@ -37,6 +37,7 @@
 (require 'cc-wgrep-mode)
 (require 'cc-dired-mode)
 (require 'casual-dired)
+(require 'casual-ediff-utils)
 
 (defun cc/context-menu-addon-items (menu click)
   "Charles Choi context menu hook function using MENU and CLICK event.
@@ -127,7 +128,7 @@ temporarily visible (Visible mode)"])
     (easy-menu-add-item
      menu nil
      ["Ediff revision…"
-      cc/ediff-revision-from-menu
+      casual-ediff-revision-from-menu
       :visible (and (bound-and-true-p buffer-file-name)
                     (vc-registered (buffer-file-name)))
       :help "Ediff this file with revision"])))

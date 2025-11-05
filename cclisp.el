@@ -28,7 +28,7 @@
 (require 'map)
 (require 'transient)
 (require 'bookmark)
-(require 'spotlight)
+;; (require 'spotlight)
 (require 'org-capture)
 (require 'org-agenda)
 (require 'org-table)
@@ -886,8 +886,12 @@ See `cc/org-table-range' for more on RANGE object."
 (defun macports ()
   "Run MacPorts."
   (interactive)
-  (term "~/bin/port.sh")
-  (rename-buffer "*macports*"))
+  (let* ((mbuffer (get-buffer "*macports*")))
+    (if mbuffer
+        (switch-to-buffer mbuffer)
+      (progn
+        (term "~/bin/port.sh")
+        (rename-buffer "*macports*")))))
 
 (defun swift-repl ()
   "Swift repl."
@@ -1032,6 +1036,12 @@ installed."
   "Resize frame for terminal screenshot."
   (interactive)
   (cc/--resize-frame 86 28))
+
+(defun cc/frame-resize-for-desktop ()
+  "Resize frame for desktop usage."
+  (interactive)
+  (cc/--resize-frame 157 88)
+  (set-frame-position (selected-frame) 780 39))
 
 (defun cc/--dired-kill-image-buffer-before-delete (file &rest rest)
   "Kill buffer associated with image FILE if necessary, ignoring REST."

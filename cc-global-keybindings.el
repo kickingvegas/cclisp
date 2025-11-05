@@ -26,7 +26,7 @@
 ;;; Code:
 
 (require 'mouse)
-(require 'cc-ediff-mode)
+(require 'casual-ediff-utils)
 (require 'minibuffer)
 (require 'helm-buffers)
 (require 'neotree)
@@ -90,7 +90,8 @@
 (keymap-global-set "C-<f13>" #'treemacs)
 (keymap-global-set "<f14>" #'eshell) ;regular
 ;;(keymap-global-set (kbd "<f14>") 'save-buffer) ;logitech
-(keymap-global-set "<f15>" #'cc/ediff-revision)
+(keymap-global-set "<f15>" #'casual-ediff-revision)
+(keymap-global-set "M-<f12>" #'casual-ediff-revision)
 
 (keymap-global-set "C-x C-b" #'ibuffer)
 
