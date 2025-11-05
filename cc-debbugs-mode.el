@@ -26,6 +26,8 @@
 (require 'debbugs-gnu)
 (require 'hl-line)
 (require 'gnus-sum)
+(require 'casual-lib)
+
 
 (add-hook 'debbugs-gnu-mode-hook #'hl-line-mode)
 
@@ -36,6 +38,23 @@
 (keymap-set gnus-summary-mode-map "N" #'gnus-summary-next-unread-article)
 
 
+(transient-define-prefix cc/debbugs-tmenu ()
+  ["Debbugs "
+   ["Emacs"
+    ("b" "Bugs" debbugs-gnu-bugs)
+    ("p" "Package" debbugs-gnu-package)
+    ("m" "My Bugs" debbugs-gnu-my-open-bugs)]
+
+   ["Org"
+    ("o" "Org" debbugs-org-bugs)
+    ]]
+
+  [:class transient-row
+   (casual-lib-quit-one)
+   (casual-lib-quit-all)
+   ("q" "Quit" quit-window)])
+
+(keymap-set debbugs-gnu-mode-map "C-o" #'cc/debbugs-tmenu)
 
 (provide 'cc-debbugs-mode)
 ;;; cc-debbugs-mode.el ends here
