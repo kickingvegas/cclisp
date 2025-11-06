@@ -31,6 +31,7 @@
 
 (add-hook 'compilation-mode-hook #'hl-line-mode)
 (add-hook 'compilation-mode-hook #'goto-address-mode)
+(add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 
 (keymap-set compilation-mode-map "C-o" #'casual-compile-tmenu)
 (keymap-set compilation-mode-map "M-m" #'casual-compile-tmenu)
