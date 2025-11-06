@@ -26,7 +26,10 @@
 (require 'bookmark)
 (require 'erc-nicks)
 (require 'erc-backend)
+(require 'goto-addr)
 (require 'casual-editkit)
+
+(add-hook 'erc-mode-hook #'goto-address-mode)
 
 (transient-define-prefix casual-erc-tmenu ()
   "Transient menu for ERC."
