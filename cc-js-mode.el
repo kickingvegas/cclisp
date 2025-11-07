@@ -24,7 +24,7 @@
 
 ;;; Code:
 
-(add-hook 'js-mode-hook 'hs-minor-mode)
+(add-hook 'js-mode-hook #'hs-minor-mode)
 
 (provide 'cc-js-mode)
 ;;; cc-js-mode.el ends here

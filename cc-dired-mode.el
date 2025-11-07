@@ -32,9 +32,9 @@
 (require 'casual-dired)
 (require 'casual-editkit)
 
-(add-hook 'dired-mode-hook 'hl-line-mode)
-(add-hook 'dired-mode-hook 'context-menu-mode)
-(add-hook 'dired-mode-hook 'dired-async-mode)
+(add-hook 'dired-mode-hook #'hl-line-mode)
+(add-hook 'dired-mode-hook #'context-menu-mode)
+(add-hook 'dired-mode-hook #'dired-async-mode)
 (add-hook
  'dired-mode-hook
  (lambda ()
@@ -64,7 +64,7 @@
 (keymap-set image-dired-thumbnail-mode-map "n" #'image-dired-display-next)
 (keymap-set image-dired-thumbnail-mode-map "p" #'image-dired-display-previous)
 
-(add-hook 'wdired-mode-hook 'superword-mode)
+(add-hook 'wdired-mode-hook #'superword-mode)
 
 (provide 'cc-dired-mode)
 ;;; cc-dired-mode.el ends here

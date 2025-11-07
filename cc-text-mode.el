@@ -24,10 +24,10 @@
 
 ;;; Code:
 
-(add-hook 'text-mode-hook 'visual-line-mode)
-(add-hook 'text-mode-hook 'context-menu-mode)
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'text-mode-hook 'company-mode)
+(add-hook 'text-mode-hook #'visual-line-mode)
+(add-hook 'text-mode-hook #'context-menu-mode)
+(add-hook 'text-mode-hook #'flyspell-mode)
+(add-hook 'text-mode-hook #'company-mode)
 
 (add-hook 'text-mode-hook (lambda ()
                             (setq-local line-spacing 0.1)))

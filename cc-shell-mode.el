@@ -42,7 +42,7 @@
 ;; (keymap-set shell-mode-map "C-<up>" #'backward-up-list)
 ;; (keymap-set shell-mode-map "C-<down>" #'down-list)
 
-(add-hook 'term-mode-hook 'with-editor-export-editor)
+(add-hook 'term-mode-hook #'with-editor-export-editor)
 
 (provide 'cc-shell-mode)
 ;;; cc-shell-mode.el ends here
