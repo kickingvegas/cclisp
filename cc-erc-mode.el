@@ -101,7 +101,7 @@
       (setf (erc-response.contents parsed) msg)
       nil)))
 
-(add-hook #'erc-server-PRIVMSG-functions #'cc/erc-redact)
+(add-hook 'erc-server-PRIVMSG-functions #'cc/erc-redact)
 
 (provide 'cc-erc-mode)
 ;;; cc-erc-mode.el ends here
