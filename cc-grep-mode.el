@@ -28,7 +28,7 @@
 (require 'grep)
 (require 'hl-line)
 ;; (require 'casual-editkit)
-;; (add-hook 'grep-mode-hook 'hl-line-mode)
+;; (add-hook 'grep-mode-hook #'hl-line-mode)
 ;; (keymap-set grep-mode-map "C-o" #'casual-editkit-main-tmenu)
 
 (require 'casual-compile)

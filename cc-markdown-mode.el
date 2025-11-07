@@ -35,7 +35,7 @@
   "Major mode for editing Markdown files" t)
 
 (add-hook 'markdown-mode-hook #'variable-pitch-mode)
-;;(add-hook 'markdown-mode-hook 'markdown-toggle-markup-hiding)
+;;(add-hook 'markdown-mode-hook #'markdown-toggle-markup-hiding)
 
 (add-hook 'markdown-mode-hook #'turn-on-orgtbl)
 

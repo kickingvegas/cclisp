@@ -56,7 +56,7 @@
 (setopt eshell-prompt-function #'cc/prompt-function)
 ;;(setopt eshell-banner-message (format "Eshell ⌨️\n%s" (sunrise-sunset)))
 
-;;(add-hook 'eshell-mode-hook 'company-mode)
+;;(add-hook 'eshell-mode-hook #'company-mode)
 (add-hook 'eshell-mode-hook #'hl-line-mode)
 (add-hook 'eshell-mode-hook #'with-editor-export-editor)
 (add-hook 'eshell-mode-hook #'goto-address-mode)
