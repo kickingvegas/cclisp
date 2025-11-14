@@ -1065,6 +1065,41 @@ installed."
   (cc/--resize-frame 157 88)
   (set-frame-position (selected-frame) 780 39))
 
+(defun cc/frame-resize (arg)
+  "Resize frame to prompted value, moving frame if prefix ARG is non-nil.
+
+This command is tuned for macOS using a single display."
+  (interactive "P")
+  (let* ((choice
+          (completing-read "Display Configuration: "
+                           '("desktop" "macbook" "tty" "writer" "video")
+                           nil nil "writer"))
+         (move (not arg)))
+    (cond
+     ((string-equal choice "desktop")
+      (cc/--resize-frame 157 88)
+      (if move
+          (set-frame-position (selected-frame) 780 39)))
+
+     ((string-equal choice "macbook")
+      (cc/--resize-frame 164 49)
+      (if move
+          (set-frame-position (selected-frame) 0 38)))
+
+     ((string-equal choice "video")
+      (cc/--resize-frame 108 39))
+
+     ((string-equal choice "tty")
+      (cc/--resize-frame 86 28))
+
+     ((string-equal choice "writer")
+      (cc/--resize-frame 141 71)
+      (if move
+          (set-frame-position (selected-frame) 852 192)))
+
+     (t
+      (error "Unknown display size")))))
+
 (defun cc/--dired-kill-image-buffer-before-delete (file &rest rest)
   "Kill buffer associated with image FILE if necessary, ignoring REST."
   (ignore rest)
