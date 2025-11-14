@@ -287,11 +287,15 @@ SUFFIX - string appended to prefix
   ["Org"
    ["State"
     ("t" "TODO…" org-todo)
-    ("I" "Clock In" org-clock-in
+    ("I" "⏱️ In" org-clock-in
      :if-not org-clocking-p)
-    ("O" "Clock Out" org-clock-out
+    ("O" "⏱️ Out" org-clock-out
      :if org-clocking-p)
-    ("R" "Clock Report" org-clock-report)]
+    ("R" "⏱️ Report" org-clock-report)]
+
+   ["Mark"
+    ("ms" "Subtree" org-mark-subtree)
+    ("me" "Element" org-mark-element)]
 
    ["Timestamp"
     ("." "Add…" org-timestamp)
@@ -307,25 +311,25 @@ SUFFIX - string appended to prefix
 
    ["Annotate"
     ("p" "Property…" org-set-property)
-    (":" "Tags…" org-set-tags-command)]
-
-   ["Mark"
-    ("me" "Element" org-mark-element)
-    ("ms" "Subtree" org-mark-subtree)]]
+    (":" "Tags…" org-set-tags-command)]]
 
   ["Edit"
    [("b" "Add Block…" org-insert-structure-template)
     ("r" "Insert Cite…" org-cite-insert)]
    [("c" "Capture…" org-capture)
-    ("P" "Toggle Prettify" prettify-symbols-mode)]
+    ("P" "Toggle Prettify" prettify-symbols-mode
+     :description (lambda () (casual-lib-checkbox-label prettify-symbols-mode
+                                                   "Prettify")))]
    [("s" "Sort…" org-sort)
     ("e" "Export…" org-export-dispatch)]
-   [("C" "Clone…" org-clone-subtree-with-time-shift)]
-   [("n" "Note…" org-add-note)]
-   [("v" "Copy Visible" org-copy-visible)]]
+   [("C" "Clone…" org-clone-subtree-with-time-shift)
+    ("-" "^c -…" org-ctrl-c-minus :transient t)]
+   [("n" "Note…" org-add-note)
+    ("v" "Copy Visible" org-copy-visible)]]
 
   [:class transient-row
    (casual-lib-quit-one)
+   ("RET" "Dismiss" transient-quit-all)
    (casual-lib-quit-all)])
 
 (keymap-set org-mode-map "M-m" #'cc/org-mode-tmenu)
