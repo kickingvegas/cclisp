@@ -23,66 +23,18 @@
 ;;
 
 ;;; Code:
-(require 'csv-mode)
-(require 'casual-lib)
-(require 'casual-editkit-utils)
+
+(require 'casual-csv)
 
 (add-hook 'csv-mode-hook
           (lambda ()
-            (visual-line-mode -1)))
+            (visual-line-mode -1)
+            (toggle-truncate-lines 1)))
 
 (add-hook 'csv-mode-hook #'csv-guess-set-separator)
 (add-hook 'csv-mode-hook #'csv-align-mode)
 
-(transient-define-prefix casual-csv-tmenu ()
-  :refresh-suffixes t
-  ["Casual CSV"
-   ["Field"
-    :pad-keys t
-    ("S-TAB" "←" csv-backtab-command :transient t)
-    ("TAB" "→" csv-tab-command :transient t)
-    ("m" "Mark" mark-sexp)
-    ("c" "Copy" casual-editkit-copy-sexp)]
-
-   ["Navigation"
-    :pad-keys t
-    ("p" "↑" previous-line :transient t)
-    ("n" "↓" next-line :transient t)
-    ("C-a" "⇤" move-beginning-of-line :transient t)
-    ("C-e" "⇥" move-end-of-line :transient t)]
-
-   ["Sort"
-    :if (lambda () (not buffer-read-only))
-    ("s" "Fields" csv-sort-fields)
-    ("N" "Numeric" csv-sort-numeric-fields)
-    ("r" "Reverse" csv-reverse-region
-     :if use-region-p)]
-
-   ["Fields"
-    :if (lambda () (not buffer-read-only))
-    ("k" "Kill" csv-kill-fields)
-    ("y" "Yank" csv-yank-fields)]
-
-   ["Misc"
-    ("a" "Toggle Align" csv-align-mode
-     :transient t)
-    ("t" "Transpose" csv-transpose
-     :if (lambda () (not buffer-read-only)))
-    ("S" "Separator…" csv-set-separator)
-    ("o" "Occur…" occur)
-
-    ("v" "View" view-mode
-     :if (lambda () (not buffer-read-only))
-     :transient t)
-
-    ("e" "Edit" View-exit
-     :if (lambda () buffer-read-only)
-     :transient t)
-    ]]
-  )
-
 (keymap-set csv-mode-map "M-m" #'casual-csv-tmenu)
-
 
 (provide 'cc-csv-mode)
 ;;; cc-csv-mode.el ends here
