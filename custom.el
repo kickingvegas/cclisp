@@ -461,22 +461,20 @@
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
    '(async auto-complete bind-key calfw calle24 citeproc company company-org-block
-           countdown csv-mode debbugs diff-hl disk-usage ebib edit-indirect
-           editorconfig eglot eldoc elfeed erc eshell-git-prompt expand-region
-           faceup fireplace flycheck-package flymake git-link gnuplot go-mode
-           good-scroll google-this google-translate graphviz-dot-mode helm
-           helm-bibtex helm-pass helm-swoop htmlize idlwave iedit js2-mode
-           json-mode jsonian jsonrpc kanban keycast ledger-mode magit
-           markdown-mode math-symbol-lists modus-themes neotree numeri ob-swift
-           ob-swiftui org org-outline-numbering org-ql org-re-reveal
-           org-superstar orgtbl-aggregate osx-dictionary ox-gfm ox-gist ox-jira
-           ox-slack ox-trac package-lint paredit password-store pbcopy pkg-info
-           plantuml-mode project python python-mode rainbow-mode
-           reveal-in-folder scpaste show-font smart-mode-line-powerline-theme
-           soap-client solarized-theme sqlite-mode-extras sr-speedbar svg-clock
-           swift-mode symbol-overlay tj3-mode toc-org track-changes tramp
-           transpose-frame treemacs use-package verilog-mode visual-regexp
-           visual-regexp-steroids vtable webpaste wgrep which-key
+           countdown csv-mode debbugs disk-usage ebib edit-indirect editorconfig
+           eglot eldoc elfeed erc eshell-git-prompt expand-region faceup
+           fireplace flycheck-package gnuplot go-mode good-scroll google-this
+           google-translate graphviz-dot-mode helm-bibtex helm-pass helm-swoop
+           htmlize idlwave iedit js2-mode json-mode jsonian jsonrpc kanban
+           ledger-mode magit math-symbol-lists neotree numeri ob-swift
+           ob-swiftui org-outline-numbering org-ql org-re-reveal org-superstar
+           osx-dictionary ox-gfm ox-gist ox-jira ox-slack ox-trac package-lint
+           paredit password-store pbcopy pkg-info plantuml-mode project python
+           rainbow-mode reveal-in-folder scpaste show-font
+           smart-mode-line-powerline-theme soap-client solarized-theme
+           sqlite-mode-extras sr-speedbar svg-clock swift-mode symbol-overlay
+           tj3-mode toc-org track-changes transpose-frame treemacs use-package
+           visual-regexp visual-regexp-steroids vtable webpaste wgrep which-key
            window-tool-bar xref yaml-mode yasnippet yasnippet-snippets ztree))
  '(pixel-scroll-precision-mode nil)
  '(plantuml-default-exec-mode 'executable)
@@ -516,6 +514,7 @@
  '(transient-align-variable-pitch t)
  '(trash-directory "~/.Trash")
  '(use-file-dialog nil)
+ '(use-short-answers t)
  '(user-mail-address "kickingvegas@gmail.com")
  '(vc-follow-symlinks nil)
  '(vc-make-backup-files nil)

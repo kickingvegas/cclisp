@@ -93,7 +93,7 @@
 (keymap-global-set "<f15>" #'casual-ediff-revision)
 (keymap-global-set "M-<f12>" #'casual-ediff-revision)
 
-(keymap-global-set "C-x C-b" #'ibuffer)
+(keymap-substitute (current-global-map) #'list-buffers #'ibuffer)
 
 ;; Avy
 (keymap-global-set "M-g" #'casual-avy-tmenu)

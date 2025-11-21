@@ -23,43 +23,18 @@
 ;;
 
 ;;; Code:
-(require 'csv-mode)
-(require 'casual-lib)
+
+(require 'casual-csv)
 
 (add-hook 'csv-mode-hook
           (lambda ()
-            (visual-line-mode -1)))
+            (visual-line-mode -1)
+            (toggle-truncate-lines 1)))
 
 (add-hook 'csv-mode-hook #'csv-guess-set-separator)
 (add-hook 'csv-mode-hook #'csv-align-mode)
 
-(transient-define-prefix casual-csv-tmenu ()
-  ["Casual CSV"
-
-   ["Display"
-    ("a" "Align" csv-align-fields)
-    ("u" "Unalign" csv-unalign-fields)]
-
-   ["Sort"
-    ("s" "Fields" csv-sort-fields)
-    ("n" "Numeric" csv-sort-numeric-fields)
-    ("r" "Reverse" csv-reverse-region
-     :if use-region-p)]
-
-   ["Fields"
-    ("k" "Kill" csv-kill-fields)
-    ("y" "Yank" csv-yank-fields)]
-
-   ["Misc"
-    ("t" "Transpose" csv-transpose)
-    ("S" "Separator…" csv-set-separator)]
-   ]
-
-
-  )
-
 (keymap-set csv-mode-map "M-m" #'casual-csv-tmenu)
-
 
 (provide 'cc-csv-mode)
 ;;; cc-csv-mode.el ends here
