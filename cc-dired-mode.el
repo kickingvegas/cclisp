@@ -54,6 +54,8 @@
 (keymap-set dired-mode-map "M-j" #'dired-goto-subdir)
 (keymap-set dired-mode-map ";" #'image-dired-dired-toggle-marked-thumbs)
 (keymap-set dired-mode-map "<f1>" #'dired-other-window)
+(keymap-set dired-mode-map "." #'dired-up-directory)
+
 
 ;; Added to be consistent with IBuffer
 (keymap-set dired-mode-map "<backtab>" #'dired-prev-subdir)
