@@ -103,6 +103,9 @@ which is done with `org-ctrl-c-ctrl-c'."
    (add-to-list (make-local-variable 'company-backends)
                 'company-org-block)))
 
+(add-hook 'org-mode-hook
+          (lambda () (add-hook 'ediff-prepare-buffer-hook #'org-fold-show-all)))
+
 (defun cc/--prettify-components (prefix suffix)
   "Generate a components argument for `prettify-symbols-alist'.
 PREFIX - character to use first
