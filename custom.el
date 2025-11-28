@@ -461,17 +461,17 @@
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
    '(async auto-complete bind-key calfw calle24 citeproc company company-org-block
-           countdown csv-mode debbugs disk-usage ebib edit-indirect editorconfig
-           eglot eldoc elfeed erc eshell-git-prompt expand-region faceup
-           fireplace flycheck-package gnuplot go-mode good-scroll google-this
-           google-translate graphviz-dot-mode helm-bibtex helm-pass helm-swoop
-           htmlize idlwave iedit js2-mode json-mode jsonian jsonrpc kanban
-           ledger-mode magit math-symbol-lists neotree numeri ob-swift
-           ob-swiftui org-outline-numbering org-ql org-re-reveal org-superstar
-           osx-dictionary ox-gfm ox-gist ox-jira ox-slack ox-trac package-lint
-           paredit password-store pbcopy pkg-info plantuml-mode project python
-           rainbow-mode reveal-in-folder scpaste show-font
-           smart-mode-line-powerline-theme soap-client solarized-theme
+           countdown csv-mode debbugs dired-rsync-transient disk-usage ebib
+           edit-indirect editorconfig eglot eldoc elfeed erc eshell-git-prompt
+           expand-region faceup fireplace flycheck-package gnuplot go-mode
+           good-scroll google-this google-translate graphviz-dot-mode
+           helm-bibtex helm-pass helm-swoop htmlize idlwave iedit js2-mode
+           json-mode jsonian jsonrpc kanban ledger-mode magit math-symbol-lists
+           neotree numeri ob-swift ob-swiftui org-outline-numbering org-ql
+           org-re-reveal org-superstar osx-dictionary ox-gfm ox-gist ox-jira
+           ox-slack ox-trac package-lint paredit password-store pbcopy pkg-info
+           plantuml-mode project python rainbow-mode reveal-in-folder scpaste
+           show-font smart-mode-line-powerline-theme soap-client solarized-theme
            sqlite-mode-extras sr-speedbar svg-clock swift-mode symbol-overlay
            tj3-mode toc-org track-changes transpose-frame treemacs use-package
            visual-regexp visual-regexp-steroids vtable webpaste wgrep which-key
@@ -562,6 +562,7 @@
  '(minibuffer-prompt ((((type x ns) (class color) (background light)) (:foreground "dark magenta")) (((type x ns) (class color) (background dark)) (:foreground "orange")) (((type tty)) (:foreground "cyan"))))
  '(mode-line ((((type ns) (background light)) (:background "#FF7700" :foreground "gray20" :box (:line-width (5 . 5) :color "#FF7700" :style flat-button) :height 1.0 :family "SF Compact Rounded")) (((type ns) (background dark)) (:background "#0bc9de" :foreground "gray20" :box (:line-width (5 . 5) :color "#0bc9de" :style flat-button) :height 1.0 :family "SF Compact Rounded")) (((type x pgtk) (background light)) (:background "#FF7700" :foreground "gray20" :box (:line-width (2 . 2) :color "#FF7700" :style flat-button) :height 1.0 :family "Latin Modern Sans")) (((type x pgtk) (background dark)) (:background "#0bc9de" :foreground "gray20" :box (:line-width (2 . 2) :color "#0bc9de" :style flat-button) :height 1.0 :family "Latin Modern Sans")) (((type tty)) (:background "#0bc9de" :foreground "gray20"))))
  '(mode-line-inactive ((((type ns) (background light)) (:inherit mode-line :background "#DDDDDD" :foreground "#686868" :box (:line-width (5 . 5) :color "#DDDDDD" :style flat-button))) (((type ns) (background dark)) (:inherit mode-line :background "#333333" :foreground "#686868" :box (:line-width (5 . 5) :color "#333333" :style flat-button))) (((type x pgtk) (background light)) (:inherit mode-line :background "#DDDDDD" :foreground "#686868" :box (:line-width (2 . 2) :color "#DDDDDD" :style flat-button))) (((type x pgtk) (background dark)) (:inherit mode-line :background "#333333" :foreground "#686868" :box (:line-width (2 . 2) :color "#333333" :style flat-button))) (((type tty)) (:background "#333333" :foreground "#686868"))))
+ '(org-agenda-diary ((((type x w32 ns pgtk) (class color) (background light)) (:inherit default :background "#D9E7CB" :foreground "#65265C")) (((type x w32 ns pgtk) (class color) (background dark)) (:inherit default :background "#65265C" :foreground "#D9E7CB")) (((class color)) (:inherit default :background "black" :foreground "Magenta"))))
  '(org-agenda-done ((t (:foreground "snow4"))))
  '(org-agenda-structure ((((type x ns) (class color) (background light)) (:foreground "Blue1")) (((type x ns) (class color) (background dark)) (:foreground "LightSkyBlue")) (((type tty) (class color)) (:foreground "light sky blue")) (t (:weight bold))))
  '(org-block ((t (:inherit fixed-pitch :extend t :height 0.85))))
