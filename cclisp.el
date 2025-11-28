@@ -210,7 +210,8 @@ This function presumes that the buffer *pelican* is in the correct directory."
 (defun cc/devserver ()
   "Open Pelican devserver for website chosen by completing read."
   (interactive)
-  (let* ((choice (completing-read "Server: " '("devnull" "captee" "scrim")))
+  (let* ((choice (completing-read "Server: " '("devnull" "captee" "scrim")
+                                  nil nil "devnull"))
          (blog-path (concat "~/Projects/pelican/" choice))
          (blog-buffer (format "*pelican-%s*" choice))
          (cd-blog-path (format "cd %s\n" blog-path)))
@@ -248,6 +249,18 @@ This function presumes that the buffer *pelican* is in the correct directory."
          (rpat "<p align='center'>\n<img src='{static}\\2' alt='' />\n</p>"))
     (save-excursion
       (replace-regexp-in-region pat rpat start end))))
+
+(defun cc/markdown-insert-src-cookie ()
+  "Insert Markdown source block cookie."
+  (interactive)
+  (let ((lang (completing-read "Language: " '("elisp"
+                                               "python"
+                                               "swift"
+                                               "javascript"
+                                               "c"
+                                               "objc"
+                                               "java") nil nil "elisp")))
+    (insert (concat "\n    " "#!" lang))))
 
 (defun cc/slugify (start end)
   "Slugify the region bounded by START and END."
