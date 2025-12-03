@@ -318,7 +318,8 @@ SUFFIX - string appended to prefix
 
   ["Edit"
    [("b" "Add Block…" org-insert-structure-template)
-    ("r" "Insert Cite…" org-cite-insert)]
+    ("r" "Insert Cite…" org-cite-insert)
+    ("y" "Yank Markdown" cc/yank-markdown-as-org)]
    [("c" "Capture…" org-capture)
     ("P" "Toggle Prettify" prettify-symbols-mode
      :description (lambda () (casual-lib-checkbox-label prettify-symbols-mode

@@ -99,7 +99,13 @@ temporarily visible (Visible mode)"])
                           ["Paste Last Org Link"
                            org-insert-last-stored-link
                            :enable (cc/org-stored-links-p)
-                           :help "Insert the last link stored in org-stored-links"]))
+                           :help "Insert the last link stored in org-stored-links"])
+
+      (easy-menu-add-item menu nil
+                    ["Paste Markdown as Org"
+                     cc/yank-markdown-as-org
+                     :visible (derived-mode-p 'org-mode)
+                     :help "Paste Markdown text in clipboard (kill-ring) as Org"]))
 
      ((derived-mode-p 'markdown-mode)
       (cc/context-menu-item-separator menu markdown-mode-operations-separator)

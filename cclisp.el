@@ -971,6 +971,21 @@ installed."
    start end
    "pandoc -f markdown -t org --wrap=preserve" t t))
 
+(defun cc/yank-markdown-as-org ()
+  "Yank Markdown text as Org.
+
+This command will convert Markdown text in the top of the `kill-ring'
+and convert it to Org using the pandoc utility."
+  (interactive)
+  (save-excursion
+    (with-temp-buffer
+      (yank)
+      (shell-command-on-region
+       (point-min) (point-max)
+       "pandoc -f markdown -t org --wrap=preserve" t t)
+      (kill-region (point-min) (point-max)))
+    (yank)))
+
 (defun cc/split-window-right ()
   "Invoke `split-window-right', making the new window active."
   (interactive)
