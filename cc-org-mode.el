@@ -104,7 +104,7 @@ which is done with `org-ctrl-c-ctrl-c'."
                 'company-org-block)))
 
 (add-hook 'org-mode-hook
-          (lambda () (add-hook 'ediff-prepare-buffer-hook #'org-fold-show-all)))
+          (lambda () (add-hook 'ediff-prepare-buffer-hook #'org-fold-show-all 0 t)))
 
 (defun cc/--prettify-components (prefix suffix)
   "Generate a components argument for `prettify-symbols-alist'.
