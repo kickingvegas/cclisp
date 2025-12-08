@@ -102,6 +102,12 @@ temporarily visible (Visible mode)"])
                            :help "Insert the last link stored in org-stored-links"])
 
       (easy-menu-add-item menu nil
+                    ["Copy as Markdown"
+                     mb/org-copy-region-as-markdown
+                     :visible (and (derived-mode-p 'org-mode) (use-region-p))
+                     :help "Copy region as Markdown"])
+
+      (easy-menu-add-item menu nil
                     ["Paste Markdown as Org"
                      cc/yank-markdown-as-org
                      :visible (derived-mode-p 'org-mode)

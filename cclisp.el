@@ -232,7 +232,7 @@ This function presumes that the buffer *pelican* is in the correct directory."
   "Fix HTML image src references in region bounded by START and END."
   (interactive "r")
   (unless (use-region-p)
-    (error "No region selected."))
+    (error "No region selected"))
 
   (let* ((pat "src=\\([\\\"']\\)\\(images/.*\\)\\([\\\"']\\)")
          (rpat "src=\\1{static}\\2\\3"))
@@ -243,7 +243,7 @@ This function presumes that the buffer *pelican* is in the correct directory."
   "Convert Markdown image to HTML in region bounded by START and END."
   (interactive "r")
   (unless (use-region-p)
-    (error "No region selected."))
+    (error "No region selected"))
 
   (let* ((pat "\\(!\\[img\\]\\)(\\(images/.*\\))")
          (rpat "<p align='center'>\n<img src='{static}\\2' alt='' />\n</p>"))
@@ -970,6 +970,20 @@ installed."
   (shell-command-on-region
    start end
    "pandoc -f markdown -t org --wrap=preserve" t t))
+
+(defun mb/org-copy-region-as-markdown ()
+  "Copy the region (in Org) to the system clipboard as Markdown.
+
+Code from https://mbork.pl/2021-05-02_Org-mode_to_Markdown_via_the_clipboard"
+  (interactive)
+  (if (use-region-p)
+      (let* ((region
+              (buffer-substring-no-properties
+                      (region-beginning)
+                      (region-end)))
+             (markdown
+              (org-export-string-as region 'md t '(:with-toc nil))))
+        (gui-set-selection 'CLIPBOARD markdown))))
 
 (defun cc/yank-markdown-as-org ()
   "Yank Markdown text as Org.
