@@ -30,6 +30,7 @@
 (require 'cc-style-text-menu)
 (require 'org-table)
 (require 'imenu)
+(require 'cc-blog-utils)
 (require 'casual-lib)
 
 (defvar markdown-mode-map)
