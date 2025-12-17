@@ -124,6 +124,7 @@
 (require 'cc-bibtex-mode)
 (require 'cc-eww-mode)
 (require 'cc-debbugs-mode)
+(require 'cc-blog-utils)
 (require 'ffap)
 (require 'calle24)
 (require 'scrim-utils)
@@ -178,6 +179,14 @@
     (xterm-mouse-mode 1)
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line)))
+
+(defun cc/workplace ()
+  "Initialize workplace."
+  (interactive)
+  (cc/frame-resize nil)
+  (status-report)
+  (org-agenda nil "n")
+  (eshell t))
 
 ;; (password-store-menu-enable)
 

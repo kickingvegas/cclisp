@@ -187,95 +187,6 @@ If prefix ARG is invoked, then macOS open is used to open the PDF file."
   (declare (pure t) (side-effect-free t))
   (replace-regexp-in-string (regexp-quote old) new s t t))
 
-(defun cc/pelican-timestamp ()
-  "Insert a timestamp recognized by the Pelican static site generator."
-  (interactive)
-  (insert (format-time-string "%Y-%m-%d %H:%M")))
-
-(defun cc/new-blog-post ()
-  "Create a new blog post in a buffer for “notes from /dev/null”."
-  (interactive)
-    (cd "~/Projects/devnull/content")
-    (find-file (format-time-string "nfdn_%Y_%m_%d_%H%M%S.md"))
-    (yas-insert-snippet))
-
-(defun cc/launch-pelican ()
-  "Launch a local instance of the Pelican static site server.
-This function presumes that the buffer *pelican* is in the correct directory."
-  (interactive)
-  (process-send-string (get-buffer-process "*pelican*") "make devserver\n")
-  (sleep-for 3)
-  (shell-command "open http://localhost:8000"))
-
-(defun cc/devserver ()
-  "Open Pelican devserver for website chosen by completing read."
-  (interactive)
-  (let* ((choice (completing-read "Server: " '("devnull" "captee" "scrim")
-                                  nil nil "devnull"))
-         (blog-path (concat "~/Projects/pelican/" choice))
-         (blog-buffer (format "*pelican-%s*" choice))
-         (cd-blog-path (format "cd %s\n" blog-path)))
-
-    (if (get-buffer blog-buffer)
-        (switch-to-buffer blog-buffer)
-      (progn
-        (shell-new)
-        (rename-buffer blog-buffer)
-        (process-send-string (get-buffer-process blog-buffer) "cd ~/Projects/pelican\n")
-        (process-send-string (get-buffer-process blog-buffer) "source .venv/bin/activate\n")
-        (process-send-string (get-buffer-process blog-buffer) cd-blog-path)
-        (setq-local default-directory blog-path)
-        (if (display-graphic-p)
-            (cc/launch-pelican))))))
-
-(defun cc/pelican-fix-image-src-refs (start end)
-  "Fix HTML image src references in region bounded by START and END."
-  (interactive "r")
-  (unless (use-region-p)
-    (error "No region selected"))
-
-  (let* ((pat "src=\\([\\\"']\\)\\(images/.*\\)\\([\\\"']\\)")
-         (rpat "src=\\1{static}\\2\\3"))
-    (save-excursion
-      (replace-regexp-in-region pat rpat start end))))
-
-(defun cc/convert-md-image-to-html (start end)
-  "Convert Markdown image to HTML in region bounded by START and END."
-  (interactive "r")
-  (unless (use-region-p)
-    (error "No region selected"))
-
-  (let* ((pat "\\(!\\[img\\]\\)(\\(images/.*\\))")
-         (rpat "<p align='center'>\n<img src='{static}\\2' alt='' />\n</p>"))
-    (save-excursion
-      (replace-regexp-in-region pat rpat start end))))
-
-(defun cc/markdown-insert-src-cookie ()
-  "Insert Markdown source block cookie."
-  (interactive)
-  (let ((lang (completing-read "Language: " '("elisp"
-                                               "python"
-                                               "swift"
-                                               "javascript"
-                                               "c"
-                                               "objc"
-                                               "java") nil nil "elisp")))
-    (insert (concat "\n    " "#!" lang))))
-
-(defun cc/slugify (start end)
-  "Slugify the region bounded by START and END."
-  (interactive "r")
-  (if (use-region-p)
-      (let ((regionp (buffer-substring start end)))
-        (save-excursion
-          (delete-region start end)
-          (insert
-           (replace-regexp-in-string
-            "[^a-z0-9-]" ""
-            (replace-regexp-in-string
-             "\s+" "-"
-             (downcase regionp))))))))
-
 (defun cc/posix-timestamp-to-human (start end)
   "Convert a POSIX timestamp bounded by START and END to RFC 822 and \
 ISO 8601."
@@ -985,20 +896,48 @@ Code from https://mbork.pl/2021-05-02_Org-mode_to_Markdown_via_the_clipboard"
               (org-export-string-as region 'md t '(:with-toc nil))))
         (gui-set-selection 'CLIPBOARD markdown))))
 
-(defun cc/yank-markdown-as-org ()
-  "Yank Markdown text as Org.
+;; (defun cc/yank-markdown-as-org ()
+;;   "Yank Markdown text as Org.
 
-This command will convert Markdown text in the top of the `kill-ring'
-and convert it to Org using the pandoc utility."
-  (interactive)
+;; This command will convert Markdown text in the top of the `kill-ring'
+;; and convert it to Org using the pandoc utility."
+;;   (interactive)
+;;   (save-excursion
+;;     (with-temp-buffer
+;;       (yank)
+;;       (shell-command-on-region
+;;        (point-min) (point-max)
+;;        "pandoc -f markdown -t org --wrap=preserve" t t)
+;;       (kill-region (point-min) (point-max)))
+;;     (yank)))
+
+(defun cc/yank-markdown-as-org (&optional level)
+  "Yank Markdown text as Org at optional prefix LEVEL.
+
+This command will convert Markdown text in the top of the `kill-ring' to
+Org before yanking (pasting) the converted text.
+
+The command `org-paste-subtree' is used to yank the converted text and
+has behavior that can be modified with a `\\[universal-argument]'
+prefix. Using prefixes, `org-paste-subtree' can yank text at different
+structure levels. The argument LEVEL captures this prefix and passes it
+along to `org-paste-subtree'. A deep reading of how `org-paste-subtree'
+handles prefixes is recommended.
+
+The actual Markdown to Org conversion is accomplished with the command
+line utility pandoc. See the man page `pandoc(1)' for details."
+  (interactive "P")
   (save-excursion
     (with-temp-buffer
       (yank)
       (shell-command-on-region
        (point-min) (point-max)
        "pandoc -f markdown -t org --wrap=preserve" t t)
-      (kill-region (point-min) (point-max)))
-    (yank)))
+      (org-mode)
+      (goto-char (point-min))
+      (org-cut-subtree))
+    ;; (call-interactively #'org-paste-subtree)
+    (org-paste-subtree level)))
 
 (defun cc/split-window-right ()
   "Invoke `split-window-right', making the new window active."
