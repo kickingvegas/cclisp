@@ -23,6 +23,8 @@
 ;;
 
 ;;; Code:
+(require 'cclisp)
+(require 'yasnippet)
 (require 'org)
 
 
