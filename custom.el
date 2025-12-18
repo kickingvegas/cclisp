@@ -468,7 +468,7 @@
            git-link gnuplot go-mode good-scroll google-this google-translate
            graphviz-dot-mode helm-bibtex helm-pass helm-swoop htmlize idlwave
            iedit js2-mode json-mode jsonian jsonrpc kanban ledger-mode magit
-           math-symbol-lists neotree numeri ob-swift ob-swiftui
+           markdown-mode math-symbol-lists neotree numeri ob-swift ob-swiftui
            org-outline-numbering org-ql org-re-reveal org-superstar
            osx-dictionary ox-gfm ox-gist ox-jira ox-slack ox-trac package-lint
            paredit password-store pbcopy pkg-info plantuml-mode project python
