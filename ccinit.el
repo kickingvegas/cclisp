@@ -129,6 +129,7 @@
 (require 'calle24)
 (require 'scrim-utils)
 (require 'numeri)
+(require 'casual-agenda)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
@@ -186,7 +187,9 @@
   (cc/frame-resize nil)
   (status-report)
   (org-agenda nil "n")
-  (eshell t))
+  (casual-agenda-goto-now)
+  (eshell t)
+  (switch-to-buffer (format-time-string "%Y_%m_%d.org")))
 
 ;; (password-store-menu-enable)
 
