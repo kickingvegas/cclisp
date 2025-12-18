@@ -475,9 +475,10 @@
            rainbow-mode reveal-in-folder scpaste show-font
            smart-mode-line-powerline-theme soap-client solarized-theme
            sqlite-mode-extras sr-speedbar svg-clock swift-mode symbol-overlay
-           tj3-mode toc-org track-changes transpose-frame treemacs use-package
-           visual-regexp visual-regexp-steroids vtable webpaste wgrep which-key
-           window-tool-bar xref yaml-mode yasnippet yasnippet-snippets ztree))
+           tj3-mode toc-org track-changes tramp transpose-frame treemacs
+           use-package verilog-mode visual-regexp visual-regexp-steroids vtable
+           webpaste wgrep which-key window-tool-bar xref yaml-mode yasnippet
+           yasnippet-snippets ztree))
  '(pixel-scroll-precision-mode nil)
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
