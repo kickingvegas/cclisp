@@ -896,22 +896,22 @@ Code from https://mbork.pl/2021-05-02_Org-mode_to_Markdown_via_the_clipboard"
               (org-export-string-as region 'md t '(:with-toc nil))))
         (gui-set-selection 'CLIPBOARD markdown))))
 
-;; (defun cc/yank-markdown-as-org ()
-;;   "Yank Markdown text as Org.
+(defun cc/yank-markdown-as-org ()
+  "Yank Markdown text as Org.
 
-;; This command will convert Markdown text in the top of the `kill-ring'
-;; and convert it to Org using the pandoc utility."
-;;   (interactive)
-;;   (save-excursion
-;;     (with-temp-buffer
-;;       (yank)
-;;       (shell-command-on-region
-;;        (point-min) (point-max)
-;;        "pandoc -f markdown -t org --wrap=preserve" t t)
-;;       (kill-region (point-min) (point-max)))
-;;     (yank)))
+This command will convert Markdown text in the top of the `kill-ring'
+and convert it to Org using the pandoc utility."
+  (interactive)
+  (save-excursion
+    (with-temp-buffer
+      (yank)
+      (shell-command-on-region
+       (point-min) (point-max)
+       "pandoc -f markdown -t org --wrap=preserve" t t)
+      (kill-region (point-min) (point-max)))
+    (yank)))
 
-(defun cc/yank-markdown-as-org (&optional level)
+(defun cc/yank-markdown-as-org-subtree (&optional level)
   "Yank Markdown text as Org at optional prefix LEVEL.
 
 This command will convert Markdown text in the top of the `kill-ring' to
