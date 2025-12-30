@@ -329,6 +329,7 @@ SUFFIX - string appended to prefix
    [("C" "Clone…" org-clone-subtree-with-time-shift)
     ("-" "^c -…" org-ctrl-c-minus :transient t)]
    [("n" "Note…" org-add-note)
+    ("w" "Refile…" org-refile)
     ("v" "Copy Visible" org-copy-visible)]]
 
   [:class transient-row

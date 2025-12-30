@@ -125,6 +125,8 @@
 (require 'cc-eww-mode)
 (require 'cc-debbugs-mode)
 (require 'cc-blog-utils)
+(require 'cc-css-mode)
+(require 'cc-html-mode)
 (require 'ffap)
 (require 'calle24)
 (require 'scrim-utils)

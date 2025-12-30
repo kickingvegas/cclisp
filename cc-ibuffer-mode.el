@@ -29,6 +29,7 @@
 (require 'hl-line)
 (require 'mouse)
 (require 'casual-ibuffer)
+(require 'avy)
 
 (add-hook 'ibuffer-mode-hook #'hl-line-mode)
 (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)
@@ -44,8 +45,10 @@
 (keymap-set ibuffer-mode-filter-group-map
             "<mouse-2>" #'ibuffer-mouse-toggle-mark)
 
-(keymap-set ibuffer-mode-map "<f1>" #'ibuffer-jump-to-filter-group)
-(keymap-set ibuffer-mode-map "<f2>" #'ibuffer-jump-to-buffer)
+(keymap-set ibuffer-mode-map "<f1>" #'avy-goto-line)
+(keymap-set ibuffer-mode-map "M-<f1>" #'ibuffer-jump-to-buffer)
+(keymap-set ibuffer-mode-map "s-<f1>" #'ibuffer-jump-to-filter-group)
+(keymap-set ibuffer-mode-map "<f2>" #'avy-goto-line)
 
 (keymap-set ibuffer-mode-map "C-o" #'casual-ibuffer-tmenu)
 (keymap-set ibuffer-mode-map "F" #'casual-ibuffer-filter-tmenu)

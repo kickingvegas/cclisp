@@ -32,6 +32,7 @@
 (require 'casual-dired)
 (require 'casual-editkit)
 (require 'dired-rsync-transient)
+(require 'avy)
 
 (add-hook 'dired-mode-hook #'hl-line-mode)
 (add-hook 'dired-mode-hook #'context-menu-mode)
@@ -54,9 +55,10 @@
 (keymap-set dired-mode-map "[" #'dired-prev-subdir)
 (keymap-set dired-mode-map "M-j" #'dired-goto-subdir)
 (keymap-set dired-mode-map ";" #'image-dired-dired-toggle-marked-thumbs)
-(keymap-set dired-mode-map "<f1>" #'dired-other-window)
+(keymap-set dired-mode-map "<f1>" #'avy-goto-end-of-line)
 (keymap-set dired-mode-map "." #'dired-up-directory)
 (keymap-set dired-mode-map "M-m" #'dired-rsync-transient)
+(keymap-set dired-mode-map "M-l" #'dired-other-window)
 
 ;; Added to be consistent with IBuffer
 (keymap-set dired-mode-map "<backtab>" #'dired-prev-subdir)

@@ -46,20 +46,24 @@ MENU - menu to be configured.
 CLICK - event"
   (save-excursion
     (mouse-set-point click)
-    (cc/context-menu-journal-items menu)
+    (cc/context-menu-journal-items menu (org-at-table-p))
     (cc/context-menu-org-table-items menu (not (org-at-table-p)))
-    (cc/context-menu-buffers-items menu)
-    (cc/context-menu-narrow-items menu)
-    (cc/context-menu-workflow-items menu)
-    (cc/context-menu-open-in-items menu)
-    (cc/context-menu-dired-items menu (not (derived-mode-p 'dired-mode)))
+    (cc/context-menu-buffers-items menu (org-at-table-p))
+    (cc/context-menu-narrow-items menu (org-at-table-p))
+    (cc/context-menu-workflow-items menu (org-at-table-p))
+    (cc/context-menu-open-in-items menu (org-at-table-p))
+    (cc/context-menu-dired-items menu (not (and
+                                            (not (org-at-table-p))
+                                            (derived-mode-p 'dired-mode))))
     (cc/context-menu-dictionary-items menu (not (use-region-p)))
     (cc/context-menu-occur-items menu)
     (cc/context-menu-vc-items menu (not (vc-responsible-backend default-directory t)))
     (cc/context-menu-region-actions-items menu (not (use-region-p)))
     (cc/context-menu-markup-items menu)
-    (cc/context-menu-timekeeping-items menu)
-    (cc/context-menu-word-count-items menu (not (derived-mode-p 'text-mode)))
+    ;; (cc/context-menu-timekeeping-items menu (org-at-table-p))
+    (cc/context-menu-word-count-items menu (not (and
+                                                 (not (org-at-table-p))
+                                                 (derived-mode-p 'text-mode))))
     (easy-menu-add-item menu nil cc/wgrep-menu)
     menu))
 
@@ -331,7 +335,11 @@ to the current subtree"])))
 from current buffer"])))))
 
 (defun cc/context-menu-org-table-items (menu &optional inapt)
-  "Menu items to populate MENU for Org table section if INAPT nil."
+  "Menu items to populate MENU for Org table section if INAPT nil.
+
+Use C-M-Drag-mouse-1 to make a rectangular selection. In the event only
+M-Drag-mouse-1 (set secondary selection) is sent, use M-Drag-mouse-1 to
+clear it."
   (when (not inapt)
     (cc/context-menu-item-separator menu org-table-sqeparator)
     (easy-menu-add-item menu nil
@@ -348,8 +356,7 @@ from current buffer"])))))
     (easy-menu-add-item menu nil
                         ["Edit Table Formulas"
                          org-table-edit-formulas
-                         :help " Edit the formulas of the current table in a separate buffer."])
-
+                         :help "Edit the formulas of the current table in a separate buffer."])
     (easy-menu-add-item menu nil cc/insert-org-plot-menu)
     (easy-menu-add-item menu nil ["Run gnuplot"
                                   org-plot/gnuplot
