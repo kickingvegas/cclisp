@@ -1053,8 +1053,8 @@ This command is tuned for macOS using a single display."
   (interactive "P")
   (let* ((choice
           (completing-read "Display Configuration: "
-                           '("desktop" "macbook" "tty" "writer" "video")
-                           nil nil "writer"))
+                           '("desktop" "macbook" "tty" "standard" "focus" "video")
+                           nil nil "standard"))
          (move (not arg)))
     (cond
      ((string-equal choice "desktop")
@@ -1073,7 +1073,12 @@ This command is tuned for macOS using a single display."
      ((string-equal choice "tty")
       (cc/--resize-frame 86 28))
 
-     ((string-equal choice "writer")
+     ((string-equal choice "focus")
+      (cc/--resize-frame 87 35)
+      (if move
+          (set-frame-position (selected-frame) 1095 534)))
+
+     ((string-equal choice "standard")
       (cc/--resize-frame 141 71)
       (if move
           (set-frame-position (selected-frame) 852 192)))
