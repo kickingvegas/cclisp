@@ -26,6 +26,7 @@
 (require 'cclisp)
 (require 'yasnippet)
 (require 'org)
+(require 'ox-gfm)
 
 
 ;; -------------------------------------------------------------------
@@ -98,7 +99,6 @@
 (defun cc/blog-draft-post ()
   "Create draft post for ‘notes from /dev/null’ blog."
   (interactive)
-
   (let* ((title (read-string "Title: "))
          (slug (replace-regexp-in-string
                 "[^a-z0-9-]" ""
@@ -121,19 +121,19 @@
     (insert (format "#+SUMMARY: %s\n" "This is a summary."))
     (insert (format "#+TAGS: %s\n" "emacs, org mode"))
     (insert "\n")
-    (insert "Title: {{{title}}}\n")
-    (insert "Date: {{{DATE(%Y-%m-%d %H:%M)}}}\n")
-    (insert (format "Slug: %s\n" slug))
-    (insert "Author: {{{author}}}\n")
-    (insert "Summary: {{{keyword(SUMMARY)}}}\n")
+    (insert "Title: {{{title}}}\n\n")
+    (insert "Date: {{{DATE(%Y-%m-%d %H:%M)}}}\n\n")
+    (insert (format "Slug: %s\n\n" slug))
+    (insert "Author: {{{author}}}\n\n")
+    (insert "Summary: {{{keyword(SUMMARY)}}}\n\n")
     (insert "Tags: {{{keyword(TAGS)}}}\n\n")
     (save-buffer)))
 
 (defun cc/blog-stage-post ()
   "Create blog stage post for Pelican."
   (interactive)
-  (org-md-export-as-markdown)
-  (switch-to-buffer "*Org MD Export*")
+  (org-gfm-export-as-markdown)
+  (switch-to-buffer "*Org GFM Export*")
   (let* ((content (buffer-substring (point-min) (point-max)))
          (pat "src=\\([\\\"']\\)\\(images/.*\\)\\([\\\"']\\)")
          (rpat "src=\\1{static}\\2\\3")
@@ -141,8 +141,10 @@
          (target-name (format-time-string "nfdn_%Y_%m_%d_%H%M%S.md")))
     (cd "~/Projects/devnull/content")
     (find-file target-name)
-    (insert content)))
-
+    (insert content)
+    (goto-char (point-min))
+    (re-search-forward "^Tags:")
+    (flush-lines "^$" (point-min) (point) t)))
 
 
 ;; -------------------------------------------------------------------
