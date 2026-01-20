@@ -33,6 +33,7 @@
 (require 'cc-region-operations-menu)
 (require 'cc-edit-text-menu)
 (require 'cc-truth-table)
+(require 'eww)
 
 (defun cc/dired-side-right (path)
   "Side-by-side layout with Dired buffer on the right set to PATH."
@@ -328,6 +329,12 @@ in a buffer"]
                      :help "Display a world clock buffer with times in \
 various time zones."]
                     "Programmable Calculator")
+
+(easy-menu-add-item global-map '(menu-bar tools)
+                    ["EWW…"
+                     eww
+                     :help "Open EWW browser."]
+                    "Games")
 
 (easy-menu-add-item global-map '(menu-bar tools)
                     ["Babel Ingest - Org Table To SQL"

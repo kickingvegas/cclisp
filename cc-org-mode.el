@@ -266,10 +266,6 @@ SUFFIX - string appended to prefix
         ("captee-help-book"
          :components ("pages" "static"))))
 
-;; ox-gfm init is so broken. need to load it manually.
-;; (eval-after-load "org"
-;;   '(require 'ox-gfm nil t))
-
 ;; (use-package ox-gfm
 ;;   :defer 3
 ;;   :after org)
@@ -288,7 +284,13 @@ SUFFIX - string appended to prefix
 
 (transient-define-prefix cc/org-mode-tmenu ()
   ["Org"
+   :description (lambda () (if (org-at-table-p)
+                          (format "Org %s" (cc/org-table-reference-dwim))
+                        "Org"))
+
+   :if-not org-at-table-p
    ["State"
+    :if-not org-at-table-p
     ("t" "TODO…" org-todo)
     ("I" "⏱️ In" org-clock-in
      :if-not org-clocking-p)
@@ -316,7 +318,46 @@ SUFFIX - string appended to prefix
     ("p" "Property…" org-set-property)
     (":" "Tags…" org-set-tags-command)]]
 
+  ["Org Table"
+   :if org-at-table-p
+   :description (lambda () (format "Org Table: %s" (cc/org-table-reference-dwim)))
+   ["Table"
+    ("r" "Copy Reference" cc/copy-org-table-reference-dwim :transient t)
+    ;; ("{" "Toggle Debugger" org-table-toggle-formula-debugger :transient t)
+    ("E" "Export…" org-table-export)
+    ("p" "Run Gnuplot" org-plot/gnuplot :transient t)]
+
+   ["Edit"
+    :pad-keys t
+    ("C-SPC" "Mark" set-mark-command :transient t)
+    ("`" "Field" org-table-edit-field :transient nil)
+    ("f" "Formula*" org-table-eval-formula)
+    ("DEL" "Blank" org-table-blank-field :transient t)
+    ("F" "Formulas" org-table-edit-formulas :transient nil)]
+
+   ;; ["Region"  ; this does not work with Transient, dunno why.
+   ;;  ("W" "Copy" org-table-copy-region :transient t)
+   ;;  ("C" "Cut" org-table-cut-region :transient t)
+   ;;  ("Y" "Paste" org-table-paste-rectangle :transient t)]
+
+   ["Compute"
+    ("c" "Row" org-table-recalculate :transient t)
+    ("a" "All Tables" org-table-recalculate-buffer-tables :transient t)
+    ("s" "Sum" org-table-sum)
+    ("S" "Sort" org-table-sort-lines)
+    ("T" "Transpose" org-table-transpose-table-at-point :transient t)
+    ("if" "Info - Functions" (lambda ()
+                               (interactive)
+                               (info "(calc) Function Index")))]
+
+   ["Display"
+    ("t" "Toggle Coordinates" org-table-toggle-coordinate-overlays :transient t)
+    ("h" "Header Line" org-table-header-line-mode :transient t)
+    ]
+   ]
+
   ["Edit"
+   :if-not org-at-table-p
    [("b" "Add Block…" org-insert-structure-template)
     ("r" "Insert Cite…" org-cite-insert)
     ("y" "Yank Markdown" cc/yank-markdown-as-org)]
@@ -332,12 +373,33 @@ SUFFIX - string appended to prefix
     ("w" "Refile…" org-refile)
     ("v" "Copy Visible" org-copy-visible)]]
 
+
+  ["Navigation"
+   :pad-keys t
+   [("TAB" "Cycle" org-cycle :transient t)
+    ("S-TAB" "S-Cycle" org-shifttab :transient t)]
+   [("C-p" "↑" previous-line :transient t)
+    ("C-n" "↓" next-line :transient t)]
+   [("C-b" "↑" backward-char :transient t)
+    ("C-f" "↓" forward-char :transient t)]
+
+   [:if org-at-table-p
+    ("M-a" "⇤" org-table-beginning-of-field :transient t)
+    ("M-e" "⇥" org-table-end-of-field :transient t)]
+   ]
+
+
   [:class transient-row
    (casual-lib-quit-one)
    ("RET" "Dismiss" transient-quit-all)
+   ("U" "Undo" undo :transient t)
    (casual-lib-quit-all)])
 
 (keymap-set org-mode-map "M-m" #'cc/org-mode-tmenu)
+
+;; ox-gfm init is so broken. need to load it manually.
+(eval-after-load "org"
+  '(require 'ox-gfm nil t))
 
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here
