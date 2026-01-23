@@ -221,6 +221,7 @@
  '(erc-prompt-for-nickserv-password nil)
  '(erc-server "irc.libera.chat")
  '(erc-try-new-nick-p nil)
+ '(eshell-expand-input-functions '(eshell-expand-history-references))
  '(eshell-modules-list
    '(eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob
                   eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script

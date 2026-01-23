@@ -26,31 +26,11 @@
 (require 'eww)
 (require 'hl-line)
 (require 'bookmark)
-(require 'casual-lib)
 (require 'avy)
+(require 'casual-eww)
 
 (add-hook 'eww-mode-hook #'hl-line-mode)
 (add-hook 'eww-bookmark-mode-hook #'hl-line-mode)
-
-(transient-define-prefix casual-eww-bookmark-tmenu ()
-  "Transient menu for eww."
-  :refresh-suffixes t
-
-  ["Casual EWW Bookmarks"
-   ["Bookmark"
-    :pad-keys t
-    ("k" "Kill" eww-bookmark-kill :transient t)
-    ("y" "Yank" eww-bookmark-yank :transient t)
-    ("RET" "Browse" eww-bookmark-browse)]
-
-   ["Navigate"
-    ("p" "Previous" previous-line :transient t)
-    ("n" "Next" next-line :transient t)]]
-
-  [:class transient-row
-    (casual-lib-quit-one)
-    ("q" "Quit" quit-window)
-    (casual-lib-quit-all)])
 
 (defun cc/eww-point-on-first-line-p ()
   "Return t if the point is on the first line, nil otherwise.
@@ -63,7 +43,9 @@ This function taken via GitHub Copilot query."
 
 This function taken via GitHub Copilot query."
   (let ((current-line (line-number-at-pos))
-        (total-lines (count-lines (point-min) (point-max))))
+        (total-lines (length eww-bookmarks))
+        ;; (total-lines (count-lines (point-min) (point-max)))
+        )
     (= current-line total-lines)))
 
 (defun cc/eww-bookmark-reorder-down ()
@@ -86,97 +68,13 @@ This function taken via GitHub Copilot query."
         (eww-bookmark-yank)
         (forward-line -1))))
 
-(keymap-set eww-bookmark-mode-map "C-o" #'casual-eww-bookmark-tmenu)
+(keymap-set eww-bookmark-mode-map "C-o" #'casual-eww-bookmarks-tmenu)
 (keymap-set eww-bookmark-mode-map "p" #'previous-line)
 (keymap-set eww-bookmark-mode-map "n" #'next-line)
 (keymap-set eww-bookmark-mode-map "M-p" #'cc/eww-bookmark-reorder-up)
 (keymap-set eww-bookmark-mode-map "M-n" #'cc/eww-bookmark-reorder-down)
 
 (keymap-set eww-bookmark-mode-map "<double-mouse-1>" #'eww-bookmark-browse)
-
-(transient-define-prefix casual-eww-tmenu ()
-   "Transient menu for eww."
-   :refresh-suffixes t
-   ["Casual EWW"
-    ["History"
-     :pad-keys t
-     ("M-[" "❬" eww-back-url :transient t)
-     ("M-]" "❭" eww-forward-url :transient t)
-     ("H" "History" eww-list-histories :transient nil)]
-
-    ["Document"
-     ("[" "←" eww-previous-url :transient t)
-     ("]" "→" eww-next-url :transient t)
-     ("^" "↑" eww-up-url :transient t)
-     ("t" "⤒" eww-top-url :transient t)]
-
-    ["Navigate"
-     :pad-keys t
-     ("p" "↑ ¶" casual-lib-browse-backward-paragraph :transient t)
-     ("n" "↓ ¶" casual-lib-browse-forward-paragraph :transient t)
-     ("SPC" "↓ 📄" scroll-up-command :transient t)
-     ("S-SPC" "↑ 📄" scroll-down-command :transient t)]
-
-    ["🔗"
-     :pad-keys t
-     ("k" "↑" shr-previous-link :transient t)
-     ("j" "↓" shr-next-link :transient t)
-     ("RET" "🚀" eww-follow-link :transient t)]
-
-    ["Misc"
-     :pad-keys t
-     ("D" "Display›" casual-eww-display-tmenu)
-     ("R" "Readable" eww-readable)]]
-
-   ["URL"
-    :class transient-row
-    ("M-l" "Open" eww)
-    ("&" "Open External" eww-browse-with-external-browser)
-    ("d" "Download" eww-download)
-    ("g" "Reload" eww-reload)
-    ("c" "Copy" eww-copy-page-url)
-    ("A" "Copy Alt" eww-copy-alternate-url)]
-
-   ["EWW Bookmarks"
-    :class transient-row
-    ("b" "Add" eww-add-bookmark)
-    ("B" "List" eww-list-bookmarks)
-    ("M-n" "Next" eww-next-bookmark :transient t)
-    ("M-p" "Previous" eww-previous-bookmark :transient t)]
-
-   [:class transient-row
-           (casual-lib-quit-one)
-           ("J" "Jump to Bookmark…" bookmark-jump)
-           ("q" "Quit" quit-window)
-           (casual-lib-quit-all)])
-
-(transient-define-prefix casual-eww-display-tmenu ()
-  ["Casual EWW Display"
-   ("f" "Use Fonts" eww-toggle-fonts
-    :description (lambda () (casual-lib-checkbox-label shr-use-fonts "Use Fonts"))
-    :transient t)
-   ("c" "Use Colors" eww-toggle-colors
-    :description (lambda () (casual-lib-checkbox-label shr-use-colors "Use Colors"))
-    :transient t)
-   ("i" "Use Images" eww-toggle-images
-    :description (lambda () (casual-lib-checkbox-label shr-inhibit-images "Inhibit Images"))
-    :transient t)
-   ("d" "Use Direction" eww-toggle-paragraph-direction
-    :description (lambda ()
-                   (format
-                    "¶ direction (%s)"
-                    (cond
-                     ((eq bidi-paragraph-direction 'left-to-right) "L→R")
-                     ((eq bidi-paragraph-direction 'right-to-left) "R←L")
-                     ((not bidi-paragraph-direction) "Auto")
-                     (t "Undefined"))))
-    :transient t)]
-
-  [:class transient-row
-           (casual-lib-quit-one)
-           (casual-lib-quit-all)]
-  )
-
 
 (keymap-set eww-mode-map "C-o" #'casual-eww-tmenu)
 (keymap-set eww-mode-map "C-c C-o" #'eww-browse-with-external-browser)
@@ -190,29 +88,13 @@ This function taken via GitHub Copilot query."
 (keymap-set eww-mode-map "M-]" #'eww-forward-url)
 (keymap-set eww-mode-map "M-[" #'eww-back-url)
 
-(keymap-set eww-mode-map "<f1>" #'avy-goto-line)
+(keymap-set eww-mode-map "<f1>" #'avy-goto-char-timer)
 
 (keymap-set eww-mode-map "n" #'casual-lib-browse-forward-paragraph)
 (keymap-set eww-mode-map "p" #'casual-lib-browse-backward-paragraph)
 
-(defun cc/eww-forward-paragraph-link ()
-  "Move point to first link in next paragraph."
-  (interactive)
-  (casual-lib-browse-forward-paragraph)
-  (shr-next-link))
-
-(defun cc/eww-backward-paragraph-link ()
-  "Move point to first link in previous paragraph."
-  (interactive)
-
-  (let ((current-line-number (line-number-at-pos)))
-    (backward-paragraph)
-    (if (= current-line-number (line-number-at-pos))
-        (backward-paragraph))
-    (shr-next-link)))
-
-(keymap-set eww-mode-map "P" #'cc/eww-backward-paragraph-link)
-(keymap-set eww-mode-map "N" #'cc/eww-forward-paragraph-link)
+(keymap-set eww-mode-map "P" #'casual-eww-backward-paragraph-link)
+(keymap-set eww-mode-map "N" #'casual-eww-forward-paragraph-link)
 
 ;;(keymap-set eww-mode-map "p" #'backward-paragraph)
 
