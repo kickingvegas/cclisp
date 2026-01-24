@@ -91,8 +91,8 @@
 
 (keymap-set markdown-mode-map "M-m" #'cc/markdown-mode-tmenu)
 
-(add-hook 'markdown-mode-hook
-          (lambda () (add-hook 'ediff-prepare-buffer-hook #'outline-show-all 0 t)))
+;; (add-hook 'markdown-mode-hook
+;;           (lambda () (add-hook 'ediff-prepare-buffer-hook #'outline-show-all 0 t)))
 
 (provide 'cc-markdown-mode)
 ;;; cc-markdown-mode.el ends here

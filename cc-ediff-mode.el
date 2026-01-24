@@ -28,9 +28,58 @@
 
 (casual-ediff-install)
 
+;; Oh dang, this looks like it works…
+;; (defun cc/ediff-show-text-all ()
+;;   "Expand all Org headings in the data buffers for Ediff."
+;;   (dolist (b (list (and (boundp 'ediff-buffer-A) ediff-buffer-A)
+;;                    (and (boundp 'ediff-buffer-B) ediff-buffer-B)
+;;                    (and (boundp 'ediff-buffer-C) ediff-buffer-C)))
+;;     (when (buffer-live-p b)
+;;       (with-current-buffer b
+;;         (cond
+;;          ((derived-mode-p 'org-mode)
+;;           (if (fboundp 'org-fold-show-all) (org-fold-show-all))
+;;           (if (fboundp 'visible-mode) (visible-mode nil))
+;;           (if (fboundp 'org-remove-inline-images) (org-remove-inline-images)))
+
+;;          ((derived-mode-p 'markdown-mode)
+;;           (if (fboundp 'outline-show-all) (outline-show-all))
+;;           (if (fboundp 'markdown-toggle-markup-hiding)
+;;               (markdown-toggle-markup-hiding -1))
+;;           (if (fboundp 'markdown-remove-inline-images)
+;;               (markdown-remove-inline-images)))
+
+;;          (t nil))))))
+
+;; (add-hook 'ediff-startup-hook #'cc/ediff-show-text-all)
+
+(defun cc/ediff-text-mode-hook ()
+  "Hook for revealing text mode."
+  (cond
+   ((derived-mode-p 'org-mode)
+    (if (fboundp 'org-fold-show-all) (org-fold-show-all))
+    (if (fboundp 'visible-mode) (visible-mode nil))
+    (if (fboundp 'org-remove-inline-images) (org-remove-inline-images)))
+
+   ((derived-mode-p 'markdown-mode)
+    (if (fboundp 'outline-show-all) (outline-show-all))
+    (if (fboundp 'markdown-toggle-markup-hiding)
+        (markdown-toggle-markup-hiding -1))
+    (if (fboundp 'markdown-remove-inline-images)
+        (markdown-remove-inline-images)))
+
+   (t (if (fboundp 'outline-show-all) (outline-show-all)))))
+
+(add-hook 'ediff-prepare-buffer-hook #'cc/ediff-text-mode-hook)
+
 (add-hook 'ediff-keymap-setup-hook
           (lambda ()
             (keymap-set ediff-mode-map "C-o" #'casual-ediff-tmenu)))
+
+;; (add-hook 'ediff-after-setup-windows-hook (lambda () (call-interactively
+;;                                                  'casual-ediff-tmenu)))
+
+;;(add-hook 'ediff-mode-hook (lambda () (call-interactively casual-ediff-tmenu)))
 
 (provide 'cc-ediff-mode)
 ;;; cc-ediff-mode.el ends here

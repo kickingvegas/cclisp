@@ -129,6 +129,7 @@
    '(calendar-update-mode-line (lambda nil (diary-view-entries 1))))
  '(case-fold-search t)
  '(casual-lib-use-unicode t)
+ '(casual-timezone-datestamp-format "%a %b %-e %Y, %k:%M")
  '(column-number-mode t)
  '(company-dabbrev-downcase nil)
  '(compilation-auto-jump-to-first-error 'first-known)
@@ -261,7 +262,6 @@
  '(ibuffer-saved-filter-groups
    '(("main" ("org-agenda" (name . "Org Agenda"))
       ("posts" (directory . "org/posts"))
-      ("org" (and (directory . "org/") (mode . org-mode)))
       ("documentation"
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
       ("casual" (directory . "Projects/elisp/casual/"))
@@ -285,7 +285,24 @@
       ("worg" (directory . "Projects/vendor/worg/"))
       ("elisp"
        (or (directory . ".config/emacs/elpa/")
-           (directory . "Emacs.app/Contents/Resources/lisp/"))))
+           (directory . "Emacs.app/Contents/Resources/lisp/")))
+      ("org" (and (directory . "org/") (mode . org-mode))))
+     ("work" ("org-agenda" (name . "Org Agenda"))
+      ("posts" (directory . "org/posts"))
+      ("documentation"
+       (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
+      ("casual" (directory . "Projects/elisp/casual/"))
+      ("devnull"
+       (or (name . "*pelican-devnull*")
+           (directory . "Projects/pelican/devnull/")
+           (directory . "Projects/devnull/")))
+      ("cclisp" (directory . "emacs/cclisp/")) ("erc" (mode . erc-mode))
+      ("desktop" (directory . "Desktop/"))
+      ("downloads" (directory . "Downloads/"))
+      ("elisp"
+       (or (directory . ".config/emacs/elpa/")
+           (directory . "Emacs.app/Contents/Resources/lisp/")))
+      ("org" (and (directory . "org/") (mode . org-mode))))
      ("planning" ("Org Agenda" (name . "Org Agenda"))
       ("Documentation"
        (or (mode . Man-mode) (mode . Info-mode) (mode . help-mode)))
@@ -366,6 +383,7 @@
  '(org-clock-persist t)
  '(org-clock-sound "/System/Library/Sounds/Glass.aiff")
  '(org-confirm-babel-evaluate nil)
+ '(org-default-notes-file "~/org/notes.org")
  '(org-display-remote-inline-images 'cache)
  '(org-export-allow-bind-keywords t)
  '(org-export-backends '(ascii html icalendar latex md odt texinfo))
@@ -378,6 +396,7 @@
  '(org-html-postamble nil)
  '(org-icalendar-include-todo t)
  '(org-icalendar-use-scheduled '(event-if-todo event-if-todo-not-done todo-start))
+ '(org-imenu-depth 7)
  '(org-insert-heading-respect-content t)
  '(org-latex-classes
    '(("article" "\\documentclass[11pt]{article}"
@@ -413,6 +432,7 @@
  '(org-outline-path-complete-in-steps nil)
  '(org-plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar")
  '(org-re-reveal-theme "moon")
+ '(org-refile-targets '((nil :maxlevel . 3) (org-agenda-files :maxlevel . 3)))
  '(org-show-notification-handler 'cc/display-notification)
  '(org-src-lang-modes
    '(("ocaml" . tuareg) ("elisp" . emacs-lisp) ("ditaa" . artist)
@@ -451,13 +471,20 @@
      ("WAITING" :background "navajo white" :foreground "dark goldenrod" :box
       (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
       :height 0.8)
+     ("VERIFY" :background "navajo white" :foreground "medium slate blue" :box
+      (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
+      :height 0.8)
      ("DONE" :background "gray52" :foreground "gray15" :box
       (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
       :height 0.8)
      ("CANCELED" :background "DeepPink1" :foreground "gray15" :box
       (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
       :height 0.8)))
+ '(org-todo-keywords
+   '((sequence "TODO(t)" "IN_PROGRESS(i)" "WAITING(w)" "VERIFY(v)" "|" "DONE(d)")
+     (sequence "|" "CANCELED(c)")))
  '(org-use-speed-commands t)
+ '(org-yank-image-save-method "~/org/images/clipped")
  '(package-archives
    '(("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa" . "https://melpa.org/packages/")))
@@ -520,7 +547,7 @@
  '(trash-directory "~/.Trash")
  '(use-file-dialog nil)
  '(use-short-answers t)
- '(user-mail-address "kickingvegas@gmail.com")
+ '(user-mail-address "charles.choi@yummymelon.com")
  '(vc-follow-symlinks nil)
  '(vc-make-backup-files nil)
  '(view-read-only t)
@@ -578,7 +605,7 @@
  '(org-document-info ((((type x w32 ns pgtk) (class color) (background light)) (:foreground "midnight blue")) (((type x w32 ns pgtk) (class color) (background dark)) (:foreground "pale turquoise")) (t nil) (((type tty) (class color)) (:foreground "pale turquoise"))))
  '(org-document-info-keyword ((t (:inherit fixed-pitch))))
  '(org-document-title ((((type x ns) (class color) (background light)) (:foreground "midnight blue" :weight bold)) (((type x ns) (class color) (background dark)) (:foreground "pale turquoise" :weight bold)) (t (:weight bold)) (((type tty) (class color)) (:foreground "pale turquoise"))))
- '(org-formula ((t (:inherit fixed-pitch :foreground "Firebrick"))))
+ '(org-formula ((t (:inherit org-table :foreground "Firebrick"))))
  '(org-hide ((((type x ns) (class color) (background light)) (:foreground "white")) (((type x ns) (class color) (background dark)) (:foreground "#171717")) (((type tty) (class color)) (:foreground "#171717"))))
  '(org-meta-line ((((type x ns) (class color) (background dark)) (:inherit fixed-pitch :foreground "deep sky blue")) (((type x ns) (class color) (background light)) (:inherit fixed-pitch :foreground "grey50")) (((type tty) (class color)) (:inherit fixed-pitch :foreground "deep sky blue"))))
  '(org-scheduled ((t (:foreground "#4455ff"))))

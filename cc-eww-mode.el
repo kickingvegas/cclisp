@@ -31,6 +31,8 @@
 
 (add-hook 'eww-mode-hook #'hl-line-mode)
 (add-hook 'eww-bookmark-mode-hook #'hl-line-mode)
+(add-hook 'eww-mode-hook (lambda ()
+                           (setq-local scroll-margin 12)))
 
 (defun cc/eww-point-on-first-line-p ()
   "Return t if the point is on the first line, nil otherwise.
@@ -95,11 +97,6 @@ This function taken via GitHub Copilot query."
 
 (keymap-set eww-mode-map "P" #'casual-eww-backward-paragraph-link)
 (keymap-set eww-mode-map "N" #'casual-eww-forward-paragraph-link)
-
-;;(keymap-set eww-mode-map "p" #'backward-paragraph)
-
-;; (keymap-set eww-mode-map "n" #'next-line)
-;; (keymap-set eww-mode-map "p" #'previous-line)
 
 (keymap-set eww-mode-map "M-l" #'eww)
 
