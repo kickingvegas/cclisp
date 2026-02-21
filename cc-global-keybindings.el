@@ -178,8 +178,20 @@
 (keymap-global-set "C-<kp-2>" #'windmove-down)
 (keymap-global-set "C-<kp-4>" #'windmove-left)
 (keymap-global-set "C-<kp-6>" #'windmove-right)
+
+(keymap-global-set "M-<kp-8>" #'windmove-swap-states-up)
+(keymap-global-set "M-<kp-5>" #'windmove-swap-states-down)
+(keymap-global-set "M-<kp-2>" #'windmove-swap-states-down)
+(keymap-global-set "M-<kp-4>" #'windmove-swap-states-left)
+(keymap-global-set "M-<kp-6>" #'windmove-swap-states-right)
+
 (keymap-global-set "C-<kp-0>" #'ace-select-window)
 (keymap-global-set "C-<kp-divide>" #'transpose-frame)
+
+(keymap-global-set "C-c w" #'casual-editkit-windows-tmenu)
+(keymap-global-set "C-c r" #'casual-editkit-rectangle-tmenu)
+(keymap-global-set "C-c g" #'casual-editkit-registers-tmenu)
+(keymap-global-set "C-c p" #'casual-editkit-project-tmenu)
 
 (keymap-set minibuffer-local-shell-command-map "M-b" #'backward-sexp)
 (keymap-set minibuffer-local-shell-command-map "M-f" #'cc/next-sexp)

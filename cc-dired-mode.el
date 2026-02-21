@@ -25,6 +25,7 @@
 ;;; Code:
 (require 'dired)
 (require 'dired-x)
+(require 'dired-async)
 (require 'cclisp)
 (require 'wdired)
 (require 'image-dired)
@@ -53,6 +54,8 @@
 (keymap-set dired-mode-map "M-p" #'dired-prev-dirline)
 (keymap-set dired-mode-map "]" #'dired-next-subdir)
 (keymap-set dired-mode-map "[" #'dired-prev-subdir)
+(keymap-set dired-mode-map "M-]" #'dired-next-marked-file)
+(keymap-set dired-mode-map "M-[" #'dired-prev-marked-file)
 (keymap-set dired-mode-map "M-j" #'dired-goto-subdir)
 (keymap-set dired-mode-map ";" #'image-dired-dired-toggle-marked-thumbs)
 (keymap-set dired-mode-map "<f1>" #'avy-goto-end-of-line)
@@ -70,6 +73,17 @@
 (keymap-set image-dired-thumbnail-mode-map "p" #'image-dired-display-previous)
 
 (add-hook 'wdired-mode-hook #'superword-mode)
+
+(defun cc/casual-dired-subsystem (subsystem)
+  "Create Dired buffer in Casual project filtering SUBSYSTEM."
+  (interactive "sSub-system: ")
+  (let* ((pattern (format ".%s.*el$" subsystem))
+         (bname (format "*casual-%s*" subsystem)))
+    (if (get-buffer bname)
+        (kill-buffer bname))
+    (find-file "~/Projects/elisp/casual")
+    (casual-dired-find-dired-regexp pattern)
+    (rename-buffer bname)))
 
 (provide 'cc-dired-mode)
 ;;; cc-dired-mode.el ends here

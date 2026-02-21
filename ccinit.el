@@ -99,7 +99,6 @@
 (require 'cc-swift-mode)
 (require 'flyspell)
 (require 'cc-view-mode)
-(require 'cc-global-keybindings)
 (require 'cc-magit-mode)
 (require 'cc-menu-reconfig)
 (require 'cc-compile-mode)
@@ -127,11 +126,14 @@
 (require 'cc-blog-utils)
 (require 'cc-css-mode)
 (require 'cc-html-mode)
+(require 'cc-macros)
 (require 'ffap)
 (require 'calle24)
 (require 'scrim-utils)
 (require 'numeri)
 (require 'casual-agenda)
+(require 'cc-global-keybindings)
+
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)

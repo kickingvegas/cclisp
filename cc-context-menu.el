@@ -115,7 +115,13 @@ temporarily visible (Visible mode)"])
                     ["Paste Markdown as Org"
                      cc/yank-markdown-as-org
                      :visible (derived-mode-p 'org-mode)
-                     :help "Paste Markdown text in clipboard (kill-ring) as Org"]))
+                     :help "Paste Markdown text in clipboard (kill-ring) as Org"])
+
+      (easy-menu-add-item menu nil
+                    ["Paste Media"
+                     yank-media
+                     :visible (derived-mode-p 'org-mode)
+                     :help "Paste (yank) media"]))
 
      ((derived-mode-p 'markdown-mode)
       (cc/context-menu-item-separator menu markdown-mode-operations-separator)
@@ -199,7 +205,11 @@ temporarily visible (Visible mode)"])
 
     (easy-menu-add-item menu nil ["Agenda - All TODOs"
                                   (lambda () (interactive)(org-agenda nil "n"))
-                                  :help "Show Org agenda with all TODO tasks."])
+                                  :help "Show Org agenda with all TODO tasks"])
+
+    (easy-menu-add-item menu nil ["Add Note"
+                                  (lambda () (interactive)(org-capture nil "j"))
+                                  :help "Add journal note"])
 
     (easy-menu-add-item menu nil ["Scratch"
                                   scratch-buffer
@@ -334,6 +344,24 @@ to the current subtree"])))
                              :help "Remove narrowing restrictions \
 from current buffer"])))))
 
+
+(easy-menu-define cc/org-table-region-menu nil
+  "Key map for Org table region sub-menu."
+  '("Org Table Region"
+    ["Cut"
+     org-table-cut-region
+     :enable (and (bound-and-true-p rectangle-mark-mode) (use-region-p))
+     :help "Cut Org table region"]
+
+    ["Copy"
+     org-table-copy-region
+     :enable (and (bound-and-true-p rectangle-mark-mode) (use-region-p))
+     :help "Copy Org table region"]
+
+    ["Paste"
+     org-table-paste-rectangle
+     :help "Paste Org table region"]))
+
 (defun cc/context-menu-org-table-items (menu &optional inapt)
   "Menu items to populate MENU for Org table section if INAPT nil.
 
@@ -344,15 +372,19 @@ clear it."
     (cc/context-menu-item-separator menu org-table-sqeparator)
     (easy-menu-add-item menu nil
                         ["Table Cell Info"
-                         cc/mouse-copy-org-table-reference-dwim
-                         :label (cc/org-table-reference-dwim)
+                         casual-org-table-copy-reference-dwim
+                         :label (casual-org-table--reference-dwim)
                          :help "Copy Org table reference (field or range) into kill ring via mouse"])
+
+    (easy-menu-add-item menu nil cc/org-table-region-menu)
+
     (easy-menu-add-item menu nil
                         ["Show Coordinates"
                          org-table-toggle-coordinate-overlays
                          :style toggle
                          :selected org-table-coordinate-overlays
                          :help "Toggle the display of row/column numbers in tables"])
+
     (easy-menu-add-item menu nil
                         ["Edit Table Formulas"
                          org-table-edit-formulas

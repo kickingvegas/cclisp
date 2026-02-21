@@ -78,7 +78,7 @@ will be displayed."
   (cc/org-plot-insert-snippet "org-plot histogram image"))
 
 (easy-menu-define cc/insert-org-plot-menu nil
-  "Kaymap for Org Plot submenu"
+  "Key map for Org Plot sub-menu."
   '("Org Plot"
     ["Lines - GUI"
      cc/org-plot-insert-lines-plot

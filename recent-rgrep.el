@@ -5,7 +5,7 @@
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; URL: https://github.com/kickingvegas/recent-rgrep
 ;; Keywords: tools
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; Package-Requires: ((emacs "29.1"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -65,14 +65,14 @@
   :type '(repeat string))
 
 
-(defun recent-rgrep (query)
-  "Search QUERY in files recursively and sort by recent modification time.
+(defun recent-rgrep ()
+  "Search query in files recursively and sort by recent modification time.
 
-From the current directory, this command shall recursively search
-files for lines that match the pattern QUERY that is entered with
-the first prompt. The results are sorted in recently modified
-file order with the most recent files presented at the top of the
-buffer. By default, matching QUERY is case-insensitive.
+From the current directory, this command shall recursively search files
+for lines that match the pattern query that is entered in the first
+prompt. The results are sorted in recently modified file order with the
+most recent files presented at the top of the buffer. By default,
+matching query is case-insensitive.
 
 A second prompt to filter the extent of files to search is
 presented. By default, the extent of files searched will be all
@@ -84,16 +84,16 @@ The list of different file name glob expressions can be
 controlled via the customizable variable
 `recent-rgrep-glob-extensions'.
 
-The format of the QUERY and the glob expression must be GNU grep
+The format of the query and the glob expression must be GNU grep
 compatible.
 
-If this command is invoked with a prefix (C-u) then the search
-will be case-sensitive.
+If this command is invoked with a command prefix then the search will be
+case-sensitive.
 
 * Implementation Details
 
 This command invokes the Bash script recent-rgrep which in turn
-invokes grep to do a recursive search of QUERY.
+invokes grep to do a recursive search of query.
 
 This script is configured to only look at non-binary files. It
 will also not look into SCM directories such as .git.
@@ -101,28 +101,36 @@ will also not look into SCM directories such as .git.
 * References
 
 - Info node `(grep) Top'
-- Info node `(grep) File and Directory Selection'"
+- Info node `(grep) File and Directory Selection'
+- Info node `(emacs) Arguments'"
 
-  (interactive "sSearch regexp: ")
+  (interactive)
+  (let* ((query (if (use-region-p)
+                    (let* ((default (car
+                                     (string-split
+                                      (filter-buffer-substring (mark) (point))
+                                      "\n")))
+                           (prompt (format "Search Regex (%s): " default)))
+                      (read-string prompt nil nil default))
+                  (read-string "Search Regex: "))))
+    (let* ((file-pattern (completing-read
+                          "In files with extension (default: all): "
+                          recent-rgrep-glob-extensions))
+           (dir default-directory)
+           (commands (list)))
 
-  (let* ((file-pattern (completing-read
-                        "In files with extension (default: all): "
-                        recent-rgrep-glob-extensions))
-         (dir default-directory)
-         (commands (list)))
+      (push "recent-rgrep" commands)
+      (if current-prefix-arg
+          (push "-c" commands))
 
-    (push "recent-rgrep" commands)
-    (if current-prefix-arg
-        (push "-c" commands))
+      (if (not (string= file-pattern ""))
+          (push (format "-f '%s'" file-pattern) commands))
 
-    (if (not (string= file-pattern ""))
-        (push (format "-f '%s'" file-pattern) commands))
+      (push (format "'%s'" query) commands)
 
-    (push (format "'%s'" query) commands)
-
-    (compilation-start (string-join (reverse commands) " ") #'grep-mode)
-    (if (eq next-error-last-buffer (current-buffer))
-	(setq default-directory dir))))
+      (compilation-start (string-join (reverse commands) " ") #'grep-mode)
+      (if (eq next-error-last-buffer (current-buffer))
+	  (setq default-directory dir)))))
 
 (provide 'recent-rgrep)
 ;;; recent-rgrep.el ends here

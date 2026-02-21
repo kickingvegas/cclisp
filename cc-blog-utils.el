@@ -144,7 +144,11 @@
     (insert content)
     (goto-char (point-min))
     (re-search-forward "^Tags:")
-    (flush-lines "^$" (point-min) (point) t)))
+    (flush-lines "^$" (point-min) (point) t)
+    (save-excursion
+      (goto-char (point-min))
+      (while (search-forward "content/nfdn" nil t)
+        (replace-match "{filename}nfdn")))))
 
 
 ;; -------------------------------------------------------------------
