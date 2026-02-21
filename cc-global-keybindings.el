@@ -215,5 +215,38 @@
 (keymap-global-set "s-SPC" #'cycle-spacing)
 (keymap-global-set "<mode-line> C-<mouse-3>" #'tear-off-window)
 
+(easy-menu-define cc/mouse-window-management-menu nil
+  "Keymap for mouse window management menu."
+  '(nil
+    ["Delete" mouse-delete-window
+     :visible (not (one-window-p t))
+     :help "Delete Window"]
+
+    ["Split Right" mouse-split-window-horizontally
+     :help "Split Right"]
+
+    ["Split Below" mouse-split-window-vertically
+     :help "Split Below"]))
+
+(defun cc/popup-mouse-window-management-menu (click)
+  "Popup mouse window management with CLICK."
+  (interactive "e")
+  (popup-menu cc/mouse-window-management-menu click))
+
+(keymap-global-unset "<mode-line> C-<mouse-2>" t)
+(keymap-global-unset "<vertical-scroll-bar> C-<mouse-2>" t)
+(keymap-global-unset "<horizontal-scroll-bar> C-<mouse-2>" t)
+(keymap-global-unset "<vertical-line> C-<mouse-2>" t)
+(keymap-global-unset "<right-divider> C-<mouse-2>" t)
+(keymap-global-unset "<bottom-divider> C-<mouse-2>" t)
+(keymap-global-unset "<mode-line> <mouse-2>" t)
+(keymap-global-unset "<mode-line> <mouse-3>" t)
+
+(keymap-global-set "<mode-line> <mouse-3>"
+                   #'cc/popup-mouse-window-management-menu)
+
+(keymap-global-set "<vertical-scroll-bar> <mouse-3>"
+                   #'mouse-split-window-vertically)
+
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here
