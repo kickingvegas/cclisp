@@ -81,6 +81,7 @@ which is done with `org-ctrl-c-ctrl-c'."
 (add-hook 'org-mode-hook #'org-indent-mode)
 ;;(add-hook 'org-mode-hook #'org-clock-persistence-insinuate)
 ;;(add-hook 'org-mode-hook #'cc/save-hook-delete-trailing-whitespace)
+(add-hook 'org-mode-hook #'org-link-preview)
 (add-hook 'org-mode-hook (lambda ()
                            (cc/reconfig-org-smart-quotes-lang "en")))
 
@@ -172,7 +173,7 @@ SUFFIX - string appended to prefix
 (keymap-set org-mode-map "M-<f9>" #'cc/org-checkbox-in-progress)
 (keymap-set org-mode-map "C-<f9>" #'cc/org-toggle-list-is-checkbox)
 (keymap-set org-mode-map "<f9>" #'org-ctrl-c-ctrl-c)
-(keymap-set org-mode-map "M-<f6>" #'org-toggle-inline-images)
+(keymap-set org-mode-map "M-<f6>" #'org-link-preview)
 (keymap-set org-mode-map "C-c t" #'cc/org-time-stamp-inactive)
 (keymap-set org-mode-map "C-<home>" #'org-beginning-of-line)
 (keymap-set org-mode-map "C-<end>" #'org-end-of-line)
