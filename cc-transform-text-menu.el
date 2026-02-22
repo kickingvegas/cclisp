@@ -32,7 +32,7 @@
 (easy-menu-define cc/transform-text-menu nil
   "Keymap for Transform Text submenu."
   '("Transform Text"
-    :visible (region-active-p)
+    :visible (and (region-active-p) (not buffer-read-only))
     ["Make Upper Case" upcase-region
      :enable (region-active-p)
      :help "Convert selected region to upper case"]
