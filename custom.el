@@ -365,6 +365,7 @@
  '(mouse-wheel-progressive-speed t)
  '(mouse-yank-at-point t)
  '(ns-alternate-modifier 'super)
+ '(ns-right-alternate-modifier 'hyper)
  '(org-agenda-files '("~/org/"))
  '(org-agenda-include-diary t)
  '(org-agenda-sorting-strategy

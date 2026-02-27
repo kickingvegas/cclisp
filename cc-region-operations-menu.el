@@ -41,7 +41,7 @@
 
     ["Translate" google-translate-smooth-translate
      :enable (region-active-p)
-     :label (concat (cc/context-menu-label "Translate") "…")
+     :label (cc/context-menu-label "Translate")
      :help "Translate selected region with Google Translate"]
 
     ["Upload to Webpaste" webpaste-paste-region

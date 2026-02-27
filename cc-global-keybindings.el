@@ -46,6 +46,7 @@
 (require 'minibuffer)
 (require 'recent-rgrep)
 (require 'ace-window)
+(require 'cc-org-mode)
 
 (keymap-global-set "C-=" #'er/expand-region)
 ;(keymap-global-set (kbd "M-g") 'goto-line)
@@ -193,6 +194,11 @@
 (keymap-global-set "C-c g" #'casual-editkit-registers-tmenu)
 (keymap-global-set "C-c p" #'casual-editkit-project-tmenu)
 
+(keymap-global-set "H-a" #'find-library)
+(keymap-global-set "H-c" #'finder-commentary)
+(keymap-global-set "H-s" #'describe-symbol)
+(keymap-global-set "H-f" #'find-function)
+
 (keymap-set minibuffer-local-shell-command-map "M-b" #'backward-sexp)
 (keymap-set minibuffer-local-shell-command-map "M-f" #'cc/next-sexp)
 (keymap-set minibuffer-local-shell-command-map "C-M-b" #'backward-word)
@@ -214,6 +220,106 @@
 (keymap-global-set "M-\\" #'cycle-spacing)
 (keymap-global-set "s-SPC" #'cycle-spacing)
 (keymap-global-set "<mode-line> C-<mouse-3>" #'tear-off-window)
+
+
+(defun so/get-window-under-mouse ()
+  "Return the live window under the current mouse pointer.
+
+Derived from code found at URL
+`https://emacs.stackexchange.com/questions/21497/how-to-find-the-window-under-the-mouse-pointer'."
+  (interactive)
+  (let* ((mouse-pos (mouse-position))
+         (frame (car mouse-pos))
+         (x (cadr mouse-pos))
+         (y (cddr mouse-pos))
+         (window (window-at x y frame)))
+    ;; (if window
+    ;;     (progn
+    ;;       (message "Window under mouse: %s" window)
+    ;;       window)
+    ;;   (message "No window found at mouse position"))
+    window))
+
+;; TODO: need to figure out how to work on inactive window the mouse is pointing to
+(easy-menu-define cc/mouse-window-swap-menu nil
+  "Keymap for mouse window swap menu."
+  '("Swap"
+    :visible (and (eq (selected-window) (so/get-window-under-mouse)) (not (one-window-p t)))
+    ["↑" windmove-swap-states-up
+     :visible (window-in-direction 'above)
+     :help "Swap window up"]
+
+    ["↓" windmove-swap-states-down
+     :visible (window-in-direction 'below)
+     :help "Swap window down"]
+
+    ["←" windmove-swap-states-left
+     :visible (window-in-direction 'left)
+     :help "Swap window left"]
+
+    ["→" windmove-swap-states-right
+     :visible (window-in-direction 'right)
+     :help "Swap window right"]))
+
+(easy-menu-define cc/mouse-window-management-menu nil
+  "Keymap for mouse window management menu."
+  '(nil
+    ["×" mouse-delete-window
+     :visible (not (one-window-p t))
+     :help "Delete Window"]
+
+    ["Split →" mouse-split-window-horizontally
+     :help "Split Right"]
+
+    ["Split ↓" mouse-split-window-vertically
+     :help "Split Below"]))
+
+(easy-menu-define cc/mouse-buffer-menu nil
+  "Keymap for mouse buffer menu."
+  '(nil
+    ["← Previous" previous-buffer
+     :help "Previous Buffer"]
+
+    ["→ Next" next-buffer
+     :help "Next buffer"]
+
+    ["List All Buffers" ibuffer
+     :help "List all buffers"]))
+
+(easy-menu-add-item cc/mouse-window-management-menu nil cc/mouse-window-swap-menu)
+
+(defun cc/popup-mouse-window-management-menu (click)
+  "Popup mouse window management with CLICK."
+  (interactive "e")
+  (popup-menu cc/mouse-window-management-menu click))
+
+(defun cc/popup-mouse-buffer-menu (click)
+  "Popup mouse buffer navigation with CLICK."
+  (interactive "e")
+  (popup-menu cc/mouse-buffer-menu click))
+
+(keymap-global-unset "<mode-line> C-<mouse-2>" t)
+(keymap-global-unset "<vertical-scroll-bar> C-<mouse-2>" t)
+(keymap-global-unset "<horizontal-scroll-bar> C-<mouse-2>" t)
+(keymap-global-unset "<vertical-line> C-<mouse-2>" t)
+(keymap-global-unset "<right-divider> C-<mouse-2>" t)
+(keymap-global-unset "<bottom-divider> C-<mouse-2>" t)
+(keymap-global-unset "<mode-line> <mouse-2>" t)
+(keymap-global-unset "<mode-line> <mouse-3>" t)
+
+(keymap-unset mode-line-buffer-identification-keymap "<mode-line> <mouse-1>" t)
+(keymap-unset mode-line-buffer-identification-keymap "<mode-line> <mouse-3>" t)
+
+(keymap-set mode-line-buffer-identification-keymap "<mode-line> <mouse-1>" #'cc/popup-mouse-buffer-menu)
+
+(keymap-global-set "<mode-line> <double-mouse-1>" #'delete-other-windows)
+
+;; TODO: need to fix buffer menu
+(keymap-global-set "<mode-line> <down-mouse-3>"
+                   #'cc/popup-mouse-window-management-menu)
+
+;; (keymap-global-set "<vertical-scroll-bar> <mouse-3>"
+;;                    #'mouse-split-window-vertically)
 
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here

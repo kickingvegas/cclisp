@@ -148,7 +148,7 @@ contiguous without spaces."
 (easy-menu-define cc/emphasize-menu nil
   "Keymap for Emphasize Menu."
   '("Style"
-    :visible (region-active-p)
+    :visible (and (region-active-p) (not buffer-read-only))
     ["Bold" cc/emphasize-bold
      :enable (region-active-p)
      :visible (or (derived-mode-p 'org-mode) (derived-mode-p 'markdown-mode))

@@ -38,38 +38,97 @@
 (require 'cc-dired-mode)
 (require 'casual-dired)
 (require 'casual-ediff-utils)
+(require 'casual-org)
+(require 'yank-media)
+
+
+(defun cc/yank-media-p ()
+  "Predicate if media (images, HTML and the like) is in the clipboard.
+
+This is built using the implementation of `yank-media'."
+  (interactive)
+  (unless yank-media--registered-handlers
+    (user-error "The `%s' mode hasn't registered any handlers" major-mode))
+  (let ((all-types nil))
+    (pcase-dolist (`(,handled-type . ,handler)
+                   yank-media--registered-handlers)
+      (dolist (type (yank-media--find-matching-media handled-type))
+        (push (cons type handler) all-types)))
+    (if all-types t nil)))
+
+(defcustom cc/context-menu-functions-and-predicates
+  '((cc/context-menu-dired-items . (lambda () (or
+                                          (org-at-table-p)
+                                          (not (derived-mode-p 'dired-mode)))))
+    (cc/context-menu-journal-items . cc/org-at-table-or-use-region-p)
+    (cc/context-menu-org-table-items . (lambda () (not (org-at-table-p))))
+    (cc/context-menu-buffers-items . cc/org-at-table-or-use-region-p)
+    (cc/context-menu-narrow-items . (lambda () (org-at-table-p)))
+    (cc/context-menu-workflow-items .  cc/org-at-table-or-use-region-p)
+    (cc/context-menu-open-in-items . (lambda () (or
+                                            (derived-mode-p 'dired-mode)
+                                            (cc/org-at-table-or-use-region-p))))
+    (cc/context-menu-dictionary-items . (lambda () (not (use-region-p))))
+    (cc/context-menu-occur-items . (lambda () (not (use-region-p))))
+    (cc/context-menu-vc-items . (lambda () (or
+                                       (not
+                                        (vc-responsible-backend
+                                         default-directory t))
+                                       (use-region-p))))
+    (cc/context-menu-region-actions-items . (lambda () (not (use-region-p))))
+    (cc/context-menu-markup-items  . (lambda () (use-region-p)))
+    ;; (cc/context-menu-timekeeping-items (org-at-table-p))
+    (cc/context-menu-word-count-items . (lambda () (or (org-at-table-p)
+                                                  (not (derived-mode-p 'text-mode))))))
+  "A list of function-predicate pairs.
+
+Each element is a cons cell (FUNCTION . INAPT) where:
+- FUNCTION is a callable that will be executed
+- INAPT is a callable that returns non-nil when FUNCTION should not run"
+  :type '(repeat (cons :tag "Function and Inapt"
+                       (function :tag "Function")
+                       (function :tag "Inapt")))
+  :group 'kickingvegas)
+
+
+;; -------------------------------------------------------------------
+;; Predicates
+
+(defun cc/org-at-table-or-use-region-p ()
+  "Predicate if `org-at-table-p' or `use-region-p' are t."
+  (or (org-at-table-p) (use-region-p)))
+
+
+
+;; -------------------------------------------------------------------
+;; Hook Function
 
 (defun cc/context-menu-addon-items (menu click)
   "Charles Choi context menu hook function using MENU and CLICK event.
 
 MENU - menu to be configured.
 CLICK - event"
+
   (save-excursion
     (mouse-set-point click)
-    (cc/context-menu-journal-items menu (org-at-table-p))
-    (cc/context-menu-org-table-items menu (not (org-at-table-p)))
-    (cc/context-menu-buffers-items menu (org-at-table-p))
-    (cc/context-menu-narrow-items menu (org-at-table-p))
-    (cc/context-menu-workflow-items menu (org-at-table-p))
-    (cc/context-menu-open-in-items menu (org-at-table-p))
-    (cc/context-menu-dired-items menu (not (and
-                                            (not (org-at-table-p))
-                                            (derived-mode-p 'dired-mode))))
-    (cc/context-menu-dictionary-items menu (not (use-region-p)))
-    (cc/context-menu-occur-items menu)
-    (cc/context-menu-vc-items menu (not (vc-responsible-backend default-directory t)))
-    (cc/context-menu-region-actions-items menu (not (use-region-p)))
-    (cc/context-menu-markup-items menu)
-    ;; (cc/context-menu-timekeeping-items menu (org-at-table-p))
-    (cc/context-menu-word-count-items menu (not (and
-                                                 (not (org-at-table-p))
-                                                 (derived-mode-p 'text-mode))))
-    (easy-menu-add-item menu nil cc/wgrep-menu)
-    menu))
+    (mapc (lambda (item)
+            (let ((fn (car item))
+                  (inapt (cdr item)))
+              (funcall fn menu (funcall inapt))))
+          cc/context-menu-functions-and-predicates)
+
+    (easy-menu-add-item menu nil cc/wgrep-menu))
+  menu)
+
+(add-hook 'context-menu-functions #'cc/context-menu-addon-items)
+
+
+;; -------------------------------------------------------------------
+;; CC Menu Item Functions
 
 (defun cc/context-menu-word-count-items (menu &optional inapt)
   "Menu items to populate MENU for word count section if INAPT nil."
-  (when (not inapt)
+  (unless inapt
     (cc/context-menu-item-separator menu count-words-separator)
     (if (use-region-p)
           (easy-menu-add-item menu nil ["Count Words in Region"
@@ -82,14 +141,14 @@ CLICK - event"
 
 (defun cc/context-menu-markup-items (menu &optional inapt)
   "Menu items to populate MENU for reveal markup section if INAPT nil."
-  (when (not inapt)
+  (unless inapt
     (cond
      ((derived-mode-p 'org-mode)
       (cc/context-menu-item-separator menu org-mode-operations-separator)
       (easy-menu-add-item menu nil
-                          ["Toggle Inline Images"
-                           org-toggle-inline-images
-                           :help "Toggle inline images"])
+                          ["Toggle Images"
+                           casual-org-toggle-images
+                           :help "Toggle images"])
 
       (easy-menu-add-item menu nil
                           ["Show Markup"
@@ -97,31 +156,7 @@ CLICK - event"
                            :style toggle
                            :selected visible-mode
                            :help "Toggle making all invisible text \
-temporarily visible (Visible mode)"])
-
-      (easy-menu-add-item menu nil
-                          ["Paste Last Org Link"
-                           org-insert-last-stored-link
-                           :enable (cc/org-stored-links-p)
-                           :help "Insert the last link stored in org-stored-links"])
-
-      (easy-menu-add-item menu nil
-                    ["Copy as Markdown"
-                     mb/org-copy-region-as-markdown
-                     :visible (and (derived-mode-p 'org-mode) (use-region-p))
-                     :help "Copy region as Markdown"])
-
-      (easy-menu-add-item menu nil
-                    ["Paste Markdown as Org"
-                     cc/yank-markdown-as-org
-                     :visible (derived-mode-p 'org-mode)
-                     :help "Paste Markdown text in clipboard (kill-ring) as Org"])
-
-      (easy-menu-add-item menu nil
-                    ["Paste Media"
-                     yank-media
-                     :visible (derived-mode-p 'org-mode)
-                     :help "Paste (yank) media"]))
+temporarily visible (Visible mode)"]))
 
      ((derived-mode-p 'markdown-mode)
       (cc/context-menu-item-separator menu markdown-mode-operations-separator)
@@ -130,11 +165,12 @@ temporarily visible (Visible mode)"])
                            markdown-toggle-markup-hiding
                            :style toggle
                            :selected markdown-hide-markup
-                           :help "Toggle the display or hiding of markup"])))))
+                           :help "Toggle the display or hiding of markup"]))
+     (t nil))))
 
 (defun cc/context-menu-vc-items (menu &optional inapt)
   "Menu items to populate MENU for version control section if INAPT nil."
-  (when (not inapt)
+  (unless inapt
     (keymap-set-after menu
       "<vc-separator>"
       '(menu-item "--"
@@ -157,7 +193,7 @@ temporarily visible (Visible mode)"])
 
 (defun cc/context-menu-region-actions-items (menu &optional inapt)
   "Menu items to populate MENU for region actions section if INAPT nil."
-  (when (not inapt)
+  (unless inapt
     (cc/context-menu-item-separator menu transform-text-separator)
     (easy-menu-add-item menu nil cc/transform-text-menu)
     (easy-menu-add-item menu nil cc/region-operations-menu)
@@ -168,24 +204,12 @@ temporarily visible (Visible mode)"])
                            comment-dwim
                            :help "Toggle comment on selected region"]))
 
-     ((derived-mode-p 'org-mode)
-      (easy-menu-add-item menu nil cc/emphasize-menu)
-      (easy-menu-add-item menu nil ["Copy as Slack"
-                                    org-slack-export-to-clipboard-as-slack
-                                    :help "Copy as Slack to clipboard"])
-      (easy-menu-add-item menu nil ["Copy as Slack"
-                                    org-slack-export-to-clipboard-as-slack
-                                    :help "Copy as Slack to clipboard"])
-      (easy-menu-add-item menu nil ["Copy as RTF"
-                                    dm/copy-as-rtf
-                                    :help "Copy as RTF to clipboard"]))
-
-     ((derived-mode-p 'markdown-mode)
+     ((or (derived-mode-p 'org-mode) (derived-mode-p 'markdown-mode))
       (easy-menu-add-item menu nil cc/emphasize-menu)))))
 
 (defun cc/context-menu-timekeeping-items (menu &optional inapt)
   "Menu items to populate MENU for timekeeping section if INAPT nil."
-  (when (not inapt)
+  (unless inapt
     (cc/context-menu-item-separator menu world-clock-separator)
     (easy-menu-add-item menu nil
                         ["Calendar"
@@ -198,7 +222,8 @@ temporarily visible (Visible mode)"])
 
 (defun cc/context-menu-journal-items (menu &optional inapt)
   "Menu items to populate MENU for journal section if INAPT nil."
-  (when (not inapt)
+  (unless inapt
+    (cc/context-menu-item-separator menu journal-separator)
     (easy-menu-add-item menu nil ["Journal"
                                   status-report
                                   :help "Go to current day journal"])
@@ -217,50 +242,130 @@ temporarily visible (Visible mode)"])
 
 (defun cc/context-menu-dictionary-items (menu &optional inapt)
   "Menu items to populate MENU for <replace> section if INAPT nil."
-  (when (not inapt)
+  (unless inapt
     (cc/context-menu-item-separator menu dictionary-operations-separator)
     (easy-menu-add-item menu nil ["Look Up"
                                   osx-dictionary-search-word-at-point
-                                  :label (cc/context-menu-last-word-in-region "Look Up")
+                                  :label (cc/context-menu-label "Look Up")
                                   :help "Look up selected region in macOS dictionary"])))
 
 (defun cc/context-menu-occur-items (menu &optional inapt)
   "Menu items to populate MENU for occur section if INAPT nil."
-  (when (not inapt)
+  (unless inapt
     (cc/context-menu-item-separator menu occur-separator)
-    ;;(easy-menu-add-item menu nil cc/find-menu)
-    (if (use-region-p)
-        (easy-menu-add-item menu nil
+    (easy-menu-add-item menu nil
                             ["Find word in buffer (occur)"
                              cc/occur-selected-region
                              :label (cc/context-menu-label "Occur")
                              :help "Show all lines in the current buffer \
-containing a match for selected word"])
-      (easy-menu-add-item menu nil
-                          ["Occur Symbol…"
-                           occur-symbol-at-mouse
-                           :help "Show all lines in the current buffer \
-containing a match for regex"]))))
+containing a match for selected word"])))
 
 (defun cc/context-menu-dired-items (menu &optional inapt)
   "Menu items to populate MENU for Dired section if INAPT nil."
-  (when (not inapt)
+  (unless inapt
+    ;;
+    (cc/context-menu-item-separator menu trash-separator)
+    (easy-menu-add-item menu nil
+                        ["Move to Trash…"
+                         dired-do-delete
+                         :visible (file-writable-p
+                                         (dired-file-name-at-point))
+                         :help "Delete all marked files."])
+
+    (cc/context-menu-item-separator menu dired-separator)
+
+    ;; (easy-menu-add-item menu nil
+    ;;                     ["Insert Subdir"
+    ;;                      dired-maybe-insert-subdir
+    ;;                      :visible (file-directory-p
+    ;;                                      (dired-file-name-at-point))
+    ;;                      :help "Insert subdir (sub-directory)"])
+
+    ;; (easy-menu-add-item menu nil
+    ;;                     ["Kill Subdir"
+    ;;                      dired-kill-subdir
+    ;;                      :visible (and (dired-current-directory)
+    ;;                                    (not (dired-file-name-at-point)))
+    ;;                      :help "Kill subdir (sub-directory)"])
+
+    ;; (easy-menu-add-item menu nil
+    ;;                     ["Hide Subdir"
+    ;;                      dired-hide-subdir ; this is so fucking broken
+    ;;                      ;; cc/toggle-subdir
+    ;;                      :visible (and (dired-current-directory)
+    ;;                                    (not (dired-file-name-at-point)))
+    ;;                      :help "Hide subdir (sub-directory)"])
+
+    (easy-menu-add-item menu nil
+                        ["Insert Subdir"
+                         dired-maybe-insert-subdir
+                         :visible (file-directory-p
+                                         (dired-file-name-at-point))
+                         :help "Insert subdir (sub-directory)"])
+
+    (easy-menu-add-item menu nil
+                        ["Kill Subdir"
+                         dired-kill-subdir
+                         :visible (and (dired-current-directory)
+                                       (not (dired-file-name-at-point)))
+                         :help "Kill subdir (sub-directory)"])
+
+    (easy-menu-add-item menu nil
+                        ["Hide Subdir"
+                         dired-hide-subdir
+                         :visible (and (dired-current-directory)
+                                       (not (dired-file-name-at-point)))
+                         :help "Hide subdir (sub-directory)"])
+
+    (easy-menu-add-item menu nil
+                        ["Rename…"
+                         dired-do-rename
+                         :help "Rename or move file"])
+
     (easy-menu-add-item menu nil casual-dired-sort-menu)
     (easy-menu-add-item menu nil
                         ["Duplicate"
                          cc/dired-duplicate-file
-                         :label (concat "Duplicate"
-                                        " “"
+                         :label (format "Duplicate “%s.%s”"
                                         (file-name-base (dired-get-filename))
-                                        "."
-                                        (file-name-extension (dired-get-filename))
-                                        "”")
-                         :help "Duplicate selected item"])))
+                                        (file-name-extension (dired-get-filename)))
+                         :help "Duplicate selected item"])
 
+    (easy-menu-add-item menu nil
+                        ["Omit Mode"
+                         dired-omit-mode
+                         :style toggle
+                         :selected dired-omit-mode
+                         :help "Omit mode"])
+
+    (easy-menu-add-item menu nil
+                        ["Hide Details"
+                         dired-hide-details-mode
+                         :style toggle
+                         :selected dired-hide-details-mode
+                         :help "Hide directory details"])
+
+    (easy-menu-add-item menu nil
+                        ["Dired…"
+                         dired
+                         :help "Open Dired"])
+
+    (cc/context-menu-item-separator menu dired-finder-separator)
+
+    (easy-menu-add-item menu nil
+                        ["Open in Finder"
+                         reveal-in-folder-at-point
+                         :help "Open file (buffer) in Finder"])))
+
+(defun cc/toggle-subdir ()
+  (interactive)
+  (if (dired-subdir-hidden-p (dired-current-directory))
+      (dired-hide-subdir 1)
+    (call-interactively #'dired-hide-subdir)))
 
 (defun cc/context-menu-workflow-items (menu &optional inapt)
   "Menu items to populate MENU for workflow section if INAPT nil."
-  (when (not inapt)
+  (unless inapt
     (cc/context-menu-item-separator menu capture-flow-separator)
     (easy-menu-add-item menu nil
                         ["New Workflow…"
@@ -269,7 +374,7 @@ containing a match for regex"]))))
 
 (defun cc/context-menu-buffers-items (menu &optional inapt)
   "Menu items to populate MENU for buffers section if INAPT nil."
-  (when (not inapt)
+  (unless inapt
     (cc/context-menu-item-separator menu buffer-navigation-separator)
 
     (easy-menu-add-item menu nil ["≣ List All Buffers"
@@ -287,25 +392,24 @@ containing a match for regex"]))))
 
 (defun cc/context-menu-open-in-items (menu &optional inapt)
   "Menu items to populate MENU for open in section if INAPT nil."
-  (when (not inapt)
+  (unless inapt
     (cc/context-menu-item-separator menu open-in-separator)
 
     (easy-menu-add-item menu nil
                         ["Open in Finder"
                          reveal-in-folder-this-buffer
-                         :visible (or (buffer-file-name) (derived-mode-p 'dired-mode))
+                         :visible (buffer-file-name)
                          :help "Open file (buffer) in Finder"])
 
     (easy-menu-add-item menu nil
                         ["Open in Dired"
                          dired-jump-other-window
-                         :visible (and (buffer-file-name) (not (derived-mode-p 'dired-mode)))
+                         :visible (buffer-file-name)
                          :help "Open file in Dired"])))
-
 
 (defun cc/context-menu-narrow-items (menu &optional inapt)
   "Menu items to populate MENU for narrow section if INAPT nil."
-  (when (not inapt)
+  (unless inapt
     (when buffer-file-name
       (cond ((use-region-p)
              (cc/context-menu-item-separator menu narrow-separator)
@@ -368,7 +472,7 @@ from current buffer"])))))
 Use C-M-Drag-mouse-1 to make a rectangular selection. In the event only
 M-Drag-mouse-1 (set secondary selection) is sent, use M-Drag-mouse-1 to
 clear it."
-  (when (not inapt)
+  (unless inapt
     (cc/context-menu-item-separator menu org-table-sqeparator)
     (easy-menu-add-item menu nil
                         ["Table Cell Info"
@@ -394,32 +498,79 @@ clear it."
                                   org-plot/gnuplot
                                   :help "Plot table using gnuplot"])))
 
-(add-hook 'context-menu-functions #'cc/context-menu-addon-items)
-
-;; (defvar cchoi-mouse-file nil "some thing")
-
-;; (defun cc/track-mouse (event)
-;;   (interactive "e")
-;;   (if (mouse-posn-property (event-start event) 'dired-filename)
-;;     (let (window pos file)
-;;       (save-excursion
-;;         (setq window (posn-window (event-end event))
-;;            pos (posn-point (event-end event)))
-;;         (if (not (windowp window))
-;;          (error "No file chosen"))
-;;         (set-buffer (window-buffer window))
-;;         (goto-char pos)
-;;         (setq file (dired-get-filename)))
-;;       (setq cchoi-mouse-file file)))
-;;   (setq cchoi-mouse-file nil))
 
 
-;; (defun cc/kill-image-info (e)
-;;   "Show file type.
-;; E - event"
-;;   (interactive "e")
-;;   (ignore e)
-;;   (dired-show-file-type))
+(defun cc/context-menu-region (menu click)
+  "Region menu using MENU and CLICK."
+
+  (save-excursion
+    (mouse-set-point click)
+    (cond
+     ((derived-mode-p 'org-mode)
+      (easy-menu-add-item menu nil cc/org-copy-as-menu)
+      (easy-menu-add-item menu nil
+                          ["Paste Last Org Link"
+                           org-insert-last-stored-link
+                           :enable (cc/org-stored-links-p)
+                           :help "Insert the last link stored in org-stored-links"])
+
+      (easy-menu-add-item menu nil
+                          ["Paste Markdown"
+                           cc/yank-markdown-as-org
+                           :help "Paste Markdown"])
+
+      ;; TODO: need test to see if media is there to paste
+      (easy-menu-add-item menu nil
+                          ["Paste Media"
+                           yank-media
+                           :visible (and (derived-mode-p 'org-mode) (cc/yank-media-p))
+                           :help "Paste (yank) media"]))))
+  menu)
+
+
+(easy-menu-define cc/org-copy-as-menu nil
+  "Key map for Org copy sub-menu."
+  '("Copy as…"
+    :visible (and (derived-mode-p 'org-mode) (use-region-p))
+
+    ["Markdown"
+     mb/org-copy-region-as-markdown
+     :help "Copy region as Markdown"]
+
+    ["Slack"
+     org-slack-export-to-clipboard-as-slack
+     :help "Copy as Slack to clipboard"]
+
+    ["RTF"
+     dm/copy-as-rtf
+     :help "Copy as RTF to clipboard"]))
+
+
+(defun cc/insert-into-context-menu-functions (source target)
+  "Insert SOURCE before TARGET in `context-menu-functions'.
+
+This function provides finer grained control in inserting a context menu
+function into `context-menu-functions' over `add-hook'."
+  (let* ((s (default-value 'context-menu-functions))
+         (i (seq-position s target)))
+
+    (setq s (append (seq-subseq s 0 i)
+                    (cons source (seq-subseq s i))))
+    (setq-default context-menu-functions s)))
+
+(defun cc/remove-from-context-menu-functions (target)
+  "Remove TARGET in `context-menu-functions'."
+  (let* ((s (default-value 'context-menu-functions)))
+
+    (setq s (remove target s))
+    (setq-default context-menu-functions s)))
+
+(cc/insert-into-context-menu-functions #'cc/context-menu-region
+                                       #'context-menu-middle-separator)
+
+(cc/remove-from-context-menu-functions #'context-menu-minor)
+(cc/remove-from-context-menu-functions #'context-menu-local)
+(cc/remove-from-context-menu-functions #'context-menu-middle-separator)
 
 (provide 'cc-context-menu)
 ;;; cc-context-menu.el ends here
