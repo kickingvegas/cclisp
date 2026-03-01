@@ -34,6 +34,8 @@
 (require 'cc-edit-text-menu)
 (require 'cc-truth-table)
 (require 'eww)
+(require 'casual-bookmarks)
+(require 'anju-main-menu)
 
 (defun cc/dired-side-right (path)
   "Side-by-side layout with Dired buffer on the right set to PATH."
@@ -43,312 +45,249 @@
   (transpose-frame)
   (other-window 1))
 
-(easy-menu-add-item (lookup-key global-map [menu-bar file]) nil
-                    ["Swap Windows"
-                     window-swap-states
-                     :visible (> (count-windows) 1)
-                     :help "Swap the states of live windows WINDOW-1 and \
+
+;; -------------------------------------------------------------------
+;; Reconfigure File menu
+
+(defun cc/reconfigure-file-menu ()
+  "Reconfigure File menu."
+  (easy-menu-add-item (lookup-key global-map [menu-bar file]) nil
+                      ["Swap Windows"
+                       window-swap-states
+                       :visible (> (count-windows) 1)
+                       :help "Swap the states of live windows WINDOW-1 and \
 WINDOW-2."]
-                    "New Window Below")
+                      "New Window Below")
 
-(easy-menu-add-item (lookup-key global-map [menu-bar file]) nil
-                    ["Transpose Windows"
-                     transpose-frame
-                     :visible (> (count-windows) 1)
-                     :help "Transpose windows arrangement at FRAME."]
-                    "New Window Below")
+  (easy-menu-add-item (lookup-key global-map [menu-bar file]) nil
+                      ["Transpose Windows"
+                       transpose-frame
+                       :visible (> (count-windows) 1)
+                       :help "Transpose windows arrangement at FRAME."]
+                      "New Window Below"))
 
-;;; Reconfigure Text Mode Menu
 
-(easy-menu-remove-item text-mode-menu nil "Center Line")
-(easy-menu-remove-item text-mode-menu nil "Center Region")
-(easy-menu-remove-item text-mode-menu nil "Center Paragraph")
-(easy-menu-remove-item text-mode-menu nil "Paragraph Indent")
-(easy-menu-remove-item text-mode-menu nil "---")
+
+;; -------------------------------------------------------------------
+;; Reconfigure Text Mode Menu
 
-(easy-menu-add-item text-mode-menu nil cc/transform-text-menu "Auto Fill")
-(easy-menu-add-item text-mode-menu nil cc/emphasize-menu "Auto Fill")
-(easy-menu-add-item text-mode-menu nil cc/region-operations-menu "Auto Fill")
+(defun cc/reconfigure-text-mode-menu ()
+  "Reconfigure Text mode menu."
+  (easy-menu-remove-item text-mode-menu nil "Center Line")
+  (easy-menu-remove-item text-mode-menu nil "Center Region")
+  (easy-menu-remove-item text-mode-menu nil "Center Paragraph")
+  (easy-menu-remove-item text-mode-menu nil "Paragraph Indent")
+  (easy-menu-remove-item text-mode-menu nil "---")
 
-;;; Reconfigure Edit Menu
+  (easy-menu-add-item text-mode-menu nil anju-transform-text-menu "Auto Fill")
+  (easy-menu-add-item text-mode-menu nil anju-style-menu "Auto Fill")
+  (easy-menu-add-item text-mode-menu nil cc/region-operations-menu "Auto Fill"))
 
-(easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
-                    cc/transpose-menu "Fill")
+
+;; -------------------------------------------------------------------
+;; Reconfigure Edit Menu
 
-(easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
-                    cc/move-text-menu "Fill")
+(defun cc/reconfigure-edit-menu ()
+  "Reconfigure Edit menu."
 
-(easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
-                    cc/delete-space-menu "Fill")
+  (easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
+                      cc/transpose-menu "Fill")
 
-(easy-menu-add-item global-map '(menu-bar edit)
-                    ["Flush Lines…"
-                     flush-lines
-                     :help "Delete lines containing matches for REGEXP."
-                     :visible (not buffer-read-only)]
-                    "Fill")
+  (easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
+                      cc/move-text-menu "Fill")
 
-(easy-menu-add-item global-map '(menu-bar edit)
-                    ["Keep Lines…"
-                     keep-lines
-                     :help "Delete all lines except those containing matches \
+  (easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
+                      cc/delete-space-menu "Fill")
+
+  (easy-menu-add-item global-map '(menu-bar edit)
+                      ["Flush Lines…"
+                       flush-lines
+                       :help "Delete lines containing matches for REGEXP."
+                       :visible (not buffer-read-only)]
+                      "Fill")
+
+  (easy-menu-add-item global-map '(menu-bar edit)
+                      ["Keep Lines…"
+                       keep-lines
+                       :help "Delete all lines except those containing matches \
 for REGEXP."
-                     :visible (not buffer-read-only)]
-                    "Fill")
+                       :visible (not buffer-read-only)]
+                      "Fill")
 
-(easy-menu-add-item global-map '(menu-bar edit)
-                    ["Colors"
-                     ns-popup-color-panel
-                     :help "Show macOS Color Picker."
-                     :visible (eq window-system 'ns)])
+  (easy-menu-add-item global-map '(menu-bar edit)
+                      ["Colors"
+                       ns-popup-color-panel
+                       :help "Show macOS Color Picker."
+                       :visible (eq window-system 'ns)])
 
-(easy-menu-add-item global-map '(menu-bar edit)
-                    ["Emoji & Symbols"
-                     ns-do-show-character-palette
-                     :help "Show macOS Character Palette."
-                     :visible (eq window-system 'ns)])
+  (easy-menu-add-item global-map '(menu-bar edit)
+                      ["Emoji & Symbols"
+                       ns-do-show-character-palette
+                       :help "Show macOS Character Palette."
+                       :visible (eq window-system 'ns)]))
 
-;;; Reconfigure Help Menu
-
-(defun cc/--command-in-new-frame (cmd)
-  "Invoke CMD in a new frame.
-This command creates a new frame populated by CMD."
-  (other-frame-prefix)
-  (call-interactively cmd))
-
-(easy-menu-add-item global-map '(menu-bar help-menu)
-                    ["Info in New Frame"
-                     (lambda ()
-                       (interactive)
-                       (cc/--command-in-new-frame #'info))
-                     :help "Show Info manual in new frame."]
-                    'emacs-tutorial)
-
-(easy-menu-add-item global-map '(menu-bar help-menu)
-                    ["New Info in New Frame…"
-                     (lambda ()
-                       (interactive)
-                       (cc/--command-in-new-frame #'info-display-manual))
-                     :help "Show new Info manual in new frame."]
-                    'emacs-tutorial)
-
-(easy-menu-add-item global-map '(menu-bar help-menu)
-                    ["Man Page in New Frame…"
-                     (lambda ()
-                       (interactive)
-                       (cc/--command-in-new-frame #'man))
-                     :help "Show man page in new frame."]
-                    'emacs-tutorial)
-
-(easy-menu-add-item global-map '(menu-bar help-menu)
-                    ["Describe Symbol…"
-                     describe-symbol
-                     :help "Describe symbol."]
-                    'emacs-tutorial)
-
-(easy-menu-add-item global-map '(menu-bar help-menu)
-                    ["Describe Key or Mouse…"
-                     describe-key
-                     :help "Describe key or mouse operation."]
-                    'emacs-tutorial)
-
-(easy-menu-add-item global-map '(menu-bar help-menu)
-                    ["Library Commentary…"
-                     finder-commentary
-                     :help "Show commentary for Elisp library."]
-                    'emacs-tutorial)
-
-(easy-menu-add-item global-map '(menu-bar help-menu)
-                    ["Emacs FAQ"
-                     view-emacs-FAQ
-                     :help "View Emacs FAQ."]
-                    'describe-copying)
-
-(easy-menu-add-item global-map '(menu-bar help-menu)
-                    ["Emacs News"
-                     view-emacs-news
-                     :help "View Emacs news about this release."]
-                    'describe-copying)
-
-(easy-menu-add-item global-map '(menu-bar help-menu)
-                    ["Emacs Known Problems"
-                     view-emacs-problems
-                     :help "View Emacs known problems."]
-                    'describe-copying)
-
-(easy-menu-add-item global-map '(menu-bar help-menu)
-                    ["Send Bug Report…"
-                     report-emacs-bug
-                     :help "Send Emacs bug report."]
-                    'describe-copying)
-
-(define-key global-map [menu-bar help-menu  emacs-tutorial] nil t)
-(define-key global-map [menu-bar help-menu  emacs-tutorial-language-specific] nil t)
-(define-key global-map [menu-bar help-menu  emacs-psychotherapist] nil t)
-(define-key global-map [menu-bar help-menu  more-manuals] nil t)
-(define-key global-map [menu-bar help-menu  emacs-manual] nil t)
-(define-key global-map [menu-bar help-menu  getting-new-versions] nil t)
-(define-key global-map [menu-bar help-menu  describe-copying] nil t)
-(define-key global-map [menu-bar help-menu  describe-no-warranty] nil t)
-(define-key global-map [menu-bar help-menu  about-gnu-project] nil t)
-(define-key global-map [menu-bar help-menu  external-packages] nil t)
-(define-key global-map [menu-bar help-menu  emacs-faq] nil t)
-(define-key global-map [menu-bar help-menu  emacs-news] nil t)
-(define-key global-map [menu-bar help-menu  emacs-known-problems] nil t)
-(define-key global-map [menu-bar help-menu  emacs-manual-bug] nil t)
-(define-key global-map [menu-bar help-menu  send-emacs-bug-report] nil t)
-(define-key global-map [menu-bar help-menu  getting-new-versions] nil t)
-(define-key global-map [menu-bar help-menu  about-gnu-project] nil t)
-
+
+;; -------------------------------------------------------------------
 ;;; Reconfigure Tools Menu
+(defun cc/reconfigure-tools-menu ()
+  "Reconfigure Tools menu."
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["Agenda - All TODOs"
+                       (lambda () (interactive)(org-agenda nil "n"))
+                       :help "Show Org agenda with all TODO tasks."]
+                      "Shell Commands")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["Agenda - All TODOs"
-                     (lambda () (interactive)(org-agenda nil "n"))
-                     :help "Show Org agenda with all TODO tasks."]
-                    "Shell Commands")
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["Set Input Method - Korean"
+                       (lambda () (interactive)(set-input-method 'korean-hangul))
+                       :enable (not current-input-method)
+                       :help "Set input method to Korean"]
+                      "Shell Commands")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["Set Input Method - Korean"
-                     (lambda () (interactive)(set-input-method 'korean-hangul))
-                     :enable (not current-input-method)
-                     :help "Set input method to Korean"]
-                    "Shell Commands")
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["Open in Finder"
+                       reveal-in-folder-this-buffer
+                       :visible (or (buffer-file-name) (derived-mode-p 'dired-mode))
+                       :help "Reveal the current buffer in folder."]
+                      "Shell Commands")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["Open in Finder"
-                     reveal-in-folder-this-buffer
-                     :visible (or (buffer-file-name) (derived-mode-p 'dired-mode))
-                     :help "Reveal the current buffer in folder."]
-                    "Shell Commands")
+  (keymap-set-after (lookup-key global-map [menu-bar tools])
+    "<separator-org>"
+    '(menu-item "--")
+    'Agenda\ -\ All\ TODOs)
 
-(keymap-set-after (lookup-key global-map [menu-bar tools])
-  "<separator-org>"
-  '(menu-item "--")
-  'Agenda\ -\ All\ TODOs)
+  ;; (easy-menu-add-item global-map '(menu-bar tools)
+  ;;                     ["Find File…"
+  ;;                      helm-find-files
+  ;;                      :help "Fuzzy find file."]
+  ;;                     "Shell Commands")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["Find File…"
-                     helm-find-files
-                     :help "Fuzzy find file."]
-                    "Shell Commands")
-
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["Find in Files (rgrep)…"
-                     rgrep
-                     :help "Recursively grep for REGEXP in FILES in directory \
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["Find in Files (rgrep)…"
+                       rgrep
+                       :help "Recursively grep for REGEXP in FILES in directory \
 tree rooted at DIR."]
-                    "Shell Commands")
+                      "Shell Commands")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["Search Org Notes…"
-                     cc/org-search
-                     :help "Search Org Notes in ~/org."]
-                    "Shell Commands")
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["Search Org Notes…"
+                       cc/org-search
+                       :help "Search Org Notes in ~/org."]
+                      "Shell Commands")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["IELM"
-                     ielm
-                     :help "Interactively evaluate Emacs Lisp expressions."]
-                     "Language Server Support (Eglot)")
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["IELM"
+                       ielm
+                       :help "Interactively evaluate Emacs Lisp expressions."]
+                      "Language Server Support (Eglot)")
 
-(keymap-set-after (lookup-key global-map [menu-bar tools])
-  "<separator-shell>"
-  '(menu-item "--")
-  'Search\ Org\ Notes…)
+  (keymap-set-after (lookup-key global-map [menu-bar tools])
+    "<separator-shell>"
+    '(menu-item "--")
+    'Search\ Org\ Notes…)
 
-(define-key global-map [menu-bar tools grep] nil t)
-(define-key global-map [menu-bar tools rgrep] nil t)
-(define-key global-map [menu-bar tools ede] nil t)
-(define-key global-map [menu-bar tools semantic] nil t)
-(define-key global-map [menu-bar tools compile] nil t)
-(define-key global-map [menu-bar tools gdb] nil t)
-(define-key global-map [menu-bar tools gnus] nil t)
-(define-key global-map [menu-bar tools rmail] nil t)
-(define-key global-map [menu-bar tools compose-mail] nil t)
-(define-key global-map [menu-bar tools directory-search] nil t)
-(define-key global-map [menu-bar tools browse-web] nil t)
-(define-key global-map [menu-bar tools separator-net] nil t)
-(define-key global-map [menu-bar tools encryption-decryption] nil t)
-(define-key global-map [menu-bar tools separator-encryption-decryption] nil t)
-(define-key global-map [menu-bar tools Table] nil t)
+  (define-key global-map [menu-bar tools grep] nil t)
+  (define-key global-map [menu-bar tools rgrep] nil t)
+  (define-key global-map [menu-bar tools ede] nil t)
+  (define-key global-map [menu-bar tools semantic] nil t)
+  (define-key global-map [menu-bar tools compile] nil t)
+  (define-key global-map [menu-bar tools gdb] nil t)
+  (define-key global-map [menu-bar tools gnus] nil t)
+  (define-key global-map [menu-bar tools rmail] nil t)
+  (define-key global-map [menu-bar tools compose-mail] nil t)
+  (define-key global-map [menu-bar tools directory-search] nil t)
+  (define-key global-map [menu-bar tools browse-web] nil t)
+  (define-key global-map [menu-bar tools separator-net] nil t)
+  (define-key global-map [menu-bar tools encryption-decryption] nil t)
+  (define-key global-map [menu-bar tools separator-encryption-decryption] nil t)
+  (define-key global-map [menu-bar tools Table] nil t)
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["Magit Status"
-                     magit-status
-                     :visible (vc-responsible-backend default-directory t)
-                     :help "Show the status of the current Git repository \
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["Magit Status"
+                       magit-status
+                       :visible (vc-responsible-backend default-directory t)
+                       :help "Show the status of the current Git repository \
 in a buffer"]
-                    "Version Control")
+                      "Version Control")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["Count Words"
-                     count-words
-                     :help "Count words in buffer or region if active."]
-                    "Calendar")
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["Count Words"
+                       count-words
+                       :help "Count words in buffer or region if active."]
+                      "Calendar")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["Eshell"
-                     eshell
-                     :help "Create an interactive Eshell buffer."]
-                    "Calendar")
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["Eshell"
+                       eshell
+                       :help "Create an interactive Eshell buffer."]
+                      "Calendar")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["Python Shell"
-                     run-python
-                     :help "Run an inferior Python process."]
-                    "Calendar")
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["Python Shell"
+                       run-python
+                       :help "Run an inferior Python process."]
+                      "Calendar")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["Dired on Right Side"
-                     cc/dired-side-right
-                     :help "Side-by-side layout with Dired buffer on the right set to PATH."]
-                    "Calendar")
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["Dired on Right Side"
+                       cc/dired-side-right
+                       :help "Side-by-side layout with Dired buffer on the right set to PATH."]
+                      "Calendar")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["Insert Truth Table…"
-                     cc/insert-truth-table-input
-                     :visible (not buffer-read-only)
-                     :help "Insert truth table input with 2^BITS rows into current buffer."]
-                    "Calendar")
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["Insert Truth Table…"
+                       cc/insert-truth-table-input
+                       :visible (not buffer-read-only)
+                       :help "Insert truth table input with 2^BITS rows into current buffer."]
+                      "Calendar")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["RE-Builder"
-                     re-builder
-                     :help "Construct a regexp interactively."]
-                    "Calendar")
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["RE-Builder"
+                       re-builder
+                       :help "Construct a regexp interactively."]
+                      "Calendar")
 
-(keymap-set-after (lookup-key global-map [menu-bar tools])
-  "<separator-re>"
-  '(menu-item "--")
-  'RE-Builder)
+  (keymap-set-after (lookup-key global-map [menu-bar tools])
+    "<separator-re>"
+    '(menu-item "--")
+    'RE-Builder)
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["World Clock"
-                     world-clock
-                     :help "Display a world clock buffer with times in \
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["World Clock"
+                       world-clock
+                       :help "Display a world clock buffer with times in \
 various time zones."]
-                    "Programmable Calculator")
+                      "Programmable Calculator")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["EWW…"
-                     eww
-                     :help "Open EWW browser."]
-                    "Games")
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["EWW…"
+                       eww
+                       :help "Open EWW browser."]
+                      "Games")
 
-(easy-menu-add-item global-map '(menu-bar tools)
-                    ["Babel Ingest - Org Table To SQL"
-                     (org-babel-lob-ingest "~/org/babel/cc-org-table-to-sql.org")
-                     :help "Ingest code block to convert Org Table to SQLite."]
-                    "Games")
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      ["Babel Ingest - Org Table To SQL"
+                       (org-babel-lob-ingest "~/org/babel/cc-org-table-to-sql.org")
+                       :help "Ingest code block to convert Org Table to SQLite."]
+                      "Games")
 
-(keymap-set-after (lookup-key global-map [menu-bar tools])
-  "<separator-babel>"
-  '(menu-item "--")
-  'Babel\ Ingest\ -\ Org\ Table\ To\ SQL)
+  (keymap-set-after (lookup-key global-map [menu-bar tools])
+    "<separator-babel>"
+    '(menu-item "--")
+    'Babel\ Ingest\ -\ Org\ Table\ To\ SQL))
 
 
-(define-key global-map [menu-bar edit bookmark] nil t)
+
+;; -------------------------------------------------------------------
+;; Reconfigure Bookmarks Menu
+
+(defun cc/reconfigure-bookmarks-menu ()
+  "Reconfigure Bookmarks Menu"
+  (easy-menu-add-item global-map '(menu-bar)
+                      casual-bookmarks-main-menu
+                      "Tools")
+
+  (define-key global-map [menu-bar edit bookmark] nil t))
 
 (provide 'cc-menu-reconfig)
 

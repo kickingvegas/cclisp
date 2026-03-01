@@ -795,13 +795,25 @@ line utility pandoc. See the man page `pandoc(1)' for details."
     (info outfile)
     (info-initialize)))
 
-
 (defun cc/casual-info-compile ()
   "Build Casual Info file."
   (interactive)
   (let* ((outfile "~/Projects/elisp/casual/docs/casual.info")
          (current (current-buffer)))
     (find-file "~/Projects/elisp/casual/docs/casual.org")
+    (org-texinfo-export-to-info)
+    (if (get-buffer "*info*")
+        (kill-buffer "*info*"))
+    (info outfile)
+    (info-initialize)
+    (switch-to-buffer current)))
+
+(defun cc/anju-info-compile ()
+  "Build Anju Info file."
+  (interactive)
+  (let* ((outfile "~/Projects/elisp/anju/docs/anju.info")
+         (current (current-buffer)))
+    (find-file "~/Projects/elisp/anju/docs/anju.org")
     (org-texinfo-export-to-info)
     (if (get-buffer "*info*")
         (kill-buffer "*info*"))
@@ -965,12 +977,37 @@ This command is tuned for macOS using a single display."
       (forward-page count)
       (recenter-top-bottom 0))))
 
+;; TODO: rename to cc/page-break
 (defun cc/line-feed ()
   "Insert line feed."
   (interactive)
   (insert "\n")
   (if (derived-mode-p 'emacs-lisp-mode)
       (insert ";; -------------------------------------------------------------------\n")))
+
+(defun cc/ert-test-gen ()
+  "Generate ERT test for define and put into the `kill-ring'."
+  (interactive)
+  (save-excursion
+    (down-list)
+    (cc/next-sexp)
+    (mark-sexp)
+    (let ((fn (buffer-substring (region-beginning) (region-end)))
+          (buflist ()))
+      (push (format "(ert-deftest test-%s ()" fn) buflist)
+      (push (format "  \"Test for `%s'.\"" fn) buflist)
+      (push ")" buflist)
+      (kill-new (string-join (reverse buflist) "\n")))))
+
+(defun music ()
+  "Launch Music app."
+  (interactive)
+
+  (cond
+   ((or (eq window-system 'ns) (eq window-system 'mac))
+    (process-lines "open" "-a" "Music.app"))
+   (t
+    (message "Unsupported"))))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here
