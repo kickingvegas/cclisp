@@ -9,6 +9,13 @@
  '(Info-scroll-prefer-subnodes nil)
  '(Man-notify-method 'aggressive)
  '(Man-switches "-a")
+ '(anju-help-menu-remove-emacs-tutorial t)
+ '(anju-reconfigure-main-menu-hook
+   '(anju-main-menu--reconfigure-bookmarks anju-main-menu--reconfigure-text-mode
+                                           anju-main-menu--reconfigure-help
+                                           cc/reconfigure-file-menu
+                                           cc/reconfigure-edit-menu
+                                           cc/reconfigure-tools-menu))
  '(apropos-do-all t)
  '(auto-insert-alist
    '((("\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'" . "C / C++ header")
@@ -134,6 +141,18 @@
  '(company-dabbrev-downcase nil)
  '(compilation-auto-jump-to-first-error 'first-known)
  '(compilation-scroll-output t)
+ '(context-menu-functions
+   '(anju-context-menu-dired cc/context-menu-org-agenda anju-context-menu-org-mode
+                             cc/context-menu-journal anju-context-menu-buffers
+                             anju-context-menu-region cc/context-menu-dictionary
+                             cc/context-menu-region anju-context-menu-narrow
+                             anju-context-menu-open-in cc/context-menu-open-in
+                             anju-context-menu-vc anju-context-menu-markup
+                             anju-context-menu-wordcount context-menu-undo
+                             context-menu-region
+                             anju-context-menu-region-extension
+                             cc/context-menu-region-extension
+                             anju-context-menu-window))
  '(current-language-environment "English")
  '(cursor-type 'bar)
  '(custom-safe-themes
@@ -264,6 +283,7 @@
       ("posts" (directory . "org/posts"))
       ("documentation"
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
+      ("anju" (directory . "Projects/elisp/anju/"))
       ("casual" (directory . "Projects/elisp/casual/"))
       ("devnull"
        (or (name . "*pelican-devnull*")
@@ -291,6 +311,7 @@
       ("posts" (directory . "org/posts"))
       ("documentation"
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
+      ("anju" (directory . "Projects/elisp/anju/"))
       ("casual" (directory . "Projects/elisp/casual/"))
       ("devnull"
        (or (name . "*pelican-devnull*")
@@ -509,7 +530,6 @@
            use-package verilog-mode visual-regexp visual-regexp-steroids vtable
            webpaste wgrep which-key window-tool-bar xref yaml-mode yasnippet
            yasnippet-snippets ztree))
- '(pixel-scroll-precision-mode nil)
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
  '(plantuml-indent-level 4)
@@ -546,9 +566,9 @@
  '(tramp-terminal-type "tramp")
  '(transient-align-variable-pitch t)
  '(trash-directory "~/.Trash")
- '(use-file-dialog nil)
+ '(use-file-dialog t)
  '(use-short-answers t)
- '(user-mail-address "charles.choi@yummymelon.com")
+ '(user-mail-address "kickingvegas@gmail.com")
  '(vc-follow-symlinks nil)
  '(vc-make-backup-files nil)
  '(view-read-only t)

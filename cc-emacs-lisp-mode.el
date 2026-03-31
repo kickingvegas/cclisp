@@ -70,11 +70,12 @@
 (keymap-set emacs-lisp-mode-map "C-M-b" #'backward-word)
 (keymap-set emacs-lisp-mode-map "C-M-f" #'forward-word)
 
-(keymap-set emacs-lisp-mode-map "<prior>" #'cc/backward-page-at-top)
-(keymap-set emacs-lisp-mode-map "<next>" #'cc/forward-page-at-top)
+(keymap-set emacs-lisp-mode-map "M-<prior>" #'cc/backward-page-at-top)
+(keymap-set emacs-lisp-mode-map "M-<next>" #'cc/forward-page-at-top)
 
 (keymap-set emacs-lisp-mode-map "C-<prior>" #'pages-previous-page)
 (keymap-set emacs-lisp-mode-map "C-<next>" #'pages-next-page)
+(keymap-set emacs-lisp-mode-map "M-RET" #'cc/line-feed)
 
 (transient-define-prefix cc/edebug-tmenu ()
   :refresh-suffixes t

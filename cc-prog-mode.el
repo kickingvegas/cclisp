@@ -1,6 +1,6 @@
 ;;; cc-prog-mode.el --- Programming Customizations -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -37,6 +37,7 @@
 (require 'imenu)
 (require 'goto-addr)
 (require 'casual-editkit)
+(require 'casual-ispell)
 
 ;;; Code:
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
@@ -67,8 +68,13 @@
 (keymap-set prog-mode-map "C-6" #'imenu)
 (keymap-set prog-mode-map "M-p" #'beginning-of-defun)
 (keymap-set prog-mode-map "M-n" #'end-of-defun)
+(keymap-set prog-mode-map "C-c s" #'casual-ispell-tmenu)
 
 (keymap-set compilation-mode-map "C-o" #'casual-editkit-main-tmenu)
+
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'copyright-update nil t)))
 
 ;; GUD - mode preferences
 ;; (setq gud-mode-hook

@@ -42,6 +42,7 @@
 (require 'expand-region)
 (require 'wgrep)
 (require 'yasnippet)
+(require 'pixel-scroll)
 ;;(require 'pbcopy)
 (add-hook 'calendar-today-visible-hook 'calendar-mark-today)
 
@@ -63,6 +64,9 @@
 ;; (when (eq window-system 'mac)
 ;;     (setq mac-mouse-wheel-mode t)
 ;;     (setq mac-mouse-wheel-smooth-scroll t))
+
+(when (display-graphic-p)
+  (pixel-scroll-precision-mode 1))
 
 ;;(setq pixel-scroll-precision-large-scroll-height 10.0)
 
@@ -100,7 +104,6 @@
 (require 'flyspell)
 (require 'cc-view-mode)
 (require 'cc-magit-mode)
-(require 'cc-menu-reconfig)
 (require 'cc-compile-mode)
 (require 'cc-grep-mode)
 (require 'kill-with-intelligence)
@@ -132,6 +135,7 @@
 (require 'scrim-utils)
 (require 'numeri)
 (require 'casual-agenda)
+(require 'cc-menu-reconfig)
 (require 'cc-global-keybindings)
 
 
@@ -199,4 +203,4 @@
 
 ;;(setq window-system-default-frame-alist '((ns . ((ns-transparent-titlebar . t)))))
 
-(ffap-bindings)
+;; (ffap-bindings)
