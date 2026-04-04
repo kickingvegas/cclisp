@@ -27,6 +27,7 @@
 (require 'mouse)
 (require 'org)
 (require 'org-agenda)
+(require 'reveal-in-folder)
 (require 'cclisp)
 (require 'cc-region-operations-menu)
 (require 'reveal-in-folder)
@@ -36,6 +37,26 @@
 (require 'casual-agenda)
 (require 'anju)
 
+(easy-menu-define cc/context-menu-journal-menu nil
+  "Key map for Org copy sub-menu."
+  '("Journal"
+
+    ["Journal"
+     status-report
+     :help "Go to current day journal"]
+
+    ["Agenda - All TODOs"
+     (lambda () (interactive)(org-agenda nil "n"))
+     :help "Show Org agenda with all TODO tasks"]
+
+    ["Workflow…"
+     org-capture
+     :help "Capture content via Org"]
+
+    ["Scratch"
+     scratch-buffer
+     :help "Switch to the *scratch* buffer."]))
+
 (defun cc/context-menu-journal (menu click)
   "Context menu hook function for journal commands.
 
@@ -44,26 +65,18 @@
 
 This function is intended to be hooked into `context-menu-functions'."
 
-  (save-excursion
-    (mouse-set-point click)
-    (when (and (not (anju-at-org-table-p))
-               (not (use-region-p)))
-      (anju-context-menu-item-separator menu journal-separator)
-      (easy-menu-add-item menu nil ["Journal"
-                                    status-report
-                                    :help "Go to current day journal"])
+  (when (and (not (anju-at-org-table-p))
+             (not (use-region-p)))
 
-      (easy-menu-add-item menu nil ["Agenda - All TODOs"
-                                    (lambda () (interactive)(org-agenda nil "n"))
-                                    :help "Show Org agenda with all TODO tasks"])
+    (save-excursion
+      (mouse-set-point click)
+      (anju-context-menu-item-separator menu journal-separator)
+
+      (easy-menu-add-item menu nil cc/context-menu-journal-menu)
 
       (easy-menu-add-item menu nil ["Add Note"
                                     (lambda () (interactive)(org-capture nil "j"))
-                                    :help "Add journal note"])
-
-      (easy-menu-add-item menu nil ["Scratch"
-                                    scratch-buffer
-                                    :help "Switch to the *scratch* buffer."])))
+                                    :help "Add journal note"])))
   menu)
 
 
@@ -74,22 +87,24 @@ This function is intended to be hooked into `context-menu-functions'."
 - CLICK: event
 
 This function is intended to be hooked into `context-menu-functions'."
-  (save-excursion
-    (mouse-set-point click)
-    (if (use-region-p)
+  (if (use-region-p)
+      (save-excursion
+        (mouse-set-point click)
         (easy-menu-add-item menu nil cc/region-operations-menu)))
   menu)
 
 (defun cc/context-menu-dired (menu click)
   "Context menu hook function for Dired commands.
 
+Adds Finder/File Manager to Dired.
+
 - MENU: menu
 - CLICK: event
 
 This function is intended to be hooked into `context-menu-functions'."
-  (save-excursion
-    (mouse-set-point click)
-    (when (derived-mode-p 'dired-mode)
+  (when (derived-mode-p 'dired-mode)
+    (save-excursion
+      (mouse-set-point click)
       (easy-menu-add-item menu nil
                           ["Open in File Manager"
                            reveal-in-folder-at-point
@@ -109,12 +124,11 @@ This function is intended to be hooked into `context-menu-functions'."
 - CLICK: event
 
 This function is intended to be hooked into `context-menu-functions'."
-
-  (save-excursion
-    (mouse-set-point click)
-    (when (and (not (use-region-p))
-               (not (anju-at-org-table-p))
-               (not (derived-mode-p 'dired-mode)))
+  (when (and (not (use-region-p))
+             (not (anju-at-org-table-p))
+             (not (derived-mode-p 'dired-mode)))
+    (save-excursion
+      (mouse-set-point click)
       (easy-menu-add-item menu nil
                           ["📁 Open in Finder"
                            reveal-in-folder-this-buffer
@@ -129,11 +143,9 @@ This function is intended to be hooked into `context-menu-functions'."
 - CLICK: event
 
 This function is intended to be hooked into `context-menu-functions'."
-
-  (save-excursion
-    (mouse-set-point click)
-    (when (use-region-p)
-      ;; (anju-context-menu-item-separator menu dictionary-operations-separator)
+  (when (use-region-p)
+    (save-excursion
+      (mouse-set-point click)
       (easy-menu-add-item menu nil ["Look Up"
                                     osx-dictionary-search-word-at-point
                                     :label (anju-menu-label "Look Up")
@@ -161,10 +173,9 @@ This function is intended to be hooked into `context-menu-functions'."
 
 (defun cc/context-menu-region-extension (menu click)
   "Region menu using MENU and CLICK."
-
-  (save-excursion
-    (mouse-set-point click)
-    (when (derived-mode-p 'org-mode)
+  (when (derived-mode-p 'org-mode)
+    (save-excursion
+      (mouse-set-point click)
       (easy-menu-add-item menu nil cc/context-menu-org-copy-as-menu
                           "Paste")))
   menu)
@@ -211,12 +222,15 @@ This function is intended to be hooked into `context-menu-functions'."
 
 This function is intended to be hooked into `context-menu-functions'."
 
-  (save-excursion
+  (when (derived-mode-p 'org-agenda-mode)
     (mouse-set-point click)
-    (when (derived-mode-p 'org-agenda-mode)
+    (save-excursion
       (when (casual-agenda-headlinep)
         (easy-menu-add-item menu nil ["Clock In"
                                       casual-agenda-clock-in
+                                      :label (anju-middle-truncate (org-agenda-with-point-at-orig-entry nil
+                                                                     (org-element-property :title (org-element-at-point)))
+                                                                   "Clock In")
                                       :visible (not (org-clocking-p))
                                       :help "Clock in"])
 
@@ -249,7 +263,7 @@ This function is intended to be hooked into `context-menu-functions'."
                                       org-agenda-set-tags
                                       :help "Set Tags"])
 
-        (easy-menu-add-item menu nil ["Add Note…"
+        (easy-menu-add-item menu nil ["Note…"
                                       org-agenda-add-note
                                       :help "Add note"]))
 
@@ -258,9 +272,11 @@ This function is intended to be hooked into `context-menu-functions'."
                                     :help "Goto now"])
 
       (easy-menu-add-item menu nil cc/context-menu-org-agenda-view-menu)
-      ))
-  menu)
 
+      (easy-menu-add-item menu nil ["Refresh"
+                                    org-agenda-redo-all
+                                    :help "Redo all"])))
+  menu)
 
 
 (provide 'cc-context-menu)

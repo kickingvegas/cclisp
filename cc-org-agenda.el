@@ -1,6 +1,6 @@
 ;;; cc-org-agenda.el --- Org Agenda Configuration    -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024  Charles Choi
+;; Copyright (C) 2024, 2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -29,14 +29,6 @@
 (keymap-set org-agenda-mode-map "C-o" #'casual-agenda-tmenu)
 (keymap-set org-agenda-mode-map "M-j" #'org-agenda-clock-goto)
 (keymap-set org-agenda-mode-map "J" #'bookmark-jump)
-
-;; (use-package casual-agenda
-;;   :ensure nil
-;;   :bind (:map
-;;          org-agenda-mode-map
-;;          ("C-o" . casual-agenda-tmenu)
-;;          ("M-j" . org-agenda-clock-goto) ; optional
-;;          ("J" . bookmark-jump))) ; optional
 
 (provide 'cc-org-agenda)
 ;;; cc-org-agenda.el ends here

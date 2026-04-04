@@ -1,6 +1,6 @@
 ;;; cc-markdown-mode.el --- Markdown customizations -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2026 Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -52,8 +52,6 @@
 ;; (define-key markdown-mode-map [f13] 'markdown-preview)
 
 (add-hook 'markdown-mode-hook #'cc/save-hook-delete-trailing-whitespace)
-(add-hook 'markdown-mode-hook #'imenu-add-menubar-index)
-(add-hook 'markdown-mode-hook (lambda () (setq-local imenu-auto-rescan t)))
 
 (transient-define-prefix cc/markdown-mode-tmenu ()
   ["Markdown"

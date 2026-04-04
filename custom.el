@@ -13,6 +13,7 @@
  '(anju-reconfigure-main-menu-hook
    '(anju-main-menu--reconfigure-bookmarks anju-main-menu--reconfigure-text-mode
                                            anju-main-menu--reconfigure-help
+                                           anju-main-menu--reconfigure-imenu
                                            cc/reconfigure-file-menu
                                            cc/reconfigure-edit-menu
                                            cc/reconfigure-tools-menu))
@@ -142,17 +143,18 @@
  '(compilation-auto-jump-to-first-error 'first-known)
  '(compilation-scroll-output t)
  '(context-menu-functions
-   '(anju-context-menu-dired cc/context-menu-org-agenda anju-context-menu-org-mode
-                             cc/context-menu-journal anju-context-menu-buffers
-                             anju-context-menu-region cc/context-menu-dictionary
-                             cc/context-menu-region anju-context-menu-narrow
-                             anju-context-menu-open-in cc/context-menu-open-in
-                             anju-context-menu-vc anju-context-menu-markup
-                             anju-context-menu-wordcount context-menu-undo
-                             context-menu-region
-                             anju-context-menu-region-extension
-                             cc/context-menu-region-extension
-                             anju-context-menu-window))
+   '(cc/context-menu-elisp cc/context-menu-compile anju-context-menu-dired
+                           cc/context-menu-dired cc/context-menu-org-agenda
+                           anju-context-menu-org-mode cc/context-menu-journal
+                           anju-context-menu-buffers anju-context-menu-region
+                           cc/context-menu-dictionary cc/context-menu-region
+                           anju-context-menu-narrow anju-context-menu-open-in
+                           cc/context-menu-open-in anju-context-menu-vc
+                           anju-context-menu-markup anju-context-menu-wordcount
+                           context-menu-undo context-menu-region
+                           anju-context-menu-region-extension
+                           cc/context-menu-region-extension
+                           anju-context-menu-window))
  '(current-language-environment "English")
  '(cursor-type 'bar)
  '(custom-safe-themes
@@ -172,7 +174,7 @@
  '(dired-guess-shell-alist-user '(("" "open")))
  '(dired-listing-switches
    "-lh --group-directories-first --time-style=long-iso -g --no-group")
- '(dired-mouse-drag-files t)
+ '(dired-mouse-drag-files 'move)
  '(dired-movement-style 'cycle)
  '(dired-use-ls-dired t)
  '(dired-vc-rename-file t)
@@ -263,6 +265,7 @@
  '(gnuplot-info-display 'frame)
  '(graphviz-dot-indent-width 4)
  '(graphviz-dot-preview-extension "svg")
+ '(help-window-select t)
  '(hi-lock-auto-select-face t)
  '(highlight-nonselected-windows nil)
  '(hippie-expand-try-functions-list
@@ -371,6 +374,7 @@
  '(inhibit-startup-screen t)
  '(isearch-allow-scroll 'unlimited)
  '(isearch-lazy-count t)
+ '(kill-do-not-save-duplicates t)
  '(kill-whole-line t)
  '(lazy-count-prefix-format nil)
  '(lazy-count-suffix-format " [%s of %s]")
@@ -566,7 +570,7 @@
  '(tramp-terminal-type "tramp")
  '(transient-align-variable-pitch t)
  '(trash-directory "~/.Trash")
- '(use-file-dialog t)
+ '(use-file-dialog nil)
  '(use-short-answers t)
  '(user-mail-address "kickingvegas@gmail.com")
  '(vc-follow-symlinks nil)

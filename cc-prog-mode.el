@@ -50,16 +50,15 @@
 (add-hook 'prog-mode-hook #'flyspell-prog-mode)
 (add-hook 'prog-mode-hook #'goto-address-prog-mode)
 (add-hook 'prog-mode-hook #'cc/save-hook-delete-trailing-whitespace)
-(add-hook 'prog-mode-hook
-          (lambda nil
-            (condition-case err (imenu-add-menubar-index)
-              (imenu-unavailable
-               (let ((inhibit-message t))
-                 (message "Warning: %s" (error-message-string err)))))))
+;; (add-hook 'prog-mode-hook
+;;           (lambda nil
+;;             (condition-case err (imenu-add-menubar-index)
+;;               (imenu-unavailable
+;;                (let ((inhibit-message t))
+;;                  (message "Warning: %s" (error-message-string err)))))))
 
 (add-hook 'prog-mode-hook
           (lambda ()
-            (setq-local imenu-auto-rescan t)
             (setq-local imenu-sort-function #'imenu--sort-by-name)))
 
 (define-key prog-mode-map [remap indent-for-tab-command]

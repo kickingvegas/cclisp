@@ -1,6 +1,6 @@
 ;;; cc-ibuffer-mode.el --- ibuffer configuration     -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024  Charles Choi
+;; Copyright (C) 2024-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -30,6 +30,7 @@
 (require 'mouse)
 (require 'casual-ibuffer)
 (require 'avy)
+;; (require 'anju)
 
 (add-hook 'ibuffer-mode-hook #'hl-line-mode)
 (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)
@@ -60,6 +61,24 @@
 (keymap-set ibuffer-mode-map "]" #'ibuffer-forward-filter-group)
 (keymap-set ibuffer-mode-map "$" #'ibuffer-toggle-filter-group)
 (keymap-set ibuffer-mode-map "J" #'ibuffer-jump-to-filter-group)
+
+;; (defun cc/context-menu-ibuffer (menu click)
+;;   "Context menu hook function for Ibuffer commands.
+
+;; - MENU: menu
+;; - CLICK: event
+
+;; This function is intended to be hooked into `context-menu-functions'."
+
+;;   (mouse-set-point click)
+
+;;   (save-excursion
+;;     (when (derived-mode-p 'ibuffer-mode)
+;;       (easy-menu-add-item menu nil ["Switch to filter group…"
+;;                                     casual-ibuffer-switch-to-saved-filter-groups
+;;                                     :help "Switch to Ibuffer filter group"])
+;;       ))
+;;   menu)
 
 (provide 'cc-ibuffer-mode)
 ;;; cc-ibuffer-mode.el ends here
