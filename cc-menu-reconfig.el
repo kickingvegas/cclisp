@@ -23,7 +23,7 @@
 ;;
 
 ;; Menu Settings
-(require 'cc-transform-text-menu)
+;; (require 'cc-transform-text-menu)
 (require 'cc-style-text-menu)
 (require 'text-mode)
 (require 'vc)
@@ -31,7 +31,7 @@
 (require 'dired)
 (require 'transpose-frame)
 (require 'cc-region-operations-menu)
-(require 'cc-edit-text-menu)
+;; (require 'cc-edit-text-menu)
 (require 'cc-truth-table)
 (require 'eww)
 (require 'casual-bookmarks)
@@ -44,77 +44,6 @@
   (dired-other-window path)
   (transpose-frame)
   (other-window 1))
-
-
-;; -------------------------------------------------------------------
-;; Reconfigure File menu
-
-(defun cc/reconfigure-file-menu ()
-  "Reconfigure File menu."
-  (easy-menu-add-item (lookup-key global-map [menu-bar file]) nil
-                      ["Swap Windows"
-                       window-swap-states
-                       :visible (> (count-windows) 1)
-                       :help "Swap the states of live windows WINDOW-1 and \
-WINDOW-2."]
-                      "New Window Below")
-
-  (easy-menu-add-item (lookup-key global-map [menu-bar file]) nil
-                      ["Transpose Windows"
-                       transpose-frame
-                       :visible (> (count-windows) 1)
-                       :help "Transpose windows arrangement at FRAME."]
-                      "New Window Below")
-
-  (define-key global-map [menu-bar file make-frame-on-display] nil t)
-  (define-key global-map [menu-bar file make-frame-on-monitor] nil t))
-
-
-
-;; -------------------------------------------------------------------
-;; Reconfigure Edit Menu
-
-(defun cc/reconfigure-edit-menu ()
-  "Reconfigure Edit menu."
-
-  (easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
-                      cc/transpose-menu "Fill")
-
-  (easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
-                      cc/move-text-menu "Fill")
-
-  (easy-menu-add-item (lookup-key global-map [menu-bar edit]) nil
-                      cc/delete-space-menu "Fill")
-
-  (easy-menu-add-item global-map '(menu-bar edit)
-                      ["Flush Lines…"
-                       flush-lines
-                       :help "Delete lines containing matches for REGEXP."
-                       :visible (not buffer-read-only)]
-                      "Fill")
-
-  (easy-menu-add-item global-map '(menu-bar edit)
-                      ["Keep Lines…"
-                       keep-lines
-                       :help "Delete all lines except those containing matches \
-for REGEXP."
-                       :visible (not buffer-read-only)]
-                      "Fill")
-
-  (when (eq window-system 'ns)
-    (easy-menu-add-item global-map '(menu-bar edit)
-                        ["Colors"
-                         ns-popup-color-panel
-                         :help "Show macOS Color Picker."
-                         :visible (eq window-system 'ns)])
-
-    (easy-menu-add-item global-map '(menu-bar edit)
-                        ["Emoji & Symbols"
-                         ns-do-show-character-palette
-                         :help "Show macOS Character Palette."
-                         :visible (eq window-system 'ns)]))
-
-  (define-key global-map [menu-bar edit execute-extended-command] nil t))
 
 
 ;; -------------------------------------------------------------------
@@ -266,18 +195,6 @@ various time zones."]
     '(menu-item "--")
     'Babel\ Ingest\ -\ Org\ Table\ To\ SQL))
 
-
-
-;; -------------------------------------------------------------------
-;; Reconfigure Bookmarks Menu
-
-(defun cc/reconfigure-bookmarks-menu ()
-  "Reconfigure Bookmarks Menu"
-  (easy-menu-add-item global-map '(menu-bar)
-                      casual-bookmarks-main-menu
-                      "Tools")
-
-  (define-key global-map [menu-bar edit bookmark] nil t))
 
 (provide 'cc-menu-reconfig)
 

@@ -1,6 +1,6 @@
 ;;; cc-region-operations-menu.el --- Region Operations Menu -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2026 Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -51,16 +51,17 @@
 link in the clipboard"]
 
     ["Start Speaking" cc/say-region
+     :visible (eq window-system 'ns)
      :help "Start speaking selected region"]
 
     ["Call" cc/call-nanp-phone-number
      :label (anju-menu-label "Call")
-     :visible (cc/nanp-phone-number-p)
+     :visible (and (cc/nanp-phone-number-p) (eq window-system 'ns))
      :help "Call phone number"]
 
     ["Open in Apple Maps" cc/open-region-in-apple-maps
      :label (anju-menu-label "Open in Apple Maps")
-     :visible (not (cc/nanp-phone-number-p))
+     :visible (and (not (cc/nanp-phone-number-p)) (eq window-system 'ns))
      :help "Open in Apple Maps"]))
 
 (provide 'cc-region-operations-menu)

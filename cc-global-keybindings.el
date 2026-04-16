@@ -1,6 +1,6 @@
 ;;; cc-global-keybindings.el --- Global Keybindings -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -72,17 +72,19 @@
 (keymap-global-set "<f5>" #'journal)
 (keymap-global-set "s-<f5>" #'cc/org-search)
 (keymap-global-set "<f6>" #'osx-dictionary-search-input)
-(keymap-global-set "<f7>" #'repeat)
+;; (keymap-global-set "<f7>" #'repeat)
+;; (keymap-global-set "<f7>" #'ace-window)
+(keymap-global-set "<f7>" #'avy-goto-char-timer)
 (keymap-global-set "M-<f7>" #'repeat-complex-command)
 (keymap-global-set "C-o" #'casual-editkit-main-tmenu)
-(if (string-equal (window-system) "mac")
-    (keymap-global-set "<f10>" #'casual-editkit-main-tmenu))
+;; (if (string-equal (window-system) "mac")
+;;     (keymap-global-set "<f10>" #'casual-editkit-main-tmenu))
 
 (keymap-global-set "<f8>" #'org-capture)
 (keymap-global-set "<f9>" #'compile)
 (keymap-global-set "<f11>" #'bookmark-set-no-overwrite)
 
-(keymap-global-set "M-<f1>" #'cc/open-url)
+;; (keymap-global-set "M-<f1>" #'cc/open-url)
 ;;(keymap-global-set "M-<f2>" #'google-this)
 ;;(keymap-global-set "C-c C-;" #'shell-command)
 (keymap-global-set "M-<f4>" #'google-this)
@@ -101,16 +103,16 @@
 (keymap-global-set "M-g" #'casual-avy-tmenu)
 
 ;; Terminal
-(keymap-global-set "M-SPC" #'set-mark-command)
-(keymap-global-set "M-c" #'kill-ring-save)
+;; (unless (display-graphic-p)
+;;   (keymap-global-set "M-c" #'kill-ring-save))
 
 ;;(keymap-global-set (kbd "<f8>") 'next-error)
 ;;(keymap-global-set (kbd "M-<f8>") 'previous-error)
 ;;(keymap-global-set (kbd "<f9>") 'compile)
 
-(keymap-global-set "C-<f2>" #'delete-other-windows)
-(keymap-global-set "C-<f3>" #'kill-buffer)
-(keymap-global-set "C-<f4>" #'view-file)
+;; (keymap-global-set "C-<f2>" #'delete-other-windows)
+;; (keymap-global-set "C-<f3>" #'kill-buffer)
+;; (keymap-global-set "C-<f4>" #'view-file)
 (keymap-global-set "C-z" #'pop-global-mark)
 
 (keymap-global-set "<home>" #'beginning-of-buffer)

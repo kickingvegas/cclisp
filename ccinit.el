@@ -216,6 +216,18 @@ If prefix ARG is non-nil, then the computed result is stored in the
         (kill-new msg))
     (message msg)))
 
+(defun cc/days-until-mothers (arg)
+  "Days until Mother's Day 2026.
+
+If prefix ARG is non-nil, then the computed result is stored in the
+`kill-ring'."
+  (interactive "P")
+  (let* ((mother (cc/--days-until "2026-05-10" "%d days until Mother's Day"))
+         (msg (format "%s" mother)))
+    (if arg
+        (kill-new msg))
+    (message msg)))
+
 (defun cc/workplace ()
   "Initialize workplace."
   (interactive)
