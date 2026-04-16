@@ -1,6 +1,6 @@
 ;;; cc-org-mode.el --- Org configuration -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -85,8 +85,6 @@ which is done with `org-ctrl-c-ctrl-c'."
 (add-hook 'org-mode-hook (lambda ()
                            (cc/reconfig-org-smart-quotes-lang "en")))
 
-(add-hook 'org-mode-hook #'imenu-add-menubar-index)
-(add-hook 'org-mode-hook (lambda () (setq-local imenu-auto-rescan t)))
 (add-hook
  'org-mode-hook
  (lambda ()
@@ -146,14 +144,18 @@ SUFFIX - string appended to prefix
                              "warningbox"
                              "blindtext")))
        (dolist (e base-list)
-         (push (cons (concat "#+begin_" e)
-                     (cc/--prettify-components ?⎧ e)) prettify-symbols-alist)
-         (push (cons (concat "#+BEGIN_" (upcase e))
-                     (cc/--prettify-components ?⎧ e)) prettify-symbols-alist)
-         (push (cons (concat "#+end_" e)
-                     (cc/--prettify-components ?⎩ e)) prettify-symbols-alist)
-         (push (cons (concat "#+END_" (upcase e))
-                     (cc/--prettify-components ?⎩ e)) prettify-symbols-alist)))
+         (push
+          (cons (concat "#+begin_" e) (cc/--prettify-components ?⎧ e))
+          prettify-symbols-alist)
+         (push
+          (cons (concat "#+BEGIN_" (upcase e)) (cc/--prettify-components ?⎧ e))
+          prettify-symbols-alist)
+         (push
+          (cons (concat "#+end_" e) (cc/--prettify-components ?⎩ e))
+          prettify-symbols-alist)
+         (push
+          (cons (concat "#+END_" (upcase e)) (cc/--prettify-components ?⎩ e))
+          prettify-symbols-alist)))
      (prettify-symbols-mode))))
 
 (defun cc/org-backward-paragraph ()
@@ -267,9 +269,6 @@ SUFFIX - string appended to prefix
       (org-capture nil "J")
     (org-capture nil "j")))
 
-(defalias 'cc/insert-org-keyword
-  (kmacro "C-a # + M-x c o m p l e t e - s y m b o l <return>"))
-
 (require 'cc-org-capture)
 
 (defun cc/disable-flycheck-in-org-src-block ()
@@ -284,6 +283,37 @@ SUFFIX - string appended to prefix
 (keymap-set org-mode-map "M-m" #'casual-org-tmenu)
 (keymap-set org-table-fedit-map "M-m" #'casual-org-table-fedit-tmenu)
 (keymap-set org-table-fedit-map "<f1>" #'casual-org-table-fedit-tmenu)
+
+
+;; -------------------------------------------------------------------
+(defun cc/--days-until (target &optional template)
+  "Formatted string of days until TARGET.
+
+- TARGET: date string that conforms to `parse-time-string'.
+- TEMPLATE : format string that includes ‘%d’ specifier.
+
+If TEMPLATE is nil, then a predefined format string will be
+used."
+  (let* ((template (if template
+                       template
+                     (concat "%d days until " target)))
+         (days (org-time-stamp-to-now target))
+         (msg (format template days)))
+    msg))
+
+(defun cc/days-until (arg)
+  "Prompt user for date and show days until in the mini-buffer.
+
+Use `org-read-date' to compute days until to display in the mini-buffer.
+
+If prefix ARG is non-nil, then the computed result is stored in the
+ `kill-ring'."
+  (interactive "P")
+  (let* ((target (org-read-date))
+         (msg (cc/--days-until target)))
+    (if arg
+        (kill-new msg))
+    (message msg)))
 
 ;; ox-gfm init is so broken. need to load it manually.
 (eval-after-load "org"

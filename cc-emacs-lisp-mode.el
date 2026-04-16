@@ -1,6 +1,6 @@
 ;;; cc-emacs-lisp-mode.el --- Elisp Customization -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -28,14 +28,16 @@
 (require 'edebug)
 (require 'cclisp)
 (require 'calle24-edebug)
+(require 'hideshow)
 (require 'casual-elisp)
+(require 'anju)
 
 ;;; Code:
 
 ;;(add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 (add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
 (add-hook 'emacs-lisp-mode-hook #'prettify-symbols-mode)
-
+(add-hook 'emacs-lisp-mode-hook #'hs-minor-mode)
 
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
@@ -242,6 +244,77 @@
 
 (add-hook 'edebug-eval-mode-hook #'window-tool-bar-mode)
 
+
+
+;; -------------------------------------------------------------------
+(defun cc/context-menu-elisp (menu click)
+  "Context menu hook function for Elisp commands.
+
+- MENU: menu
+- CLICK: event
+
+This function is intended to be hooked into `context-menu-functions'."
+
+  (when (derived-mode-p 'emacs-lisp-mode)
+
+    (save-excursion
+      (mouse-set-point click)
+      (anju-context-menu-item-separator menu emacs-lisp-separator)
+
+      (easy-menu-add-item
+       menu nil
+       ["Eval Defun"
+        eval-defun
+        :help "Evaluate the top level form point is in"])
+
+      (easy-menu-add-item
+       menu nil
+       ["Edebug Defun"
+        (lambda () (interactive) (eval-defun t))
+        :help "Evaluate the top level form point is in, stepping through with Edebug"])
+
+      (easy-menu-add-item
+       menu nil
+       ["Toggle Hiding"
+        hs-toggle-hiding
+        :enable hs-minor-mode
+        :label (if (hs-already-hidden-p) "Show Sexp" "Hide Sexp")
+        :help "Toggle hiding"])
+      ))
+  menu)
+
+
+;; -------------------------------------------------------------------
+;; Fix vector indentation.
+;; This code taken from
+;; https://github.com/magit/emacsql/blob/2fe6d4562b32a170a750d5e80514fbb6b6694803/emacsql.el#L357-L379
+;; per guidance from J. Bernoulli to fix vector formatting.
+
+(defun emacsql--inside-vector-p ()
+  "Return non-nil if point is inside a vector expression."
+  (let ((start (point)))
+    (save-excursion
+      (beginning-of-defun)
+      (let ((containing-sexp (elt (parse-partial-sexp (point) start) 1)))
+        (and containing-sexp
+             (progn (goto-char containing-sexp)
+                    (looking-at "\\[")))))))
+
+(defun emacsql--calculate-vector-indent (fn &optional parse-start)
+  "Don't indent vectors in `emacs-lisp-mode' like lists."
+  (if (save-excursion (beginning-of-line) (emacsql--inside-vector-p))
+      (let ((lisp-indent-offset 1))
+        (funcall fn parse-start))
+    (funcall fn parse-start)))
+
+(defun emacsql-fix-vector-indentation ()
+  "When called, advise `calculate-lisp-indent' to stop indenting vectors.
+Once activated, vector contents no longer indent like lists."
+  (interactive)
+  (advice-add 'calculate-lisp-indent :around
+              #'emacsql--calculate-vector-indent))
+
+(emacsql-fix-vector-indentation)
 
 (provide 'cc-emacs-lisp-mode)
 ;;; cc-emacs-lisp-mode.el ends here

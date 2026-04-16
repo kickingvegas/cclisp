@@ -1,6 +1,6 @@
 ;;; cc-make-mode.el --- makefile-mode configuration   -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024-2025  Charles Choi
+;; Copyright (C) 2024-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -30,12 +30,8 @@
 (keymap-set makefile-mode-map "<f9>" #'compile)
 (keymap-set makefile-mode-map "C-6" #'imenu)
 
-;;(add-hook 'makefile-mode-hook #'makefile-gmake-mode)
-
-(add-hook 'makefile-mode-hook #'imenu-add-menubar-index)
 (add-hook 'makefile-mode-hook
           (lambda ()
-            (setq-local imenu-auto-rescan t)
             (setq-local imenu-sort-function #'imenu--sort-by-name)))
 
 (keymap-set makefile-mode-map "M-m" #'casual-make-tmenu)

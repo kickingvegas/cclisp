@@ -1,6 +1,6 @@
 ;;; cclisp.el --- Utility Functions -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -1008,6 +1008,13 @@ This command is tuned for macOS using a single display."
     (process-lines "open" "-a" "Music.app"))
    (t
     (message "Unsupported"))))
+
+(defun cc/cleanup-prog ()
+  "Cleanup code buffer."
+    (indent-region (point-min) (point-max))
+    (whitespace-cleanup)
+    (save-buffer))
+
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

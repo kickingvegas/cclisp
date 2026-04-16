@@ -1,6 +1,6 @@
 ;;; cc-menu-reconfig.el --- Menu reconfiguration -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -64,24 +64,11 @@ WINDOW-2."]
                        transpose-frame
                        :visible (> (count-windows) 1)
                        :help "Transpose windows arrangement at FRAME."]
-                      "New Window Below"))
+                      "New Window Below")
 
+  (define-key global-map [menu-bar file make-frame-on-display] nil t)
+  (define-key global-map [menu-bar file make-frame-on-monitor] nil t))
 
-
-;; -------------------------------------------------------------------
-;; Reconfigure Text Mode Menu
-
-(defun cc/reconfigure-text-mode-menu ()
-  "Reconfigure Text mode menu."
-  (easy-menu-remove-item text-mode-menu nil "Center Line")
-  (easy-menu-remove-item text-mode-menu nil "Center Region")
-  (easy-menu-remove-item text-mode-menu nil "Center Paragraph")
-  (easy-menu-remove-item text-mode-menu nil "Paragraph Indent")
-  (easy-menu-remove-item text-mode-menu nil "---")
-
-  (easy-menu-add-item text-mode-menu nil anju-transform-text-menu "Auto Fill")
-  (easy-menu-add-item text-mode-menu nil anju-style-menu "Auto Fill")
-  (easy-menu-add-item text-mode-menu nil cc/region-operations-menu "Auto Fill"))
 
 
 ;; -------------------------------------------------------------------
@@ -114,28 +101,31 @@ for REGEXP."
                        :visible (not buffer-read-only)]
                       "Fill")
 
-  (easy-menu-add-item global-map '(menu-bar edit)
-                      ["Colors"
-                       ns-popup-color-panel
-                       :help "Show macOS Color Picker."
-                       :visible (eq window-system 'ns)])
+  (when (eq window-system 'ns)
+    (easy-menu-add-item global-map '(menu-bar edit)
+                        ["Colors"
+                         ns-popup-color-panel
+                         :help "Show macOS Color Picker."
+                         :visible (eq window-system 'ns)])
 
-  (easy-menu-add-item global-map '(menu-bar edit)
-                      ["Emoji & Symbols"
-                       ns-do-show-character-palette
-                       :help "Show macOS Character Palette."
-                       :visible (eq window-system 'ns)]))
+    (easy-menu-add-item global-map '(menu-bar edit)
+                        ["Emoji & Symbols"
+                         ns-do-show-character-palette
+                         :help "Show macOS Character Palette."
+                         :visible (eq window-system 'ns)]))
+
+  (define-key global-map [menu-bar edit execute-extended-command] nil t))
 
 
 ;; -------------------------------------------------------------------
 ;;; Reconfigure Tools Menu
 (defun cc/reconfigure-tools-menu ()
   "Reconfigure Tools menu."
-  (easy-menu-add-item global-map '(menu-bar tools)
-                      ["Agenda - All TODOs"
-                       (lambda () (interactive)(org-agenda nil "n"))
-                       :help "Show Org agenda with all TODO tasks."]
-                      "Shell Commands")
+  ;; (easy-menu-add-item global-map '(menu-bar tools)
+  ;;                     ["Agenda - All TODOs"
+  ;;                      (lambda () (interactive)(org-agenda nil "n"))
+  ;;                      :help "Show Org agenda with all TODO tasks."]
+  ;;                     "Shell Commands")
 
   (easy-menu-add-item global-map '(menu-bar tools)
                       ["Set Input Method - Korean"
@@ -144,17 +134,17 @@ for REGEXP."
                        :help "Set input method to Korean"]
                       "Shell Commands")
 
-  (easy-menu-add-item global-map '(menu-bar tools)
-                      ["Open in Finder"
-                       reveal-in-folder-this-buffer
-                       :visible (or (buffer-file-name) (derived-mode-p 'dired-mode))
-                       :help "Reveal the current buffer in folder."]
-                      "Shell Commands")
+  ;; (easy-menu-add-item global-map '(menu-bar tools)
+  ;;                     ["Open in Finder"
+  ;;                      reveal-in-folder-this-buffer
+  ;;                      :visible (or (buffer-file-name) (derived-mode-p 'dired-mode))
+  ;;                      :help "Reveal the current buffer in folder."]
+  ;;                     "Shell Commands")
 
-  (keymap-set-after (lookup-key global-map [menu-bar tools])
-    "<separator-org>"
-    '(menu-item "--")
-    'Agenda\ -\ All\ TODOs)
+  ;; (keymap-set-after (lookup-key global-map [menu-bar tools])
+  ;;   "<separator-org>"
+  ;;   '(menu-item "--")
+  ;;   'Agenda\ -\ All\ TODOs)
 
   ;; (easy-menu-add-item global-map '(menu-bar tools)
   ;;                     ["Find File…"

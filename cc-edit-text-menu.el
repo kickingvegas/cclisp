@@ -1,6 +1,6 @@
 ;;; cc-edit-text-menu.el --- Edit Text Menus -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -22,12 +22,14 @@
 ;;; Commentary:
 ;;
 
+;;; Code:
 (require 'casual-editkit)
 
 (easy-menu-define cc/transpose-menu nil
-  "Keymap for Transpose submenu"
-  '("Transpose"
+  "Keymap for Transpose submenu."
+  '("Transpose ⇄"
     :visible (not buffer-read-only)
+    :enable (not (use-region-p))
     ["Characters" transpose-chars
      :help "Interchange characters around point, moving forward one character."]
 
@@ -51,32 +53,33 @@
 expressions (sexps)."]))
 
 (easy-menu-define cc/move-text-menu nil
-  "Keymap for Move Text submenu"
+  "Keymap for Move Text submenu."
   '("Move Text"
     :visible (not buffer-read-only)
-    ["Word Forward" casual-editkit-move-word-forward
+    :enable (not (use-region-p))
+    ["Word →" casual-editkit-move-word-forward
      :help "Move word to the right of point forward one word."]
 
-    ["Word Backward" casual-editkit-move-word-backward
+    ["Word ←" casual-editkit-move-word-backward
      :help "Move word to the right of point backward one word."]
 
-    ["Sentence Forward" casual-editkit-move-sentence-forward
+    ["Sentence →" casual-editkit-move-sentence-forward
      :help "Move sentence to the right of point forward one sentence."]
 
-    ["Sentence Backward" casual-editkit-move-sentence-backward
+    ["Sentence ←" casual-editkit-move-sentence-backward
      :help "Move sentence to the right of point backward one sentence."]
 
-    ["Balanced Expression (sexp) Forward" casual-editkit-move-sexp-forward
+    ["Balanced Expression (sexp) →" casual-editkit-move-sexp-forward
      :help "Move balanced expression (sexp) to the right of point forward \
 one sexp."]
 
-    ["Balanced Expression (sexp) Backward" casual-editkit-move-sexp-backward
+    ["Balanced Expression (sexp) ←" casual-editkit-move-sexp-backward
      :help "Move balanced expression (sexp) to the right of point backward \
 one sexp."]))
 
 (easy-menu-define cc/delete-space-menu nil
-  "Keymap for Deleting Space submenu"
-  '("Delete Space"
+  "Keymap for Deleting Space submenu."
+  '("Delete"
     :visible (not buffer-read-only)
     ["Join Line" join-line
      :help "Join this line to previous and fix up \
@@ -97,8 +100,13 @@ leaving just one."]
      :help "Cleanup some blank problems in all buffer or at region."]
 
     ["Delete Trailing Whitespace" delete-trailing-whitespace
-     :help "Delete trailing whitespace between START and END."]))
+     :help "Delete trailing whitespace between START and END."]
 
+    ["Zap up to…" zap-up-to-char
+     :help "Kill up to, but not including occurrence of CHAR"]
+
+    ["Zap to…" zap-to-char
+     :help "Kill up to and including occurrence of CHAR"]))
 
 (provide 'cc-edit-text-menu)
 

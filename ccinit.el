@@ -1,6 +1,6 @@
 ;;; ccinit.el --- CC Emacs Init File -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -50,6 +50,19 @@
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8-unix)
 (recentf-mode 1)
+
+
+;; Config stolen from
+;; https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/
+
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+
+(setq redisplay-skip-fontification-on-input t)
+
+;; (setq read-process-output-max (* 4 1024 1024)) ; 4MB
+
 
 ;; (when (eq window-system 'x)
 ;;   (setq x-meta-keysym 'super
@@ -183,11 +196,25 @@
 ;;   (mac-toggle-tab-bar))
 
 (defun cc/tty-mouse ()
+  "Configure mouse for TTY."
   (interactive)
   (unless (display-graphic-p)
     (xterm-mouse-mode 1)
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line)))
+
+(defun cc/days-until-voting (arg)
+  "Days until U.S. elections in 2026 and 2028.
+
+If prefix ARG is non-nil, then the computed result is stored in the
+ `kill-ring'."
+  (interactive "P")
+  (let* ((midterms (cc/--days-until "2026-11-03" "%d days until 2026 midterms"))
+         (election (cc/--days-until "2028-11-07" "%d days until 2028 presidential election"))
+         (msg (format "%s, %s" midterms election)))
+    (if arg
+        (kill-new msg))
+    (message msg)))
 
 (defun cc/workplace ()
   "Initialize workplace."
@@ -197,7 +224,10 @@
   (org-agenda nil "n")
   (casual-agenda-goto-now)
   (eshell t)
-  (switch-to-buffer (format-time-string "%Y_%m_%d.org")))
+  (switch-to-buffer (format-time-string "%Y_%m_%d.org"))
+  ;; (cc/days-until-voting)
+  )
+
 
 ;; (password-store-menu-enable)
 
