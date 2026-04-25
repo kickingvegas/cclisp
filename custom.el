@@ -11,9 +11,8 @@
  '(Man-switches "-a")
  '(anju-help-menu-remove-emacs-tutorial t)
  '(anju-reconfigure-main-menu-hook
-   '(anju-main-menu--reconfigure-file
-     anju-main-menu--reconfigure-edit
-     anju-main-menu--reconfigure-options
+   '(anju-main-menu--reconfigure-file anju-main-menu--reconfigure-edit
+                                      anju-main-menu--reconfigure-options
                                       anju-main-menu--reconfigure-bookmarks
                                       anju-main-menu--reconfigure-text-mode
                                       anju-main-menu--reconfigure-help
@@ -533,10 +532,10 @@
            rainbow-mode reveal-in-folder scpaste show-font
            smart-mode-line-powerline-theme soap-client solarized-theme
            sqlite-mode-extras sr-speedbar svg-clock swift-mode symbol-overlay
-           tj3-mode toc-org track-changes tramp transpose-frame treemacs
-           use-package verilog-mode visual-regexp visual-regexp-steroids vtable
-           webpaste wgrep which-key window-tool-bar xref yaml-mode yasnippet
-           yasnippet-snippets ztree))
+           tj3-mode toc-org track-changes tramp transmission transpose-frame
+           treemacs use-package verilog-mode visual-regexp
+           visual-regexp-steroids vtable webpaste wgrep which-key
+           window-tool-bar xref yaml-mode yasnippet yasnippet-snippets ztree))
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
  '(plantuml-indent-level 4)
