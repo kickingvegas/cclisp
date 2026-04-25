@@ -247,6 +247,30 @@
 
 
 ;; -------------------------------------------------------------------
+;; Context Menus
+
+
+(easy-menu-define cc/edebug-mode-menu nil
+  "Keymap for mouse window swap menu."
+  '("Mode"
+    ["Step" edebug-step-mode
+     :help "Proceed to next stop point"]
+
+    ["Go" edebug-go-mode
+     :help "Go, evaluating until break."]
+
+    ["Continue" edebug-continue-mode
+     :help "Continue mode"]
+
+    ["Next" edebug-next-mode
+     :help "Proceed to next ‘after’ stop point"]
+
+    ["Trace" edebug-trace-mode
+     :help "Trace mode"]
+     ))
+
+
+
 (defun cc/context-menu-elisp (menu click)
   "Context menu hook function for Elisp commands.
 
@@ -261,26 +285,69 @@ This function is intended to be hooked into `context-menu-functions'."
       (mouse-set-point click)
       (anju-context-menu-item-separator menu emacs-lisp-separator)
 
-      (easy-menu-add-item
-       menu nil
-       ["Eval Defun"
-        eval-defun
-        :help "Evaluate the top level form point is in"])
+      (if (edebug-mode-p)
+          (progn
+            (easy-menu-add-item menu nil
+                                ["Step" edebug-step-mode
+                                 :help "Step"])
 
-      (easy-menu-add-item
-       menu nil
-       ["Edebug Defun"
-        (lambda () (interactive) (eval-defun t))
-        :help "Evaluate the top level form point is in, stepping through with Edebug"])
+            (easy-menu-add-item menu nil
+                                cc/edebug-mode-menu)
 
-      (easy-menu-add-item
-       menu nil
-       ["Toggle Hiding"
-        hs-toggle-hiding
-        :enable hs-minor-mode
-        :label (if (hs-already-hidden-p) "Show Sexp" "Hide Sexp")
-        :help "Toggle hiding"])
-      ))
+            (easy-menu-add-item menu nil
+                                ["Forward ()" edebug-forward-sexp
+                                 :help "Forward sexp"])
+
+            (easy-menu-add-item menu nil
+                                ["Step-in ()" edebug-step-in
+                                 :help "Step in sexp"])
+
+            (easy-menu-add-item menu nil
+                                ["Step-out ()" edebug-step-out
+                                 :help "Step out sexp"])
+
+            (easy-menu-add-item menu nil
+                                ["Set Breakpoint" edebug-set-breakpoint
+                                 :help "Set breakpoint"])
+
+            (easy-menu-add-item menu nil
+                                ["Unset Breakpoint" edebug-unset-breakpoint
+                                 :help "Unset breakpoint"])
+            (easy-menu-add-item menu nil
+                                ["Stop Edebug" edebug-stop
+                                 :help "Stop Edebug"])
+            (easy-menu-add-item menu nil
+                                ["Quit Edebug" edebug-top-level-nonstop
+                                 :help "Quit Edebug Nonstop"]))
+
+        (easy-menu-add-item
+         menu nil
+         [eval-last-sexp
+          eval-last-sexp
+          :label "Eval Last Sexp"
+          :help "Evaluate sexp before point; print value in the echo area"])
+
+        (easy-menu-add-item
+         menu nil
+         [eval-defun
+          eval-defun
+          :label "Eval Defun"
+          :help "Evaluate the top level form point is in"])
+
+        (easy-menu-add-item
+         menu nil
+         [edebug-defun
+          (lambda () (interactive) (eval-defun t))
+          :label "Edebug Defun"
+          :help "Evaluate the top level form point is in, stepping through with Edebug"])
+
+        (easy-menu-add-item
+         menu nil
+         [hs-toggle-hiding
+          hs-toggle-hiding
+          :enable hs-minor-mode
+          :label (if (hs-already-hidden-p) "Show Sexp" "Hide Sexp")
+          :help "Toggle hiding"]))))
   menu)
 
 

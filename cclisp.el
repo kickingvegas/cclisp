@@ -124,13 +124,13 @@ A new frame will be created if `pop-up-frames' is t."
      (shell-command (format "open -a TextEdit.app %s" fname))))
 
 ;; TODO: revisit storing web links
-(load-file (concat user-emacs-directory "url-bookmarks.el"))
+;; (load-file (concat user-emacs-directory "url-bookmarks.el"))
 
-(defun cc/open-url ()
-  "Open URL from file `cc/url-bookmarks'."
-  (interactive)
-  (let ((choice (car (completing-read-multiple "Select URL: " (map-keys cc/url-bookmarks)))))
-    (browse-url (cdr (assoc choice cc/url-bookmarks)))))
+;; (defun cc/open-url ()
+;;   "Open URL from file `cc/url-bookmarks'."
+;;   (interactive)
+;;   (let ((choice (car (completing-read-multiple "Select URL: " (map-keys cc/url-bookmarks)))))
+;;     (browse-url (cdr (assoc choice cc/url-bookmarks)))))
 
 (defun year (arg)
   "Open daily generated current year PDF file.
@@ -250,6 +250,11 @@ ISO 8601."
   (interactive "r")
   (shell-command-on-region start end "say"))
 
+(defun cc/say-region-korean (&optional start end)
+  "Pass region bounded by START and END to macOS say command."
+  (interactive "r")
+  (shell-command-on-region start end "say -v 'Yuna' -r 100"))
+
 (defun cc/ellipsis()
   "Insert an ellipsis."
   (interactive)
@@ -271,9 +276,19 @@ ISO 8601."
   (insert "✦"))
 
 (defun cc/info-symbol ()
-  "Insert a info symbol."
+  "Insert an info symbol."
   (interactive)
   (insert "ⓘ"))
+
+(defun cc/option-symbol ()
+  "Insert an option symbol."
+  (interactive)
+  (insert "⌥"))
+
+(defun cc/command-symbol ()
+  "Insert an option symbol."
+  (interactive)
+  (insert "⌘"))
 
 (defun cc/apple-maps-search(&optional input)
   "Search Apple Maps with INPUT.
@@ -1014,6 +1029,15 @@ This command is tuned for macOS using a single display."
     (indent-region (point-min) (point-max))
     (whitespace-cleanup)
     (save-buffer))
+
+
+(defun cc/--function-tool-tip (fn)
+  "Generate tool tip from function FN."
+  (let ((docstring (documentation fn)))
+    (if docstring
+        (replace-regexp-in-string "\.$" ""
+                                  (car (string-split docstring "\n")))
+      (error "No docstring in %s" fn))))
 
 
 (provide 'cclisp)

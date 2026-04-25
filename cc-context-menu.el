@@ -31,6 +31,7 @@
 (require 'cclisp)
 (require 'cc-region-operations-menu)
 (require 'reveal-in-folder)
+(require 'dictionary)
 (require 'osx-dictionary)
 (require 'ox-slack)
 (require 'compile)
@@ -146,10 +147,19 @@ This function is intended to be hooked into `context-menu-functions'."
   (when (use-region-p)
     (save-excursion
       (mouse-set-point click)
-      (easy-menu-add-item menu nil ["Look Up"
-                                    osx-dictionary-search-word-at-point
-                                    :label (anju-menu-label "Look Up")
-                                    :help "Look up selected region in macOS dictionary"])))
+
+      (pcase system-type
+        ('darwin
+         (easy-menu-add-item menu nil ["Look Up"
+                                        osx-dictionary-search-word-at-point
+                                        :visible (eq system-type 'darwin)
+                                        :label (format "Look Up “%s”" (substring-no-properties (thing-at-point 'word)))
+                                       :help "Look up selected region in macOS dictionary"]))
+        (_
+         (easy-menu-add-item menu nil ["Look Up"
+                                       dictionary-search-word-at-mouse
+                                       :label (format "Look Up “%s”" (substring-no-properties (thing-at-point 'word)))
+                                       :help "Look up selected region in  dictionary"])))))
   menu)
 
 

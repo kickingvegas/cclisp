@@ -1,6 +1,6 @@
 ;;; cc-grep-mode.el --- grep mode customization      -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024  Charles Choi
+;; Copyright (C) 2024, 2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -27,9 +27,7 @@
 (require 'compile)
 (require 'grep)
 (require 'hl-line)
-;; (require 'casual-editkit)
-;; (add-hook 'grep-mode-hook #'hl-line-mode)
-;; (keymap-set grep-mode-map "C-o" #'casual-editkit-main-tmenu)
+(require 'wgrep)
 
 (require 'casual-compile)
 (keymap-set grep-mode-map "C-o" #'casual-compile-tmenu)
@@ -40,6 +38,44 @@
 (keymap-set grep-mode-map "o" #'compilation-display-error)
 (keymap-set grep-mode-map "[" #'compilation-previous-file)
 (keymap-set grep-mode-map "]" #'compilation-next-file)
+
+(easy-menu-define cc/wgrep-menu nil
+  "Keymap for wgrep menu"
+  '("Writeable Grep"
+    :visible (eq (current-local-map) wgrep-mode-map)
+    :enable (not buffer-read-only)
+
+    ["Finish Edit" wgrep-finish-edit
+     :help "Apply the changes to file buffers and exit."]
+
+    ["Mark Current Line for Deletion" wgrep-mark-deletion
+     :help "Mark as delete to current line (including newline)."]
+
+    ["Toggle Readonly" wgrep-toggle-readonly-area
+     :help "Toggle read-only area to remove a whole line."]
+
+    ["Remove Change" wgrep-remove-change
+     :help "Remove changes in the region between BEG and END."]
+
+    ["Remove All Changes" wgrep-remove-all-change
+     :help "Remove changes in the whole buffer."]
+
+    ["Abort Changes and Exit" wgrep-abort-changes
+     :help "Discard all changes and return to original mode."]
+
+    ["Exit" wgrep-exit
+     :help "Return to original mode."]))
+
+(easy-menu-add-item grep-menu-map nil
+                    ["Writable Grep" wgrep-change-to-wgrep-mode
+                     :enable buffer-read-only
+                     :help "Change to wgrep mode."]
+                    nil)
+
+(easy-menu-add-item global-map '(menu-bar) cc/wgrep-menu "Tools")
+
+
+
 
 (provide 'cc-grep-mode)
 ;;; cc-grep-mode.el ends here

@@ -1,6 +1,6 @@
 ;;; cc-main-tmenu.el --- Main Menu                    -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024-2025  Charles Choi
+;; Copyright (C) 2024-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -50,6 +50,12 @@
   (transient-append-suffix 'casual-editkit-main-tmenu "I"
     '("1" "Translate"
       google-translate-smooth-translate
+      :inapt-if-not use-region-p
+      :transient nil))
+
+  (transient-append-suffix 'casual-editkit-main-tmenu "1"
+    '("2" "Speak 한글어고 말하다"
+      cc/say-region-korean
       :inapt-if-not use-region-p
       :transient nil))
 

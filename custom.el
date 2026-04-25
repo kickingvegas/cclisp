@@ -11,12 +11,14 @@
  '(Man-switches "-a")
  '(anju-help-menu-remove-emacs-tutorial t)
  '(anju-reconfigure-main-menu-hook
-   '(anju-main-menu--reconfigure-bookmarks anju-main-menu--reconfigure-text-mode
-                                           anju-main-menu--reconfigure-help
-                                           anju-main-menu--reconfigure-imenu
-                                           cc/reconfigure-file-menu
-                                           cc/reconfigure-edit-menu
-                                           cc/reconfigure-tools-menu))
+   '(anju-main-menu--reconfigure-file
+     anju-main-menu--reconfigure-edit
+     anju-main-menu--reconfigure-options
+                                      anju-main-menu--reconfigure-bookmarks
+                                      anju-main-menu--reconfigure-text-mode
+                                      anju-main-menu--reconfigure-help
+                                      anju-main-menu--reconfigure-imenu
+                                      cc/reconfigure-tools-menu))
  '(apropos-do-all t)
  '(auto-insert-alist
    '((("\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'" . "C / C++ header")
@@ -169,6 +171,7 @@
  '(diary-mark-entries-hook nil)
  '(diary-nongregorian-listing-hook '(diary-chinese-list-entries))
  '(diary-nongregorian-marking-hook '(diary-chinese-mark-entries))
+ '(dictionary-server "dict.org")
  '(dired-auto-revert-buffer t)
  '(dired-dwim-target 'dired-dwim-target-next)
  '(dired-guess-shell-alist-user '(("" "open")))
