@@ -315,6 +315,14 @@ If prefix ARG is non-nil, then the computed result is stored in the
         (kill-new msg))
     (message msg)))
 
+(defun cc/org-show-current-clock ()
+  "Show current Org clocking task in mini-buffer."
+  (interactive)
+  (if (org-clocking-p)
+      (let ((clocked-task (substring-no-properties (org-clock-get-clock-string))))
+        (message "%s" clocked-task))
+    (message "No clock task.")))
+
 ;; ox-gfm init is so broken. need to load it manually.
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
