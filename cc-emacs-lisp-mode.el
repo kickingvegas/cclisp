@@ -270,7 +270,6 @@
      ))
 
 
-
 (defun cc/context-menu-elisp (menu click)
   "Context menu hook function for Elisp commands.
 
@@ -347,8 +346,83 @@ This function is intended to be hooked into `context-menu-functions'."
           hs-toggle-hiding
           :enable hs-minor-mode
           :label (if (hs-already-hidden-p) "Show Sexp" "Hide Sexp")
-          :help "Toggle hiding"]))))
+          :help "Toggle hiding"])
+
+        (easy-menu-add-item
+         menu nil
+         [xref-find-references-and-replace
+          xref-find-references-and-replace
+          :label (format "Rename “%s”" (thing-at-point 'symbol))
+          :visible (and (thing-at-point 'symbol)
+                        (not (member (substring-no-properties (thing-at-point 'symbol))
+                                '("lambda")))
+
+
+                        )
+          :help "Find"])
+
+        (easy-menu-add-item
+         menu nil
+         [cc/extract-lambda-to-defun
+          cc/extract-lambda-to-defun
+          :label "Extract 𝜆…"
+          :visible (cc/point-on-lambda-p)
+          :help "Find"])
+        )))
   menu)
+
+(defun cc/point-on-lambda-p ()
+  "Predicate if point is on lambda."
+  (let* ((thing (thing-at-point 'symbol))
+         (thing (if thing (substring-no-properties thing) nil)))
+    (and thing (string-equal "lambda" thing))))
+
+(defun cc/extract-lambda-to-defun (arg)
+  "Extract lambda expression to defun named ARG."
+  (interactive "sExtract lambda as: ")
+
+  (if (cc/point-on-lambda-p)
+      (progn
+        (save-excursion
+          (backward-up-list)
+          (mark-sexp)
+          (let* ((fn-name arg)
+                 (bufname (format "*%s*" fn-name))
+                 (start (region-beginning))
+                 (end (region-end))
+                 (lexp (buffer-substring-no-properties start end))
+                 (lexp (if (string-match "lambda" lexp)
+                           (replace-match (format "defun %s" fn-name) nil nil lexp)
+                         lexp))
+                 ;; (lexp (replace-regexp-in-string "lambda" (format "defun %s" fn-name) lexp))
+                 (buf (get-buffer-create bufname)))
+            (with-current-buffer (current-buffer)
+              (switch-to-buffer-other-window buf)
+              (emacs-lisp-mode)
+              (insert lexp)
+              (goto-char (point-min)))
+            ))
+
+        (let ((delete-pair-blink-delay 0))
+          (backward-up-list)
+          (kill-sexp)
+          (insert (format "#'%s" arg))
+          (backward-sexp)
+          ;; (down-list)
+          ;; (forward-sexp)
+          ;; (kill-sexp)
+          ;; (backward-up-list)
+          ;; (kill-sexp)
+          ;; (insert (format "(%s)" arg))
+          ;; (backward-sexp)
+          ;; (down-list)
+          ;; (forward-sexp)
+          ;; (yank 2)
+          ;; (backward-sexp)
+          ;; (delete-pair)
+          ;; (backward-up-list)
+          ))
+    (message "not on lambda")))
 
 
 ;; -------------------------------------------------------------------

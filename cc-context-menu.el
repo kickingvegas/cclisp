@@ -237,7 +237,7 @@ This function is intended to be hooked into `context-menu-functions'."
     (save-excursion
       (when (casual-agenda-headlinep)
         (easy-menu-add-item menu nil ["Clock In"
-                                      casual-agenda-clock-in
+                                      org-agenda-clock-in
                                       :label (anju-middle-truncate (org-agenda-with-point-at-orig-entry nil
                                                                      (org-element-property :title (org-element-at-point)))
                                                                    "Clock In")
@@ -245,7 +245,7 @@ This function is intended to be hooked into `context-menu-functions'."
                                       :help "Clock in"])
 
         (easy-menu-add-item menu nil ["Clock Out"
-                                      casual-agenda-clock-out
+                                      org-agenda-clock-out
                                       :visible (org-clocking-p)
                                       :help "Clock out"])
 
