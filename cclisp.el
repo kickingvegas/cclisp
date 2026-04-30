@@ -250,10 +250,44 @@ ISO 8601."
   (interactive "r")
   (shell-command-on-region start end "say"))
 
+
+(defgroup kickingvegas nil
+  "Settings for kickingvegas."
+  :group 'convenience)
+
+(defcustom cc-speech-rate-korean 80
+  "Speech rate for say utility when speaking 한글."
+  :type 'integer
+  :group 'kickingvegas)
+
+(defcustom cc-speech-voice-korean "Yuna"
+  "Speech voice for say utility when speaking 한글."
+  :type 'string
+  :group 'kickingvegas)
+
 (defun cc/say-region-korean (&optional start end)
-  "Pass region bounded by START and END to macOS say command."
+  "Pass 한글 region bounded by START and END to macOS say command.
+
+The voice and speech rate are configurable with the following variables:
+
+- `cc-speech-voice-korean'
+- `cc-speech-rate-korean'"
   (interactive "r")
-  (shell-command-on-region start end "say -v 'Yuna' -r 100"))
+
+  (let* ((cmdlist ())
+         (cmdlist (push "say" cmdlist))
+         (cmdlist (push "-v" cmdlist))
+         (cmdlist (push (format "'%s'" cc-speech-voice-korean) cmdlist))
+         (cmdlist (push "-r" cmdlist))
+         (cmdlist (push (format "%d" cc-speech-rate-korean) cmdlist))
+         ;; async generates a stupid window
+         ;; (payload (buffer-substring-no-properties start end))
+         ;; (cmdlist (push payload cmdlist))
+         ;; (cmdlist (push "&" cmdlist))
+         (cmdlist (reverse cmdlist))
+         (cmd (string-join cmdlist " ")))
+    ;; (shell-command cmd)
+    (shell-command-on-region start end cmd)))
 
 (defun cc/ellipsis()
   "Insert an ellipsis."
@@ -1039,6 +1073,28 @@ This command is tuned for macOS using a single display."
                                   (car (string-split docstring "\n")))
       (error "No docstring in %s" fn))))
 
+
+(defun cc/--defun-name ()
+  "Name of defun at point."
+  (interactive)
+  (let ((start 0)
+        (end 0))
+    (save-excursion
+      (beginning-of-defun)
+      (down-list)
+      (forward-sexp 2)
+      (setq end (point))
+      (backward-sexp)
+      (setq start (point))
+      (buffer-substring-no-properties start end))))
+
+
+(defun cc/ert-run-test-at-point ()
+  "Run the ERT test at point."
+  (interactive)
+  (let ((test-name (cc/--defun-name)))
+        ;; (message "ERT: %s" test-name)
+        (ert test-name)))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here
