@@ -784,33 +784,6 @@ and convert it to Org using the pandoc utility."
       (kill-region (point-min) (point-max)))
     (yank)))
 
-(defun cc/yank-markdown-as-org-subtree (&optional level)
-  "Yank Markdown text as Org at optional prefix LEVEL.
-
-This command will convert Markdown text in the top of the `kill-ring' to
-Org before yanking (pasting) the converted text.
-
-The command `org-paste-subtree' is used to yank the converted text and
-has behavior that can be modified with a `\\[universal-argument]'
-prefix. Using prefixes, `org-paste-subtree' can yank text at different
-structure levels. The argument LEVEL captures this prefix and passes it
-along to `org-paste-subtree'. A deep reading of how `org-paste-subtree'
-handles prefixes is recommended.
-
-The actual Markdown to Org conversion is accomplished with the command
-line utility pandoc. See the man page `pandoc(1)' for details."
-  (interactive "P")
-  (save-excursion
-    (with-temp-buffer
-      (yank)
-      (shell-command-on-region
-       (point-min) (point-max)
-       "pandoc -f markdown -t org --wrap=preserve" t t)
-      (org-mode)
-      (goto-char (point-min))
-      (org-cut-subtree))
-    ;; (call-interactively #'org-paste-subtree)
-    (org-paste-subtree level)))
 
 (defun cc/split-window-right ()
   "Invoke `split-window-right', making the new window active."

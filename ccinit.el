@@ -228,17 +228,32 @@ If prefix ARG is non-nil, then the computed result is stored in the
         (kill-new msg))
     (message msg)))
 
+(defvar cc--workplace-initialized nil
+  "If non-nil then workplace is initialized.")
+
 (defun cc/workplace ()
   "Initialize workplace."
   (interactive)
-  (cc/frame-resize nil)
-  (status-report)
-  (org-agenda nil "n")
-  (casual-agenda-goto-now)
-  (eshell t)
-  (switch-to-buffer (format-time-string "%Y_%m_%d.org"))
-  ;; (cc/days-until-voting)
-  )
+  (if cc--workplace-initialized
+      (message "Workplace already initialized.")
+
+    (if (= (display-pixel-width) 1512)
+        (progn
+          (cc/--resize-frame 125 49)
+          (set-frame-position (selected-frame) 182 44))
+      (cc/--resize-frame 141 71)
+      (set-frame-position (selected-frame) 852 192))
+
+    (status-report)
+    (org-agenda nil "n")
+    (casual-agenda-goto-now)
+    (eshell t)
+    (switch-to-buffer (format-time-string "%Y_%m_%d.org"))
+    (setq cc--workplace-initialized t)))
+
+(if (and (eq window-system 'ns)
+         (string-equal (system-name) "bingsu.local"))
+    (add-hook 'window-setup-hook #'cc/workplace))
 
 
 ;; (password-store-menu-enable)

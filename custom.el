@@ -144,18 +144,20 @@
  '(compilation-auto-jump-to-first-error 'first-known)
  '(compilation-scroll-output t)
  '(context-menu-functions
-   '(cc/context-menu-elisp cc/context-menu-compile anju-context-menu-dired
-                           cc/context-menu-dired cc/context-menu-org-agenda
-                           anju-context-menu-org-mode cc/context-menu-journal
-                           anju-context-menu-buffers anju-context-menu-region
-                           cc/context-menu-dictionary cc/context-menu-region
-                           anju-context-menu-narrow anju-context-menu-open-in
-                           cc/context-menu-open-in anju-context-menu-vc
-                           anju-context-menu-markup anju-context-menu-wordcount
-                           context-menu-undo context-menu-region
-                           anju-context-menu-region-extension
-                           cc/context-menu-region-extension
-                           anju-context-menu-window))
+   '(anju-context-menu-elisp anju-context-menu-edebug-eval cc/context-menu-compile
+                             anju-context-menu-dired cc/context-menu-dired
+                             cc/context-menu-org-agenda
+                             anju-context-menu-org-mode cc/context-menu-journal
+                             anju-context-menu-buffers anju-context-menu-region
+                             cc/context-menu-dictionary cc/context-menu-region
+                             anju-context-menu-narrow anju-context-menu-open-in
+                             cc/context-menu-open-in anju-context-menu-vc
+                             anju-context-menu-markup
+                             anju-context-menu-wordcount context-menu-undo
+                             context-menu-region
+                             anju-context-menu-region-extension
+                             cc/context-menu-region-extension
+                             anju-context-menu-window))
  '(current-language-environment "English")
  '(cursor-type 'bar)
  '(custom-safe-themes
