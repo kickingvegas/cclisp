@@ -216,7 +216,10 @@ ISO 8601."
           (princ result)))))
 
 (defun dm/copy-as-rtf ()
-  "Export region to RTF and copy it to the clipboard."
+  "Export region to RTF and copy it to the clipboard.
+
+Code taken from
+URL `;https://gist.github.com/danielmartin/3c5d3a3a8cd24a3556379c5251651748'."
   (interactive)
   (save-window-excursion
     (let* ((buf (org-export-to-buffer 'html "*Formatted Copy*" nil nil t t))
@@ -755,19 +758,50 @@ installed."
    start end
    "pandoc -f markdown -t org --wrap=preserve" t t))
 
-(defun mb/org-copy-region-as-markdown ()
-  "Copy the region (in Org) to the system clipboard as Markdown.
+(defun cc/org-copy-region-as (backend)
+  "Copy the BACKEND exported Org region to the system clipboard.
 
-Code from https://mbork.pl/2021-05-02_Org-mode_to_Markdown_via_the_clipboard"
+Code derived from Marcin Borkowski post at
+URL `https://mbork.pl/2021-05-02_Org-mode_to_Markdown_via_the_clipboard'"
   (interactive)
   (if (use-region-p)
       (let* ((region
               (buffer-substring-no-properties
-                      (region-beginning)
-                      (region-end)))
-             (markdown
-              (org-export-string-as region 'md t '(:with-toc nil))))
-        (gui-set-selection 'CLIPBOARD markdown))))
+               (region-beginning)
+               (region-end)))
+             (clipping
+              (org-export-string-as region backend t '(:with-toc nil))))
+        (gui-set-selection 'CLIPBOARD clipping))))
+
+(defun cc/org-copy-region-as-markdown ()
+  "Copy the Markdown exported Org region to the system clipboard."
+  (interactive)
+  (if (use-region-p)
+      (cc/org-copy-region-as 'md)))
+
+(defun cc/org-copy-region-as-gfm ()
+  "Copy the GitHub Markdown exported Org region to the system clipboard."
+  (interactive)
+  (if (use-region-p)
+      (cc/org-copy-region-as 'gfm)))
+
+(defun cc/org-copy-region-as-latex ()
+  "Copy the LaTeX exported Org region to the system clipboard."
+  (interactive)
+  (if (use-region-p)
+      (cc/org-copy-region-as 'latex)))
+
+(defun cc/org-copy-region-as-ascii ()
+  "Copy the ASCII exported Org region to the system clipboard."
+  (interactive)
+  (if (use-region-p)
+      (cc/org-copy-region-as 'ascii)))
+
+(defun cc/org-copy-region-as-html ()
+  "Copy the HTML exported Org region to the system clipboard."
+  (interactive)
+  (if (use-region-p)
+      (cc/org-copy-region-as 'html)))
 
 (defun cc/yank-markdown-as-org ()
   "Yank Markdown text as Org.
@@ -1007,19 +1041,23 @@ This command is tuned for macOS using a single display."
   (if (derived-mode-p 'emacs-lisp-mode)
       (insert ";; -------------------------------------------------------------------\n")))
 
+
 (defun cc/ert-test-gen ()
   "Generate ERT test for define and put into the `kill-ring'."
   (interactive)
   (save-excursion
-    (down-list)
-    (cc/next-sexp)
-    (mark-sexp)
-    (let ((fn (buffer-substring (region-beginning) (region-end)))
-          (buflist ()))
-      (push (format "(ert-deftest test-%s ()" fn) buflist)
-      (push (format "  \"Test for `%s'.\"" fn) buflist)
-      (push ")" buflist)
-      (kill-new (string-join (reverse buflist) "\n")))))
+    (beginning-of-defun)
+    (let* ((fn (list-at-point))
+           (fn-name (symbol-name (seq-elt fn 1)))
+           (docstr (format "Test for `%s'." fn-name))
+           (fn-ert ())
+           (fn-ert (push docstr fn-ert))
+           (fn-ert (push nil fn-ert))
+           (fn-ert (push (intern (format "test-%s" fn-name)) fn-ert))
+           (fn-ert (push 'ert-deftest fn-ert))
+           (fn-ert-test (prin1-to-string fn-ert))
+           (fn-ert-test (string-replace " nil " " ()\n  " fn-ert-test)))
+      (kill-new fn-ert-test))))
 
 (defun music ()
   "Launch Music app."
@@ -1046,6 +1084,10 @@ This command is tuned for macOS using a single display."
                                   (car (string-split docstring "\n")))
       (error "No docstring in %s" fn))))
 
+(defun cc/tool-tip-extract ()
+  "Extract tool tip for symbol at point and put into `kill-ring'."
+  (interactive)
+  (kill-new (cc/--function-tool-tip (symbol-at-point))))
 
 (defun cc/--defun-name ()
   "Name of defun at point."

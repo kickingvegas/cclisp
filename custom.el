@@ -153,7 +153,8 @@
                              anju-context-menu-narrow anju-context-menu-open-in
                              cc/context-menu-open-in anju-context-menu-vc
                              anju-context-menu-markup
-                             anju-context-menu-wordcount context-menu-undo
+                             anju-context-menu-wordcount
+                             anju-context-menu-rectangle context-menu-undo
                              context-menu-region
                              anju-context-menu-region-extension
                              cc/context-menu-region-extension

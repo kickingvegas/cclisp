@@ -36,6 +36,8 @@
 (require 'eww)
 (require 'casual-bookmarks)
 (require 'anju-main-menu)
+(require 'anju-mode-line)
+
 
 (defun cc/dired-side-right (path)
   "Side-by-side layout with Dired buffer on the right set to PATH."
@@ -194,7 +196,6 @@ various time zones."]
     "<separator-babel>"
     '(menu-item "--")
     'Babel\ Ingest\ -\ Org\ Table\ To\ SQL))
-
 
 (provide 'cc-menu-reconfig)
 

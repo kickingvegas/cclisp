@@ -1,6 +1,6 @@
 ;;; cc-eshell-mode.el --- eshell customization -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -42,16 +42,29 @@
 (declare-function eshell/pwd "pwd" ())
 
 (defun cc/prompt-function ()
-        (concat "\n┏━ "
-                (user-login-name) "@" (system-name) ":"
-                (propertize (casual-eshell-tilde-path (eshell/pwd))
-                            'face `(:foreground "orange red"))
-                (if (and (not (file-remote-p default-directory))
-                         (eshell-git-prompt--branch-name))
-                    (format " (%s)" (eshell-git-prompt--branch-name))
-                  "")
-                "\n┗━━ "
-                (if (= (user-uid) 0) "# " "$ ")))
+  "Eshell prompt function for Charles Choi."
+
+  (let* ((uname (user-login-name))
+         (sysname (system-name))
+         (user-at-sys (format "%s@%s" uname sysname))
+         (curdir (propertize (casual-eshell-tilde-path (eshell/pwd))
+                             'face `(:foreground "orange red")))
+         (branch-name (eshell-git-prompt--branch-name))
+         (git-branch (if branch-name
+                         (format " (%s)" branch-name)
+                       ""))
+
+         (prompt-symbol (if (= (user-uid) 0) "# " "$ "))
+         (top-marker "\n┏━")
+         (bottom-marker "\n┗━━"))
+
+    (format "%s %s:%s%s%s%s"
+            top-marker
+            user-at-sys
+            curdir
+            git-branch
+            bottom-marker
+            prompt-symbol)))
 
 (setopt eshell-prompt-function #'cc/prompt-function)
 ;;(setopt eshell-banner-message (format "Eshell ⌨️\n%s" (sunrise-sunset)))

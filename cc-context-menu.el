@@ -67,7 +67,8 @@
 This function is intended to be hooked into `context-menu-functions'."
 
   (when (and (not (anju-at-org-table-p))
-             (not (use-region-p)))
+             (not (use-region-p))
+             (not (anju-rectangle-selected-p)))
 
     (save-excursion
       (mouse-set-point click)
@@ -88,7 +89,7 @@ This function is intended to be hooked into `context-menu-functions'."
 - CLICK: event
 
 This function is intended to be hooked into `context-menu-functions'."
-  (if (use-region-p)
+  (if (and (use-region-p) (not (anju-rectangle-selected-p)))
       (save-excursion
         (mouse-set-point click)
         (easy-menu-add-item menu nil cc/region-operations-menu)))
@@ -103,7 +104,7 @@ Adds Finder/File Manager to Dired.
 - CLICK: event
 
 This function is intended to be hooked into `context-menu-functions'."
-  (when (derived-mode-p 'dired-mode)
+  (when (and (derived-mode-p 'dired-mode) (not (anju-rectangle-selected-p)))
     (save-excursion
       (mouse-set-point click)
       (easy-menu-add-item menu nil
@@ -127,7 +128,8 @@ This function is intended to be hooked into `context-menu-functions'."
 This function is intended to be hooked into `context-menu-functions'."
   (when (and (not (use-region-p))
              (not (anju-at-org-table-p))
-             (not (derived-mode-p 'dired-mode)))
+             (not (derived-mode-p 'dired-mode))
+             (not (anju-rectangle-selected-p)))
     (save-excursion
       (mouse-set-point click)
       (easy-menu-add-item menu nil
@@ -144,7 +146,7 @@ This function is intended to be hooked into `context-menu-functions'."
 - CLICK: event
 
 This function is intended to be hooked into `context-menu-functions'."
-  (when (use-region-p)
+  (when (and (use-region-p) (not (anju-rectangle-selected-p)))
     (save-excursion
       (mouse-set-point click)
 
@@ -168,9 +170,26 @@ This function is intended to be hooked into `context-menu-functions'."
   '("Copy as…"
     :visible (and (derived-mode-p 'org-mode) (use-region-p))
 
+    ["GFM Markdown"
+     cc/org-copy-region-as-gfm
+     :visible (package-installed-p 'ox-gfm)
+     :help "Copy region as GitHub flavored Markdown"]
+
     ["Markdown"
-     mb/org-copy-region-as-markdown
+     cc/org-copy-region-as-markdown
      :help "Copy region as Markdown"]
+
+    ["LaTeX"
+     cc/org-copy-region-as-latex
+     :help "Copy region as LaTeX"]
+
+    ["HTML"
+     cc/org-copy-region-as-html
+     :help "Copy region as HTML"]
+
+    ["ASCII"
+     cc/org-copy-region-as-ascii
+     :help "Copy region as ASCII"]
 
     ["Slack"
      org-slack-export-to-clipboard-as-slack
@@ -179,11 +198,12 @@ This function is intended to be hooked into `context-menu-functions'."
 
     ["RTF"
      dm/copy-as-rtf
+     :visible (eq system-type 'darwin)
      :help "Copy as RTF to clipboard"]))
 
 (defun cc/context-menu-region-extension (menu click)
   "Region menu using MENU and CLICK."
-  (when (derived-mode-p 'org-mode)
+  (when (and (derived-mode-p 'org-mode) (not (anju-rectangle-selected-p)))
     (save-excursion
       (mouse-set-point click)
       (easy-menu-add-item menu nil cc/context-menu-org-copy-as-menu
@@ -232,7 +252,8 @@ This function is intended to be hooked into `context-menu-functions'."
 
 This function is intended to be hooked into `context-menu-functions'."
 
-  (when (derived-mode-p 'org-agenda-mode)
+  (when (and (derived-mode-p 'org-agenda-mode)
+             (not (anju-rectangle-selected-p)))
     (mouse-set-point click)
     (save-excursion
       (when (casual-agenda-headlinep)
