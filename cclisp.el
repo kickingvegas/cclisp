@@ -1109,7 +1109,21 @@ This command is tuned for macOS using a single display."
   (interactive)
   (let ((test-name (cc/--defun-name)))
         ;; (message "ERT: %s" test-name)
-        (ert test-name)))
+    (ert test-name)))
+
+(defun cc/update-location ()
+  "Update calendar location from macOS Shortcuts."
+  (interactive)
+  (let* ((location-request "shortcuts run getCurrentLocation | cat")
+         (response (shell-command-to-string location-request))
+         (location-map (json-parse-string response))
+         (latitude (gethash "latitude" location-map))
+         (longitude (gethash "longitude" location-map))
+         (city (gethash "city" location-map)))
+    (setopt calendar-latitude latitude)
+    (setopt calendar-longitude longitude)
+    (setopt calendar-location-name city)
+    (message "Updated location: %s (%.5f, %.5f)" city latitude longitude)))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

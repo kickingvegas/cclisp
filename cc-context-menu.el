@@ -170,31 +170,31 @@ This function is intended to be hooked into `context-menu-functions'."
   '("Copy as…"
     :visible (and (derived-mode-p 'org-mode) (use-region-p))
 
-    ["GFM Markdown"
+    ["GFM"
      cc/org-copy-region-as-gfm
      :visible (package-installed-p 'ox-gfm)
-     :help "Copy region as GitHub flavored Markdown"]
+     :help "Copy region as GitHub Flavored Markdown to clipboard"]
 
     ["Markdown"
      cc/org-copy-region-as-markdown
-     :help "Copy region as Markdown"]
+     :help "Copy region as Markdown to clipboard"]
 
     ["LaTeX"
      cc/org-copy-region-as-latex
-     :help "Copy region as LaTeX"]
+     :help "Copy region as LaTeX to clipboard"]
 
     ["HTML"
      cc/org-copy-region-as-html
-     :help "Copy region as HTML"]
+     :help "Copy region as HTML to clipboard"]
 
     ["ASCII"
      cc/org-copy-region-as-ascii
-     :help "Copy region as ASCII"]
+     :help "Copy region as ASCII to clipboard"]
 
     ["Slack"
      org-slack-export-to-clipboard-as-slack
      :visible (package-installed-p 'ox-slack)
-     :help "Copy as Slack to clipboard"]
+     :help "Copy as Slack to clipboard to clipboard"]
 
     ["RTF"
      dm/copy-as-rtf
