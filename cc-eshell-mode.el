@@ -26,6 +26,7 @@
 (require 'eshell)
 (require 'esh-mode)
 (require 'em-hist)
+(require 'em-unix)
 (require 'company)
 (require 'hl-line)
 (require 'helm-eshell)
@@ -88,6 +89,16 @@
                               (setenv "CLICOLOR" "0")))
 
 (keymap-set eshell-mode-map "C-o" #'casual-eshell-tmenu)
+
+(defun eshell/bufcat (&rest args)
+  "Support cat on a buffer specified in ARGS.
+
+Taken from
+URL `https://emacs.stackexchange.com/questions/54766/piping-contents-of-buffer-into-eshell-command'"
+  (if (bufferp (car args))
+      (with-current-buffer (car args)
+        (buffer-string))
+    (apply #'eshell/cat args)))
 
 (provide 'cc-eshell-mode)
 ;;; cc-eshell-mode.el ends here

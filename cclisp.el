@@ -43,6 +43,7 @@
 (require 'transpose-frame)
 (require 'dired)
 (require 'page-ext)
+(require 'term)
 
 (defun cc/find-user-init-file ()
   "Edit `user-init-file'."
@@ -716,10 +717,37 @@ V is either nil or non-nil."
         (rename-buffer "*macports*")))))
 
 (defun swift-repl ()
-  "Swift repl."
+  "Run Swift repl."
   (interactive)
-  (term "swift repl")
-  (rename-buffer "*swift*"))
+  (let* ((bufname "*swift*")
+         (repl-buf (get-buffer bufname)))
+    (if repl-buf
+        (switch-to-buffer repl-buf)
+      (term "/opt/local/bin/bash")
+      (rename-buffer bufname)
+      (with-current-buffer bufname
+        (term-send-raw-string "TERM=dumb\n")
+        (term-send-raw-string "exec swift repl\n")))))
+
+(defun node-repl ()
+  "Run Node JavaScript repl."
+  (interactive)
+  (let* ((bufname "*node JS*")
+         (repl-buf (get-buffer bufname)))
+    (if repl-buf
+        (switch-to-buffer repl-buf)
+      (term "node")
+      (rename-buffer bufname))))
+
+(defun jxa-repl ()
+  "Run JXA JavaScript repl."
+  (interactive)
+  (let* ((bufname "*jxa JS*")
+         (repl-buf (get-buffer bufname)))
+    (if repl-buf
+        (switch-to-buffer repl-buf)
+      (term "osascript -il JavaScript")
+      (rename-buffer bufname))))
 
 ;; TODO: obsolete
 (defun cc/--next-sexp-raw ()
@@ -757,66 +785,6 @@ installed."
   (shell-command-on-region
    start end
    "pandoc -f markdown -t org --wrap=preserve" t t))
-
-(defun cc/org-copy-region-as (backend)
-  "Copy the BACKEND exported Org region to the system clipboard.
-
-Code derived from Marcin Borkowski post at
-URL `https://mbork.pl/2021-05-02_Org-mode_to_Markdown_via_the_clipboard'"
-  (interactive)
-  (if (use-region-p)
-      (let* ((region
-              (buffer-substring-no-properties
-               (region-beginning)
-               (region-end)))
-             (clipping
-              (org-export-string-as region backend t '(:with-toc nil))))
-        (gui-set-selection 'CLIPBOARD clipping))))
-
-(defun cc/org-copy-region-as-markdown ()
-  "Copy the Markdown exported Org region to the system clipboard."
-  (interactive)
-  (if (use-region-p)
-      (cc/org-copy-region-as 'md)))
-
-(defun cc/org-copy-region-as-gfm ()
-  "Copy the GitHub Markdown exported Org region to the system clipboard."
-  (interactive)
-  (if (use-region-p)
-      (cc/org-copy-region-as 'gfm)))
-
-(defun cc/org-copy-region-as-latex ()
-  "Copy the LaTeX exported Org region to the system clipboard."
-  (interactive)
-  (if (use-region-p)
-      (cc/org-copy-region-as 'latex)))
-
-(defun cc/org-copy-region-as-ascii ()
-  "Copy the ASCII exported Org region to the system clipboard."
-  (interactive)
-  (if (use-region-p)
-      (cc/org-copy-region-as 'ascii)))
-
-(defun cc/org-copy-region-as-html ()
-  "Copy the HTML exported Org region to the system clipboard."
-  (interactive)
-  (if (use-region-p)
-      (cc/org-copy-region-as 'html)))
-
-(defun cc/yank-markdown-as-org ()
-  "Yank Markdown text as Org.
-
-This command will convert Markdown text in the top of the `kill-ring'
-and convert it to Org using the pandoc utility."
-  (interactive)
-  (save-excursion
-    (with-temp-buffer
-      (yank)
-      (shell-command-on-region
-       (point-min) (point-max)
-       "pandoc -f markdown -t org --wrap=preserve" t t)
-      (kill-region (point-min) (point-max)))
-    (yank)))
 
 
 (defun cc/split-window-right ()
@@ -945,7 +913,9 @@ This command is tuned for macOS using a single display."
   (interactive "P")
   (let* ((choice
           (completing-read "Display Configuration: "
-                           '("desktop" "macbook" "tty" "standard" "focus" "video")
+                           '("desktop" "macbook" "tty" "standard" "focus"
+                             "video"
+                             "lg-full")
                            nil nil "standard"))
          (move (not arg)))
     (cond
@@ -974,6 +944,10 @@ This command is tuned for macOS using a single display."
       (cc/--resize-frame 141 71)
       (if move
           (set-frame-position (selected-frame) 852 192)))
+
+     ((string-equal choice "lg-full")
+      (cc/--resize-frame 330 89)
+      (set-frame-position (selected-frame) 0 25))
 
      (t
       (error "Unknown display size")))))
@@ -1124,6 +1098,52 @@ This command is tuned for macOS using a single display."
     (setopt calendar-longitude longitude)
     (setopt calendar-location-name city)
     (message "Updated location: %s (%.5f, %.5f)" city latitude longitude)))
+
+(defun cc/three-pane-layout ()
+  "Layout frame in three panes."
+  (interactive)
+  ;; Presume 330 max width
+
+  (cc/--resize-frame 330 89)
+  (set-frame-position (selected-frame) 0 25)
+
+  (let* ((pane-width-1 100)
+         (pane-width-2 140))
+    (delete-other-windows)
+    (split-window-right)
+    (split-window-right)
+    (window-resize nil (- pane-width-1 (window-width)) t)
+    (other-window 1)
+    (window-resize nil (- pane-width-2 (window-width)) t)))
+
+(defun cc/toggle-pane ()
+  "Toggle pane."
+  (interactive)
+  (if (or (window-in-direction 'above)
+          (window-in-direction 'below))
+      (cc/maximize-pane)
+    (cc/revert-pane)))
+
+(defun cc/maximize-pane ()
+  "In three pane layout, maximize pane."
+  (interactive)
+  (window-configuration-to-register ?p)
+
+  (let ((p-above (window-in-direction 'above))
+        (p-below (window-in-direction 'below)))
+
+    (while p-above
+      (delete-window p-above)
+      (setq p-above (window-in-direction 'above)))
+
+    (while p-below
+      (delete-window p-below)
+      (setq p-below (window-in-direction 'below)))))
+
+(defun cc/revert-pane ()
+  "Revert pane."
+  (interactive)
+  (jump-to-register ?p))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here
