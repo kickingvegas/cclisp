@@ -32,7 +32,7 @@
 (require 'make-mode)
 (require 'cc-cmds)
 
-(add-hook 'view-mode-hook 'hl-line-mode)
+(add-hook 'view-mode-hook #'hl-line-mode)
 
 (defun cc/view-exit ()
   "Advice function to disable highlighting upon exiting view-mode."

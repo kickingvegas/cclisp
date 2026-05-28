@@ -27,7 +27,7 @@
 (require 'hl-line)
 (require 'casual-bibtex)
 
-(add-hook 'bibtex-mode-hook 'hl-line-mode)
+(add-hook 'bibtex-mode-hook #'hl-line-mode)
 
 (keymap-set bibtex-mode-map "M-m" #'casual-bibtex-tmenu)
 (keymap-set bibtex-mode-map "<TAB>" #'bibtex-next-field)

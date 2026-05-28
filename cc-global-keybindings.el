@@ -1,6 +1,6 @@
 ;;; cc-global-keybindings.el --- Global Keybindings -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -26,7 +26,7 @@
 ;;; Code:
 
 (require 'mouse)
-(require 'cc-ediff-mode)
+(require 'casual-ediff-utils)
 (require 'minibuffer)
 (require 'helm-buffers)
 (require 'neotree)
@@ -46,6 +46,8 @@
 (require 'minibuffer)
 (require 'recent-rgrep)
 (require 'ace-window)
+(require 'cc-org-mode)
+(require 'anju)
 
 (keymap-global-set "C-=" #'er/expand-region)
 ;(keymap-global-set (kbd "M-g") 'goto-line)
@@ -70,17 +72,19 @@
 (keymap-global-set "<f5>" #'journal)
 (keymap-global-set "s-<f5>" #'cc/org-search)
 (keymap-global-set "<f6>" #'osx-dictionary-search-input)
-(keymap-global-set "<f7>" #'repeat)
+;; (keymap-global-set "<f7>" #'repeat)
+;; (keymap-global-set "<f7>" #'ace-window)
+(keymap-global-set "<f7>" #'avy-goto-char-timer)
 (keymap-global-set "M-<f7>" #'repeat-complex-command)
 (keymap-global-set "C-o" #'casual-editkit-main-tmenu)
-(if (string-equal (window-system) "mac")
-    (keymap-global-set "<f10>" #'casual-editkit-main-tmenu))
+;; (if (string-equal (window-system) "mac")
+;;     (keymap-global-set "<f10>" #'casual-editkit-main-tmenu))
 
 (keymap-global-set "<f8>" #'org-capture)
 (keymap-global-set "<f9>" #'compile)
 (keymap-global-set "<f11>" #'bookmark-set-no-overwrite)
 
-(keymap-global-set "M-<f1>" #'cc/open-url)
+;; (keymap-global-set "M-<f1>" #'cc/open-url)
 ;;(keymap-global-set "M-<f2>" #'google-this)
 ;;(keymap-global-set "C-c C-;" #'shell-command)
 (keymap-global-set "M-<f4>" #'google-this)
@@ -90,24 +94,25 @@
 (keymap-global-set "C-<f13>" #'treemacs)
 (keymap-global-set "<f14>" #'eshell) ;regular
 ;;(keymap-global-set (kbd "<f14>") 'save-buffer) ;logitech
-(keymap-global-set "<f15>" #'cc/ediff-revision)
+(keymap-global-set "<f15>" #'casual-ediff-revision)
+(keymap-global-set "M-<f12>" #'casual-ediff-revision)
 
-(keymap-global-set "C-x C-b" #'ibuffer)
+(keymap-substitute (current-global-map) #'list-buffers #'ibuffer)
 
 ;; Avy
 (keymap-global-set "M-g" #'casual-avy-tmenu)
 
 ;; Terminal
-(keymap-global-set "M-SPC" #'set-mark-command)
-(keymap-global-set "M-c" #'kill-ring-save)
+;; (unless (display-graphic-p)
+;;   (keymap-global-set "M-c" #'kill-ring-save))
 
 ;;(keymap-global-set (kbd "<f8>") 'next-error)
 ;;(keymap-global-set (kbd "M-<f8>") 'previous-error)
 ;;(keymap-global-set (kbd "<f9>") 'compile)
 
-(keymap-global-set "C-<f2>" #'delete-other-windows)
-(keymap-global-set "C-<f3>" #'kill-buffer)
-(keymap-global-set "C-<f4>" #'view-file)
+;; (keymap-global-set "C-<f2>" #'delete-other-windows)
+;; (keymap-global-set "C-<f3>" #'kill-buffer)
+;; (keymap-global-set "C-<f4>" #'view-file)
 (keymap-global-set "C-z" #'pop-global-mark)
 
 (keymap-global-set "<home>" #'beginning-of-buffer)
@@ -177,8 +182,25 @@
 (keymap-global-set "C-<kp-2>" #'windmove-down)
 (keymap-global-set "C-<kp-4>" #'windmove-left)
 (keymap-global-set "C-<kp-6>" #'windmove-right)
+
+(keymap-global-set "M-<kp-8>" #'windmove-swap-states-up)
+(keymap-global-set "M-<kp-5>" #'windmove-swap-states-down)
+(keymap-global-set "M-<kp-2>" #'windmove-swap-states-down)
+(keymap-global-set "M-<kp-4>" #'windmove-swap-states-left)
+(keymap-global-set "M-<kp-6>" #'windmove-swap-states-right)
+
 (keymap-global-set "C-<kp-0>" #'ace-select-window)
 (keymap-global-set "C-<kp-divide>" #'transpose-frame)
+
+(keymap-global-set "C-c w" #'casual-editkit-windows-tmenu)
+(keymap-global-set "C-c r" #'casual-editkit-rectangle-tmenu)
+(keymap-global-set "C-c g" #'casual-editkit-registers-tmenu)
+(keymap-global-set "C-c p" #'casual-editkit-project-tmenu)
+
+(keymap-global-set "H-a" #'find-library)
+(keymap-global-set "H-c" #'finder-commentary)
+(keymap-global-set "H-s" #'describe-symbol)
+(keymap-global-set "H-f" #'find-function)
 
 (keymap-set minibuffer-local-shell-command-map "M-b" #'backward-sexp)
 (keymap-set minibuffer-local-shell-command-map "M-f" #'cc/next-sexp)
@@ -201,6 +223,11 @@
 (keymap-global-set "M-\\" #'cycle-spacing)
 (keymap-global-set "s-SPC" #'cycle-spacing)
 (keymap-global-set "<mode-line> C-<mouse-3>" #'tear-off-window)
+(keymap-global-set "<mode-line> C-<mouse-1>" #'cc/toggle-pane)
+
+(keymap-global-set "C-x 1" #'anju-toggle-one-window)
+
+(anju-init)
 
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here

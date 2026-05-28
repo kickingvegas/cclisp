@@ -31,9 +31,11 @@
 (add-hook 'calc-mode-hook (lambda () (setq calc-gnuplot-default-device "aqua")))
 
 (keymap-set calc-mode-map "C-o" #'casual-calc-tmenu)
+(keymap-set calc-mode-map "C-c v" #'casual-calc-variable-crud-tmenu)
+(keymap-set calc-mode-map "<clear>" #'calc-pop)
+
 (keymap-set calc-alg-map "C-o" #'casual-calc-tmenu)
 
-(keymap-set calc-mode-map "<clear>" #'calc-pop)
 
 (defun cc/ptop ()
   "Print top of Calc stack."

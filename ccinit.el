@@ -1,6 +1,6 @@
 ;;; ccinit.el --- CC Emacs Init File -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -42,6 +42,7 @@
 (require 'expand-region)
 (require 'wgrep)
 (require 'yasnippet)
+(require 'pixel-scroll)
 ;;(require 'pbcopy)
 (add-hook 'calendar-today-visible-hook 'calendar-mark-today)
 
@@ -49,6 +50,19 @@
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8-unix)
 (recentf-mode 1)
+
+
+;; Config stolen from
+;; https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/
+
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+
+(setq redisplay-skip-fontification-on-input t)
+
+;; (setq read-process-output-max (* 4 1024 1024)) ; 4MB
+
 
 ;; (when (eq window-system 'x)
 ;;   (setq x-meta-keysym 'super
@@ -63,6 +77,9 @@
 ;; (when (eq window-system 'mac)
 ;;     (setq mac-mouse-wheel-mode t)
 ;;     (setq mac-mouse-wheel-smooth-scroll t))
+
+(when (display-graphic-p)
+  (pixel-scroll-precision-mode 1))
 
 ;;(setq pixel-scroll-precision-large-scroll-height 10.0)
 
@@ -99,9 +116,7 @@
 (require 'cc-swift-mode)
 (require 'flyspell)
 (require 'cc-view-mode)
-(require 'cc-global-keybindings)
 (require 'cc-magit-mode)
-(require 'cc-menu-reconfig)
 (require 'cc-compile-mode)
 (require 'cc-grep-mode)
 (require 'kill-with-intelligence)
@@ -113,7 +128,7 @@
 (require 'cc-re-builder)
 (require 'cc-symbol-overlay)
 (require 'cc-calendar-mode)
-(require 'password-store-menu)
+;; (require 'password-store-menu)
 (require 'cc-image-mode)
 (require 'cc-make-mode)
 (require 'cc-csv-mode)
@@ -123,10 +138,19 @@
 ;;(require 'cc-gnuplot-mode)
 (require 'cc-bibtex-mode)
 (require 'cc-eww-mode)
+(require 'cc-debbugs-mode)
+(require 'cc-blog-utils)
+(require 'cc-css-mode)
+(require 'cc-html-mode)
+(require 'cc-macros)
 (require 'ffap)
 (require 'calle24)
 (require 'scrim-utils)
 (require 'numeri)
+(require 'casual-agenda)
+(require 'cc-menu-reconfig)
+(require 'cc-global-keybindings)
+
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
@@ -172,14 +196,80 @@
 ;;   (mac-toggle-tab-bar))
 
 (defun cc/tty-mouse ()
+  "Configure mouse for TTY."
   (interactive)
   (unless (display-graphic-p)
     (xterm-mouse-mode 1)
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line)))
 
-(password-store-menu-enable)
+(defun cc/days-until-voting (arg)
+  "Days until U.S. elections in 2026 and 2028.
+
+If prefix ARG is non-nil, then the computed result is stored in the
+ `kill-ring'."
+  (interactive "P")
+  (let* ((midterms (cc/--days-until "2026-11-03" "%d days until 2026 midterms"))
+         (election (cc/--days-until "2028-11-07" "%d days until 2028 presidential election"))
+         (msg (format "%s, %s" midterms election)))
+    (if arg
+        (kill-new msg))
+    (message msg)))
+
+(defun cc/days-until-mothers (arg)
+  "Days until Mother's Day 2026.
+
+If prefix ARG is non-nil, then the computed result is stored in the
+`kill-ring'."
+  (interactive "P")
+  (let* ((mother (cc/--days-until "2026-05-10" "%d days until Mother's Day"))
+         (msg (format "%s" mother)))
+    (if arg
+        (kill-new msg))
+    (message msg)))
+
+(defun cc/days-until-next-gig (arg)
+  "Days until next gig.
+
+If prefix ARG is non-nil, then the computed result is stored in the
+`kill-ring'."
+  (interactive "P")
+  (let* ((event (cc/--days-until "2026-06-07" "%d days until next gig"))
+         (msg (format "%s" event)))
+    (if arg
+        (kill-new msg))
+    (message msg)))
+
+(defvar cc--workplace-initialized nil
+  "If non-nil then workplace is initialized.")
+
+(defun cc/workplace ()
+  "Initialize workplace."
+  (interactive)
+  (if cc--workplace-initialized
+      (message "Workplace already initialized.")
+
+    (if (= (display-pixel-width) 1512)
+        (progn
+          (cc/--resize-frame 125 49)
+          (set-frame-position (selected-frame) 182 44))
+      (cc/--resize-frame 141 71)
+      (set-frame-position (selected-frame) 852 192))
+
+    (status-report)
+    (org-agenda nil "n")
+    (casual-agenda-goto-now)
+    (eshell t)
+    (switch-to-buffer (format-time-string "%Y_%m_%d.org"))
+    (setq cc--workplace-initialized t)))
+
+(if (and (eq window-system 'ns)
+         (string-equal (system-name) "bingsu.local"))
+    (add-hook 'window-setup-hook #'cc/workplace))
+
+
+;; (password-store-menu-enable)
 
 ;;(setq window-system-default-frame-alist '((ns . ((ns-transparent-titlebar . t)))))
 
-(ffap-bindings)
+;; (ffap-bindings)

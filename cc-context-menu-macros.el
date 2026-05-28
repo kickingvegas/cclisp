@@ -62,40 +62,5 @@ SUBMENU is a keymap."
   `(define-key-after ,menu [,submenu]
      (list 'menu-item ,label ,submenu)))
 
-(defun cc/context-menu-label (prefix)
-  "Generate context menu label with region string prepended by PREFIX."
-  (let* ((start (region-beginning))
-        (end (region-end))
-        (buf "")
-        (max 25)
-        (size (abs (- start end))))
-    (if (> size max)
-        (setq buf (concat prefix " “"(buffer-substring start (+ max start)) "…”"))
-      (setq buf (concat prefix " “" (buffer-substring start end) "”")))
-    buf))
-
-(defun cc/occur-selected-region ()
-  "Occur selected region."
-  (interactive)
-  (let* ((start (region-beginning))
-         (end (region-end))
-         (regex (buffer-substring-no-properties start end)))
-    (occur regex)))
-
-(defun cc/context-menu-last-word-in-region (prefix)
-  "Generate context menu label with last word in region prepended by PREFIX."
-  (let*  ((start (region-beginning))
-         (end (region-end))
-         (buf (buffer-substring start end))
-         (last-word (car (last (split-string buf " ")))))
-    (concat prefix " “" last-word "”")))
-
-(defun cc/org-stored-links-p ()
-  "Predicate if `org-stored-links' is populated.
-Return t if populated, nil otherwise."
-  (if (> (length org-stored-links) 0)
-      t
-    nil))
-
 (provide 'cc-context-menu-macros)
 ;;; cc-context-menu-macros.el ends here

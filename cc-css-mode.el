@@ -1,9 +1,8 @@
-;;; cc-js-mode.el --- JS mode customization -*- lexical-binding: t; -*-
+;;; cc-css-mode.el --- CSS mode customization        -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
-
 ;; Keywords: tools
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -20,11 +19,15 @@
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
 ;;
 
 ;;; Code:
+(require 'css-mode)
+(require 'casual-css)
 
-(add-hook 'js-mode-hook #'hs-minor-mode)
+(keymap-set css-mode-map "M-m" #'casual-css-tmenu)
+(keymap-set css-ts-mode-map "M-m" #'casual-css-tmenu)
 
-(provide 'cc-js-mode)
-;;; cc-js-mode.el ends here
+(provide 'cc-css-mode)
+;;; cc-css-mode.el ends here

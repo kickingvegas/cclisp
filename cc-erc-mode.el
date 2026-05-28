@@ -26,7 +26,10 @@
 (require 'bookmark)
 (require 'erc-nicks)
 (require 'erc-backend)
+(require 'goto-addr)
 (require 'casual-editkit)
+
+(add-hook 'erc-mode-hook #'goto-address-mode)
 
 (transient-define-prefix casual-erc-tmenu ()
   "Transient menu for ERC."
@@ -98,7 +101,7 @@
       (setf (erc-response.contents parsed) msg)
       nil)))
 
-(add-hook #'erc-server-PRIVMSG-functions #'cc/erc-redact)
+(add-hook 'erc-server-PRIVMSG-functions #'cc/erc-redact)
 
 (provide 'cc-erc-mode)
 ;;; cc-erc-mode.el ends here

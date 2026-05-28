@@ -1,6 +1,6 @@
 ;;; cc-eww-mode.el --- EWW Mode                      -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2025  Charles Choi
+;; Copyright (C) 2025-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -26,62 +26,60 @@
 (require 'eww)
 (require 'hl-line)
 (require 'bookmark)
-(require 'casual-lib)
+(require 'avy)
+(require 'casual-eww)
 
 (add-hook 'eww-mode-hook #'hl-line-mode)
+(add-hook 'eww-bookmark-mode-hook #'hl-line-mode)
+(add-hook 'eww-mode-hook (lambda ()
+                           (setq-local scroll-margin 12)))
 
-(transient-define-prefix casual-eww-tmenu ()
-   "Transient menu for eww."
-   :refresh-suffixes t
-   ["Casual EWW"
-    ["History"
-     :pad-keys t
-     ("M-[" "Previous" eww-forward-url :transient t)
-     ("M-]" "Next" eww-back-url :transient t)
-     ("H" "History" eww-list-histories :transient nil)]
+(defun cc/eww-point-on-first-line-p ()
+  "Return t if the point is on the first line, nil otherwise.
 
-    ["Document"
-     ("[" "Back" eww-previous-url :transient t)
-     ("]" "Next" eww-next-url :transient t)
-     ("^" "Up" eww-up-url :transient t)
-     ("t" "Top" eww-top-url :transient t)]
+This function taken via GitHub Copilot query."
+  (= (line-number-at-pos) 1))
 
-    ["Navigate"
-     :pad-keys t
-     ("p" "↑ ¶" casual-lib-browse-backward-paragraph :transient t)
-     ("n" "↓ ¶" casual-lib-browse-forward-paragraph :transient t)
-     ("SPC" "↓ Scroll" scroll-up-command :transient t)
-     ("S-SPC" "↑ Scroll" scroll-down-command :transient t)]
+(defun cc/eww-point-on-last-line-p ()
+  "Return t if the point is on the last line, nil otherwise.
 
-    ["Link"
-     :pad-keys t
-     ("j" "Next" shr-next-link :transient t)
-     ("k" "Previous" shr-previous-link :transient t)
-     ("RET" "Follow" eww-follow-link :transient t)]
+This function taken via GitHub Copilot query."
+  (let ((current-line (line-number-at-pos))
+        (total-lines (length eww-bookmarks))
+        ;; (total-lines (count-lines (point-min) (point-max)))
+        )
+    (= current-line total-lines)))
 
-    ["Bookmarks"
-     :pad-keys t
-     ("ba" "Add" eww-add-bookmark)
-     ("B" "List" eww-list-bookmarks)
-     ("bn" "Next" eww-next-bookmark)
-     ("bp" "Previous" eww-previous-bookmark)
-     ]
+(defun cc/eww-bookmark-reorder-down ()
+  "Reorder bookmark down list."
+  (interactive)
+  (if (not (cc/eww-point-on-last-line-p))
+      (progn
+        (eww-bookmark-kill)
+        (forward-line)
+        (eww-bookmark-yank)
+        (forward-line -1))))
 
-    ["Misc"
-     :pad-keys t
-     ("c" "Copy URL" eww-copy-page-url)
-     ("a" "Copy Alt URL" eww-copy-alternate-url)
-     ("M-l" "Open URL" eww)
-     ("C-o" "Launch External" eww-browse-with-external-browser)
-     ("g" "Reload" eww-reload)
-     ("J" "Jump to Bookmark…" bookmark-jump)]]
+(defun cc/eww-bookmark-reorder-up ()
+  "Reorder bookmark up list."
+  (interactive)
+  (if (not (cc/eww-point-on-first-line-p))
+      (progn
+        (eww-bookmark-kill)
+        (forward-line -1)
+        (eww-bookmark-yank)
+        (forward-line -1))))
 
-   [:class transient-row
-           (casual-lib-quit-one)
-           ("q" "Quit" quit-window)
-           (casual-lib-quit-all)])
+(keymap-set eww-bookmark-mode-map "C-o" #'casual-eww-bookmarks-tmenu)
+(keymap-set eww-bookmark-mode-map "p" #'previous-line)
+(keymap-set eww-bookmark-mode-map "n" #'next-line)
+(keymap-set eww-bookmark-mode-map "M-p" #'cc/eww-bookmark-reorder-up)
+(keymap-set eww-bookmark-mode-map "M-n" #'cc/eww-bookmark-reorder-down)
+
+(keymap-set eww-bookmark-mode-map "<double-mouse-1>" #'eww-bookmark-browse)
 
 (keymap-set eww-mode-map "C-o" #'casual-eww-tmenu)
+(keymap-set eww-mode-map "C-c C-o" #'eww-browse-with-external-browser)
 
 (keymap-set eww-mode-map "j" #'shr-next-link)
 (keymap-set eww-mode-map "k" #'shr-previous-link)
@@ -92,12 +90,13 @@
 (keymap-set eww-mode-map "M-]" #'eww-forward-url)
 (keymap-set eww-mode-map "M-[" #'eww-back-url)
 
+(keymap-set eww-mode-map "<f1>" #'avy-goto-char-timer)
+
 (keymap-set eww-mode-map "n" #'casual-lib-browse-forward-paragraph)
 (keymap-set eww-mode-map "p" #'casual-lib-browse-backward-paragraph)
-;;(keymap-set eww-mode-map "p" #'backward-paragraph)
 
-;; (keymap-set eww-mode-map "n" #'next-line)
-;; (keymap-set eww-mode-map "p" #'previous-line)
+(keymap-set eww-mode-map "P" #'casual-eww-backward-paragraph-link)
+(keymap-set eww-mode-map "N" #'casual-eww-forward-paragraph-link)
 
 (keymap-set eww-mode-map "M-l" #'eww)
 

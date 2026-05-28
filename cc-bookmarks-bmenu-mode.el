@@ -25,10 +25,6 @@
 ;;; Code:
 (require 'casual-bookmarks)
 
-(easy-menu-add-item global-map '(menu-bar)
-                    casual-bookmarks-main-menu
-                    "Tools")
-
 (keymap-set bookmark-bmenu-mode-map "C-o" #'casual-bookmarks-tmenu)
 (keymap-set bookmark-bmenu-mode-map "S" #'casual-bookmarks-sortby-tmenu)
 (keymap-set bookmark-bmenu-mode-map "J" #'bookmark-jump)

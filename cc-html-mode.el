@@ -1,9 +1,8 @@
-;;; cc-js-mode.el --- JS mode customization -*- lexical-binding: t; -*-
+;;; cc-html-mode.el --- SGML/HTML Mode Customization  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2025  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
-
 ;; Keywords: tools
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -20,11 +19,25 @@
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
 ;;
 
 ;;; Code:
 
-(add-hook 'js-mode-hook #'hs-minor-mode)
+(require 'mhtml-mode)
+(require 'casual-html)
 
-(provide 'cc-js-mode)
-;;; cc-js-mode.el ends here
+(keymap-set html-mode-map "M-m" #'casual-html-tmenu)
+(keymap-set html-mode-map "C-c m" #'casual-html-tags-tmenu)
+
+;;(keymap-set html-ts-mode-map "M-m" #'casual-html-tmenu)
+;;(keymap-set html-ts-mode-map "C-c m" #'casual-html-tags-tmenu)
+
+;; (keymap-set html-ts-mode-map "C-<up>" #'backward-up-list)
+;; ;; (keymap-set html-ts-mode-map "C-<down>" #'down-list)
+;; (keymap-set html-ts-mode-map "C-<left>" #'backward-sexp)
+;; (keymap-set html-ts-mode-map "C-<right>" #'casual-elisp-next-sexp)
+
+
+(provide 'cc-html-mode)
+;;; cc-html-mode.el ends here

@@ -49,6 +49,7 @@
 (keymap-set Info-mode-map "<mouse-4>" #'Info-history-back)
 (keymap-set Info-mode-map "s-<tab>" #'cc/clone-in-new-tab)
 (keymap-set Info-mode-map "M-t" #'cc/clone-in-new-tab)
+(keymap-set Info-mode-map "." #'Info-up)
 
 (provide 'cc-info-mode)
 ;;; cc-info-mode.el ends here

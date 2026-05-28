@@ -1,6 +1,6 @@
 ;;; cc-emacs-lisp-mode.el --- Elisp Customization -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -27,15 +27,17 @@
 (require 'flycheck)
 (require 'edebug)
 (require 'cclisp)
-(require 'calle24)
+(require 'calle24-edebug)
+(require 'hideshow)
 (require 'casual-elisp)
+(require 'anju)
 
 ;;; Code:
 
 ;;(add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 (add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
 (add-hook 'emacs-lisp-mode-hook #'prettify-symbols-mode)
-
+(add-hook 'emacs-lisp-mode-hook #'hs-minor-mode)
 
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
@@ -70,11 +72,12 @@
 (keymap-set emacs-lisp-mode-map "C-M-b" #'backward-word)
 (keymap-set emacs-lisp-mode-map "C-M-f" #'forward-word)
 
-(keymap-set emacs-lisp-mode-map "<prior>" #'cc/backward-page-at-top)
-(keymap-set emacs-lisp-mode-map "<next>" #'cc/forward-page-at-top)
+(keymap-set emacs-lisp-mode-map "M-<prior>" #'cc/backward-page-at-top)
+(keymap-set emacs-lisp-mode-map "M-<next>" #'cc/forward-page-at-top)
 
 (keymap-set emacs-lisp-mode-map "C-<prior>" #'pages-previous-page)
 (keymap-set emacs-lisp-mode-map "C-<next>" #'pages-next-page)
+(keymap-set emacs-lisp-mode-map "M-RET" #'cc/line-feed)
 
 (transient-define-prefix cc/edebug-tmenu ()
   :refresh-suffixes t
@@ -141,8 +144,8 @@
     ("w" "Where" edebug-where)]]
 
   [:class transient-row
-          ("C-i" "Info" cc/open-edebug-info)
-          ("C-g" "Dismiss" ignore :transient transient-quit-one)])
+   ("C-i" "Info" cc/open-edebug-info)
+   ("C-g" "Dismiss" ignore :transient transient-quit-one)])
 
 
 ;; (defun cc/edebug-slow-after (_before-index after-index value)
@@ -211,367 +214,68 @@
   [("C-g" "Dismiss" ignore :transient transient-quit-one)])
 
 (keymap-set edebug-eval-mode-map "<f8>" #'cc/edebug-watch-tmenu)
-
-
 (keymap-set emacs-lisp-mode-map "M-m" #'casual-elisp-tmenu)
 (keymap-set emacs-lisp-mode-map "C-c m" #'casual-elisp-tmenu)
 
+
+;; Calle 24 Config
 
-(defun cc/edebug-eval-mode-tool-bar-map ()
-  "Configure Edebug Tool Bar Map."
-  (let ((map (make-sparse-keymap)))
+;; (add-hook 'emacs-lisp-mode-hook
+;;           (lambda ()
+;;             (setq-local tool-bar-map (calle24-edebug-mode-tool-bar-map))
+;;             (let ((appearance (calle24-get-appearance)))
+;;               (cond
+;;                ((string= appearance "dark")
+;;                 (calle24-update-tool-bar-appearance t))
+;;                ((string= appearance "light")
+;;                 (calle24-update-tool-bar-appearance))
+;;                (t (calle24-update-tool-bar-appearance))))))
 
-    (tool-bar-local-item
-     "edebug/update-eval-list"
-     #'edebug-update-eval-list #'edebug-update-eval-list map
-     :help "Add Symbol")
+;; (add-hook 'edebug-eval-mode-hook
+;;           (lambda ()
+;;             (setq-local tool-bar-map (calle24-edebug-eval-mode-tool-bar-map))
+;;             (let ((appearance (calle24-get-appearance)))
+;;               (cond
+;;                ((string= appearance "dark")
+;;                 (calle24-update-tool-bar-appearance t))
+;;                ((string= appearance "light")
+;;                 (calle24-update-tool-bar-appearance))
+;;                (t (calle24-update-tool-bar-appearance))))))
 
-    (tool-bar-local-item
-     "edebug/delete-eval-item"
-     #'edebug-delete-eval-item #'edebug-delete-eval-item map
-     :help "Delete Symbol")
+;; (add-hook 'edebug-eval-mode-hook #'window-tool-bar-mode)
 
-    (tool-bar-local-item
-     "edebug/eval-last-sexp"
-     #'edebug-eval-last-sexp #'edebug-eval-last-sexp map
-     :help "Eval Last")
+
+;; -------------------------------------------------------------------
+;; Fix vector indentation.
+;; This code taken from
+;; https://github.com/magit/emacsql/blob/2fe6d4562b32a170a750d5e80514fbb6b6694803/emacsql.el#L357-L379
+;; per guidance from J. Bernoulli to fix vector formatting.
 
-    (tool-bar-local-item
-     "edebug/eval-print-last-sexp"
-     #'edebug-eval-print-last-sexp #'edebug-eval-print-last-sexp map
-     :help "Print Eval Last")
+(defun emacsql--inside-vector-p ()
+  "Return non-nil if point is inside a vector expression."
+  (let ((start (point)))
+    (save-excursion
+      (beginning-of-defun)
+      (let ((containing-sexp (elt (parse-partial-sexp (point) start) 1)))
+        (and containing-sexp
+             (progn (goto-char containing-sexp)
+                    (looking-at "\\[")))))))
 
-    (tool-bar-local-item
-     "edebug/where"
-     #'edebug-where #'edebug-where map
-     :help "Resume")
+(defun emacsql--calculate-vector-indent (fn &optional parse-start)
+  "Don't indent vectors in `emacs-lisp-mode' like lists."
+  (if (save-excursion (beginning-of-line) (emacsql--inside-vector-p))
+      (let ((lisp-indent-offset 1))
+        (funcall fn parse-start))
+    (funcall fn parse-start)))
 
-    map))
+(defun emacsql-fix-vector-indentation ()
+  "When called, advise `calculate-lisp-indent' to stop indenting vectors.
+Once activated, vector contents no longer indent like lists."
+  (interactive)
+  (advice-add 'calculate-lisp-indent :around
+              #'emacsql--calculate-vector-indent))
 
-(add-hook 'edebug-eval-mode-hook
-          (lambda ()
-            (setq-local tool-bar-map (cc/edebug-eval-mode-tool-bar-map))
-            (let ((appearance (calle24-get-appearance)))
-              (cond
-               ((string= appearance "dark")
-                (calle24-update-tool-bar-appearance t))
-               ((string= appearance "light")
-                (calle24-update-tool-bar-appearance))
-               (t (calle24-update-tool-bar-appearance))))))
-
-(defun cc/edebug-mode-tool-bar-map ()
-  "Configure Edebug Tool Bar Map."
-  (let ((map (make-sparse-keymap)))
-    ;; Edebug
-    (tool-bar-local-item
-     "edebug/eval-defun"
-     #'eval-defun #'eval-defun map
-     :visible (not (edebug-mode-p))
-     :help "Go (eval-defun)")
-
-    (tool-bar-local-item
-     "edebug/goto-here"
-     #'edebug-goto-here #'edebug-goto-here map
-     :visible (edebug-mode-p)
-     :help "Here")
-
-    (tool-bar-local-item
-     "edebug/set-mode"
-     #'edebug-set-initial-mode #'edebug-set-initial-mode map
-     :visible (not (edebug-mode-p))
-     :help "Set Initial Mode")
-
-    ;; (define-key-after tool-bar-map [separator-1] menu-bar-separator)
-
-    (tool-bar-local-item
-     "edebug/next-mode"
-     #'edebug-next-mode #'edebug-next-mode map
-     :visible (edebug-mode-p)
-     :help "Next Mode")
-
-    (tool-bar-local-item
-     "edebug/continue-mode"
-     #'edebug-continue-mode #'edebug-continue-mode map
-     :visible (edebug-mode-p)
-     :help "Continue Mode")
-
-    (tool-bar-local-item
-     "edebug/trace-mode"
-     #'edebug-trace-mode #'edebug-trace-mode map
-     :visible (edebug-mode-p)
-     :help "Trace Mode")
-
-
-    (tool-bar-local-item
-     "edebug/go-mode"
-     #'edebug-go-mode #'edebug-go-mode map
-     :visible (edebug-mode-p)
-     :help "Go Mode")
-
-    ;; (define-key-after tool-bar-map [separator-2] menu-bar-separator)
-
-    (tool-bar-local-item
-     "edebug/step-mode"
-     #'edebug-step-mode #'edebug-step-mode map
-     :visible (edebug-mode-p)
-     :help "Step Mode")
-
-    (tool-bar-local-item
-     "edebug/forward-sexp"
-     #'edebug-forward-sexp #'edebug-forward-sexp map
-     :visible (edebug-mode-p)
-     :help "Forward sexp (Step Over)")
-
-    (tool-bar-local-item
-     "edebug/step-in"
-     #'edebug-step-in #'edebug-step-in map
-     :visible (edebug-mode-p)
-     :help "Step in sexp")
-
-    (tool-bar-local-item
-     "edebug/step-out"
-     #'edebug-step-out #'edebug-step-out map
-     :visible (edebug-mode-p)
-     :help "Step out sexp")
-
-    ;; (pdefine-key-after tool-bar-map [separator-3] menu-bar-separator)
-
-    (tool-bar-local-item
-     "edebug/eval-expression"
-     #'edebug-eval-expression #'edebug-eval-expression map
-     :visible (edebug-mode-p)
-     :help "Evaluate Expression")
-
-    (tool-bar-local-item
-     "edebug/previous-result"
-     #'edebug-previous-result #'edebug-previous-result map
-     :visible (edebug-mode-p)
-     :help "Previous Result")
-
-    (tool-bar-local-item
-     "edebug/view-outside"
-     #'edebug-view-outside #'edebug-view-outside map
-     :visible (edebug-mode-p)
-     :help "View Outside")
-
-    (tool-bar-local-item
-     "edebug/visit-eval-list"
-     #'edebug-visit-eval-list #'edebug-visit-eval-list map
-     :visible (edebug-mode-p)
-     :help "Watchlist")
-
-    ;; (define-key-after map [separator-1] menu-bar-separator)
-
-    ;; (define-key-after tool-bar-map [separator-4] menu-bar-separator)
-
-    (tool-bar-local-item
-     "edebug/set-breakpoint"
-     #'edebug-set-breakpoint #'edebug-set-breakpoint map
-     :visible (edebug-mode-p)
-     :help "Set Breakpoint")
-
-    (tool-bar-local-item
-     "edebug/conditional-breakpoint"
-     #'edebug-set-conditional-breakpoint #'edebug-set-conditional-breakpoint map
-     :visible (edebug-mode-p)
-     :help "Set Conditional Breakpoint")
-
-    (tool-bar-local-item
-     "edebug/next-breakpoint"
-     #'edebug-next-breakpoint #'edebug-next-breakpoint map
-     :visible (edebug-mode-p)
-     :help "Next Breakpoint")
-
-    (tool-bar-local-item
-     "edebug/unset-breakpoint"
-     #'edebug-unset-breakpoint #'edebug-unset-breakpoint map
-     :visible (edebug-mode-p)
-     :help "Unset Breakpoint")
-
-    (tool-bar-local-item
-     "edebug/unset-all-breakpoints"
-     #'edebug-unset-breakpoints #'edebug-unset-breakpoints map
-     :visible (edebug-mode-p)
-     :help "Unset All Breakpoints")
-
-    ;; (define-key-after tool-bar-map [separator-5] menu-bar-separator)
-
-    (tool-bar-local-item
-     "edebug/stop"
-     #'edebug-stop #'edebug-stop map
-     :visible (edebug-mode-p)
-     :help "Stop")
-
-    (tool-bar-local-item
-     "edebug/top-level"
-     #'top-level #'top-level map
-     :visible (edebug-mode-p)
-     :help "Quit Edebug")
-
-    (tool-bar-local-item
-     "edebug/top-level-nonstop"
-     #'edebug-top-level-nonstop #'edebug-top-level-nonstop map
-     :visible (edebug-mode-p)
-     :help "Quit Edebug Nonstop")
-
-    ;; (define-key-after tool-bar-map [separator-6] menu-bar-separator)
-
-    (tool-bar-local-item
-     "help"
-     #'edebug-help #'edebug-help map
-     :visible (edebug-mode-p)
-     :help "Help")
-
-    ;; standard tool bar items
-
-    ;; (tool-bar-local-item
-    ;;  "new"
-    ;;  #'find-file
-    ;;  #'find-file
-    ;;  map
-    ;;  :visible (not (edebug-mode-p))
-    ;;  :help "New File")
-
-    ;; (tool-bar-local-item
-    ;;  "open"
-    ;;  #'menu-find-file-existing #'menu-find-file-existing map
-    ;;  :visible (not (edebug-mode-p))
-    ;;  :help "Open")
-
-    ;; (tool-bar-local-item
-    ;;  "diropen"
-    ;;  #'dired #'dired map
-    ;;  :visible (not (edebug-mode-p))
-    ;;  :help "Dired")
-
-    ;; (tool-bar-local-item
-    ;;  "close"
-    ;;  #'kill-this-buffer #'kill-this-buffer map
-    ;;  :visible (not (edebug-mode-p))
-    ;;  :help "Close")
-
-    ;; (tool-bar-local-item
-    ;;  "save"
-    ;;  #'save-buffer #'save-buffer map
-    ;;  :enable (buffer-modified-p)
-    ;;  :visible (not (edebug-mode-p))
-    ;;  :help "Save")
-
-    ;; (tool-bar-local-item
-    ;;  "undo"
-    ;;  #'undo #'undo map
-    ;;  :visible (not (edebug-mode-p))
-    ;;  :help "Undo")
-
-    ;; (tool-bar-local-item
-    ;;  "cut"
-    ;;  #'kill-region #'kill-region map
-    ;;  :enable (and (use-region-p) (not buffer-read-only))
-    ;;  :visible (not (edebug-mode-p))
-    ;;  :help "Cut")
-
-    ;; (tool-bar-local-item
-    ;;  "copy"
-    ;;  #'copy-region-as-kill #'copy-region-as-kill map
-    ;;  :enable (use-region-p)
-    ;;  :visible (not (edebug-mode-p))
-    ;;  :help "Copy")
-
-    ;; (tool-bar-local-item
-    ;;  "paste"
-    ;;  #'yank #'yank map
-    ;;  :enable (and (use-region-p) (not buffer-read-only))
-    ;;  :visible (not (edebug-mode-p))
-    ;;  :help "Paste")
-
-
-    (tool-bar-local-item-from-menu 'find-file "new" map nil
-                                   :label "New File"
-			           :vert-only t
-                                   :visible (not (edebug-mode-p)))
-    (tool-bar-local-item-from-menu 'menu-find-file-existing "open" map nil
-			           :label "Open"
-                                   :vert-only t
-                                   :visible (not (edebug-mode-p)))
-    (tool-bar-local-item-from-menu 'dired "diropen" map nil
-                                   :vert-only t
-                                   :visible (not (edebug-mode-p)))
-    (tool-bar-local-item-from-menu 'kill-this-buffer "close" map nil
-                                   :vert-only t
-                                   :visible (not (edebug-mode-p)))
-    (tool-bar-local-item-from-menu 'save-buffer "save" map nil
-			           :label "Save"
-                                   :visible (not (edebug-mode-p)))
-    ;; (define-key-after tool-bar-map [separator-1] menu-bar-separator)
-    (tool-bar-local-item-from-menu 'undo "undo" map nil
-                                   :visible (not (edebug-mode-p)))
-    ;; (define-key-after tool-bar-map [separator-2] menu-bar-separator)
-    (tool-bar-local-item-from-menu (lookup-key menu-bar-edit-menu [cut])
-			           "cut" map nil
-                                   :vert-only t
-                                   :visible (not (edebug-mode-p)))
-    (tool-bar-local-item-from-menu (lookup-key menu-bar-edit-menu [copy])
-			           "copy" map nil
-                                   :vert-only t
-                                   :visible (not (edebug-mode-p)))
-    (tool-bar-local-item-from-menu (lookup-key menu-bar-edit-menu [paste])
-			           "paste" map nil :vert-only t
-                                   :visible (not (edebug-mode-p)))
-    ;; (define-key-after tool-bar-map [separator-3] menu-bar-separator)
-    (tool-bar-local-item-from-menu 'isearch-forward "search"
-			           map nil
-                                   :label "Search"
-                                   :vert-only t
-                                   :visible (not (edebug-mode-p)))
-    map))
-
-(add-hook 'edebug-mode-hook
-          (lambda ()
-            (setq-local tool-bar-map (cc/edebug-mode-tool-bar-map))
-            (let ((appearance (calle24-get-appearance)))
-              (cond
-               ((string= appearance "dark")
-                (calle24-update-tool-bar-appearance t))
-               ((string= appearance "light")
-                (calle24-update-tool-bar-appearance))
-               (t (calle24-update-tool-bar-appearance))))))
-
-;; TODO: handle dark mode images
-
-(defvar cc/edebug--image-appearance-map
-  '((edebug-update-eval-list . "edebug/update-eval-list")
-    (edebug-delete-eval-item . "edebug/delete-eval-item")
-    (edebug-eval-last-sexp . "edebug/eval-last-sexp")
-    (edebug-eval-print-last-sexp . "edebug/eval-print-last-sexp")
-    (edebug-where . "edebug/where")
-    (eval-defun . "edebug/eval-defun")
-    (edebug-goto-here . "edebug/goto-here")
-    (edebug-set-initial-mode . "edebug/set-mode")
-    (edebug-next-mode . "edebug/next-mode" )
-    (edebug-continue-mode . "edebug/continue-mode")
-    (edebug-trace-mode . "edebug/trace-mode")
-    (edebug-go-mode . "edebug/go-mode")
-    (edebug-step-mode . "edebug/step-mode")
-    (edebug-forward-sexp . "edebug/forward-sexp")
-    (edebug-step-in . "edebug/step-in")
-    (edebug-step-out . "edebug/step-out")
-    (edebug-eval-expression . "edebug/eval-expression")
-    (edebug-previous-result . "edebug/previous-result")
-    (edebug-view-outside . "edebug/view-outside")
-    (edebug-visit-eval-list . "edebug/visit-eval-list")
-    (edebug-set-breakpoint . "edebug/set-breakpoint")
-    (edebug-set-conditional-breakpoint . "edebug/conditional-breakpoint")
-    (edebug-next-breakpoint . "edebug/next-breakpoint")
-    (edebug-unset-breakpoint . "edebug/unset-breakpoint")
-    (edebug-unset-breakpoints . "edebug/unset-all-breakpoints")
-    (edebug-stop . "edebug/stop")
-    (top-level . "edebug/top-level")
-    (edebug-top-level-nonstop . "edebug/top-level-nonstop")
-    (edebug-help . "help"))
-  "Alist map of keys used by Edebug toolbar map.")
-
-(setq calle24--image-appearance-map (append calle24--image-appearance-map
-                                            cc/edebug--image-appearance-map))
+(emacsql-fix-vector-indentation)
 
 (provide 'cc-emacs-lisp-mode)
 ;;; cc-emacs-lisp-mode.el ends here

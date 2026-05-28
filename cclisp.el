@@ -1,6 +1,6 @@
 ;;; cclisp.el --- Utility Functions -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -28,7 +28,7 @@
 (require 'map)
 (require 'transient)
 (require 'bookmark)
-(require 'spotlight)
+;; (require 'spotlight)
 (require 'org-capture)
 (require 'org-agenda)
 (require 'org-table)
@@ -43,6 +43,7 @@
 (require 'transpose-frame)
 (require 'dired)
 (require 'page-ext)
+(require 'term)
 
 (defun cc/find-user-init-file ()
   "Edit `user-init-file'."
@@ -118,16 +119,19 @@ A new frame will be created if `pop-up-frames' is t."
 (defun dictate()
    "Open a default text file to dictate into using macOS open."
    (interactive)
-   (shell-command "open ~/Documents/Dictation.rtf"))
+   (let ((fname (file-name-concat "~/org/dictation"
+                                  (format-time-string "%Y%m%d_%H%M%S.txt"))))
+     (shell-command (format "touch %s" fname))
+     (shell-command (format "open -a TextEdit.app %s" fname))))
 
 ;; TODO: revisit storing web links
-(load-file (concat user-emacs-directory "url-bookmarks.el"))
+;; (load-file (concat user-emacs-directory "url-bookmarks.el"))
 
-(defun cc/open-url ()
-  "Open URL from file `cc/url-bookmarks'."
-  (interactive)
-  (let ((choice (car (completing-read-multiple "Select URL: " (map-keys cc/url-bookmarks)))))
-    (browse-url (cdr (assoc choice cc/url-bookmarks)))))
+;; (defun cc/open-url ()
+;;   "Open URL from file `cc/url-bookmarks'."
+;;   (interactive)
+;;   (let ((choice (car (completing-read-multiple "Select URL: " (map-keys cc/url-bookmarks)))))
+;;     (browse-url (cdr (assoc choice cc/url-bookmarks)))))
 
 (defun year (arg)
   "Open daily generated current year PDF file.
@@ -187,60 +191,6 @@ If prefix ARG is invoked, then macOS open is used to open the PDF file."
   (declare (pure t) (side-effect-free t))
   (replace-regexp-in-string (regexp-quote old) new s t t))
 
-(defun cc/pelican-timestamp ()
-  "Insert a timestamp recognized by the Pelican static site generator."
-  (interactive)
-  (insert (format-time-string "%Y-%m-%d %H:%M")))
-
-(defun cc/new-blog-post ()
-  "Create a new blog post in a buffer for “notes from /dev/null”."
-  (interactive)
-    (cd "~/Projects/devnull/content")
-    (find-file (format-time-string "nfdn_%Y_%m_%d_%H%M%S.md"))
-    (yas-insert-snippet))
-
-(defun cc/launch-pelican ()
-  "Launch a local instance of the Pelican static site server.
-This function presumes that the buffer *pelican* is in the correct directory."
-  (interactive)
-  (process-send-string (get-buffer-process "*pelican*") "make devserver\n")
-  (sleep-for 3)
-  (shell-command "open http://localhost:8000"))
-
-(defun cc/devserver ()
-  "Open Pelican devserver for website chosen by completing read."
-  (interactive)
-  (let* ((choice (completing-read "Server: " '("devnull" "captee" "scrim")))
-         (blog-path (concat "~/Projects/pelican/" choice))
-         (blog-buffer (format "*pelican-%s*" choice))
-         (cd-blog-path (format "cd %s\n" blog-path)))
-
-    (if (get-buffer blog-buffer)
-        (switch-to-buffer blog-buffer)
-      (progn
-        (shell-new)
-        (rename-buffer blog-buffer)
-        (process-send-string (get-buffer-process blog-buffer) "cd ~/Projects/pelican\n")
-        (process-send-string (get-buffer-process blog-buffer) "source .venv/bin/activate\n")
-        (process-send-string (get-buffer-process blog-buffer) cd-blog-path)
-        (setq-local default-directory blog-path)
-        (if (display-graphic-p)
-            (cc/launch-pelican))))))
-
-(defun cc/slugify (start end)
-  "Slugify the region bounded by START and END."
-  (interactive "r")
-  (if (use-region-p)
-      (let ((regionp (buffer-substring start end)))
-        (save-excursion
-          (delete-region start end)
-          (insert
-           (replace-regexp-in-string
-            "[^a-z0-9-]" ""
-            (replace-regexp-in-string
-             "\s+" "-"
-             (downcase regionp))))))))
-
 (defun cc/posix-timestamp-to-human (start end)
   "Convert a POSIX timestamp bounded by START and END to RFC 822 and \
 ISO 8601."
@@ -267,7 +217,10 @@ ISO 8601."
           (princ result)))))
 
 (defun dm/copy-as-rtf ()
-  "Export region to RTF and copy it to the clipboard."
+  "Export region to RTF and copy it to the clipboard.
+
+Code taken from
+URL `;https://gist.github.com/danielmartin/3c5d3a3a8cd24a3556379c5251651748'."
   (interactive)
   (save-window-excursion
     (let* ((buf (org-export-to-buffer 'html "*Formatted Copy*" nil nil t t))
@@ -301,6 +254,45 @@ ISO 8601."
   (interactive "r")
   (shell-command-on-region start end "say"))
 
+
+(defgroup kickingvegas nil
+  "Settings for kickingvegas."
+  :group 'convenience)
+
+(defcustom cc-speech-rate-korean 80
+  "Speech rate for say utility when speaking 한글."
+  :type 'integer
+  :group 'kickingvegas)
+
+(defcustom cc-speech-voice-korean "Yuna"
+  "Speech voice for say utility when speaking 한글."
+  :type 'string
+  :group 'kickingvegas)
+
+(defun cc/say-region-korean (&optional start end)
+  "Pass 한글 region bounded by START and END to macOS say command.
+
+The voice and speech rate are configurable with the following variables:
+
+- `cc-speech-voice-korean'
+- `cc-speech-rate-korean'"
+  (interactive "r")
+
+  (let* ((cmdlist ())
+         (cmdlist (push "say" cmdlist))
+         (cmdlist (push "-v" cmdlist))
+         (cmdlist (push (format "'%s'" cc-speech-voice-korean) cmdlist))
+         (cmdlist (push "-r" cmdlist))
+         (cmdlist (push (format "%d" cc-speech-rate-korean) cmdlist))
+         ;; async generates a stupid window
+         ;; (payload (buffer-substring-no-properties start end))
+         ;; (cmdlist (push payload cmdlist))
+         ;; (cmdlist (push "&" cmdlist))
+         (cmdlist (reverse cmdlist))
+         (cmd (string-join cmdlist " ")))
+    ;; (shell-command cmd)
+    (shell-command-on-region start end cmd)))
+
 (defun cc/ellipsis()
   "Insert an ellipsis."
   (interactive)
@@ -315,6 +307,26 @@ ISO 8601."
   "Insert a menu symbol."
   (interactive)
   (insert "›"))
+
+(defun cc/prefix-symbol ()
+  "Insert a prefix symbol."
+  (interactive)
+  (insert "✦"))
+
+(defun cc/info-symbol ()
+  "Insert an info symbol."
+  (interactive)
+  (insert "ⓘ"))
+
+(defun cc/option-symbol ()
+  "Insert an option symbol."
+  (interactive)
+  (insert "⌥"))
+
+(defun cc/command-symbol ()
+  "Insert an option symbol."
+  (interactive)
+  (insert "⌘"))
 
 (defun cc/apple-maps-search(&optional input)
   "Search Apple Maps with INPUT.
@@ -665,8 +677,6 @@ V is either nil or non-nil."
   (occur "^.*<f[[:digit:]]*>")
   (delete-other-windows))
 
-(defalias 'cc/convert-to-menu-testcase
-  (kmacro "C-a C-f c a s u a l t - a d d - t e s t c a s e SPC M-] C-o k SPC # ' C-d M-] SPC t e s t - v e c t o r s C-n C-a"))
 
 (defun cc/find-test-file ()
   "Open test file in other window."
@@ -676,195 +686,6 @@ V is either nil or non-nil."
     (find-file-other-window test-name)
     (transpose-frame)))
 
-;; Org Table Functions
-
-(defun cc/org-table-cell-at-point ()
-  "At point, return the cell object from an Org table.
-
-A cell object is defined to be a list containing the row and the
-column, successively."
-  (if (not (org-at-table-p))
-      (error "Not in a table"))
-
-  (let* ((row (org-table-current-dline))
-         (col (org-table-current-column)))
-    (list row col)))
-
-(defun cc/format-org-table-field-reference (cell)
-  "Format CELL object into @r$c format.
-
-CELL object obtained via `cc/org-table-cell-at-point'.
-
-See Info node `(org) References' for more on Org table field
-reference format."
-  (let ((row (nth 0 cell))
-        (col (nth 1 cell)))
-    (format "@%d$%d" row col)))
-
-(defun cc/org-table-range ()
-  "Return range object from a region defined within an Org table.
-
-A range object is a list of two cells computed via
-`cc/org-table-cell-at-point', the first being the cell at the
-start of the region and the last being the cell at the end of the
-region."
-  (if (not (and (org-at-table-p) (use-region-p)))
-      (error "Not in an Org table"))
-
-  (save-excursion
-    (let* ((end (cc/org-table-cell-at-point)))
-      (exchange-point-and-mark)
-      (let ((start (cc/org-table-cell-at-point)))
-        (list start end)))))
-
-(defvar cc/last-org-table-reference nil
-  "Last stored Org table reference.
-
-State variable to store an Org table reference (field or range)
-to be used in an Org table formula. This variable is set via
-`cc/org-table-reference-dwim'
-
-NOTE: This state variable to work-around my lack of clarity on
-region and mouse menu interaction.")
-
-(defun cc/org-table-reference-dwim ()
-  "Org table reference given point or region is defined.
-
-Return Org table reference (field or range) depending on whether
-a point or region is defined in an Org table.
-
-If the region is defined over multiple columns, then a Calc
-vector matrix is returned. See Info node `(org) Formula syntax
-for Calc' for more.
-
-Calling this function will set `cc/last-org-table-reference'.
-
-See Info node `(org) References' for more on Org table field
-reference format."
-  (if (not (org-at-table-p))
-      (error "Not in an Org table"))
-
-  (cond
-   ((use-region-p)
-
-    (let* ((range (cc/org-table-range))
-           (start (nth 0 range))
-           (end (nth 1 range))
-           (msg (format "%s..%s"
-                        (cc/format-org-table-field-reference start)
-                        (cc/format-org-table-field-reference end))))
-      (setq cc/last-org-table-reference (cc/org-table-range-to-reference range))
-      msg))
-
-   (t
-    (let ((msg (cc/format-org-table-field-reference (cc/org-table-cell-at-point))))
-      (setq cc/last-org-table-reference msg)
-      msg))))
-
-(defun cc/copy-org-table-reference-dwim ()
-  "Copy Org table reference (field or range) into kill ring.
-
-Given a point or region defined in an Org table, add to the
-`kill-ring' an Org table field or range reference.
-
-If the region is defined over multiple columns, then a Calc
-vector matrix is returned. See Info node `(org) Formula syntax
-for Calc' for more.
-
-If the buffer *Edit Formulas* is available (usually via
-`org-table-edit-formulas'), the reference will be inserted into
-it.
-
-See Info node `(org) References' for more on Org table field
-reference format."
-  (interactive)
-  (if (not (org-at-table-p))
-      (error "Not in an Org table"))
-
-  (let ((msg (cc/org-table-reference-dwim))
-        (formulas-buffer (get-buffer "*Edit Formulas*")))
-    (if formulas-buffer
-        (with-current-buffer formulas-buffer
-          (insert cc/last-org-table-reference)))
-    (message "Range: %s, Copied %s" msg cc/last-org-table-reference)
-    (kill-new cc/last-org-table-reference)))
-
-(defun cc/mouse-copy-org-table-reference-dwim ()
-  "Copy Org table reference (field or range) into kill ring via mouse.
-
-Given a point or region defined in an Org table, add to the
-`kill-ring' an Org table field or range reference.
-
-NOTE: This function is intended to be called from a mouse menu
-after `cc/copy-org-table-reference-dwim' is called which will set
-`cc/last-org-table-reference'. This is to work-around my lack of
-clarity on region and mouse menu interaction.
-
-If the region is defined over multiple columns, then a Calc
-vector matrix is returned. See Info node `(org) Formula syntax
-for Calc' for more.
-
-If the buffer *Edit Formulas* is available (usually via
-`org-table-edit-formulas'), the reference will be inserted into
-it. If the point in *Edit Formulas* is at the beginning of line,
-it will treat the reference as a left hand side (lhs) assignment.
-
-See Info node `(org) References' for more on Org table field
-reference format."
-  (interactive)
-  (if (not (org-at-table-p))
-      (error "Not in an Org table"))
-
-  (when cc/last-org-table-reference
-    (let ((msg cc/last-org-table-reference)
-          (formulas-buffer (get-buffer "*Edit Formulas*")))
-      (if formulas-buffer
-        (with-current-buffer formulas-buffer
-          (if (bolp)
-              (insert (format "%s = " msg))  ; treat reference as lhs assignment
-            (insert msg))))
-      (message "Copied %s" msg)
-      (kill-new msg))))
-
-(defun cc/org-table-range-to-reference (range)
-  "Convert RANGE object to Org table reference (field or range).
-
-If the region is defined over multiple columns, then a Calc
-vector matrix is returned. See Info node `(org) Formula syntax
-for Calc' for more.
-
-See `cc/org-table-range' for more on RANGE object."
-  (let* ((start (nth 0 range))
-         (end (nth 1 range))
-         (a (nth 0 start))
-         (b (nth 1 start))
-         (c (nth 0 end))
-         (d (nth 1 end))
-
-         (r1 (apply #'min (list a c)))
-         (c1 (apply #'min (list b d)))
-
-         (r2 (apply #'max (list a c)))
-         (c2 (apply #'max (list b d)))
-
-         (rowrange (number-sequence r1 r2))
-         (buflist (list)))
-
-
-    (cond
-     ((and (= r1 r2) (= c1 c2))
-      (format "@%d$%d" r1 c1 ))
-
-     ((or (= c1 c2) (= r1 r2))
-      (format "@%d$%d..@%d$%d" r1 c1 r2 c2))
-
-     (t
-      (mapc (lambda (r)
-              (push (format "@%d$%d..@%d$%d" r c1 r c2) buflist))
-            rowrange)
-
-      (format "vec(%s)"
-              (string-join (reverse buflist) ", "))))))
 
 (defun cc/clear-mouse-overlay ()
   "Clear secondary overlay in buffer.
@@ -874,26 +695,59 @@ See `cc/org-table-range' for more on RANGE object."
   (delete-overlay mouse-secondary-overlay))
 
 (defun cc/toggle-unicode ()
-  "Toggle Unicode symbols."
+  "Toggle Unicode and prettify symbols."
   (interactive)
-  (if prettify-symbols-mode
-      (prettify-symbols-mode -1)
-    (prettify-symbols-mode nil))
+  ;;(prettify-symbols-mode 'toggle)
   (if casual-lib-use-unicode
-      (setq-local casual-lib-use-unicode nil)
-    (setq-local casual-lib-use-unicode t)))
+      (progn
+        (setopt casual-lib-use-unicode nil)
+        (prettify-symbols-mode -1))
+    (progn
+      (setopt casual-lib-use-unicode t)
+      (prettify-symbols-mode nil))))
 
 (defun macports ()
   "Run MacPorts."
   (interactive)
-  (term "~/bin/port.sh")
-  (rename-buffer "*macports*"))
+  (let* ((mbuffer (get-buffer "*macports*")))
+    (if mbuffer
+        (switch-to-buffer mbuffer)
+      (progn
+        (term "~/bin/port.sh")
+        (rename-buffer "*macports*")))))
 
 (defun swift-repl ()
-  "Swift repl."
+  "Run Swift repl."
   (interactive)
-  (term "swift repl")
-  (rename-buffer "*swift*"))
+  (let* ((bufname "*swift*")
+         (repl-buf (get-buffer bufname)))
+    (if repl-buf
+        (switch-to-buffer repl-buf)
+      (term "/opt/local/bin/bash")
+      (rename-buffer bufname)
+      (with-current-buffer bufname
+        (term-send-raw-string "TERM=dumb\n")
+        (term-send-raw-string "exec swift repl\n")))))
+
+(defun node-repl ()
+  "Run Node JavaScript repl."
+  (interactive)
+  (let* ((bufname "*node JS*")
+         (repl-buf (get-buffer bufname)))
+    (if repl-buf
+        (switch-to-buffer repl-buf)
+      (term "node")
+      (rename-buffer bufname))))
+
+(defun jxa-repl ()
+  "Run JXA JavaScript repl."
+  (interactive)
+  (let* ((bufname "*jxa JS*")
+         (repl-buf (get-buffer bufname)))
+    (if repl-buf
+        (switch-to-buffer repl-buf)
+      (term "osascript -il JavaScript")
+      (rename-buffer bufname))))
 
 ;; TODO: obsolete
 (defun cc/--next-sexp-raw ()
@@ -932,6 +786,7 @@ installed."
    start end
    "pandoc -f markdown -t org --wrap=preserve" t t))
 
+
 (defun cc/split-window-right ()
   "Invoke `split-window-right', making the new window active."
   (interactive)
@@ -964,13 +819,25 @@ installed."
     (info outfile)
     (info-initialize)))
 
-
 (defun cc/casual-info-compile ()
   "Build Casual Info file."
   (interactive)
   (let* ((outfile "~/Projects/elisp/casual/docs/casual.info")
          (current (current-buffer)))
     (find-file "~/Projects/elisp/casual/docs/casual.org")
+    (org-texinfo-export-to-info)
+    (if (get-buffer "*info*")
+        (kill-buffer "*info*"))
+    (info outfile)
+    (info-initialize)
+    (switch-to-buffer current)))
+
+(defun cc/anju-info-compile ()
+  "Build Anju Info file."
+  (interactive)
+  (let* ((outfile "~/Projects/elisp/anju/docs/anju.info")
+         (current (current-buffer)))
+    (find-file "~/Projects/elisp/anju/docs/anju.org")
     (org-texinfo-export-to-info)
     (if (get-buffer "*info*")
         (kill-buffer "*info*"))
@@ -1033,6 +900,58 @@ installed."
   (interactive)
   (cc/--resize-frame 86 28))
 
+(defun cc/frame-resize-for-desktop ()
+  "Resize frame for desktop usage."
+  (interactive)
+  (cc/--resize-frame 157 88)
+  (set-frame-position (selected-frame) 780 39))
+
+(defun cc/frame-resize (arg)
+  "Resize frame to prompted value, moving frame if prefix ARG is non-nil.
+
+This command is tuned for macOS using a single display."
+  (interactive "P")
+  (let* ((choice
+          (completing-read "Display Configuration: "
+                           '("desktop" "macbook" "tty" "standard" "focus"
+                             "video"
+                             "lg-full")
+                           nil nil "standard"))
+         (move (not arg)))
+    (cond
+     ((string-equal choice "desktop")
+      (cc/--resize-frame 157 88)
+      (if move
+          (set-frame-position (selected-frame) 780 39)))
+
+     ((string-equal choice "macbook")
+      (cc/--resize-frame 164 49)
+      (if move
+          (set-frame-position (selected-frame) 0 38)))
+
+     ((string-equal choice "video")
+      (cc/--resize-frame 108 39))
+
+     ((string-equal choice "tty")
+      (cc/--resize-frame 86 28))
+
+     ((string-equal choice "focus")
+      (cc/--resize-frame 87 35)
+      (if move
+          (set-frame-position (selected-frame) 1095 534)))
+
+     ((string-equal choice "standard")
+      (cc/--resize-frame 141 71)
+      (if move
+          (set-frame-position (selected-frame) 852 192)))
+
+     ((string-equal choice "lg-full")
+      (cc/--resize-frame 330 89)
+      (set-frame-position (selected-frame) 0 25))
+
+     (t
+      (error "Unknown display size")))))
+
 (defun cc/--dired-kill-image-buffer-before-delete (file &rest rest)
   "Kill buffer associated with image FILE if necessary, ignoring REST."
   (ignore rest)
@@ -1088,12 +1007,143 @@ installed."
       (forward-page count)
       (recenter-top-bottom 0))))
 
+;; TODO: rename to cc/page-break
 (defun cc/line-feed ()
   "Insert line feed."
   (interactive)
   (insert "\n")
   (if (derived-mode-p 'emacs-lisp-mode)
       (insert ";; -------------------------------------------------------------------\n")))
+
+
+(defun cc/ert-test-gen ()
+  "Generate ERT test for define and put into the `kill-ring'."
+  (interactive)
+  (save-excursion
+    (beginning-of-defun)
+    (let* ((fn (list-at-point))
+           (fn-name (symbol-name (seq-elt fn 1)))
+           (docstr (format "Test for `%s'." fn-name))
+           (fn-ert ())
+           (fn-ert (push docstr fn-ert))
+           (fn-ert (push nil fn-ert))
+           (fn-ert (push (intern (format "test-%s" fn-name)) fn-ert))
+           (fn-ert (push 'ert-deftest fn-ert))
+           (fn-ert-test (prin1-to-string fn-ert))
+           (fn-ert-test (string-replace " nil " " ()\n  " fn-ert-test)))
+      (kill-new fn-ert-test))))
+
+(defun music ()
+  "Launch Music app."
+  (interactive)
+
+  (cond
+   ((or (eq window-system 'ns) (eq window-system 'mac))
+    (process-lines "open" "-a" "Music.app"))
+   (t
+    (message "Unsupported"))))
+
+(defun cc/cleanup-prog ()
+  "Cleanup code buffer."
+    (indent-region (point-min) (point-max))
+    (whitespace-cleanup)
+    (save-buffer))
+
+
+(defun cc/--function-tool-tip (fn)
+  "Generate tool tip from function FN."
+  (let ((docstring (documentation fn)))
+    (if docstring
+        (replace-regexp-in-string "\.$" ""
+                                  (car (string-split docstring "\n")))
+      (error "No docstring in %s" fn))))
+
+(defun cc/tool-tip-extract ()
+  "Extract tool tip for symbol at point and put into `kill-ring'."
+  (interactive)
+  (kill-new (cc/--function-tool-tip (symbol-at-point))))
+
+(defun cc/--defun-name ()
+  "Name of defun at point."
+  (interactive)
+  (let ((start 0)
+        (end 0))
+    (save-excursion
+      (beginning-of-defun)
+      (down-list)
+      (forward-sexp 2)
+      (setq end (point))
+      (backward-sexp)
+      (setq start (point))
+      (buffer-substring-no-properties start end))))
+
+
+(defun cc/ert-run-test-at-point ()
+  "Run the ERT test at point."
+  (interactive)
+  (let ((test-name (cc/--defun-name)))
+        ;; (message "ERT: %s" test-name)
+    (ert test-name)))
+
+(defun cc/update-location ()
+  "Update calendar location from macOS Shortcuts."
+  (interactive)
+  (let* ((location-request "shortcuts run getCurrentLocation | cat")
+         (response (shell-command-to-string location-request))
+         (location-map (json-parse-string response))
+         (latitude (gethash "latitude" location-map))
+         (longitude (gethash "longitude" location-map))
+         (city (gethash "city" location-map)))
+    (setopt calendar-latitude latitude)
+    (setopt calendar-longitude longitude)
+    (setopt calendar-location-name city)
+    (message "Updated location: %s (%.5f, %.5f)" city latitude longitude)))
+
+(defun cc/three-pane-layout ()
+  "Layout frame in three panes."
+  (interactive)
+  ;; Presume 330 max width
+
+  (cc/--resize-frame 330 89)
+  (set-frame-position (selected-frame) 0 25)
+
+  (let* ((pane-width-1 100)
+         (pane-width-2 140))
+    (delete-other-windows)
+    (split-window-right)
+    (split-window-right)
+    (window-resize nil (- pane-width-1 (window-width)) t)
+    (other-window 1)
+    (window-resize nil (- pane-width-2 (window-width)) t)))
+
+(defun cc/toggle-pane ()
+  "Toggle pane."
+  (interactive)
+  (if (or (window-in-direction 'above)
+          (window-in-direction 'below))
+      (cc/maximize-pane)
+    (cc/revert-pane)))
+
+(defun cc/maximize-pane ()
+  "In three pane layout, maximize pane."
+  (interactive)
+  (window-configuration-to-register ?p)
+
+  (let ((p-above (window-in-direction 'above))
+        (p-below (window-in-direction 'below)))
+
+    (while p-above
+      (delete-window p-above)
+      (setq p-above (window-in-direction 'above)))
+
+    (while p-below
+      (delete-window p-below)
+      (setq p-below (window-in-direction 'below)))))
+
+(defun cc/revert-pane ()
+  "Revert pane."
+  (interactive)
+  (jump-to-register ?p))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

@@ -26,7 +26,7 @@
 (require 'package)
 (require 'hl-line)
 
-(add-hook 'package-menu-mode-hook 'hl-line-mode)
+(add-hook 'package-menu-mode-hook #' hl-line-mode)
 
 (provide 'cc-package-menu-mode)
 ;;; cc-package-menu-mode.el ends here

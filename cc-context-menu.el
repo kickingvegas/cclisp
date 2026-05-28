@@ -1,6 +1,6 @@
 ;;; cc-context-menu.el --- Context Menu Customization -*- lexical-binding: t -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -26,348 +26,244 @@
 (require 'easymenu)
 (require 'mouse)
 (require 'org)
+(require 'org-agenda)
+(require 'reveal-in-folder)
 (require 'cclisp)
-(require 'cc-context-menu-macros)
-(require 'cc-transform-text-menu)
-(require 'cc-style-text-menu)
 (require 'cc-region-operations-menu)
-(require 'cc-insert-org-plot)
-(require 'cc-find-menu)
-(require 'cc-edit-text-menu)
-(require 'cc-wgrep-mode)
-(require 'cc-dired-mode)
-(require 'casual-dired)
+(require 'reveal-in-folder)
+(require 'dictionary)
+(require 'osx-dictionary)
+(require 'ox-slack)
+(require 'compile)
+(require 'casual-agenda)
+(require 'anju)
 
-(defun cc/context-menu-addon-items (menu click)
-  "Charles Choi context menu hook function using MENU and CLICK event.
+(easy-menu-define cc/context-menu-journal-menu nil
+  "Key map for Org copy sub-menu."
+  '("Planner"
 
-MENU - menu to be configured.
-CLICK - event"
-  (save-excursion
+    ["Agenda - All TODOs"
+     (lambda () (interactive)(org-agenda nil "n"))
+     :help "Show Org agenda with all TODO tasks"]
+
+    ["Workflow…"
+     org-capture
+     :help "Capture content via Org"]
+
+    ["Scratch"
+     scratch-buffer
+     :help "Switch to the *scratch* buffer."]))
+
+(defun cc/context-menu-journal (menu click)
+  "Context menu hook function for journal commands.
+
+- MENU: menu
+- CLICK: event
+
+This function is intended to be hooked into `context-menu-functions'."
+
+  (when (and (not (anju-at-org-table-p))
+             (not (use-region-p))
+             (not (anju-rectangle-selected-p)))
+
+    (save-excursion
+      (mouse-set-point click)
+      (anju-context-menu-item-separator menu journal-separator)
+      (easy-menu-add-item menu nil [status-report
+                                    status-report
+                                    :label "Journal"
+                                    :help "Go to current day journal"])
+
+      (easy-menu-add-item menu nil ["Add Note"
+                                    (lambda () (interactive)(org-capture nil "j"))
+                                    :help "Add journal note"])
+
+      (easy-menu-add-item menu nil cc/context-menu-journal-menu)))
+  menu)
+
+
+(defun cc/context-menu-region (menu click)
+  "Context menu hook function for region commands.
+
+- MENU: menu
+- CLICK: event
+
+This function is intended to be hooked into `context-menu-functions'."
+  (if (and (use-region-p) (not (anju-rectangle-selected-p)))
+      (save-excursion
+        (mouse-set-point click)
+        (easy-menu-add-item menu nil cc/region-operations-menu)))
+  menu)
+
+(defun cc/context-menu-dired (menu click)
+  "Context menu hook function for Dired commands.
+
+Adds Finder/File Manager to Dired.
+
+- MENU: menu
+- CLICK: event
+
+This function is intended to be hooked into `context-menu-functions'."
+  (when (and (derived-mode-p 'dired-mode) (not (anju-rectangle-selected-p)))
+    (save-excursion
+      (mouse-set-point click)
+      (easy-menu-add-item menu nil
+                          ["Open in File Manager"
+                           reveal-in-folder-at-point
+                           :label (format
+                                   "📁 Open in %s"
+                                   (if (eq (window-system) 'ns)
+                                       "Finder"
+                                     "File Manager"))
+                           :help "Open file (buffer) in Finder"])))
+  menu)
+
+
+(defun cc/context-menu-open-in (menu click)
+  "Context menu hook function for open-in commands.
+
+- MENU: menu
+- CLICK: event
+
+This function is intended to be hooked into `context-menu-functions'."
+  (when (and (not (use-region-p))
+             (not (anju-at-org-table-p))
+             (not (derived-mode-p 'dired-mode))
+             (not (anju-rectangle-selected-p)))
+    (save-excursion
+      (mouse-set-point click)
+      (easy-menu-add-item menu nil
+                          ["📁 Open in Finder"
+                           reveal-in-folder-this-buffer
+                           :visible (buffer-file-name)
+                           :help "Open file (buffer) in Finder"])))
+  menu)
+
+(defun cc/context-menu-dictionary (menu click)
+  "Context menu hook function for dictionary commands.
+
+- MENU: menu
+- CLICK: event
+
+This function is intended to be hooked into `context-menu-functions'."
+  (when (and (use-region-p) (not (anju-rectangle-selected-p)))
+    (save-excursion
+      (mouse-set-point click)
+
+      (pcase system-type
+        ('darwin
+         (easy-menu-add-item menu nil ["Look Up"
+                                        osx-dictionary-search-word-at-point
+                                        :visible (eq system-type 'darwin)
+                                        :label (format "Look Up “%s”" (substring-no-properties (thing-at-point 'word)))
+                                       :help "Look up selected region in macOS dictionary"]))
+        (_
+         (easy-menu-add-item menu nil ["Look Up"
+                                       dictionary-search-word-at-mouse
+                                       :label (format "Look Up “%s”" (substring-no-properties (thing-at-point 'word)))
+                                       :help "Look up selected region in  dictionary"])))))
+  menu)
+
+
+(easy-menu-define cc/context-menu-org-agenda-view-menu nil
+  "Key map for Org agenda view sub-menu."
+  '("View"
+    :visible (and (derived-mode-p 'org-agenda-mode) (casual-agenda-type-agendap))
+
+    ["← Earlier"
+     org-agenda-earlier
+     :help "Agenda view earlier"]
+
+    ["→ Later"
+     org-agenda-later
+     :help "Agenda view later"]
+
+    ["Day"
+     org-agenda-day-view
+     :help "Agenda day view"]
+
+    ["Week"
+     org-agenda-week-view
+     :help "Agenda week view"]
+
+    ["Fortnight"
+     org-agenda-fortnight-view
+     :help "Agenda fortnight view"]
+
+    ["Month"
+     org-agenda-month-view
+     :help "Agenda month view"]
+
+    ["Year"
+     org-agenda-year-view
+     :help "Agenda year view"]))
+
+
+(defun cc/context-menu-org-agenda (menu click)
+  "Context menu hook function for Org agenda commands.
+
+- MENU: menu
+- CLICK: event
+
+This function is intended to be hooked into `context-menu-functions'."
+
+  (when (and (derived-mode-p 'org-agenda-mode)
+             (not (anju-rectangle-selected-p)))
     (mouse-set-point click)
-    (cc/context-menu-journal-items menu)
-    (cc/context-menu-org-table-items menu (not (org-at-table-p)))
-    (cc/context-menu-buffers-items menu)
-    (cc/context-menu-narrow-items menu)
-    (cc/context-menu-workflow-items menu)
-    (cc/context-menu-open-in-items menu)
-    (cc/context-menu-dired-items menu (not (derived-mode-p 'dired-mode)))
-    (cc/context-menu-dictionary-items menu (not (use-region-p)))
-    (cc/context-menu-occur-items menu)
-    (cc/context-menu-vc-items menu (not (vc-responsible-backend default-directory t)))
-    (cc/context-menu-region-actions-items menu (not (use-region-p)))
-    (cc/context-menu-markup-items menu)
-    (cc/context-menu-timekeeping-items menu)
-    (cc/context-menu-word-count-items menu (not (derived-mode-p 'text-mode)))
-    (easy-menu-add-item menu nil cc/wgrep-menu)
-    menu))
+    (save-excursion
+      (when (casual-agenda-headlinep)
+        (easy-menu-add-item menu nil ["Clock In"
+                                      org-agenda-clock-in
+                                      :label (anju-middle-truncate (org-agenda-with-point-at-orig-entry nil
+                                                                     (org-element-property :title (org-element-at-point)))
+                                                                   "Clock In")
+                                      :visible (not (org-clocking-p))
+                                      :help "Clock in"])
 
-(defun cc/context-menu-word-count-items (menu &optional inapt)
-  "Menu items to populate MENU for word count section if INAPT nil."
-  (when (not inapt)
-    (cc/context-menu-item-separator menu count-words-separator)
-    (if (use-region-p)
-          (easy-menu-add-item menu nil ["Count Words in Region"
-                                        count-words
-                                        :help "Count words in region"])
+        (easy-menu-add-item menu nil ["Clock Out"
+                                      org-agenda-clock-out
+                                      :visible (org-clocking-p)
+                                      :help "Clock out"])
 
-        (easy-menu-add-item menu nil ["Count Words in Buffer"
-                                      count-words
-                                      :help "Count words in buffer"]))))
+        (easy-menu-add-item menu nil ["Schedule…"
+                                      org-agenda-schedule
+                                      :help "Schedule headline"])
 
-(defun cc/context-menu-markup-items (menu &optional inapt)
-  "Menu items to populate MENU for reveal markup section if INAPT nil."
-  (when (not inapt)
-    (cond
-     ((derived-mode-p 'org-mode)
-      (cc/context-menu-item-separator menu org-mode-operations-separator)
-      (easy-menu-add-item menu nil
-                          ["Toggle Inline Images"
-                           org-toggle-inline-images
-                           :help "Toggle inline images"])
+        (easy-menu-add-item menu nil ["Deadline…"
+                                      org-agenda-deadline
+                                      :help "Deadline headline"])
 
-      (easy-menu-add-item menu nil
-                          ["Show Markup"
-                           visible-mode
-                           :style toggle
-                           :selected visible-mode
-                           :help "Toggle making all invisible text \
-temporarily visible (Visible mode)"])
+        (easy-menu-add-item menu nil ["↑ Priority"
+                                      org-agenda-priority-up
+                                      :help "Up priority"])
 
-      (easy-menu-add-item menu nil
-                          ["Paste Last Org Link"
-                           org-insert-last-stored-link
-                           :enable (cc/org-stored-links-p)
-                           :help "Insert the last link stored in org-stored-links"]))
+        (easy-menu-add-item menu nil ["↓ Priority"
+                                      org-agenda-priority-down
+                                      :help "Down priority"])
 
-     ((derived-mode-p 'markdown-mode)
-      (cc/context-menu-item-separator menu markdown-mode-operations-separator)
-      (easy-menu-add-item menu nil
-                          ["Hide Markup"
-                           markdown-toggle-markup-hiding
-                           :style toggle
-                           :selected markdown-hide-markup
-                           :help "Toggle the display or hiding of markup"])))))
+        (easy-menu-add-item menu nil ["Todo…"
+                                      org-agenda-todo
+                                      :help "Set Todo"])
 
-(defun cc/context-menu-vc-items (menu &optional inapt)
-  "Menu items to populate MENU for version control section if INAPT nil."
-  (when (not inapt)
-    (keymap-set-after menu
-      "<vc-separator>"
-      '(menu-item "--"
-                  :visible (vc-responsible-backend default-directory t))
-      'Find\ and/or\ Replace)
+        (easy-menu-add-item menu nil ["Tags…"
+                                      org-agenda-set-tags
+                                      :help "Set Tags"])
 
-    (easy-menu-add-item
-     menu nil
-     ["Magit Status"
-      magit-status
-      :help "Show the status of the current Git repository in a buffer"])
+        (easy-menu-add-item menu nil ["Note…"
+                                      org-agenda-add-note
+                                      :help "Add note"]))
 
-    (easy-menu-add-item
-     menu nil
-     ["Ediff revision…"
-      cc/ediff-revision-from-menu
-      :visible (and (bound-and-true-p buffer-file-name)
-                    (vc-registered (buffer-file-name)))
-      :help "Ediff this file with revision"])))
+      (easy-menu-add-item menu nil ["Now"
+                                    casual-agenda-goto-now
+                                    :help "Goto now"])
 
-(defun cc/context-menu-region-actions-items (menu &optional inapt)
-  "Menu items to populate MENU for region actions section if INAPT nil."
-  (when (not inapt)
-    (cc/context-menu-item-separator menu transform-text-separator)
-    (easy-menu-add-item menu nil cc/transform-text-menu)
-    (easy-menu-add-item menu nil cc/region-operations-menu)
-    (cond
-     ((derived-mode-p 'prog-mode)
-      (easy-menu-add-item menu nil
-                          ["Toggle Comment"
-                           comment-dwim
-                           :help "Toggle comment on selected region"]))
+      (easy-menu-add-item menu nil cc/context-menu-org-agenda-view-menu)
 
-     ((derived-mode-p 'org-mode)
-      (easy-menu-add-item menu nil cc/emphasize-menu)
-      (easy-menu-add-item menu nil ["Copy as Slack"
-                                    org-slack-export-to-clipboard-as-slack
-                                    :help "Copy as Slack to clipboard"])
-      (easy-menu-add-item menu nil ["Copy as Slack"
-                                    org-slack-export-to-clipboard-as-slack
-                                    :help "Copy as Slack to clipboard"])
-      (easy-menu-add-item menu nil ["Copy as RTF"
-                                    dm/copy-as-rtf
-                                    :help "Copy as RTF to clipboard"]))
+      (easy-menu-add-item menu nil ["Refresh"
+                                    org-agenda-redo-all
+                                    :help "Redo all"])))
+  menu)
 
-     ((derived-mode-p 'markdown-mode)
-      (easy-menu-add-item menu nil cc/emphasize-menu)))))
-
-(defun cc/context-menu-timekeeping-items (menu &optional inapt)
-  "Menu items to populate MENU for timekeeping section if INAPT nil."
-  (when (not inapt)
-    (cc/context-menu-item-separator menu world-clock-separator)
-    (easy-menu-add-item menu nil
-                        ["Calendar"
-                         calendar
-                         :help "Display a three-month Gregorian calendar"])
-    (easy-menu-add-item menu nil
-                        ["World Clock"
-                         world-clock
-                         :help "Display times from around the world"])))
-
-(defun cc/context-menu-journal-items (menu &optional inapt)
-  "Menu items to populate MENU for journal section if INAPT nil."
-  (when (not inapt)
-    (easy-menu-add-item menu nil ["Journal"
-                                  status-report
-                                  :help "Go to current day journal"])
-
-    (easy-menu-add-item menu nil ["Agenda - All TODOs"
-                                  (lambda () (interactive)(org-agenda nil "n"))
-                                  :help "Show Org agenda with all TODO tasks."])
-
-    (easy-menu-add-item menu nil ["Scratch"
-                                  scratch-buffer
-                                  :help "Switch to the *scratch* buffer."])))
-
-(defun cc/context-menu-dictionary-items (menu &optional inapt)
-  "Menu items to populate MENU for <replace> section if INAPT nil."
-  (when (not inapt)
-    (cc/context-menu-item-separator menu dictionary-operations-separator)
-    (easy-menu-add-item menu nil ["Look Up"
-                                  osx-dictionary-search-word-at-point
-                                  :label (cc/context-menu-last-word-in-region "Look Up")
-                                  :help "Look up selected region in macOS dictionary"])))
-
-(defun cc/context-menu-occur-items (menu &optional inapt)
-  "Menu items to populate MENU for occur section if INAPT nil."
-  (when (not inapt)
-    (cc/context-menu-item-separator menu occur-separator)
-    ;;(easy-menu-add-item menu nil cc/find-menu)
-    (if (use-region-p)
-        (easy-menu-add-item menu nil
-                            ["Find word in buffer (occur)"
-                             cc/occur-selected-region
-                             :label (cc/context-menu-label "Occur")
-                             :help "Show all lines in the current buffer \
-containing a match for selected word"])
-      (easy-menu-add-item menu nil
-                          ["Occur Symbol…"
-                           occur-symbol-at-mouse
-                           :help "Show all lines in the current buffer \
-containing a match for regex"]))))
-
-(defun cc/context-menu-dired-items (menu &optional inapt)
-  "Menu items to populate MENU for Dired section if INAPT nil."
-  (when (not inapt)
-    (easy-menu-add-item menu nil casual-dired-sort-menu)
-    (easy-menu-add-item menu nil
-                        ["Duplicate"
-                         cc/dired-duplicate-file
-                         :label (concat "Duplicate"
-                                        " “"
-                                        (file-name-base (dired-get-filename))
-                                        "."
-                                        (file-name-extension (dired-get-filename))
-                                        "”")
-                         :help "Duplicate selected item"])))
-
-
-(defun cc/context-menu-workflow-items (menu &optional inapt)
-  "Menu items to populate MENU for workflow section if INAPT nil."
-  (when (not inapt)
-    (cc/context-menu-item-separator menu capture-flow-separator)
-    (easy-menu-add-item menu nil
-                        ["New Workflow…"
-                         org-capture
-                         :help "Create new task or workflow via org-capture"])))
-
-(defun cc/context-menu-buffers-items (menu &optional inapt)
-  "Menu items to populate MENU for buffers section if INAPT nil."
-  (when (not inapt)
-    (cc/context-menu-item-separator menu buffer-navigation-separator)
-
-    (easy-menu-add-item menu nil ["≣ List All Buffers"
-                                  ibuffer
-                                  :help "List all buffers"])
-
-    (easy-menu-add-item menu nil ["← Buffer"
-                                  previous-buffer
-                                  :help "Go to previous buffer"])
-
-    (easy-menu-add-item menu nil ["→ Buffer"
-                                  next-buffer
-                                  :help "Go to next buffer"])))
-
-
-(defun cc/context-menu-open-in-items (menu &optional inapt)
-  "Menu items to populate MENU for open in section if INAPT nil."
-  (when (not inapt)
-    (cc/context-menu-item-separator menu open-in-separator)
-
-    (easy-menu-add-item menu nil
-                        ["Open in Finder"
-                         reveal-in-folder-this-buffer
-                         :visible (or (buffer-file-name) (derived-mode-p 'dired-mode))
-                         :help "Open file (buffer) in Finder"])
-
-    (easy-menu-add-item menu nil
-                        ["Open in Dired"
-                         dired-jump-other-window
-                         :visible (and (buffer-file-name) (not (derived-mode-p 'dired-mode)))
-                         :help "Open file in Dired"])))
-
-
-(defun cc/context-menu-narrow-items (menu &optional inapt)
-  "Menu items to populate MENU for narrow section if INAPT nil."
-  (when (not inapt)
-    (when buffer-file-name
-      (cond ((use-region-p)
-             (cc/context-menu-item-separator menu narrow-separator)
-             (easy-menu-add-item menu nil
-                                 ["Narrow Region" narrow-to-region
-                                  :label (cc/context-menu-label "Narrow Region")
-                                  :help "Restrict editing in this buffer \
-to the current region"]))
-
-            ((and (not (buffer-narrowed-p)) (derived-mode-p 'prog-mode))
-             (cc/context-menu-item-separator menu narrow-separator)
-             (easy-menu-add-item menu nil
-                                 ["Narrow to defun" narrow-to-defun
-                                  :help "Restrict editing in this buffer \
-to the current defun"]))
-
-            ((and (not (buffer-narrowed-p)) (derived-mode-p 'org-mode))
-             (cc/context-menu-item-separator menu narrow-separator)
-             (easy-menu-add-item menu nil
-                                 ["Narrow to subtree" org-narrow-to-subtree
-                                  :help "Restrict editing in this buffer \
-to the current subtree"]))
-
-
-            ((and (not (buffer-narrowed-p)) (derived-mode-p 'markdown-mode))
-             (cc/context-menu-item-separator menu narrow-separator)
-             (easy-menu-add-item menu nil
-                                 ["Narrow to subtree" markdown-narrow-to-subtree
-                                  :help "Restrict editing in this buffer \
-to the current subtree"])))
-
-      (when (buffer-narrowed-p)
-        (cc/context-menu-item-separator menu widen-separator)
-        (easy-menu-add-item menu nil
-                            ["Widen buffer" widen
-                             :help "Remove narrowing restrictions \
-from current buffer"])))))
-
-(defun cc/context-menu-org-table-items (menu &optional inapt)
-  "Menu items to populate MENU for Org table section if INAPT nil."
-  (when (not inapt)
-    (cc/context-menu-item-separator menu org-table-sqeparator)
-    (easy-menu-add-item menu nil
-                        ["Table Cell Info"
-                         cc/mouse-copy-org-table-reference-dwim
-                         :label (cc/org-table-reference-dwim)
-                         :help "Copy Org table reference (field or range) into kill ring via mouse"])
-    (easy-menu-add-item menu nil
-                        ["Show Coordinates"
-                         org-table-toggle-coordinate-overlays
-                         :style toggle
-                         :selected org-table-coordinate-overlays
-                         :help "Toggle the display of row/column numbers in tables"])
-    (easy-menu-add-item menu nil
-                        ["Edit Table Formulas"
-                         org-table-edit-formulas
-                         :help " Edit the formulas of the current table in a separate buffer."])
-
-    (easy-menu-add-item menu nil cc/insert-org-plot-menu)
-    (easy-menu-add-item menu nil ["Run gnuplot"
-                                  org-plot/gnuplot
-                                  :help "Plot table using gnuplot"])))
-
-(add-hook 'context-menu-functions #'cc/context-menu-addon-items)
-
-;; (defvar cchoi-mouse-file nil "some thing")
-
-;; (defun cc/track-mouse (event)
-;;   (interactive "e")
-;;   (if (mouse-posn-property (event-start event) 'dired-filename)
-;;     (let (window pos file)
-;;       (save-excursion
-;;         (setq window (posn-window (event-end event))
-;;            pos (posn-point (event-end event)))
-;;         (if (not (windowp window))
-;;          (error "No file chosen"))
-;;         (set-buffer (window-buffer window))
-;;         (goto-char pos)
-;;         (setq file (dired-get-filename)))
-;;       (setq cchoi-mouse-file file)))
-;;   (setq cchoi-mouse-file nil))
-
-
-;; (defun cc/kill-image-info (e)
-;;   "Show file type.
-;; E - event"
-;;   (interactive "e")
-;;   (ignore e)
-;;   (dired-show-file-type))
 
 (provide 'cc-context-menu)
 ;;; cc-context-menu.el ends here

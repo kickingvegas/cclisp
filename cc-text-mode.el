@@ -1,6 +1,6 @@
 ;;; cc-text-mode.el --- Text Mode Customization -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2024, 2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -24,10 +24,12 @@
 
 ;;; Code:
 
-(add-hook 'text-mode-hook 'visual-line-mode)
-(add-hook 'text-mode-hook 'context-menu-mode)
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'text-mode-hook 'company-mode)
+(require 'casual-ispell)
+
+(add-hook 'text-mode-hook #'visual-line-mode)
+(add-hook 'text-mode-hook #'context-menu-mode)
+(add-hook 'text-mode-hook #'flyspell-mode)
+(add-hook 'text-mode-hook #'company-mode)
 
 (add-hook 'text-mode-hook (lambda ()
                             (setq-local line-spacing 0.1)))
@@ -37,6 +39,8 @@
 (keymap-set text-mode-map "A-M-<left>" #'backward-paragraph)
 (keymap-set text-mode-map "A-M-<right>" #'forward-paragraph)
 (keymap-set text-mode-map "M-/" #'hippie-expand)
+
+(keymap-set text-mode-map "C-c s" #'casual-ispell-tmenu)
 
 ;;(setq auto-mode-alist (cons (cons "\\.txt$" 'text-mode) auto-mode-alist))
 ;;(setq auto-mode-alist (cons (cons "\\.text$" 'text-mode) auto-mode-alist))

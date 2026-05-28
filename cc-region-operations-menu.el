@@ -1,6 +1,6 @@
 ;;; cc-region-operations-menu.el --- Region Operations Menu -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2026 Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -22,48 +22,46 @@
 ;;; Commentary:
 ;;
 
-(require 'cc-context-menu-macros)
+(require 'google-this)
+(require 'google-translate)
+(require 'webpaste)
+(require 'cclisp)
+(require 'anju-utils)
+
+;; (require 'cc-context-menu-macros)
 
 ;;; Code:
 
 (easy-menu-define cc/region-operations-menu nil
   "Keymap for Region Operations submenu."
   '("Operate on Region"
-    :visible (region-active-p)
-    ["Write to file…" write-region
-     :enable (region-active-p)
-     :help "Write current region into specified file."]
+    :enable (use-region-p)
 
     ["Search with Google" google-this-noconfirm
-     :enable (region-active-p)
-     :label (cc/context-menu-label "Search with Google")
+     :label (anju-menu-label "Search with Google")
      :help "Search Google with selected region"]
 
     ["Translate" google-translate-smooth-translate
-     :enable (region-active-p)
-     :label (concat (cc/context-menu-label "Translate") "…")
+     :label (anju-menu-label "Translate")
      :help "Translate selected region with Google Translate"]
 
     ["Upload to Webpaste" webpaste-paste-region
-     :enable (region-active-p)
-     :label (cc/context-menu-label "Upload to Webpaste")
+     :label (anju-menu-label "Upload to Webpaste")
      :help "Upload selected region to paste service leaving \
 link in the clipboard"]
 
     ["Start Speaking" cc/say-region
-     :enable (region-active-p)
+     :visible (eq window-system 'ns)
      :help "Start speaking selected region"]
 
     ["Call" cc/call-nanp-phone-number
-     :enable (region-active-p)
-     :label (cc/context-menu-label "Call")
-     :visible (cc/nanp-phone-number-p)
+     :label (anju-menu-label "Call")
+     :visible (and (cc/nanp-phone-number-p) (eq window-system 'ns))
      :help "Call phone number"]
 
     ["Open in Apple Maps" cc/open-region-in-apple-maps
-     :enable (region-active-p)
-     :label (cc/context-menu-label "Open in Apple Maps")
-     :visible (not (cc/nanp-phone-number-p))
+     :label (anju-menu-label "Open in Apple Maps")
+     :visible (and (not (cc/nanp-phone-number-p)) (eq window-system 'ns))
      :help "Open in Apple Maps"]))
 
 (provide 'cc-region-operations-menu)

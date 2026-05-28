@@ -9,6 +9,16 @@
  '(Info-scroll-prefer-subnodes nil)
  '(Man-notify-method 'aggressive)
  '(Man-switches "-a")
+ '(anju-help-menu-remove-emacs-tutorial t)
+ '(anju-reconfigure-main-menu-hook
+   '(anju-main-menu--reconfigure-file anju-main-menu--reconfigure-edit
+                                      anju-main-menu--reconfigure-options
+                                      anju-main-menu--reconfigure-bookmarks
+                                      anju-main-menu--reconfigure-text-mode
+                                      anju-main-menu--reconfigure-tools
+                                      anju-main-menu--reconfigure-help
+                                      anju-main-menu--reconfigure-imenu
+                                      cc/reconfigure-tools-menu))
  '(apropos-do-all t)
  '(auto-insert-alist
    '((("\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'" . "C / C++ header")
@@ -129,10 +139,28 @@
    '(calendar-update-mode-line (lambda nil (diary-view-entries 1))))
  '(case-fold-search t)
  '(casual-lib-use-unicode t)
+ '(casual-timezone-datestamp-format "%a %b %-e %Y, %k:%M")
  '(column-number-mode t)
  '(company-dabbrev-downcase nil)
  '(compilation-auto-jump-to-first-error 'first-known)
  '(compilation-scroll-output t)
+ '(context-menu-functions
+   '(anju-context-menu-elisp anju-context-menu-edebug-eval
+                             anju-context-menu-compile anju-context-menu-dired
+                             cc/context-menu-dired cc/context-menu-org-agenda
+                             anju-context-menu-org-mode
+                             anju-context-menu-info-mode
+                             anju-context-menu-make-mode cc/context-menu-journal
+                             anju-context-menu-buffers anju-context-menu-region
+                             cc/context-menu-dictionary cc/context-menu-region
+                             anju-context-menu-narrow anju-context-menu-open-in
+                             cc/context-menu-open-in anju-context-menu-vc
+                             anju-context-menu-markup
+                             anju-context-menu-wordcount
+                             anju-context-menu-rectangle context-menu-undo
+                             context-menu-region
+                             anju-context-menu-region-extension
+                             anju-context-menu-window))
  '(current-language-environment "English")
  '(cursor-type 'bar)
  '(custom-safe-themes
@@ -147,12 +175,13 @@
  '(diary-mark-entries-hook nil)
  '(diary-nongregorian-listing-hook '(diary-chinese-list-entries))
  '(diary-nongregorian-marking-hook '(diary-chinese-mark-entries))
+ '(dictionary-server "dict.org")
  '(dired-auto-revert-buffer t)
  '(dired-dwim-target 'dired-dwim-target-next)
  '(dired-guess-shell-alist-user '(("" "open")))
  '(dired-listing-switches
    "-lh --group-directories-first --time-style=long-iso -g --no-group")
- '(dired-mouse-drag-files t)
+ '(dired-mouse-drag-files 'move)
  '(dired-movement-style 'cycle)
  '(dired-use-ls-dired t)
  '(dired-vc-rename-file t)
@@ -221,6 +250,7 @@
  '(erc-prompt-for-nickserv-password nil)
  '(erc-server "irc.libera.chat")
  '(erc-try-new-nick-p nil)
+ '(eshell-expand-input-functions '(eshell-expand-history-references))
  '(eshell-modules-list
    '(eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob
                   eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script
@@ -230,7 +260,7 @@
  '(eshell-visual-commands
    '("vi" "vim" "screen" "tmux" "top" "htop" "less" "more" "lynx" "links" "ncftp"
      "mutt" "pine" "tin" "trn" "elm" "gdu-go"))
- '(eshell-visual-options '(("git" "--help" "--paginate")))
+ '(eshell-visual-options '(("git" "--help" "--paginate") ("ps" "-ef")))
  '(eshell-visual-subcommands '(("git" "log" "diff" "show") ("swift" "repl")))
  '(fill-column 80)
  '(git-link-open-in-browser t)
@@ -242,6 +272,7 @@
  '(gnuplot-info-display 'frame)
  '(graphviz-dot-indent-width 4)
  '(graphviz-dot-preview-extension "svg")
+ '(help-window-select t)
  '(hi-lock-auto-select-face t)
  '(highlight-nonselected-windows nil)
  '(hippie-expand-try-functions-list
@@ -260,31 +291,54 @@
  '(ibuffer-saved-filter-groups
    '(("main" ("org-agenda" (name . "Org Agenda"))
       ("posts" (directory . "org/posts"))
-      ("org" (and (directory . "org") (mode . org-mode)))
       ("documentation"
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
-      ("casual-gnuplot project" (directory . "Projects/casual-gnuplot"))
-      ("erc" (mode . erc-mode)) ("numeri" (directory . "Projects/elisp/numeri"))
-      ("casual-gnuplot" (directory . "Projects/elisp/casual-gnuplot"))
-      ("casual-suite" (directory . "Projects/elisp/casual-suite"))
-      ("casual-avy" (directory . "Projects/elisp/casual-avy"))
+      ("anju" (directory . "Projects/elisp/anju/"))
+      ("casual" (directory . "Projects/elisp/casual/"))
+      ("devnull"
+       (or (name . "*pelican-devnull*")
+           (directory . "Projects/pelican/devnull/")
+           (directory . "Projects/devnull/")))
+      ("cclisp" (directory . "emacs/cclisp/"))
+      ("casual-gnuplot project" (directory . "Projects/casual-gnuplot/"))
+      ("erc" (mode . erc-mode))
+      ("numeri" (directory . "Projects/elisp/numeri/"))
+      ("scrim" (directory . "Projects/scrim/Development/scrim/"))
+      ("casual-gnuplot" (directory . "Projects/elisp/casual-gnuplot/"))
+      ("casual-suite" (directory . "Projects/elisp/casual-suite/"))
+      ("casual-avy" (directory . "Projects/elisp/casual-avy/"))
       ("casual-symbol-overlay"
-       (directory . "Projects/elisp/casual-symbol-overlay"))
-      ("casual" (directory . "Projects/elisp/casual"))
-      ("calle24" (directory . "Projects/elisp/calle24"))
-      ("desktop" (directory . "Desktop"))
-      ("downloads" (directory . "Downloads"))
-      ("cclisp" (directory . "emacs/cclisp"))
-      ("worg" (directory . "Projects/vendor/worg"))
+       (directory . "Projects/elisp/casual-symbol-overlay/"))
+      ("calle24" (directory . "Projects/elisp/calle24/"))
+      ("desktop" (directory . "Desktop/"))
+      ("downloads" (directory . "Downloads/"))
+      ("worg" (directory . "Projects/vendor/worg/"))
       ("elisp"
-       (or (directory . ".config/emacs/elpa")
-           (directory . "Emacs.app/Contents/Resources/lisp")))
-      ("devnull" (or (name . "*pelican*") (directory . "Projects/devnull"))))
+       (or (directory . ".config/emacs/elpa/")
+           (directory . "Emacs.app/Contents/Resources/lisp/")))
+      ("org" (and (directory . "org/") (mode . org-mode))))
+     ("work" ("org-agenda" (name . "Org Agenda"))
+      ("posts" (directory . "org/posts"))
+      ("documentation"
+       (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
+      ("anju" (directory . "Projects/elisp/anju/"))
+      ("casual" (directory . "Projects/elisp/casual/"))
+      ("devnull"
+       (or (name . "*pelican-devnull*")
+           (directory . "Projects/pelican/devnull/")
+           (directory . "Projects/devnull/")))
+      ("cclisp" (directory . "emacs/cclisp/")) ("erc" (mode . erc-mode))
+      ("desktop" (directory . "Desktop/"))
+      ("downloads" (directory . "Downloads/"))
+      ("elisp"
+       (or (directory . ".config/emacs/elpa/")
+           (directory . "Emacs.app/Contents/Resources/lisp/")))
+      ("org" (and (directory . "org/") (mode . org-mode))))
      ("planning" ("Org Agenda" (name . "Org Agenda"))
       ("Documentation"
        (or (mode . Man-mode) (mode . Info-mode) (mode . help-mode)))
-      ("cclisp" (directory . "emacs/cclisp"))
-      ("Org Files" (and (directory . "org") (mode . org-mode))))))
+      ("cclisp" (directory . "emacs/cclisp/"))
+      ("Org Files" (and (directory . "org/") (mode . org-mode))))))
  '(ibuffer-saved-filters
    '(("numeri" (directory . "Projects/elisp/numeri"))
      ("Org Agenda" (name . "Org Agenda"))
@@ -327,12 +381,15 @@
  '(inhibit-startup-screen t)
  '(isearch-allow-scroll 'unlimited)
  '(isearch-lazy-count t)
+ '(kill-do-not-save-duplicates t)
  '(kill-whole-line t)
  '(lazy-count-prefix-format nil)
  '(lazy-count-suffix-format " [%s of %s]")
  '(locate-command "mdfind")
+ '(lunar-phase-names '("🌑 New" "🌓 First Quarter" "🌕 Full" "🌗 Last Quarter"))
  '(magit-copy-revision-abbreviated t)
  '(magit-save-repository-buffers 'dontask)
+ '(major-mode-remap-alist '((css-mode . css-ts-mode)))
  '(mark-ring-max 6)
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
@@ -340,6 +397,7 @@
  '(mouse-wheel-progressive-speed t)
  '(mouse-yank-at-point t)
  '(ns-alternate-modifier 'super)
+ '(ns-right-alternate-modifier 'hyper)
  '(org-agenda-files '("~/org/"))
  '(org-agenda-include-diary t)
  '(org-agenda-sorting-strategy
@@ -358,6 +416,7 @@
  '(org-clock-persist t)
  '(org-clock-sound "/System/Library/Sounds/Glass.aiff")
  '(org-confirm-babel-evaluate nil)
+ '(org-default-notes-file "~/org/notes.org")
  '(org-display-remote-inline-images 'cache)
  '(org-export-allow-bind-keywords t)
  '(org-export-backends '(ascii html icalendar latex md odt texinfo))
@@ -370,6 +429,7 @@
  '(org-html-postamble nil)
  '(org-icalendar-include-todo t)
  '(org-icalendar-use-scheduled '(event-if-todo event-if-todo-not-done todo-start))
+ '(org-imenu-depth 7)
  '(org-insert-heading-respect-content t)
  '(org-latex-classes
    '(("article" "\\documentclass[11pt]{article}"
@@ -405,6 +465,7 @@
  '(org-outline-path-complete-in-steps nil)
  '(org-plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar")
  '(org-re-reveal-theme "moon")
+ '(org-refile-targets '((nil :maxlevel . 3) (org-agenda-files :maxlevel . 3)))
  '(org-show-notification-handler 'cc/display-notification)
  '(org-src-lang-modes
    '(("ocaml" . tuareg) ("elisp" . emacs-lisp) ("ditaa" . artist)
@@ -443,39 +504,43 @@
      ("WAITING" :background "navajo white" :foreground "dark goldenrod" :box
       (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
       :height 0.8)
+     ("VERIFY" :background "navajo white" :foreground "medium slate blue" :box
+      (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
+      :height 0.8)
      ("DONE" :background "gray52" :foreground "gray15" :box
       (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
       :height 0.8)
      ("CANCELED" :background "DeepPink1" :foreground "gray15" :box
       (:line-width (1 . 1) :color "grey" :style "flat-button") :inverse-video t
       :height 0.8)))
+ '(org-todo-keywords
+   '((sequence "TODO(t)" "IN_PROGRESS(i)" "WAITING(w)" "VERIFY(v)" "|" "DONE(d)")
+     (sequence "|" "CANCELED(c)")))
  '(org-use-speed-commands t)
+ '(org-yank-image-save-method "~/org/images/clipped")
  '(package-archives
    '(("gnu" . "http://elpa.gnu.org/packages/")
-     ("melpa" . "http://melpa.org/packages/")))
+     ("melpa" . "https://melpa.org/packages/")))
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
-   '(async auto-complete bind-key calfw calle24 casual-suite citeproc company
-           company-org-block company-restclient countdown csv-mode diff-hl
-           disk-usage ebib edit-indirect editorconfig eglot eldoc elfeed erc
-           eshell-git-prompt expand-region faceup fireplace flycheck-package
-           flymake git-link gnuplot go-mode good-scroll google-this
-           google-translate graphviz-dot-mode helm helm-bibtex helm-pass
-           helm-swoop htmlize idlwave iedit js2-mode json-mode jsonian jsonrpc
-           kanban keycast ledger-mode magit markdown-mode math-symbol-lists
-           modus-themes neotree numeri ob-restclient ob-swift ob-swiftui org
-           org-outline-numbering org-ql org-re-reveal org-superstar
-           orgtbl-aggregate osx-dictionary ox-gfm ox-gist ox-jira ox-slack
-           ox-trac package-lint paredit password-store password-store-menu
-           pbcopy pkg-info plantuml-mode project python python-mode rainbow-mode
-           restclient reveal-in-folder scpaste show-font
-           smart-mode-line-powerline-theme snow soap-client solarized-theme
-           spotlight sqlite-mode-extras sr-speedbar svg-clock swift-mode
-           symbol-overlay tj3-mode toc-org track-changes tramp transpose-frame
-           treemacs use-package verilog-mode visual-regexp
-           visual-regexp-steroids vtable webpaste wgrep which-key
-           window-tool-bar xref yaml-mode yasnippet yasnippet-snippets ztree))
- '(pixel-scroll-precision-mode nil)
+   '(anju async auto-complete bind-key calfw calle24 casual-suite citeproc company
+          company-org-block countdown csv-mode debbugs diff-hl
+          dired-rsync-transient disk-usage ebib edit-indirect editorconfig eglot
+          eldoc elfeed erc eshell-git-prompt expand-region faceup fireplace
+          flycheck-package git-link gnuplot go-mode good-scroll google-this
+          google-translate graphviz-dot-mode helm-bibtex helm-pass helm-swoop
+          htmlize idlwave iedit js2-mode json-mode jsonian jsonrpc kanban
+          ledger-mode magit markdown-mode math-symbol-lists neotree numeri
+          ob-swift ob-swiftui org-outline-numbering org-ql org-re-reveal
+          org-superstar osx-dictionary ox-gfm ox-gist ox-jira ox-slack ox-trac
+          package-lint paredit password-store pbcopy pkg-info plantuml-mode
+          project python rainbow-mode reveal-in-folder scpaste show-font
+          smart-mode-line-powerline-theme soap-client solarized-theme
+          sqlite-mode-extras sr-speedbar svg-clock swift-mode symbol-overlay
+          tj3-mode toc-org track-changes tramp transmission transpose-frame
+          treemacs use-package verilog-mode visual-regexp visual-regexp-steroids
+          vtable webpaste wgrep which-key window-tool-bar xref yaml-mode
+          yasnippet yasnippet-snippets ztree))
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
  '(plantuml-indent-level 4)
@@ -513,6 +578,7 @@
  '(transient-align-variable-pitch t)
  '(trash-directory "~/.Trash")
  '(use-file-dialog nil)
+ '(use-short-answers t)
  '(user-mail-address "kickingvegas@gmail.com")
  '(vc-follow-symlinks nil)
  '(vc-make-backup-files nil)
@@ -560,6 +626,7 @@
  '(minibuffer-prompt ((((type x ns) (class color) (background light)) (:foreground "dark magenta")) (((type x ns) (class color) (background dark)) (:foreground "orange")) (((type tty)) (:foreground "cyan"))))
  '(mode-line ((((type ns) (background light)) (:background "#FF7700" :foreground "gray20" :box (:line-width (5 . 5) :color "#FF7700" :style flat-button) :height 1.0 :family "SF Compact Rounded")) (((type ns) (background dark)) (:background "#0bc9de" :foreground "gray20" :box (:line-width (5 . 5) :color "#0bc9de" :style flat-button) :height 1.0 :family "SF Compact Rounded")) (((type x pgtk) (background light)) (:background "#FF7700" :foreground "gray20" :box (:line-width (2 . 2) :color "#FF7700" :style flat-button) :height 1.0 :family "Latin Modern Sans")) (((type x pgtk) (background dark)) (:background "#0bc9de" :foreground "gray20" :box (:line-width (2 . 2) :color "#0bc9de" :style flat-button) :height 1.0 :family "Latin Modern Sans")) (((type tty)) (:background "#0bc9de" :foreground "gray20"))))
  '(mode-line-inactive ((((type ns) (background light)) (:inherit mode-line :background "#DDDDDD" :foreground "#686868" :box (:line-width (5 . 5) :color "#DDDDDD" :style flat-button))) (((type ns) (background dark)) (:inherit mode-line :background "#333333" :foreground "#686868" :box (:line-width (5 . 5) :color "#333333" :style flat-button))) (((type x pgtk) (background light)) (:inherit mode-line :background "#DDDDDD" :foreground "#686868" :box (:line-width (2 . 2) :color "#DDDDDD" :style flat-button))) (((type x pgtk) (background dark)) (:inherit mode-line :background "#333333" :foreground "#686868" :box (:line-width (2 . 2) :color "#333333" :style flat-button))) (((type tty)) (:background "#333333" :foreground "#686868"))))
+ '(org-agenda-diary ((((type x w32 ns pgtk) (class color) (background light)) (:inherit default :background "#D9E7CB" :foreground "#65265C")) (((type x w32 ns pgtk) (class color) (background dark)) (:inherit default :background "#65265C" :foreground "#D9E7CB")) (((class color)) (:inherit default :background "black" :foreground "Magenta"))))
  '(org-agenda-done ((t (:foreground "snow4"))))
  '(org-agenda-structure ((((type x ns) (class color) (background light)) (:foreground "Blue1")) (((type x ns) (class color) (background dark)) (:foreground "LightSkyBlue")) (((type tty) (class color)) (:foreground "light sky blue")) (t (:weight bold))))
  '(org-block ((t (:inherit fixed-pitch :extend t :height 0.85))))
@@ -570,7 +637,7 @@
  '(org-document-info ((((type x w32 ns pgtk) (class color) (background light)) (:foreground "midnight blue")) (((type x w32 ns pgtk) (class color) (background dark)) (:foreground "pale turquoise")) (t nil) (((type tty) (class color)) (:foreground "pale turquoise"))))
  '(org-document-info-keyword ((t (:inherit fixed-pitch))))
  '(org-document-title ((((type x ns) (class color) (background light)) (:foreground "midnight blue" :weight bold)) (((type x ns) (class color) (background dark)) (:foreground "pale turquoise" :weight bold)) (t (:weight bold)) (((type tty) (class color)) (:foreground "pale turquoise"))))
- '(org-formula ((t (:inherit fixed-pitch :foreground "Firebrick"))))
+ '(org-formula ((t (:inherit org-table :foreground "Firebrick"))))
  '(org-hide ((((type x ns) (class color) (background light)) (:foreground "white")) (((type x ns) (class color) (background dark)) (:foreground "#171717")) (((type tty) (class color)) (:foreground "#171717"))))
  '(org-meta-line ((((type x ns) (class color) (background dark)) (:inherit fixed-pitch :foreground "deep sky blue")) (((type x ns) (class color) (background light)) (:inherit fixed-pitch :foreground "grey50")) (((type tty) (class color)) (:inherit fixed-pitch :foreground "deep sky blue"))))
  '(org-scheduled ((t (:foreground "#4455ff"))))

@@ -1,6 +1,6 @@
 ;;; cc-org-mode.el --- Org configuration -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -40,7 +40,7 @@
 (require 'casual-agenda)
 (require 'cc-style-text-menu)
 (require 'org-protocol)
-;;(require 'casual-calendar)
+(require 'casual-org)
 
 (if (eq system-type 'darwin)
     (require 'ob-swiftui))
@@ -67,22 +67,12 @@ which is done with `org-ctrl-c-ctrl-c'."
   (interactive)
   (org-ctrl-c-ctrl-c '(4)))
 
-(setopt org-default-notes-file "~/org/notes.org")
-
-(setopt org-todo-keywords
-           '((sequence "TODO(t)" "IN_PROGRESS(i)" "WAITING(w)" "|" "DONE(d)")
-             (sequence "|" "CANCELED(c)")))
-
 ;; (setq org-todo-keyword-faces
 ;;       '(("TODO" . "red")
 ;;         ("IN_PROGRESS" . "dark orange")
 ;;         ("WAITING" . "dark orange")
 ;;         ("DONE" . "sea green")
 ;;         ("CANCELED" . (:foreground "blue" :weight bold))))
-
-(setopt org-refile-targets
-      '((nil :maxlevel . 3)
-        (org-agenda-files :maxlevel . 3)))
 
 ;;(setq org-log-done 'time)
 
@@ -91,17 +81,18 @@ which is done with `org-ctrl-c-ctrl-c'."
 (add-hook 'org-mode-hook #'org-indent-mode)
 ;;(add-hook 'org-mode-hook #'org-clock-persistence-insinuate)
 ;;(add-hook 'org-mode-hook #'cc/save-hook-delete-trailing-whitespace)
+
 (add-hook 'org-mode-hook (lambda ()
                            (cc/reconfig-org-smart-quotes-lang "en")))
 
-(setopt org-imenu-depth 7)
-(add-hook 'org-mode-hook #'imenu-add-menubar-index)
-(add-hook 'org-mode-hook (lambda () (setq-local imenu-auto-rescan t)))
 (add-hook
  'org-mode-hook
  (lambda ()
    (add-to-list (make-local-variable 'company-backends)
                 'company-org-block)))
+
+;; (add-hook 'org-mode-hook
+;;           (lambda () (add-hook 'ediff-prepare-buffer-hook #'org-fold-show-all 0 t)))
 
 (defun cc/--prettify-components (prefix suffix)
   "Generate a components argument for `prettify-symbols-alist'.
@@ -153,14 +144,18 @@ SUFFIX - string appended to prefix
                              "warningbox"
                              "blindtext")))
        (dolist (e base-list)
-         (push (cons (concat "#+begin_" e)
-                     (cc/--prettify-components ?⎧ e)) prettify-symbols-alist)
-         (push (cons (concat "#+BEGIN_" (upcase e))
-                     (cc/--prettify-components ?⎧ e)) prettify-symbols-alist)
-         (push (cons (concat "#+end_" e)
-                     (cc/--prettify-components ?⎩ e)) prettify-symbols-alist)
-         (push (cons (concat "#+END_" (upcase e))
-                     (cc/--prettify-components ?⎩ e)) prettify-symbols-alist)))
+         (push
+          (cons (concat "#+begin_" e) (cc/--prettify-components ?⎧ e))
+          prettify-symbols-alist)
+         (push
+          (cons (concat "#+BEGIN_" (upcase e)) (cc/--prettify-components ?⎧ e))
+          prettify-symbols-alist)
+         (push
+          (cons (concat "#+end_" e) (cc/--prettify-components ?⎩ e))
+          prettify-symbols-alist)
+         (push
+          (cons (concat "#+END_" (upcase e)) (cc/--prettify-components ?⎩ e))
+          prettify-symbols-alist)))
      (prettify-symbols-mode))))
 
 (defun cc/org-backward-paragraph ()
@@ -177,10 +172,10 @@ SUFFIX - string appended to prefix
 
 (keymap-set org-mode-map "M-<f8>" #'datestamp)
 ;; (keymap-set org-mode-map "<f9>" 'avy-goto-word-1)
-(keymap-set org-mode-map "M-<f9>" #'cc/org-checkbox-in-progress)
-(keymap-set org-mode-map "C-<f9>" #'cc/org-toggle-list-is-checkbox)
+(keymap-set org-mode-map "M-<f9>" #'casual-org-checkbox-in-progress)
+(keymap-set org-mode-map "C-<f9>" #'casual-org-toggle-list-to-checkbox)
 (keymap-set org-mode-map "<f9>" #'org-ctrl-c-ctrl-c)
-(keymap-set org-mode-map "M-<f6>" #'org-toggle-inline-images)
+(keymap-set org-mode-map "M-<f6>" #'casual-org-toggle-images)
 (keymap-set org-mode-map "C-c t" #'cc/org-time-stamp-inactive)
 (keymap-set org-mode-map "C-<home>" #'org-beginning-of-line)
 (keymap-set org-mode-map "C-<end>" #'org-end-of-line)
@@ -228,7 +223,7 @@ SUFFIX - string appended to prefix
    (shell . t)
    (sql . t)
    (sqlite . t)
-   (restclient . t)
+   ;; (restclient . t)
    (plantuml . t)
    (gnuplot . t)
    (swift . t)))
@@ -263,10 +258,6 @@ SUFFIX - string appended to prefix
         ("captee-help-book"
          :components ("pages" "static"))))
 
-;; ox-gfm init is so broken. need to load it manually.
-;; (eval-after-load "org"
-;;   '(require 'ox-gfm nil t))
-
 ;; (use-package ox-gfm
 ;;   :defer 3
 ;;   :after org)
@@ -278,57 +269,63 @@ SUFFIX - string appended to prefix
       (org-capture nil "J")
     (org-capture nil "j")))
 
-(defalias 'cc/insert-org-keyword
-  (kmacro "C-a # + M-x c o m p l e t e - s y m b o l <return>"))
-
 (require 'cc-org-capture)
 
-(transient-define-prefix cc/org-mode-tmenu ()
-  ["Org"
-   ["State"
-    ("t" "TODO…" org-todo)
-    ("I" "Clock In" org-clock-in
-     :if-not org-clocking-p)
-    ("O" "Clock Out" org-clock-out
-     :if org-clocking-p)
-    ("R" "Clock Report" org-clock-report)]
+(defun cc/disable-flycheck-in-org-src-block ()
+  (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 
-   ["Timestamp"
-    ("." "Add…" org-timestamp)
-    ("i" "Inactive…" org-timestamp-inactive)]
+(add-hook 'org-src-mode-hook 'cc/disable-flycheck-in-org-src-block)
 
-   ["Link"
-    ("l" "Insert…" org-insert-link)
-    ("L" "Last" org-insert-last-stored-link)]
+
+;; -------------------------------------------------------------------
+;; Transients
 
-   ["Schedule"
-    ("C-s" "Schedule…" org-schedule)
-    ("C-d" "Deadline…" org-deadline)]
+(keymap-set org-mode-map "M-m" #'casual-org-tmenu)
+(keymap-set org-table-fedit-map "M-m" #'casual-org-table-fedit-tmenu)
+(keymap-set org-table-fedit-map "<f1>" #'casual-org-table-fedit-tmenu)
 
-   ["Annotate"
-    ("p" "Property…" org-set-property)
-    (":" "Tags…" org-set-tags-command)]
+
+;; -------------------------------------------------------------------
+(defun cc/--days-until (target &optional template)
+  "Formatted string of days until TARGET.
 
-   ["Mark"
-    ("me" "Element" org-mark-element)
-    ("ms" "Subtree" org-mark-subtree)]]
+- TARGET: date string that conforms to `parse-time-string'.
+- TEMPLATE : format string that includes ‘%d’ specifier.
 
-  ["Edit"
-   [("b" "Add Block…" org-insert-structure-template)
-    ("r" "Insert Cite…" org-cite-insert)]
-   [("c" "Capture…" org-capture)
-    ("P" "Toggle Prettify" prettify-symbols-mode)]
-   [("s" "Sort…" org-sort)
-    ("e" "Export…" org-export-dispatch)]
-   [("C" "Clone…" org-clone-subtree-with-time-shift)]
-   [("n" "Note…" org-add-note)]
-   [("v" "Copy Visible" org-copy-visible)]]
+If TEMPLATE is nil, then a predefined format string will be
+used."
+  (let* ((template (if template
+                       template
+                     (concat "%d days until " target)))
+         (days (org-time-stamp-to-now target))
+         (msg (format template days)))
+    msg))
 
-  [:class transient-row
-   (casual-lib-quit-one)
-   (casual-lib-quit-all)])
+(defun cc/days-until (arg)
+  "Prompt user for date and show days until in the mini-buffer.
 
-(keymap-set org-mode-map "M-m" #'cc/org-mode-tmenu)
+Use `org-read-date' to compute days until to display in the mini-buffer.
+
+If prefix ARG is non-nil, then the computed result is stored in the
+ `kill-ring'."
+  (interactive "P")
+  (let* ((target (org-read-date))
+         (msg (cc/--days-until target)))
+    (if arg
+        (kill-new msg))
+    (message msg)))
+
+(defun cc/org-show-current-clock ()
+  "Show current Org clocking task in mini-buffer."
+  (interactive)
+  (if (org-clocking-p)
+      (let ((clocked-task (substring-no-properties (org-clock-get-clock-string))))
+        (message "%s" clocked-task))
+    (message "No clock task.")))
+
+;; ox-gfm init is so broken. need to load it manually.
+(eval-after-load "org"
+  '(require 'ox-gfm nil t))
 
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here
