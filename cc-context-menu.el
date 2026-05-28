@@ -40,11 +40,7 @@
 
 (easy-menu-define cc/context-menu-journal-menu nil
   "Key map for Org copy sub-menu."
-  '("Journal"
-
-    ["Journal"
-     status-report
-     :help "Go to current day journal"]
+  '("Planner"
 
     ["Agenda - All TODOs"
      (lambda () (interactive)(org-agenda nil "n"))
@@ -67,17 +63,22 @@
 This function is intended to be hooked into `context-menu-functions'."
 
   (when (and (not (anju-at-org-table-p))
-             (not (use-region-p)))
+             (not (use-region-p))
+             (not (anju-rectangle-selected-p)))
 
     (save-excursion
       (mouse-set-point click)
       (anju-context-menu-item-separator menu journal-separator)
-
-      (easy-menu-add-item menu nil cc/context-menu-journal-menu)
+      (easy-menu-add-item menu nil [status-report
+                                    status-report
+                                    :label "Journal"
+                                    :help "Go to current day journal"])
 
       (easy-menu-add-item menu nil ["Add Note"
                                     (lambda () (interactive)(org-capture nil "j"))
-                                    :help "Add journal note"])))
+                                    :help "Add journal note"])
+
+      (easy-menu-add-item menu nil cc/context-menu-journal-menu)))
   menu)
 
 
@@ -88,7 +89,7 @@ This function is intended to be hooked into `context-menu-functions'."
 - CLICK: event
 
 This function is intended to be hooked into `context-menu-functions'."
-  (if (use-region-p)
+  (if (and (use-region-p) (not (anju-rectangle-selected-p)))
       (save-excursion
         (mouse-set-point click)
         (easy-menu-add-item menu nil cc/region-operations-menu)))
@@ -103,7 +104,7 @@ Adds Finder/File Manager to Dired.
 - CLICK: event
 
 This function is intended to be hooked into `context-menu-functions'."
-  (when (derived-mode-p 'dired-mode)
+  (when (and (derived-mode-p 'dired-mode) (not (anju-rectangle-selected-p)))
     (save-excursion
       (mouse-set-point click)
       (easy-menu-add-item menu nil
@@ -127,7 +128,8 @@ This function is intended to be hooked into `context-menu-functions'."
 This function is intended to be hooked into `context-menu-functions'."
   (when (and (not (use-region-p))
              (not (anju-at-org-table-p))
-             (not (derived-mode-p 'dired-mode)))
+             (not (derived-mode-p 'dired-mode))
+             (not (anju-rectangle-selected-p)))
     (save-excursion
       (mouse-set-point click)
       (easy-menu-add-item menu nil
@@ -144,7 +146,7 @@ This function is intended to be hooked into `context-menu-functions'."
 - CLICK: event
 
 This function is intended to be hooked into `context-menu-functions'."
-  (when (use-region-p)
+  (when (and (use-region-p) (not (anju-rectangle-selected-p)))
     (save-excursion
       (mouse-set-point click)
 
@@ -162,33 +164,6 @@ This function is intended to be hooked into `context-menu-functions'."
                                        :help "Look up selected region in  dictionary"])))))
   menu)
 
-
-(easy-menu-define cc/context-menu-org-copy-as-menu nil
-  "Key map for Org copy sub-menu."
-  '("Copy as…"
-    :visible (and (derived-mode-p 'org-mode) (use-region-p))
-
-    ["Markdown"
-     mb/org-copy-region-as-markdown
-     :help "Copy region as Markdown"]
-
-    ["Slack"
-     org-slack-export-to-clipboard-as-slack
-     :visible (package-installed-p 'ox-slack)
-     :help "Copy as Slack to clipboard"]
-
-    ["RTF"
-     dm/copy-as-rtf
-     :help "Copy as RTF to clipboard"]))
-
-(defun cc/context-menu-region-extension (menu click)
-  "Region menu using MENU and CLICK."
-  (when (derived-mode-p 'org-mode)
-    (save-excursion
-      (mouse-set-point click)
-      (easy-menu-add-item menu nil cc/context-menu-org-copy-as-menu
-                          "Paste")))
-  menu)
 
 (easy-menu-define cc/context-menu-org-agenda-view-menu nil
   "Key map for Org agenda view sub-menu."
@@ -232,7 +207,8 @@ This function is intended to be hooked into `context-menu-functions'."
 
 This function is intended to be hooked into `context-menu-functions'."
 
-  (when (derived-mode-p 'org-agenda-mode)
+  (when (and (derived-mode-p 'org-agenda-mode)
+             (not (anju-rectangle-selected-p)))
     (mouse-set-point click)
     (save-excursion
       (when (casual-agenda-headlinep)

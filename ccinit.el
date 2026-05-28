@@ -228,6 +228,18 @@ If prefix ARG is non-nil, then the computed result is stored in the
         (kill-new msg))
     (message msg)))
 
+(defun cc/days-until-next-gig (arg)
+  "Days until next gig.
+
+If prefix ARG is non-nil, then the computed result is stored in the
+`kill-ring'."
+  (interactive "P")
+  (let* ((event (cc/--days-until "2026-06-07" "%d days until next gig"))
+         (msg (format "%s" event)))
+    (if arg
+        (kill-new msg))
+    (message msg)))
+
 (defvar cc--workplace-initialized nil
   "If non-nil then workplace is initialized.")
 

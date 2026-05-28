@@ -31,11 +31,12 @@
 (require 'dired)
 (require 'transpose-frame)
 (require 'cc-region-operations-menu)
-;; (require 'cc-edit-text-menu)
 (require 'cc-truth-table)
 (require 'eww)
 (require 'casual-bookmarks)
 (require 'anju-main-menu)
+(require 'anju-mode-line)
+
 
 (defun cc/dired-side-right (path)
   "Side-by-side layout with Dired buffer on the right set to PATH."
@@ -45,156 +46,180 @@
   (transpose-frame)
   (other-window 1))
 
+(defun cc/set-input-method-hangul nil
+  "Set input method to 한글."
+  (interactive)
+  (set-input-method 'korean-hangul))
+
+
 
 ;; -------------------------------------------------------------------
 ;;; Reconfigure Tools Menu
 (defun cc/reconfigure-tools-menu ()
   "Reconfigure Tools menu."
-  ;; (easy-menu-add-item global-map '(menu-bar tools)
-  ;;                     ["Agenda - All TODOs"
-  ;;                      (lambda () (interactive)(org-agenda nil "n"))
-  ;;                      :help "Show Org agenda with all TODO tasks."]
-  ;;                     "Shell Commands")
 
   (easy-menu-add-item global-map '(menu-bar tools)
-                      ["Set Input Method - Korean"
-                       (lambda () (interactive)(set-input-method 'korean-hangul))
+                      [count-words
+                       count-words
+                       :label "Count Words"
+                       :visible (derived-mode-p 'text-mode)
+                       :help "Count words in buffer or region if active"]
+                      'grep)
+
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      [cc/set-input-method-hangul
+                       cc/set-input-method-hangul
+                       :label "Set Input Method - 한글"
                        :enable (not current-input-method)
-                       :help "Set input method to Korean"]
-                      "Shell Commands")
-
-  ;; (easy-menu-add-item global-map '(menu-bar tools)
-  ;;                     ["Open in Finder"
-  ;;                      reveal-in-folder-this-buffer
-  ;;                      :visible (or (buffer-file-name) (derived-mode-p 'dired-mode))
-  ;;                      :help "Reveal the current buffer in folder."]
-  ;;                     "Shell Commands")
-
-  ;; (keymap-set-after (lookup-key global-map [menu-bar tools])
-  ;;   "<separator-org>"
-  ;;   '(menu-item "--")
-  ;;   'Agenda\ -\ All\ TODOs)
-
-  ;; (easy-menu-add-item global-map '(menu-bar tools)
-  ;;                     ["Find File…"
-  ;;                      helm-find-files
-  ;;                      :help "Fuzzy find file."]
-  ;;                     "Shell Commands")
+                       :help "Set input method to 한글"]
+                      'shell-commands)
 
   (easy-menu-add-item global-map '(menu-bar tools)
-                      ["Find in Files (rgrep)…"
-                       rgrep
-                       :help "Recursively grep for REGEXP in FILES in directory \
-tree rooted at DIR."]
-                      "Shell Commands")
+                      [cc/gh-issues
+                       cc/gh-issues
+                       :label "GitHub Issues…"
+                       :help "Put current issues for a GitHub repository in a vtable"]
+                      'grep)
 
   (easy-menu-add-item global-map '(menu-bar tools)
-                      ["Search Org Notes…"
+                      [cc/org-search
                        cc/org-search
-                       :help "Search Org Notes in ~/org."]
-                      "Shell Commands")
+                       :label "Search Org Notes…"
+                       :help "Search Org Notes in ~/org"]
+                      'shell-commands)
 
   (easy-menu-add-item global-map '(menu-bar tools)
-                      ["IELM"
-                       ielm
-                       :help "Interactively evaluate Emacs Lisp expressions."]
-                      "Language Server Support (Eglot)")
+                      [cc/org-babel-ingest-table-to-sql
+                       cc/org-babel-ingest-table-to-sql
+                       :label "Babel Ingest - Org Table To SQL"
+                       :visible (derived-mode-p 'org-mode)
+                       :help "Ingest code block to convert Org Table to SQLite"]
+                      'games)
+
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      [cc/insert-truth-table-input
+                       cc/insert-truth-table-input
+                       :label "Insert Truth Table…"
+                       :visible (not buffer-read-only)
+                       :help "Insert truth table input with 2^BITS rows into current buffer"]
+                      'shell-commands)
 
   (keymap-set-after (lookup-key global-map [menu-bar tools])
     "<separator-shell>"
     '(menu-item "--")
-    'Search\ Org\ Notes…)
-
-  (define-key global-map [menu-bar tools grep] nil t)
-  (define-key global-map [menu-bar tools rgrep] nil t)
-  (define-key global-map [menu-bar tools ede] nil t)
-  (define-key global-map [menu-bar tools semantic] nil t)
-  (define-key global-map [menu-bar tools compile] nil t)
-  (define-key global-map [menu-bar tools gdb] nil t)
-  (define-key global-map [menu-bar tools gnus] nil t)
-  (define-key global-map [menu-bar tools rmail] nil t)
-  (define-key global-map [menu-bar tools compose-mail] nil t)
-  (define-key global-map [menu-bar tools directory-search] nil t)
-  (define-key global-map [menu-bar tools browse-web] nil t)
-  (define-key global-map [menu-bar tools separator-net] nil t)
-  (define-key global-map [menu-bar tools encryption-decryption] nil t)
-  (define-key global-map [menu-bar tools separator-encryption-decryption] nil t)
-  (define-key global-map [menu-bar tools Table] nil t)
+    'cc/insert-truth-table-input)
 
   (easy-menu-add-item global-map '(menu-bar tools)
-                      ["Magit Status"
+                      [magit-status
                        magit-status
+                       :label "Magit Status"
                        :visible (vc-responsible-backend default-directory t)
                        :help "Show the status of the current Git repository \
 in a buffer"]
-                      "Version Control")
+                      'vc)
 
   (easy-menu-add-item global-map '(menu-bar tools)
-                      ["Count Words"
-                       count-words
-                       :help "Count words in buffer or region if active."]
-                      "Calendar")
-
-  (easy-menu-add-item global-map '(menu-bar tools)
-                      ["Eshell"
+                      [eshell
                        eshell
-                       :help "Create an interactive Eshell buffer."]
-                      "Calendar")
+                       :label "Eshell"
+                       :help "Create an interactive Eshell buffer"]
+                      'calendar)
 
   (easy-menu-add-item global-map '(menu-bar tools)
-                      ["Python Shell"
+                      [ielm
+                       ielm
+                       :label "IELM"
+                       :help "Interactively evaluate Emacs Lisp expressions"]
+                      'calendar)
+
+  (easy-menu-add-item global-map '(menu-bar tools)
+                      [run-python
                        run-python
-                       :help "Run an inferior Python process."]
-                      "Calendar")
+                       :label "Python REPL"
+                       :help "Run an inferior Python process"]
+                      'calendar)
 
   (easy-menu-add-item global-map '(menu-bar tools)
-                      ["Dired on Right Side"
-                       cc/dired-side-right
-                       :help "Side-by-side layout with Dired buffer on the right set to PATH."]
-                      "Calendar")
+                      [swift-repl
+                       swift-repl
+                       :label "Swift REPL"
+                       :help "Run the Swift REPL"]
+                      'calendar)
 
   (easy-menu-add-item global-map '(menu-bar tools)
-                      ["Insert Truth Table…"
-                       cc/insert-truth-table-input
-                       :visible (not buffer-read-only)
-                       :help "Insert truth table input with 2^BITS rows into current buffer."]
-                      "Calendar")
+                      [node-repl
+                       node-repl
+                       :label "NodeJS REPL"
+                       :help "Run the NodeJS REPL"]
+                      'calendar)
 
   (easy-menu-add-item global-map '(menu-bar tools)
-                      ["RE-Builder"
+                      [re-builder
                        re-builder
-                       :help "Construct a regexp interactively."]
-                      "Calendar")
+                       :label "RE-Builder"
+                       :help "Construct a regexp interactively"]
+                      'calendar)
 
   (keymap-set-after (lookup-key global-map [menu-bar tools])
     "<separator-re>"
     '(menu-item "--")
-    'RE-Builder)
+    're-builder)
 
   (easy-menu-add-item global-map '(menu-bar tools)
-                      ["World Clock"
+                      [world-clock
                        world-clock
+                       :label "World Clock"
                        :help "Display a world clock buffer with times in \
-various time zones."]
-                      "Programmable Calculator")
+various time zones"]
+                      'calc)
 
   (easy-menu-add-item global-map '(menu-bar tools)
-                      ["EWW…"
+                      [eww
                        eww
-                       :help "Open EWW browser."]
-                      "Games")
+                       :label "EWW…"
+                       :help "Open EWW browser"]
+                      'games)
 
-  (easy-menu-add-item global-map '(menu-bar tools)
-                      ["Babel Ingest - Org Table To SQL"
-                       (org-babel-lob-ingest "~/org/babel/cc-org-table-to-sql.org")
-                       :help "Ingest code block to convert Org Table to SQLite."]
-                      "Games")
+
 
   (keymap-set-after (lookup-key global-map [menu-bar tools])
-    "<separator-babel>"
+    "<separator-games>"
     '(menu-item "--")
-    'Babel\ Ingest\ -\ Org\ Table\ To\ SQL))
+    'eww)
 
+  (cc/tools-menu-reset))
+
+
+(defun cc/tools-menu-reset ()
+  "Reset main menu Tools menu."
+  (let ((remove-list '(grep
+                       rgrep
+                       ede
+                       semantic
+                       compile
+                       gdb
+                       gnus
+                       rmail
+                       compose-mail
+                       directory-search
+                       browse-web
+                       separator-net
+                       encryption-decryption
+                       separator-encryption-decryption
+                       Table
+                       separator-spell
+                       spell)))
+
+    (mapc (lambda (x)
+            (let ((path (vector 'menu-bar 'tools x)))
+              (if (lookup-key global-map path)
+                  (define-key global-map path nil t))))
+          remove-list)))
+
+(defun cc/org-babel-ingest-table-to-sql ()
+  "Support SQL table operations on an Org table."
+  (interactive)
+  (org-babel-lob-ingest "~/org/babel/cc-org-table-to-sql.org"))
 
 (provide 'cc-menu-reconfig)
 

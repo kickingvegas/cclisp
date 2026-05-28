@@ -15,6 +15,7 @@
                                       anju-main-menu--reconfigure-options
                                       anju-main-menu--reconfigure-bookmarks
                                       anju-main-menu--reconfigure-text-mode
+                                      anju-main-menu--reconfigure-tools
                                       anju-main-menu--reconfigure-help
                                       anju-main-menu--reconfigure-imenu
                                       cc/reconfigure-tools-menu))
@@ -144,19 +145,21 @@
  '(compilation-auto-jump-to-first-error 'first-known)
  '(compilation-scroll-output t)
  '(context-menu-functions
-   '(anju-context-menu-elisp anju-context-menu-edebug-eval cc/context-menu-compile
-                             anju-context-menu-dired cc/context-menu-dired
-                             cc/context-menu-org-agenda
-                             anju-context-menu-org-mode cc/context-menu-journal
+   '(anju-context-menu-elisp anju-context-menu-edebug-eval
+                             anju-context-menu-compile anju-context-menu-dired
+                             cc/context-menu-dired cc/context-menu-org-agenda
+                             anju-context-menu-org-mode
+                             anju-context-menu-info-mode
+                             anju-context-menu-make-mode cc/context-menu-journal
                              anju-context-menu-buffers anju-context-menu-region
                              cc/context-menu-dictionary cc/context-menu-region
                              anju-context-menu-narrow anju-context-menu-open-in
                              cc/context-menu-open-in anju-context-menu-vc
                              anju-context-menu-markup
-                             anju-context-menu-wordcount context-menu-undo
+                             anju-context-menu-wordcount
+                             anju-context-menu-rectangle context-menu-undo
                              context-menu-region
                              anju-context-menu-region-extension
-                             cc/context-menu-region-extension
                              anju-context-menu-window))
  '(current-language-environment "English")
  '(cursor-type 'bar)
@@ -257,7 +260,7 @@
  '(eshell-visual-commands
    '("vi" "vim" "screen" "tmux" "top" "htop" "less" "more" "lynx" "links" "ncftp"
      "mutt" "pine" "tin" "trn" "elm" "gdu-go"))
- '(eshell-visual-options '(("git" "--help" "--paginate")))
+ '(eshell-visual-options '(("git" "--help" "--paginate") ("ps" "-ef")))
  '(eshell-visual-subcommands '(("git" "log" "diff" "show") ("swift" "repl")))
  '(fill-column 80)
  '(git-link-open-in-browser t)

@@ -223,6 +223,7 @@
 (keymap-global-set "M-\\" #'cycle-spacing)
 (keymap-global-set "s-SPC" #'cycle-spacing)
 (keymap-global-set "<mode-line> C-<mouse-3>" #'tear-off-window)
+(keymap-global-set "<mode-line> C-<mouse-1>" #'cc/toggle-pane)
 
 (keymap-global-set "C-x 1" #'anju-toggle-one-window)
 

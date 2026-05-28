@@ -42,43 +42,5 @@
 (keymap-set compilation-mode-map "[" #'compilation-previous-file)
 (keymap-set compilation-mode-map "]" #'compilation-next-file)
 
-(defun cc/context-menu-compile (menu click)
-  "Context menu hook function for compile commands.
-
-- MENU: menu
-- CLICK: event
-
-This function is intended to be hooked into `context-menu-functions'."
-
-  (when (derived-mode-p 'compilation-mode)
-    (save-excursion
-      (mouse-set-point click)
-      (anju-context-menu-item-separator menu compile-separator)
-
-      (easy-menu-add-item menu nil
-                          ["Recompile"
-                           recompile
-                           :label (casual-compile--select-mode-label
-                                   "Recompile"
-                                   (casual-compile-unicode-get :refresh))
-                           :enable (not (casual-compile--compilation-running-p))
-                           :help "Recompile"])
-
-      (easy-menu-add-item menu nil
-                          ["Compile…"
-                           compile
-                           :enable
-                           (and
-                            (not (derived-mode-p 'grep-mode))
-                            (not (casual-compile--compilation-running-p)))
-                           :help "Recompile"])
-
-      (easy-menu-add-item menu nil
-                          ["Kill"
-                           kill-compilation
-                           :label (casual-compile-unicode-get :kill)
-                           :visible (casual-compile--compilation-running-p)])))
-  menu)
-
 (provide 'cc-compile-mode)
 ;;; cc-compile-mode.el ends here

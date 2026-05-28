@@ -43,6 +43,7 @@
 (require 'transpose-frame)
 (require 'dired)
 (require 'page-ext)
+(require 'term)
 
 (defun cc/find-user-init-file ()
   "Edit `user-init-file'."
@@ -216,7 +217,10 @@ ISO 8601."
           (princ result)))))
 
 (defun dm/copy-as-rtf ()
-  "Export region to RTF and copy it to the clipboard."
+  "Export region to RTF and copy it to the clipboard.
+
+Code taken from
+URL `;https://gist.github.com/danielmartin/3c5d3a3a8cd24a3556379c5251651748'."
   (interactive)
   (save-window-excursion
     (let* ((buf (org-export-to-buffer 'html "*Formatted Copy*" nil nil t t))
@@ -713,10 +717,37 @@ V is either nil or non-nil."
         (rename-buffer "*macports*")))))
 
 (defun swift-repl ()
-  "Swift repl."
+  "Run Swift repl."
   (interactive)
-  (term "swift repl")
-  (rename-buffer "*swift*"))
+  (let* ((bufname "*swift*")
+         (repl-buf (get-buffer bufname)))
+    (if repl-buf
+        (switch-to-buffer repl-buf)
+      (term "/opt/local/bin/bash")
+      (rename-buffer bufname)
+      (with-current-buffer bufname
+        (term-send-raw-string "TERM=dumb\n")
+        (term-send-raw-string "exec swift repl\n")))))
+
+(defun node-repl ()
+  "Run Node JavaScript repl."
+  (interactive)
+  (let* ((bufname "*node JS*")
+         (repl-buf (get-buffer bufname)))
+    (if repl-buf
+        (switch-to-buffer repl-buf)
+      (term "node")
+      (rename-buffer bufname))))
+
+(defun jxa-repl ()
+  "Run JXA JavaScript repl."
+  (interactive)
+  (let* ((bufname "*jxa JS*")
+         (repl-buf (get-buffer bufname)))
+    (if repl-buf
+        (switch-to-buffer repl-buf)
+      (term "osascript -il JavaScript")
+      (rename-buffer bufname))))
 
 ;; TODO: obsolete
 (defun cc/--next-sexp-raw ()
@@ -754,35 +785,6 @@ installed."
   (shell-command-on-region
    start end
    "pandoc -f markdown -t org --wrap=preserve" t t))
-
-(defun mb/org-copy-region-as-markdown ()
-  "Copy the region (in Org) to the system clipboard as Markdown.
-
-Code from https://mbork.pl/2021-05-02_Org-mode_to_Markdown_via_the_clipboard"
-  (interactive)
-  (if (use-region-p)
-      (let* ((region
-              (buffer-substring-no-properties
-                      (region-beginning)
-                      (region-end)))
-             (markdown
-              (org-export-string-as region 'md t '(:with-toc nil))))
-        (gui-set-selection 'CLIPBOARD markdown))))
-
-(defun cc/yank-markdown-as-org ()
-  "Yank Markdown text as Org.
-
-This command will convert Markdown text in the top of the `kill-ring'
-and convert it to Org using the pandoc utility."
-  (interactive)
-  (save-excursion
-    (with-temp-buffer
-      (yank)
-      (shell-command-on-region
-       (point-min) (point-max)
-       "pandoc -f markdown -t org --wrap=preserve" t t)
-      (kill-region (point-min) (point-max)))
-    (yank)))
 
 
 (defun cc/split-window-right ()
@@ -911,7 +913,9 @@ This command is tuned for macOS using a single display."
   (interactive "P")
   (let* ((choice
           (completing-read "Display Configuration: "
-                           '("desktop" "macbook" "tty" "standard" "focus" "video")
+                           '("desktop" "macbook" "tty" "standard" "focus"
+                             "video"
+                             "lg-full")
                            nil nil "standard"))
          (move (not arg)))
     (cond
@@ -940,6 +944,10 @@ This command is tuned for macOS using a single display."
       (cc/--resize-frame 141 71)
       (if move
           (set-frame-position (selected-frame) 852 192)))
+
+     ((string-equal choice "lg-full")
+      (cc/--resize-frame 330 89)
+      (set-frame-position (selected-frame) 0 25))
 
      (t
       (error "Unknown display size")))))
@@ -1007,19 +1015,23 @@ This command is tuned for macOS using a single display."
   (if (derived-mode-p 'emacs-lisp-mode)
       (insert ";; -------------------------------------------------------------------\n")))
 
+
 (defun cc/ert-test-gen ()
   "Generate ERT test for define and put into the `kill-ring'."
   (interactive)
   (save-excursion
-    (down-list)
-    (cc/next-sexp)
-    (mark-sexp)
-    (let ((fn (buffer-substring (region-beginning) (region-end)))
-          (buflist ()))
-      (push (format "(ert-deftest test-%s ()" fn) buflist)
-      (push (format "  \"Test for `%s'.\"" fn) buflist)
-      (push ")" buflist)
-      (kill-new (string-join (reverse buflist) "\n")))))
+    (beginning-of-defun)
+    (let* ((fn (list-at-point))
+           (fn-name (symbol-name (seq-elt fn 1)))
+           (docstr (format "Test for `%s'." fn-name))
+           (fn-ert ())
+           (fn-ert (push docstr fn-ert))
+           (fn-ert (push nil fn-ert))
+           (fn-ert (push (intern (format "test-%s" fn-name)) fn-ert))
+           (fn-ert (push 'ert-deftest fn-ert))
+           (fn-ert-test (prin1-to-string fn-ert))
+           (fn-ert-test (string-replace " nil " " ()\n  " fn-ert-test)))
+      (kill-new fn-ert-test))))
 
 (defun music ()
   "Launch Music app."
@@ -1046,6 +1058,10 @@ This command is tuned for macOS using a single display."
                                   (car (string-split docstring "\n")))
       (error "No docstring in %s" fn))))
 
+(defun cc/tool-tip-extract ()
+  "Extract tool tip for symbol at point and put into `kill-ring'."
+  (interactive)
+  (kill-new (cc/--function-tool-tip (symbol-at-point))))
 
 (defun cc/--defun-name ()
   "Name of defun at point."
@@ -1067,7 +1083,67 @@ This command is tuned for macOS using a single display."
   (interactive)
   (let ((test-name (cc/--defun-name)))
         ;; (message "ERT: %s" test-name)
-        (ert test-name)))
+    (ert test-name)))
+
+(defun cc/update-location ()
+  "Update calendar location from macOS Shortcuts."
+  (interactive)
+  (let* ((location-request "shortcuts run getCurrentLocation | cat")
+         (response (shell-command-to-string location-request))
+         (location-map (json-parse-string response))
+         (latitude (gethash "latitude" location-map))
+         (longitude (gethash "longitude" location-map))
+         (city (gethash "city" location-map)))
+    (setopt calendar-latitude latitude)
+    (setopt calendar-longitude longitude)
+    (setopt calendar-location-name city)
+    (message "Updated location: %s (%.5f, %.5f)" city latitude longitude)))
+
+(defun cc/three-pane-layout ()
+  "Layout frame in three panes."
+  (interactive)
+  ;; Presume 330 max width
+
+  (cc/--resize-frame 330 89)
+  (set-frame-position (selected-frame) 0 25)
+
+  (let* ((pane-width-1 100)
+         (pane-width-2 140))
+    (delete-other-windows)
+    (split-window-right)
+    (split-window-right)
+    (window-resize nil (- pane-width-1 (window-width)) t)
+    (other-window 1)
+    (window-resize nil (- pane-width-2 (window-width)) t)))
+
+(defun cc/toggle-pane ()
+  "Toggle pane."
+  (interactive)
+  (if (or (window-in-direction 'above)
+          (window-in-direction 'below))
+      (cc/maximize-pane)
+    (cc/revert-pane)))
+
+(defun cc/maximize-pane ()
+  "In three pane layout, maximize pane."
+  (interactive)
+  (window-configuration-to-register ?p)
+
+  (let ((p-above (window-in-direction 'above))
+        (p-below (window-in-direction 'below)))
+
+    (while p-above
+      (delete-window p-above)
+      (setq p-above (window-in-direction 'above)))
+
+    (while p-below
+      (delete-window p-below)
+      (setq p-below (window-in-direction 'below)))))
+
+(defun cc/revert-pane ()
+  "Revert pane."
+  (interactive)
+  (jump-to-register ?p))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here
