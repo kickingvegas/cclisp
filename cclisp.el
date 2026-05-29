@@ -1145,5 +1145,17 @@ This command is tuned for macOS using a single display."
   (interactive)
   (jump-to-register ?p))
 
+
+(defun cc/rfc822-timestamp ()
+  "Generate an RFC 822 formatted timestamp string for the current time."
+  (format-time-string "%a, %d %b %Y %T %z"))
+
+(defun cc/insert-rfc822-timestamp ()
+  "Insert RFC 822 timestamp at point and copy to `kill-ring'."
+  (interactive)
+  (let ((ts (cc/rfc822-timestamp)))
+    (kill-new ts)
+    (insert ts)))
+
 (provide 'cclisp)
 ;;; cclisp.el ends here
