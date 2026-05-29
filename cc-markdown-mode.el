@@ -27,7 +27,7 @@
 (require 'face-remap)
 (require 'cclisp)
 (require 'cc-save-hooks)
-(require 'cc-style-text-menu)
+(require 'anju-style-text)
 (require 'org-table)
 (require 'imenu)
 (require 'cc-blog-utils)
@@ -48,7 +48,7 @@
 (keymap-set markdown-mode-map "M-v" #'markdown-outline-previous)
 (keymap-set markdown-mode-map "C-v" #'markdown-outline-next)
 (keymap-set markdown-mode-map "M-<f6>" #'markdown-toggle-inline-images)
-(keymap-set markdown-mode-map "C-/" #'cc/emphasize-dwim)
+(keymap-set markdown-mode-map "C-/" #'anju-style-dwim)
 ;; (define-key markdown-mode-map [f13] 'markdown-preview)
 
 (add-hook 'markdown-mode-hook #'cc/save-hook-delete-trailing-whitespace)
