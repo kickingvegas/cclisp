@@ -569,6 +569,7 @@
  '(sentence-end-double-space nil)
  '(server-use-tcp t)
  '(set-mark-command-repeat-pop t)
+ '(show-paren-context-when-offscreen 'overlay)
  '(speedbar-show-unknown-files t)
  '(split-width-threshold nil)
  '(switch-to-buffer-obey-display-actions t)
