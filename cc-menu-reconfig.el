@@ -23,8 +23,6 @@
 ;;
 
 ;; Menu Settings
-;; (require 'cc-transform-text-menu)
-(require 'cc-style-text-menu)
 (require 'text-mode)
 (require 'vc)
 (require 'helm)
