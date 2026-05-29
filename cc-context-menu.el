@@ -259,11 +259,16 @@ This function is intended to be hooked into `context-menu-functions'."
 
       (easy-menu-add-item menu nil cc/context-menu-org-agenda-view-menu)
 
+      (easy-menu-add-item menu nil ["Log Mode"
+                                    org-agenda-log-mode
+                                    :style toggle
+                                    :selected org-agenda-show-log
+                                    :help "Toggle log mode in an agenda buffer"])
+
       (easy-menu-add-item menu nil ["Refresh"
                                     org-agenda-redo-all
                                     :help "Redo all"])))
   menu)
-
 
 (provide 'cc-context-menu)
 ;;; cc-context-menu.el ends here
