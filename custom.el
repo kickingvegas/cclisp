@@ -541,6 +541,7 @@
           treemacs use-package verilog-mode visual-regexp visual-regexp-steroids
           vtable webpaste wgrep which-key window-tool-bar xref yaml-mode
           yasnippet yasnippet-snippets ztree))
+ '(pages-directory-for-adding-new-page-before-current-page-p nil)
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
  '(plantuml-indent-level 4)

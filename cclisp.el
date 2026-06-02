@@ -1007,15 +1007,6 @@ This command is tuned for macOS using a single display."
       (forward-page count)
       (recenter-top-bottom 0))))
 
-;; TODO: rename to cc/page-break
-(defun cc/line-feed ()
-  "Insert line feed."
-  (interactive)
-  (insert "\n")
-  (if (derived-mode-p 'emacs-lisp-mode)
-      (insert ";; -------------------------------------------------------------------\n")))
-
-
 (defun cc/ert-test-gen ()
   "Generate ERT test for define and put into the `kill-ring'."
   (interactive)

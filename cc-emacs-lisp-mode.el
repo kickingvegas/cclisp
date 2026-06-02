@@ -34,6 +34,10 @@
 
 ;;; Code:
 
+
+
+;;; Basic Configuration
+
 ;;(add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 (add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
 (add-hook 'emacs-lisp-mode-hook #'prettify-symbols-mode)
@@ -77,7 +81,10 @@
 
 (keymap-set emacs-lisp-mode-map "C-<prior>" #'pages-previous-page)
 (keymap-set emacs-lisp-mode-map "C-<next>" #'pages-next-page)
-(keymap-set emacs-lisp-mode-map "M-RET" #'cc/line-feed)
+(keymap-set emacs-lisp-mode-map "M-RET" #'pages-add-new-page)
+
+
+;;; Edebug Transients
 
 (transient-define-prefix cc/edebug-tmenu ()
   :refresh-suffixes t
@@ -218,7 +225,7 @@
 (keymap-set emacs-lisp-mode-map "C-c m" #'casual-elisp-tmenu)
 
 
-;; Calle 24 Config
+;;; Calle 24 Config
 
 ;; (add-hook 'emacs-lisp-mode-hook
 ;;           (lambda ()
@@ -245,8 +252,7 @@
 ;; (add-hook 'edebug-eval-mode-hook #'window-tool-bar-mode)
 
 
-;; -------------------------------------------------------------------
-;; Fix vector indentation.
+;;; Fix vector indentation.
 ;; This code taken from
 ;; https://github.com/magit/emacsql/blob/2fe6d4562b32a170a750d5e80514fbb6b6694803/emacsql.el#L357-L379
 ;; per guidance from J. Bernoulli to fix vector formatting.
