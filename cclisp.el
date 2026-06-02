@@ -1148,5 +1148,33 @@ This command is tuned for macOS using a single display."
     (kill-new ts)
     (insert ts)))
 
+(defun cc/run-nota (msg)
+  "Run nota shortcut with MSG."
+  (process-lines
+   "shortcuts"
+   "run"
+   "nota"
+   "-i"
+   msg))
+
+(defun cc/notify-at (&optional start-time msg)
+  "Send a nota notification with MSG at START-TIME.
+
+This command invokes `cc/run-nota' with MSG at START-TIME passed into
+`run-at-time'."
+  (interactive)
+  (let* ((start-time (if start-time
+                         start-time
+                       (read-string "Time: ")))
+         (msg (if msg
+                  msg
+                (read-string "Message: "))))
+    (run-at-time start-time
+                 nil
+                 #'cc/run-nota
+                 msg)
+
+    (message "Show notification “%s” in/at %s" msg start-time)))
+
 (provide 'cclisp)
 ;;; cclisp.el ends here
