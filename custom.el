@@ -546,6 +546,7 @@
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
  '(plantuml-indent-level 4)
+ '(prettify-symbols-unprettify-at-point 'right-edge)
  '(py-shell-name "python3" t)
  '(python-shell-interpreter "python3")
  '(reb-re-syntax 'string)
