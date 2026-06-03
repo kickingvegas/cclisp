@@ -27,6 +27,10 @@
 (require 'map)
 (require 'vtable)
 (require 'transient)
+(require 'org-element)
+(require 'esh-mode)
+(require 'view)
+(require 'cclisp)
 
 ;; TODO: Rebind < and > to move point while staying in the same column.
 ;;
@@ -38,17 +42,35 @@
 ;; TODO: Format column widths
 ;; TODO: Make Transient menu for Org and Markdown export
 
+(defcustom cc-gh-username nil
+  "GitHub username."
+  :type '(choice (const :tag "None" nil)
+                 (string :tag "String Value"))
+  :group 'kickingvegas)
+
 (defvar cc/gh--last-repo-history nil
   "Private variable to store last used GitHub repository name.")
 
 (defvar cc/gh-repo-name nil
   "Local repository name.")
 
+(defvar cc/gh--repo-list nil
+  "List of repos owned by `cc-gh-username'.")
+
 (defun cc/gh-read-repo (prompt)
   "Prompt the user with PROMPT, using the last history entry as the default input."
   (let* ((history 'cc/gh--last-repo-history)  ; Define the history variable
-         (last-history-entry (car (symbol-value history))))  ; Get the last entry
-    (string-trim (read-string prompt last-history-entry history))))
+         (last-history-entry (car (symbol-value history))) ; Get the last entry
+         (repo-list (if cc/gh--repo-list
+                        cc/gh--repo-list
+                      (setq cc/gh--repo-list (cc/gh-list-repos)))))
+    (string-trim
+     (completing-read prompt
+                      repo-list
+                      nil
+                      nil
+                      last-history-entry
+                      history))))
 
 
 (defun cc/gh-md2org (buf)
@@ -221,40 +243,42 @@ gh."
 
 (defun cc/gh-request-issues (repo)
   "Request issues for REPO."
+  (let* ((fields '("number"
+                   "title"
+                   "body"
+                   "author"
+                   "assignees"
+                   "url"
+                   "state"
+                   "labels"
+                   "createdAt"
+                   "updatedAt"
+                   "milestone"))
+         (cmd-list (list "gh"
+                         "--repo"
+                         (format "'%s'" repo)
+                         "issue"
+                         "list"
+                         "--limit"
+                         "50"
+                         "--json"
+                         (string-join fields ","))))
 
-  (let ((cmd-list ())
-        (fields '("number"
-                  "title"
-                  "body"
-                  "author"
-                  "assignees"
-                  "url"
-                  "state"
-                  "labels"
-                  "createdAt"
-                  "updatedAt"
-                  "milestone")))
-    (push "gh" cmd-list)
-    (push "--repo" cmd-list)
-    (push (format "'%s'" repo) cmd-list)
-    (push "issue" cmd-list)
-    (push "list" cmd-list)
-    (push "--limit 50" cmd-list)
-    (push "--json" cmd-list)
-    (push (string-join fields ",") cmd-list)
-
-    (json-parse-string
-     (shell-command-to-string
-      (string-join (seq-reverse cmd-list) " "))
-     :null-object nil)))
+    (json-parse-string (shell-command-to-string
+                        (string-join cmd-list " "))
+                       :null-object nil)))
 
 (defun cc/gh-refresh-issues ()
   "Refresh issues."
   (let* ((repo cc/gh-repo-name)
-         (issues (cc/gh-request-issues repo)))
-    (message "Refreshed %s issues (%d)" repo (length issues))
-    (seq-into issues 'list)))
-
+         (issues (cc/gh-request-issues repo))
+         (count (length issues)))
+    ;; !!! vtable has a bug debbugs #69454 where an empty table is not handled
+    ;; !!! correctly due to a bug in column width handling.
+    (if (= count 0)
+        nil
+      (message "Refreshed %s issues (%d)" repo count)
+      (seq-into issues 'list))))
 
 (defun cc/gh-kill-all-repo-buffers ()
   "Kill current repo buffers."
@@ -266,9 +290,7 @@ gh."
                         (lambda (b)
                           (let ((bufname (buffer-name b)))
                             (string-match pat bufname)))
-                        blist))
-         )
-
+                        blist)))
     (mapc (lambda (b)
             (kill-buffer b))
           repo-buffers)
@@ -281,7 +303,7 @@ The command prompts the user for a GitHub repository, which if it
 exists will then retrieve the current list of issues for it via gh."
   (interactive)
 
-  (let* ((repo (string-trim (cc/gh-read-repo "repo: ")))
+  (let* ((repo (cc/gh-read-repo "Repo: "))
          (repo-buffer-name (format "*issues: %s*" repo)))
 
     (get-buffer-create repo-buffer-name)
@@ -330,6 +352,7 @@ exists will then retrieve the current list of issues for it via gh."
        :keymap (define-keymap
                  "RET" #'cc/gh-switch-to-issue
                  "q" #'quit-window
+                 "Q" #'View-kill-and-leave
                  "n" #'cc/gh-next-line
                  "p" #'cc/gh-previous-line
                  "j" #'cc/gh-next-line
@@ -350,7 +373,7 @@ exists will then retrieve the current list of issues for it via gh."
                          (interactive)
                          (cc/gh-copy-issue (vtable-current-object))))
 
-    ("K" "Kill All" cc/gh-kill-all-repo-buffers)]
+    ("K" "Close all opened issues" cc/gh-kill-all-repo-buffers)]
 
    ["Navigation"
     ("p" "Up" previous-line :transient t)
@@ -358,7 +381,94 @@ exists will then retrieve the current list of issues for it via gh."
 
    ["View"
     ("t" "Toggle Truncate Lines" toggle-truncate-lines)
-    ("g" "Refresh" vtable-revert-command)]])
+    ("g" "Refresh" vtable-revert-command)]]
+
+  [:class transient-row
+   ("Q" "Quit" View-kill-and-leave)])
+
+(defun cc/gh-request-list-repos ()
+  "List repos owned by user."
+
+  (let ((cmd-list '("gh"
+                     "repo"
+                     "list"
+                     "-L"
+                     "1000"
+                     "--json"
+                     "name,url")))
+    (json-parse-string
+     (shell-command-to-string (string-join cmd-list " "))
+     :null-object nil)))
+
+(defun cc/gh-list-repos ()
+  "List repos."
+  (let* ((response (cc/gh-request-list-repos))
+         (names (seq-map
+                 (lambda (e)
+                   (file-name-concat cc-gh-username (map-elt e "name")))
+                 response)))
+    names))
+
+(defun cc/gh-request-issue-create (&optional repo)
+  "Request issue create with REPO."
+  (interactive)
+
+  ;; Can't use (with-editor-shell-command cmd) because gh tries to
+  ;; detect if running in a TTY
+
+  (let* ((repo (if repo
+                   repo
+                 (cc/gh-read-repo "Repo: ")))
+
+         (cmdlist (list "gh"
+                        "issue"
+                        "create"
+                        "--repo"
+                        repo
+                        "--editor"))
+         (cmd (string-join cmdlist " ")))
+
+    (unless (get-buffer "*eshell*")
+      (eshell))
+
+    (let ((esb (get-buffer "*eshell*")))
+      (when esb
+        (with-current-buffer esb
+          (goto-char (point-max))
+          (insert cmd)
+          (eshell-send-input))))))
+
+
+(defun cc/gh-create-issue ()
+  "Create GH issue."
+  (interactive)
+
+  (if (and (derived-mode-p 'org-mode) cc-gh-username)
+      (save-excursion
+        (outline-back-to-heading)
+        (let* ((repo (cc/gh-read-repo "Repo: "))
+               (element (org-element-at-point))
+               (headline (org-element-property :raw-value element))
+               (contents-begin (org-element-property :contents-begin element))
+               (contents-end   (org-element-property :contents-end element))
+               (content (if (and contents-begin contents-end)
+                            (buffer-substring-no-properties contents-begin
+                                                            contents-end)))
+               (clipping
+                (org-export-string-as content 'gfm t '(:with-toc nil)))
+               (payload (string-join (list headline clipping) "\n")))
+
+          (kill-new payload)
+          (cc/gh-request-issue-create repo)))
+
+    (cond
+     ((not (derived-mode-p 'org-mode))
+      (message "This command only supported in an `org-mode' buffer"))
+
+     ((not cc-gh-username)
+      (message "`cc-gh-username' must be set the GitHub user name"))
+     (t
+      (message "undefined condition")))))
 
 (provide 'cc-gh)
 ;;; cc-gh.el ends here

@@ -140,6 +140,7 @@
  '(case-fold-search t)
  '(casual-lib-use-unicode t)
  '(casual-timezone-datestamp-format "%a %b %-e %Y, %k:%M")
+ '(cc-gh-username "kickingvegas")
  '(column-number-mode t)
  '(company-dabbrev-downcase nil)
  '(compilation-auto-jump-to-first-error 'first-known)

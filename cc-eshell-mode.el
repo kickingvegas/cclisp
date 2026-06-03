@@ -90,6 +90,18 @@
 
 (keymap-set eshell-mode-map "C-o" #'casual-eshell-tmenu)
 
+(defun cc/eshell-copy-last-output ()
+  "Copy output from last command issued."
+  (interactive)
+  (save-excursion
+    (eshell-mark-output)
+    (let* ((start (point))
+           (end (point-max))
+           (output (substring-no-properties (buffer-substring start end)))
+           (prompt (funcall eshell-prompt-function))
+           (output (string-replace prompt "" output)))
+      (kill-new output))))
+
 (defun eshell/bufcat (&rest args)
   "Support cat on a buffer specified in ARGS.
 
