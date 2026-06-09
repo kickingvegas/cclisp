@@ -1,6 +1,6 @@
 ;;; cc-org-capture.el --- Org Capture Configuration  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2025  Charles Choi
+;; Copyright (C) 2025, 2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -409,8 +409,8 @@ Structure type is defined in `org-structure-template-alist'."
            "WWDC Session (Org Protocol)"
            entry
            (file+headline
-            "~/org/wwdc25.org"
-            "WWDC 25 Notes")
+            "~/org/wwdc26.org"
+            "WWDC 26 Notes")
            (function (lambda ()
                        (string-join
                         '("* TODO %:description"
