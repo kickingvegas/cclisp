@@ -37,7 +37,6 @@
 (require 'diff-hl-dired)
 
 (add-hook 'dired-mode-hook #'hl-line-mode)
-(add-hook 'dired-mode-hook #'context-menu-mode)
 (add-hook 'dired-mode-hook #'dired-async-mode)
 (add-hook 'dired-mode-hook #'diff-hl-dired-mode)
 

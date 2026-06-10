@@ -1,6 +1,6 @@
 ;;; cc-shell-mode.el --- Shell Mode Customization -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -28,7 +28,6 @@
 (require 'with-editor)
 (require 'goto-addr)
 
-(add-hook 'shell-mode-hook #'context-menu-mode)
 (add-hook 'shell-mode-hook #'with-editor-export-editor)
 (add-hook 'shell-mode-hook #'goto-address-mode)
 

@@ -43,7 +43,13 @@
 (require 'wgrep)
 (require 'yasnippet)
 (require 'pixel-scroll)
+(require 'mouse)
+
+(context-menu-mode)
+
 ;;(require 'pbcopy)
+
+
 (add-hook 'calendar-today-visible-hook 'calendar-mark-today)
 
 (yas-global-mode 1)
@@ -150,6 +156,7 @@
 (require 'casual-agenda)
 (require 'cc-menu-reconfig)
 (require 'cc-global-keybindings)
+(require 'anju)
 
 
 ;;; Configure MELPA Packages
@@ -166,6 +173,8 @@
   :defer t
   :hook ((bookmark-bmenu-mode . hl-line-mode)
          (ibuffer-mode . hl-line-mode)))
+
+(anju-init)
 
 ;;; Local Customizations
 

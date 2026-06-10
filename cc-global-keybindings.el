@@ -227,7 +227,5 @@
 
 (keymap-global-set "C-x 1" #'anju-toggle-one-window)
 
-(anju-init)
-
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here
