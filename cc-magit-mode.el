@@ -1,6 +1,6 @@
 ;;; cc-magit-mode.el --- Magit configuration         -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -53,7 +53,7 @@
     ("J" "Jump…" bookmark-jump)]
 
    ["gh"
-    ("i" "List Issues" cc/gh-list-issues-vtable)]]
+    ("i" "List Issues" cc/gh-issues)]]
 
   [:class transient-row
     (casual-lib-quit-one)
