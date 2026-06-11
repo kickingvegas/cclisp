@@ -390,7 +390,7 @@
  '(lunar-phase-names '("🌑 New" "🌓 First Quarter" "🌕 Full" "🌗 Last Quarter"))
  '(magit-copy-revision-abbreviated t)
  '(magit-save-repository-buffers 'dontask)
- '(major-mode-remap-alist '((css-mode . css-ts-mode)))
+ '(major-mode-remap-alist '((css-mode . css-ts-mode) (swift-mode . swift-ts-mode)))
  '(mark-ring-max 6)
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
@@ -537,9 +537,9 @@
            paredit password-store pbcopy pkg-info plantuml-mode project python
            rainbow-mode reveal-in-folder scpaste show-font
            smart-mode-line-powerline-theme soap-client solarized-theme
-           sqlite-mode-extras sr-speedbar svg-clock swift-mode symbol-overlay
-           tj3-mode toc-org track-changes tramp transmission transpose-frame
-           treemacs use-package verilog-mode visual-regexp
+           sqlite-mode-extras sr-speedbar svg-clock swift-mode swift-ts-mode
+           symbol-overlay tj3-mode toc-org track-changes tramp transmission
+           transpose-frame treemacs use-package verilog-mode visual-regexp
            visual-regexp-steroids vtable webpaste wgrep which-key
            window-tool-bar xref yaml-mode yasnippet yasnippet-snippets ztree))
  '(pages-directory-for-adding-new-page-before-current-page-p nil)

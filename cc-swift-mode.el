@@ -1,6 +1,6 @@
 ;;; cc-swift-mode.el --- Swift mode configuration    -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024  Charles Choi
+;; Copyright (C) 2024-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -25,12 +25,31 @@
 ;;; Code:
 
 (require 'swift-mode)
+(require 'swift-ts-mode)
+(require 'cclisp)
+(require 'eglot)
 
-(keymap-set swift-mode-map "M-[" #'backward-sexp)
-(keymap-set swift-mode-map "M-]" #'forward-sexp)
+(keymap-set swift-ts-mode-map "M-[" #'backward-sexp)
+(keymap-set swift-ts-mode-map "M-]" #'forward-sexp)
+(keymap-set swift-ts-mode-map "M-j" #'fill-paragraph)
+(keymap-set swift-ts-mode-map "M-n" #'cc/next-sexp)
+(keymap-set swift-ts-mode-map "M-p" #'backward-sexp)
+(keymap-set swift-ts-mode-map "C-<up>" #'backward-up-list)
+(keymap-set swift-ts-mode-map "C-<down>" #'down-list)
+(keymap-set swift-ts-mode-map "C-<left>" #'backward-sexp)
+(keymap-set swift-ts-mode-map "C-<right>" #'cc/next-sexp)
+
+(keymap-set swift-ts-mode-map "M-b" #'backward-sexp)
+(keymap-set swift-ts-mode-map "M-f" #'cc/next-sexp)
+(keymap-set swift-ts-mode-map "C-M-b" #'backward-word)
+(keymap-set swift-ts-mode-map "C-M-f" #'forward-word)
 
 (add-hook 'swift-mode-hook (lambda ()
                              (setq fill-column 120)))
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(swift-ts-mode . ("xcrun" "sourcekit-lsp"))))
 
 (provide 'cc-swift-mode)
 ;;; cc-swift-mode.el ends here
