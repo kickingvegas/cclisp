@@ -121,9 +121,20 @@ gh."
 (keymap-set vtable-map "<backtab>" #'vtable-previous-column)
 
 (defun cc/gh-browse-url (issue)
-  "Open URL in ISSUE."
-  (let* ((url (map-elt issue "url")))
-    (browse-url url)))
+  "Open URL in ISSUE.
+
+Note that UUID in ‘app-id’ is locally defined by macOS. Users must
+inspect their local GitHub PWA Info.plist configuration to replace it
+accordingly."
+  (let ((url (map-elt issue "url")))
+    (cond
+     ((and (string-equal (system-name) "bingsu.local")
+           (or (eq window-system 'ns) (eq window-system 'mac)))
+      (let ((app-id "1BB048BB-C153-436E-B159-2FE55E7783D6"))
+        (cc/open-safari-pwa app-id url)))
+
+     (t
+      (browse-url url)))))
 
 (defun cc/gh-format-buffer-name (issue)
   "Generate buffer name from ISSUE."
@@ -296,6 +307,7 @@ gh."
           repo-buffers)
     (message "Killed all %s buffers" repo)))
 
+
 (defun cc/gh-issues ()
   "Put current issues for a GitHub repository in a vtable.
 
@@ -438,6 +450,13 @@ exists will then retrieve the current list of issues for it via gh."
           (insert cmd)
           (eshell-send-input))))))
 
+(defun github ()
+  "Launch GitHub Safari PWA."
+  (interactive)
+  (let* ((repo (cc/gh-read-repo "Repo: "))
+         (url (file-name-concat "https:github.com" repo))
+         (app-id "1BB048BB-C153-436E-B159-2FE55E7783D6"))
+    (cc/open-safari-pwa app-id url)))
 
 (defun cc/gh-create-issue ()
   "Create GH issue."

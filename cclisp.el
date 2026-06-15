@@ -1176,5 +1176,18 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
 
     (message "Show notification “%s” in/at %s" msg start-time)))
 
+(defun cc/open-safari-pwa (app-id &optional url)
+  "Open Safari PWA with APP-ID and URL."
+  (let ((safari-id (concat "com.apple.Safari.WebApp." app-id)))
+    (if url
+        (process-lines "open" "-b" safari-id url)
+      (process-lines "open" "-b" safari-id))))
+
+(defun youtube ()
+  "Launch YouTube Safari PWA."
+  (interactive)
+  (let ((app-id "01199F0B-AE83-409F-9FF4-4F9CD289718C"))
+    (cc/open-safari-pwa app-id)))
+
 (provide 'cclisp)
 ;;; cclisp.el ends here
