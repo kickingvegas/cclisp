@@ -148,8 +148,9 @@
  '(context-menu-functions
    '(anju-context-menu-elisp anju-context-menu-edebug-eval
                              anju-context-menu-compile anju-context-menu-dired
-                             cc/context-menu-dired cc/context-menu-org-agenda
+                             cc/context-menu-dired
                              anju-context-menu-org-mode
+                             anju-context-menu-org-agenda
                              anju-context-menu-info-mode
                              anju-context-menu-make-mode cc/context-menu-journal
                              anju-context-menu-buffers anju-context-menu-region
