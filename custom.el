@@ -12,6 +12,7 @@
  '(anju-help-menu-remove-emacs-tutorial t)
  '(anju-reconfigure-main-menu-hook
    '(anju-main-menu--reconfigure-file anju-main-menu--reconfigure-edit
+                                      anju-main-menu--reconfigure-registers
                                       anju-main-menu--reconfigure-options
                                       anju-main-menu--reconfigure-bookmarks
                                       anju-main-menu--reconfigure-text-mode
@@ -148,8 +149,7 @@
  '(context-menu-functions
    '(anju-context-menu-elisp anju-context-menu-edebug-eval
                              anju-context-menu-compile anju-context-menu-dired
-                             cc/context-menu-dired
-                             anju-context-menu-org-mode
+                             cc/context-menu-dired anju-context-menu-org-mode
                              anju-context-menu-org-agenda
                              anju-context-menu-info-mode
                              anju-context-menu-make-mode cc/context-menu-journal
