@@ -155,6 +155,7 @@
 (require 'numeri)
 (require 'casual-agenda)
 (require 'cc-menu-reconfig)
+(require 'cc-rfc-mode)
 (require 'cc-global-keybindings)
 (require 'anju)
 

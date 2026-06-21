@@ -536,7 +536,7 @@
            org-outline-numbering org-ql org-re-reveal org-superstar
            osx-dictionary ox-gfm ox-gist ox-jira ox-slack ox-trac package-lint
            paredit password-store pbcopy pkg-info plantuml-mode project python
-           rainbow-mode reveal-in-folder scpaste show-font
+           pyvenv rainbow-mode reveal-in-folder rfc-mode scpaste show-font
            smart-mode-line-powerline-theme soap-client solarized-theme
            sqlite-mode-extras sr-speedbar svg-clock swift-mode swift-ts-mode
            symbol-overlay tj3-mode toc-org track-changes tramp transmission
