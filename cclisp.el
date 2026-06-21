@@ -1227,6 +1227,11 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
   (interactive)
   (cc/open-safari-pwa "~/Applications/GitHub.app" url))
 
+(defun peacock (&optional url)
+  "Launch Peacock TV Safari PWA with URL."
+  (interactive)
+  (cc/open-safari-pwa "~/Applications/Peacock.app" url))
+
 (defun cc/pwa-extract-bundleid (pwa-path)
   "Extract Bundle ID from PWA-PATH."
   (let* ((plist-path (file-name-concat (expand-file-name pwa-path) "Contents" "Info.plist"))
