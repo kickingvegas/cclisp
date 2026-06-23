@@ -147,7 +147,7 @@
  '(compilation-auto-jump-to-first-error 'first-known)
  '(compilation-scroll-output t)
  '(context-menu-functions
-   '(anju-context-menu-elisp anju-context-menu-edebug-eval
+   '(anju-context-menu-elisp anju-context-menu-edebug-eval anju-context-menu-xref
                              anju-context-menu-compile anju-context-menu-dired
                              cc/context-menu-dired anju-context-menu-org-mode
                              anju-context-menu-org-agenda
