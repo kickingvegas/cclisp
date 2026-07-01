@@ -190,6 +190,7 @@
 (keymap-global-set "M-<kp-6>" #'windmove-swap-states-right)
 
 (keymap-global-set "C-<kp-0>" #'ace-select-window)
+(keymap-global-set "M-<kp-0>" #'ace-swap-window)
 (keymap-global-set "C-<kp-divide>" #'transpose-frame)
 
 (keymap-global-set "C-c w" #'casual-editkit-windows-tmenu)
