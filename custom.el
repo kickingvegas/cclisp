@@ -391,7 +391,6 @@
  '(lunar-phase-names '("🌑 New" "🌓 First Quarter" "🌕 Full" "🌗 Last Quarter"))
  '(magit-copy-revision-abbreviated t)
  '(magit-save-repository-buffers 'dontask)
- '(major-mode-remap-alist '((css-mode . css-ts-mode) (swift-mode . swift-ts-mode)))
  '(mark-ring-max 6)
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)

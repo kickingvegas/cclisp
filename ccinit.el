@@ -49,6 +49,13 @@
 
 ;;(require 'pbcopy)
 
+(cond
+ ((eq system-type 'darwin)
+  (add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(swift-mode . swift-ts-mode)))
+
+ ((eq system-type 'gnu/linux)
+  (add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))))
 
 (add-hook 'calendar-today-visible-hook 'calendar-mark-today)
 
@@ -119,7 +126,8 @@
 (require 'cc-context-menu)
 (require 'cc-diff-hl-mode)
 (require 'cc-python-mode)
-(require 'cc-swift-mode)
+(if (eq system-type 'darwin)
+    (require 'cc-swift-mode))
 (require 'flyspell)
 (require 'cc-view-mode)
 (require 'cc-magit-mode)
