@@ -694,6 +694,18 @@ V is either nil or non-nil."
   (interactive)
   (delete-overlay mouse-secondary-overlay))
 
+(defun cc/toggle-tty ()
+  "Toggle Unicode and prettify symbols."
+  (interactive)
+
+  (if casual-lib-use-unicode
+      (setopt casual-lib-use-unicode nil)
+    (setopt casual-lib-use-unicode t))
+
+  (if prettify-symbols-mode
+      (prettify-symbols-mode -1)
+    (prettify-symbols-mode 1)))
+
 (defun cc/toggle-unicode ()
   "Toggle Unicode and prettify symbols."
   (interactive)
