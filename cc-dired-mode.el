@@ -64,6 +64,7 @@
 (keymap-set dired-mode-map "M-m" #'dired-rsync-transient)
 (keymap-set dired-mode-map "M-l" #'dired-other-window)
 (keymap-set dired-mode-map "C-c e" #'casual-dired-elisp-tmenu)
+(keymap-set dired-mode-map "SPC" #'dired-display-file)
 
 ;; Added to be consistent with IBuffer
 (keymap-set dired-mode-map "<backtab>" #'dired-prev-subdir)
