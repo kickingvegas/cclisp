@@ -50,6 +50,10 @@
 
   :group 'kickingvegas)
 
+(defun cc/set-cc-compile-project-root (proj-root)
+  "Set `cc-compile-project-root' to PROJ-ROOT."
+  (setopt cc-compile-project-root proj-root))
+
 (defun cc/autoset-cc-compile-project-root ()
   "Configure `cc-compile-project-root' with project root directory."
   (interactive)
@@ -72,6 +76,7 @@
 (setopt compilation-save-buffers-predicate
         #'cc-compilation-save-buffers-predicate)
 
+(advice-add 'project-switch-project :after #'cc/set-cc-compile-project-root)
 
 (provide 'cc-compile-mode)
 ;;; cc-compile-mode.el ends here
