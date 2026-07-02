@@ -164,9 +164,9 @@
 (require 'casual-agenda)
 (require 'cc-menu-reconfig)
 (require 'cc-rfc-mode)
-(require 'cc-global-keybindings)
+(require 'now-playing)
 (require 'anju)
-
+(require 'cc-global-keybindings)
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
@@ -184,6 +184,10 @@
          (ibuffer-mode . hl-line-mode)))
 
 (anju-init)
+
+(when (equal system-type 'darwin)
+  (defalias 'np 'now-playing-tmenu
+    "Alias to `now-playing-tmenu'."))
 
 ;;; Local Customizations
 

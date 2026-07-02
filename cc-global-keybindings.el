@@ -48,6 +48,7 @@
 (require 'ace-window)
 (require 'cc-org-mode)
 (require 'anju)
+(require 'now-playing)
 
 (keymap-global-set "C-=" #'er/expand-region)
 ;(keymap-global-set (kbd "M-g") 'goto-line)
@@ -83,6 +84,7 @@
 (keymap-global-set "<f8>" #'org-capture)
 (keymap-global-set "<f9>" #'compile)
 (keymap-global-set "<f11>" #'bookmark-set-no-overwrite)
+(keymap-global-set "M-<f11>" #'now-playing-tmenu)
 
 ;; (keymap-global-set "M-<f1>" #'cc/open-url)
 ;;(keymap-global-set "M-<f2>" #'google-this)
