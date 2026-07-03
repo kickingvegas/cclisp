@@ -1102,6 +1102,20 @@ This command is tuned for macOS using a single display."
     (setopt calendar-location-name city)
     (message "Updated location: %s (%.5f, %.5f)" city latitude longitude)))
 
+(defun shazam ()
+  "Run Shazam shortcut."
+  (interactive)
+  (let* ((shazam-request "shortcuts run 'Identify Music' | cat")
+         (response (shell-command-to-string shazam-request)))
+    (message "%s" response)))
+
+(defun triode-now-playing ()
+  "Run Triode Now Playing shortcut."
+  (interactive)
+  (let* ((request "shortcuts run 'Triode Now Playing' | cat")
+         (response (shell-command-to-string request)))
+    (message "%s" response)))
+
 (defun cc/three-pane-layout ()
   "Layout frame in three panes."
   (interactive)
