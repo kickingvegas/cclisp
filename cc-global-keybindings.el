@@ -84,7 +84,7 @@
 (keymap-global-set "<f8>" #'org-capture)
 (keymap-global-set "<f9>" #'compile)
 (keymap-global-set "<f11>" #'bookmark-set-no-overwrite)
-(keymap-global-set "M-<f11>" #'now-playing-tmenu)
+;;(keymap-global-set "M-<f11>" #'now-playing-tmenu)
 
 ;; (keymap-global-set "M-<f1>" #'cc/open-url)
 ;;(keymap-global-set "M-<f2>" #'google-this)
@@ -94,7 +94,9 @@
 (keymap-global-set "<f13>" #'google-this)
 (keymap-global-set "M-<f13>" #'neotree-toggle)
 (keymap-global-set "C-<f13>" #'treemacs)
-(keymap-global-set "<f14>" #'eshell) ;regular
+(keymap-global-set "M-<f14>" #'eshell)
+(keymap-global-set "<f14>" #'now-playing-tmenu)
+
 ;;(keymap-global-set (kbd "<f14>") 'save-buffer) ;logitech
 (keymap-global-set "<f15>" #'casual-ediff-revision)
 (keymap-global-set "M-<f12>" #'casual-ediff-revision)
