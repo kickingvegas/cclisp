@@ -1109,13 +1109,6 @@ This command is tuned for macOS using a single display."
          (response (shell-command-to-string shazam-request)))
     (message "%s" response)))
 
-(defun triode-now-playing ()
-  "Run Triode Now Playing shortcut."
-  (interactive)
-  (let* ((request "shortcuts run 'Triode Now Playing' | cat")
-         (response (shell-command-to-string request)))
-    (message "%s" response)))
-
 (defun cc/three-pane-layout ()
   "Layout frame in three panes."
   (interactive)
@@ -1287,6 +1280,15 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
               (setq cc/pwa-table
                   (map-insert cc/pwa-table x (cc/pwa-extract-bundleid x)))))
           pwa-paths)))
+
+(defun cc/osascript (arg)
+  "Run osascript with ARG."
+  (interactive "sOSAScript: ")
+  (cc/--osascript arg))
+
+(defun cc/--osascript (arg)
+  "Process ARG with OSAscript."
+  (process-lines "osascript" "-e" arg))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

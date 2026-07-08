@@ -48,7 +48,6 @@
 (require 'ace-window)
 (require 'cc-org-mode)
 (require 'anju)
-(require 'now-playing)
 
 (keymap-global-set "C-=" #'er/expand-region)
 ;(keymap-global-set (kbd "M-g") 'goto-line)
@@ -91,11 +90,11 @@
 ;;(keymap-global-set "C-c C-;" #'shell-command)
 (keymap-global-set "M-<f4>" #'google-this)
 
-(keymap-global-set "<f13>" #'google-this)
+(keymap-global-set "M-<f1>" #'google-this)
+(keymap-global-set "<f13>" #'eshell)
+
 (keymap-global-set "M-<f13>" #'neotree-toggle)
 (keymap-global-set "C-<f13>" #'treemacs)
-(keymap-global-set "M-<f14>" #'eshell)
-(keymap-global-set "<f14>" #'now-playing-tmenu)
 
 ;;(keymap-global-set (kbd "<f14>") 'save-buffer) ;logitech
 (keymap-global-set "<f15>" #'casual-ediff-revision)
