@@ -817,51 +817,61 @@ installed."
   (process-lines "killall" "corespeechd"))
 
 (defun cc/info-compile ()
-  "Build Info file from an Org file."
+  "Build Info file for project Org file."
   (interactive)
-  (let ((outfile (expand-file-name (file-name-with-extension buffer-file-name "info")))
-        ;; (texi (file-name-with-extension buffer-file-name "texi"))
-        )
+  (let* ((proot (thread-first (project-current)
+                              (project-root)
+                              (expand-file-name)))
+         (pname (thread-first proot
+                              (directory-file-name)
+                              (file-name-nondirectory)))
+         (infile (file-name-concat proot "docs" (format "%s.org" pname)))
+         (outfile (file-name-concat proot "docs" (format "%s.info" pname)))
+         (wincnt (length (window-list))))
 
+    (if (= wincnt 1)
+        (split-window-right))
+
+    (other-window 1)
+
+    (find-file infile)
     (org-texinfo-export-to-info)
-    ;;(org-export-to-file 'texinfo texi)
-    ;;(process-lines "make" "run")
     (if (get-buffer "*info*")
         (kill-buffer "*info*"))
     (info outfile)
     (info-initialize)))
 
-(defun cc/casual-info-compile ()
-  "Build Casual Info file."
-  (interactive)
-  (let* ((outfile "~/Projects/elisp/casual/docs/casual.info")
-         (current (current-buffer)))
-    (find-file "~/Projects/elisp/casual/docs/casual.org")
-    (org-texinfo-export-to-info)
-    (if (get-buffer "*info*")
-        (kill-buffer "*info*"))
-    (info outfile)
-    (info-initialize)
-    (switch-to-buffer current)))
+;; (defun cc/casual-info-compile ()
+;;   "Build Casual Info file."
+;;   (interactive)
+;;   (let* ((outfile "~/Projects/elisp/casual/docs/casual.info")
+;;          (current (current-buffer)))
+;;     (find-file "~/Projects/elisp/casual/docs/casual.org")
+;;     (org-texinfo-export-to-info)
+;;     (if (get-buffer "*info*")
+;;         (kill-buffer "*info*"))
+;;     (info outfile)
+;;     (info-initialize)
+;;     (switch-to-buffer current)))
 
-(defun cc/anju-info-compile ()
-  "Build Anju Info file."
-  (interactive)
-  (let* ((outfile "~/Projects/elisp/anju/docs/anju.info")
-         (current (current-buffer)))
-    (find-file "~/Projects/elisp/anju/docs/anju.org")
-    (org-texinfo-export-to-info)
-    (if (get-buffer "*info*")
-        (kill-buffer "*info*"))
-    (info outfile)
-    (info-initialize)
-    (switch-to-buffer current)))
+;; (defun cc/anju-info-compile ()
+;;   "Build Anju Info file."
+;;   (interactive)
+;;   (let* ((outfile "~/Projects/elisp/anju/docs/anju.info")
+;;          (current (current-buffer)))
+;;     (find-file "~/Projects/elisp/anju/docs/anju.org")
+;;     (org-texinfo-export-to-info)
+;;     (if (get-buffer "*info*")
+;;         (kill-buffer "*info*"))
+;;     (info outfile)
+;;     (info-initialize)
+;;     (switch-to-buffer current)))
 
-(defun cc/load-casual-info ()
-  "Load Casual info file."
-  (interactive)
-  (info "~/Projects/elisp/casual/docs/casual.info")
-  (info-initialize))
+;; (defun cc/load-casual-info ()
+;;   "Load Casual info file."
+;;   (interactive)
+;;   (info "~/Projects/elisp/casual/docs/casual.info")
+;;   (info-initialize))
 
 (defun cc/show-global-map-keys (keypath)
   "Show formatted keys for keymap in `global-map' given KEYPATH."
