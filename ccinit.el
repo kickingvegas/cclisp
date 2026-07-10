@@ -168,6 +168,7 @@
   (require 'now-playing)
   (require 'triode))
 (require 'anju)
+(require 'wttr)
 (require 'cc-global-keybindings)
 
 ;;; Configure MELPA Packages
