@@ -26,7 +26,7 @@
 (require 'magit)
 (require 'git-link-transient)
 (require 'casual-lib)
-(require 'cc-gh)
+(require 'gah)
 
 (add-hook 'magit-status-mode-hook (lambda () (toggle-truncate-lines -1)))
 
@@ -53,7 +53,7 @@
     ("J" "Jump…" bookmark-jump)]
 
    ["gh"
-    ("i" "List Issues" cc/gh-issues)]]
+    ("i" "List Issues" gah-issues)]]
 
   [:class transient-row
     (casual-lib-quit-one)

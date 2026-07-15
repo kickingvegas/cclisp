@@ -141,7 +141,6 @@
  '(case-fold-search t)
  '(casual-lib-use-unicode t)
  '(casual-timezone-datestamp-format "%a %b %-e %Y, %k:%M")
- '(cc-gh-username "kickingvegas")
  '(column-number-mode t)
  '(company-dabbrev-downcase nil)
  '(compilation-auto-jump-to-first-error 'first-known)
@@ -268,6 +267,7 @@
  '(eshell-visual-options '(("git" "--help" "--paginate") ("ps" "-ef")))
  '(eshell-visual-subcommands '(("git" "log" "diff" "show") ("swift" "repl")))
  '(fill-column 80)
+ '(gah-username "kickingvegas")
  '(git-link-open-in-browser t)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
@@ -289,6 +289,11 @@
                         try-complete-lisp-symbol))
  '(holiday-other-holidays '((holiday-fixed 6 19 "Juneteenth")))
  '(ibuffer-deletion-char 10005)
+ '(ibuffer-formats
+   '((mark modified read-only locked " " (name 25 25 :left :elide) " "
+           (size 9 -1 :right) " " (mode 16 16 :left :elide) " "
+           filename-and-process)
+     (mark " " (name 16 -1) " " filename)))
  '(ibuffer-locked-char 119923)
  '(ibuffer-marked-char 10095)
  '(ibuffer-modified-char 9998)
@@ -334,6 +339,7 @@
            (directory . "Projects/pelican/devnull/")
            (directory . "Projects/devnull/")))
       ("now-playing" (directory . "Projects/elisp/now-playing/"))
+      ("gah" (directory . "Projects/elisp/gah/"))
       ("cclisp" (directory . "emacs/cclisp/")) ("erc" (mode . erc-mode))
       ("desktop" (directory . "Desktop/"))
       ("downloads" (directory . "Downloads/"))

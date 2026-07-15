@@ -73,8 +73,8 @@
                       'shell-commands)
 
   (easy-menu-add-item global-map '(menu-bar tools)
-                      [cc/gh-issues
-                       cc/gh-issues
+                      [gah-issues
+                       gah-issues
                        :label "GitHub Issues…"
                        :help "Put current issues for a GitHub repository in a vtable"]
                       'grep)
