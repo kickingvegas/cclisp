@@ -61,6 +61,9 @@ Note this value is inferred.")
 (defvar triode-current-station ""
   "Current station.")
 
+(defvar triode--last-description nil
+  "Last description.")
+
 (defvar triode-station-db (make-hash-table :test #'equal)
   "Station database.")
 
@@ -200,40 +203,41 @@ If B is not defined, then the binding <f14> we be used by default."
          (artist (map-elt current-state "artist"))
          (album (map-elt current-state "album"))
          (station-id (map-elt current-state "stationID"))
-         (station (map-elt triode-station-db station-id triode-current-station)))
+         (station (map-elt triode-station-db station-id triode-current-station))
 
+         (msg (cond
+               ((and station track artist album)
+                (format "[%s] %s • %s • %s"
+                        station
+                        track
+                        artist
+                        album))
+
+               ((and station track artist)
+                (format "[%s] %s • %s"
+                        station
+                        track
+                        artist))
+
+               ((and station track)
+                (format "[%s] %s"
+                        station
+                        track))
+
+               (station
+                ;; (unless (string-equal triode-current-station track)
+                ;;   (setq triode-current-station track))
+                (format "[%s]" station))
+
+               (t
+                (format "[%s]" triode-current-station)))))
+    (setq triode--last-description msg)
     (setq triode-is-playing (string-equal playback-state "Playing"))
-    (cond
-     ((and station track artist album)
-      (format "[%s] %s • %s • %s"
-              station
-              track
-              artist
-              album))
-
-     ((and station track artist)
-      (format "[%s] %s • %s"
-              station
-              track
-              artist))
-
-     ((and station track)
-      (format "[%s] %s"
-              station
-              track))
-
-     (station
-      ;; (unless (string-equal triode-current-station track)
-      ;;   (setq triode-current-station track))
-      (format "[%s]" station))
-
-     (t
-      (format "[%s]" triode-current-station)))))
+    msg))
 
 (transient-define-prefix triode-tmenu ()
   "Transient menu for Triode app."
   :refresh-suffixes t
-
   ["Triode"
    :class transient-row
    :description (lambda () (triode--tmenu-description (triode-current-state)))
@@ -251,6 +255,11 @@ If B is not defined, then the binding <f14> we be used by default."
     :transient triode--dismiss-menu-for-actions
     :if (lambda () triode-is-muting))
    ("r" "􀅈" triode--tmenu-refresh :transient t)
+   ("w" "􀉁" (lambda ()
+              "Copy current station and track to `kill-ring'"
+              (interactive)
+              (if triode--last-description
+                  (kill-new triode--last-description))))
    ("z" "􁈴" shazam)
    ("o" "􀑪" triode-launch)
    ("," "􀣋" triode-customize-group)
