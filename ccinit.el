@@ -165,8 +165,7 @@
 (require 'cc-menu-reconfig)
 (require 'cc-rfc-mode)
 (when (eq system-type 'darwin)
-  (require 'now-playing)
-  (require 'triode))
+  (require 'cc-music))
 (require 'anju)
 (require 'wttr)
 (require 'cc-global-keybindings)
@@ -187,50 +186,6 @@
          (ibuffer-mode . hl-line-mode)))
 
 (anju-init)
-
-(when (and (eq system-type 'darwin)
-           (fboundp 'now-playing-tmenu)
-           (fboundp 'now-playing-init)
-           (fboundp 'triode-tmenu)
-           (fboundp 'triode-init))
-  (defalias 'np 'now-playing-tmenu "Alias to `now-playing-tmenu'.")
-  (now-playing-init)
-  (triode-init "s-<f14>")
-
-  (defun cc/swap-music-player ()
-    "Swap music player."
-    (interactive)
-    (let* ((b "<f14>")
-           (current-player (key-binding (kbd b))))
-
-      (cond
-       ((eq current-player #'now-playing-tmenu)
-        (keymap-global-set b #'triode-tmenu)
-        (message "Set %s to Triode" b))
-
-       ((eq current-player #'triode-tmenu)
-        (keymap-global-set b #'now-playing-tmenu)
-        (message "Set %s to Now Playing" b))
-
-       (t
-        (keymap-global-set b #'now-playing-tmenu)
-        (message "Set %s to Now Playing" b)))))
-
-  (defun cc/switch-music-player ()
-    "Switch Music Player."
-    (interactive)
-    (let* ((choice (completing-read "Player: " '("music" "triode"))))
-      (cond
-       ((string-equal choice "music")
-        (keymap-global-set "<f14>" #'now-playing-tmenu))
-
-       ((string-equal choice "triode")
-        (keymap-global-set "<f14>" #'triode-tmenu))
-
-       (t
-        (keymap-global-set "<f14>" #'now-playing-tmenu)))))
-
-  (keymap-global-set "M-<f14>" #'cc/swap-music-player))
 
 ;;; Local Customizations
 
