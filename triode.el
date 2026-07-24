@@ -27,6 +27,7 @@
 ;;; Code:
 (require 'map)
 (require 'transient)
+(require 'shazam)
 
 (defgroup triode nil
   "Group for Triode settings."
@@ -174,68 +175,6 @@ If CLIP is non-nil, then store result in `kill-ring'."
   (interactive)
   (transient--show))
 
-(defvar triode--shazam-result ""
-  "Triode search result.")
-
-(defun triode-message-shazam-result (shazam)
-  "Show message given SHAZAM."
-  (let* ((response shazam)
-         (title (substring-no-properties (map-elt response "title")))
-         (artist (substring-no-properties (map-elt response "artist")))
-         (msg (format "%s • %s" title artist)))
-    msg))
-
-(defun triode-scrub-json-value (obj key)
-  "Scrub value for KEY in OBJ."
-
-  (let* ((value (map-elt obj key))
-         ;; (svalue (if (and value (stringp value))
-         ;;             (substring-no-properties value)))
-         )
-
-    (if (and value (stringp value) (string-equal value ""))
-        (map-put! obj key nil)
-      (map-put! obj key value))))
-
-(defun triode-urldecode-value (obj key)
-  "Url decode value for KEY in OBJ."
-  (let* ((value (map-elt obj key))
-         (decoded-value (url-unhex-string value)))
-    (decode-coding-string decoded-value 'utf-8)))
-
-(defun triode-shazam ()
-  "Identify music with Shazam.
-
-Runs Shazam shortcut in the background. Resulting output is captured in
-the async buffer and `kill-ring'."
-  (interactive)
-  (let ((proc (start-process "triode-shazam" nil "shazam.sh")))
-    (set-process-filter proc (lambda (_process output)
-                               (let* ((response (json-parse-string output
-                                                                   :null-object nil)))
-
-                                 (triode-scrub-json-value response "apple music id")
-                                 (triode-scrub-json-value response "artist")
-                                 (triode-scrub-json-value response "title")
-                                 (triode-scrub-json-value response "name")
-                                 (triode-scrub-json-value response "video URL")
-                                 (triode-scrub-json-value response "apple music URL")
-                                 (triode-scrub-json-value response "shazam URL")
-                                 (triode-scrub-json-value response "lyricsSnippet")
-                                 (if (map-elt response "lyricsSnippet")
-                                     (map-put! response "lyricsSnippet"
-                                               (triode-urldecode-value
-                                                response "lyricsSnippet")))
-
-                                 (setq triode--shazam-result response))))
-    (set-process-sentinel proc (lambda (_process signal)
-                                 (when (string-match-p "finished" signal)
-                                   (let ((msg (triode-message-shazam-result
-                                               triode--shazam-result)))
-                                     (kill-new msg)
-                                     (message "Shazam: %s" msg)))))))
-
-
 (defun triode-customize-group ()
   "Customize ‘triode’ group."
   (interactive)
@@ -312,7 +251,7 @@ If B is not defined, then the binding <f14> we be used by default."
     :transient triode--dismiss-menu-for-actions
     :if (lambda () triode-is-muting))
    ("r" "􀅈" triode--tmenu-refresh :transient t)
-   ("z" "􁈴" triode-shazam)
+   ("z" "􁈴" shazam)
    ("o" "􀑪" triode-launch)
    ("," "􀣋" triode-customize-group)
    ("RET" "􀀲" transient-quit-all)])

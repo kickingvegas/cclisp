@@ -584,6 +584,7 @@
  '(sentence-end-double-space nil)
  '(server-use-tcp t)
  '(set-mark-command-repeat-pop t)
+ '(shazam-log-file "~/org/songs/shazam.org")
  '(show-paren-context-when-offscreen 'overlay)
  '(speedbar-show-unknown-files t)
  '(split-width-threshold nil)
