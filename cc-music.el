@@ -25,6 +25,7 @@
 ;;; Code:
 
 (require 'now-playing)
+(require 'shazam)
 (require 'triode)
 
 (defcustom cc-music-player-binding "<f14>"
@@ -79,6 +80,10 @@ Alternate bindings: s-<f8>"
 (cc/music-init cc-music-player-binding "s-<f8>")
 (keymap-global-set "M-<f14>" #'cc/music-swap-player)
 (keymap-global-set "M-s-<f8>" #'cc/music-swap-player)
+
+(shazam-init "M-<f19>")
+(keymap-global-set "s-<f5>" #'shazam)
+(keymap-global-set "s-<f19>" #'shazam-find-log)
 
 (provide 'cc-music)
 ;;; cc-music.el ends here

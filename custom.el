@@ -340,6 +340,8 @@
            (directory . "Projects/devnull/")))
       ("now-playing" (directory . "Projects/elisp/now-playing/"))
       ("gah" (directory . "Projects/elisp/gah/"))
+      ("triode" (directory . "Projects/elisp/triode/"))
+      ("shazam" (directory . "Projects/elisp/shazam/"))
       ("cclisp" (directory . "emacs/cclisp/")) ("erc" (mode . erc-mode))
       ("desktop" (directory . "Desktop/"))
       ("downloads" (directory . "Downloads/"))

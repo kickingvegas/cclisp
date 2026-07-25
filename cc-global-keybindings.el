@@ -70,7 +70,7 @@
 (keymap-global-set "<f4>" #'bookmark-jump)
 (keymap-global-set "S-<f5>" #'cc/select-journal-file)
 (keymap-global-set "<f5>" #'journal)
-(keymap-global-set "s-<f5>" #'cc/org-search)
+;; (keymap-global-set "s-<f5>" #'cc/org-search)
 (keymap-global-set "<f6>" #'osx-dictionary-search-input)
 ;; (keymap-global-set "<f7>" #'repeat)
 ;; (keymap-global-set "<f7>" #'ace-window)
