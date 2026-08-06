@@ -73,10 +73,12 @@
     ;; otherwise set t to always save regardless of project.
     t))
 
-(setopt compilation-save-buffers-predicate
-        #'cc-compilation-save-buffers-predicate)
+;; (setopt compilation-save-buffers-predicate
+;;         #'cc-compilation-save-buffers-predicate)
 
-(advice-add 'project-switch-project :after #'cc/set-cc-compile-project-root)
+;; (advice-add 'project-switch-project :after #'cc/set-cc-compile-project-root)
+
+(setopt save-some-buffers-default-predicate #'save-some-buffers-root)
 
 (provide 'cc-compile-mode)
 ;;; cc-compile-mode.el ends here
