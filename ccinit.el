@@ -150,6 +150,7 @@
 (require 'cc-erc-mode)
 (require 'gah)
 ;;(require 'cc-gnuplot-mode)
+(require 'cc-pwa)
 (require 'cc-bibtex-mode)
 (require 'cc-eww-mode)
 (require 'cc-debbugs-mode)
@@ -283,6 +284,7 @@ If prefix ARG is non-nil, then the computed result is stored in the
     (switch-to-buffer (format-time-string "%Y_%m_%d.org"))
     (setq cc--workplace-initialized t)))
 
+;; Reconfigure gah browse-url
 (defun cc/gah-browse-url (&optional issue)
   "Open URL in ISSUE.
 
