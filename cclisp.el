@@ -249,11 +249,32 @@ URL `;https://gist.github.com/danielmartin/3c5d3a3a8cd24a3556379c5251651748'."
       (delete-region start end)
       (insert insertion)))
 
+
+(defvar cc/say-process nil
+  "Say process.")
+
 (defun cc/say-region (&optional start end)
   "Pass region bounded by START and END to macOS say command."
   (interactive "r")
-  (shell-command-on-region start end "say"))
+  (let* ((buf (buffer-substring-no-properties start end))
+         (proc (start-process "say"
+                              nil
+                              "say"
+                              buf)))
+    (setq cc/say-process proc)
+    (set-process-filter proc (lambda (_process _output)))
+    (set-process-sentinel proc (lambda (process signal)
+                                 (when (string-match-p "finished\\|exited" signal)
+                                   (let ((exit-code (process-exit-status process)))
+                                     (if (not (= exit-code 0))
+                                         (message "Unable to complete" ))
+                                     (setq cc/say-process nil)))))))
 
+(defun cc/say-cancel ()
+  "Kill say process."
+  (interactive)
+  (if cc/say-process
+      (kill-process cc/say-process)))
 
 (defgroup kickingvegas nil
   "Settings for kickingvegas."
