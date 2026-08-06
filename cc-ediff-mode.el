@@ -1,6 +1,6 @@
 ;;; cc-ediff-mode.el --- Ediff configuration -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2025  Charles Choi
+;; Copyright (C) 2023-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -28,58 +28,55 @@
 
 (casual-ediff-install)
 
-;; Oh dang, this looks like it works…
-;; (defun cc/ediff-show-text-all ()
-;;   "Expand all Org headings in the data buffers for Ediff."
-;;   (dolist (b (list (and (boundp 'ediff-buffer-A) ediff-buffer-A)
-;;                    (and (boundp 'ediff-buffer-B) ediff-buffer-B)
-;;                    (and (boundp 'ediff-buffer-C) ediff-buffer-C)))
-;;     (when (buffer-live-p b)
-;;       (with-current-buffer b
-;;         (cond
-;;          ((derived-mode-p 'org-mode)
-;;           (if (fboundp 'org-fold-show-all) (org-fold-show-all))
-;;           (if (fboundp 'visible-mode) (visible-mode nil))
-;;           (if (fboundp 'org-remove-inline-images) (org-remove-inline-images)))
+(defvar cc/--ediff-refresh nil
+  "Refresh variable to test if update is required.")
 
-;;          ((derived-mode-p 'markdown-mode)
-;;           (if (fboundp 'outline-show-all) (outline-show-all))
-;;           (if (fboundp 'markdown-toggle-markup-hiding)
-;;               (markdown-toggle-markup-hiding -1))
-;;           (if (fboundp 'markdown-remove-inline-images)
-;;               (markdown-remove-inline-images)))
+(defun cc/ediff-before-setup ()
+  "Hook function to run before Ediff rearranges windows."
+  (when (buffer-narrowed-p)
+    (setq cc/--ediff-refresh t)
+    (widen)))
 
-;;          (t nil))))))
+(defun cc/ediff-prepare-buffer ()
+  "Hook for preparing buffer."
+  ;; TODO: figure out how to checkpoint and restore visual presentation.
+  (if (and (bound-and-true-p hs-minor-mode)
+           (fboundp 'hs-show-all))
+      (hs-show-all))
 
-;; (add-hook 'ediff-startup-hook #'cc/ediff-show-text-all)
-
-(defun cc/ediff-text-mode-hook ()
-  "Hook for revealing text mode."
   (cond
    ((derived-mode-p 'org-mode)
-    (if (fboundp 'org-fold-show-all) (org-fold-show-all))
-    (if (fboundp 'visible-mode) (visible-mode nil))
-    (if (fboundp 'org-remove-inline-images) (org-remove-inline-images)))
+    (if (fboundp 'org-fold-show-all)
+        (org-fold-show-all))
+    (if (fboundp 'visible-mode)
+        (visible-mode nil))
+    (if (fboundp 'org-remove-inline-images)
+        (org-remove-inline-images)))
 
    ((derived-mode-p 'markdown-mode)
-    (if (fboundp 'outline-show-all) (outline-show-all))
+    (if (fboundp 'outline-show-all)
+        (outline-show-all))
     (if (fboundp 'markdown-toggle-markup-hiding)
         (markdown-toggle-markup-hiding -1))
     (if (fboundp 'markdown-remove-inline-images)
         (markdown-remove-inline-images)))
 
-   (t (if (fboundp 'outline-show-all) (outline-show-all)))))
+   (t (if (fboundp 'outline-show-all)
+          (outline-show-all)))))
 
-(add-hook 'ediff-prepare-buffer-hook #'cc/ediff-text-mode-hook)
+(defun cc/ediff-startup ()
+  "Hook run at end of Ediff startup."
+  ;; This is a hack to recompute the diff block due to narrowing.
+  (if cc/--ediff-refresh
+      (ediff-update-diffs)))
+
+(add-hook 'ediff-before-setup-hook #'cc/ediff-before-setup)
+(add-hook 'ediff-prepare-buffer-hook #'cc/ediff-prepare-buffer)
+(add-hook 'ediff-startup-hook #'cc/ediff-startup)
 
 (add-hook 'ediff-keymap-setup-hook
           (lambda ()
             (keymap-set ediff-mode-map "C-o" #'casual-ediff-tmenu)))
-
-;; (add-hook 'ediff-after-setup-windows-hook (lambda () (call-interactively
-;;                                                  'casual-ediff-tmenu)))
-
-;;(add-hook 'ediff-mode-hook (lambda () (call-interactively casual-ediff-tmenu)))
 
 (provide 'cc-ediff-mode)
 ;;; cc-ediff-mode.el ends here

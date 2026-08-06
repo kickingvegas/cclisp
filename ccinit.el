@@ -43,7 +43,20 @@
 (require 'wgrep)
 (require 'yasnippet)
 (require 'pixel-scroll)
+(require 'mouse)
+
+(context-menu-mode)
+
 ;;(require 'pbcopy)
+
+(cond
+ ((eq system-type 'darwin)
+  (add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(swift-mode . swift-ts-mode)))
+
+ ((eq system-type 'gnu/linux)
+  (add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))))
+
 (add-hook 'calendar-today-visible-hook 'calendar-mark-today)
 
 (yas-global-mode 1)
@@ -113,7 +126,8 @@
 (require 'cc-context-menu)
 (require 'cc-diff-hl-mode)
 (require 'cc-python-mode)
-(require 'cc-swift-mode)
+(if (eq system-type 'darwin)
+    (require 'cc-swift-mode))
 (require 'flyspell)
 (require 'cc-view-mode)
 (require 'cc-magit-mode)
@@ -134,8 +148,9 @@
 (require 'cc-csv-mode)
 (require 'cc-main-tmenu)
 (require 'cc-erc-mode)
-(require 'cc-gh)
+(require 'gah)
 ;;(require 'cc-gnuplot-mode)
+(require 'cc-pwa)
 (require 'cc-bibtex-mode)
 (require 'cc-eww-mode)
 (require 'cc-debbugs-mode)
@@ -149,8 +164,12 @@
 (require 'numeri)
 (require 'casual-agenda)
 (require 'cc-menu-reconfig)
+(require 'cc-rfc-mode)
+(when (eq system-type 'darwin)
+  (require 'cc-music))
+(require 'anju)
+(require 'wttr)
 (require 'cc-global-keybindings)
-
 
 ;;; Configure MELPA Packages
 (require 'casual-isearch)
@@ -166,6 +185,8 @@
   :defer t
   :hook ((bookmark-bmenu-mode . hl-line-mode)
          (ibuffer-mode . hl-line-mode)))
+
+(anju-init)
 
 ;;; Local Customizations
 
@@ -263,10 +284,30 @@ If prefix ARG is non-nil, then the computed result is stored in the
     (switch-to-buffer (format-time-string "%Y_%m_%d.org"))
     (setq cc--workplace-initialized t)))
 
+;; Reconfigure gah browse-url
+(defun cc/gah-browse-url (&optional issue)
+  "Open URL in ISSUE.
+
+Note that UUID in ‘app-id’ is locally defined by macOS. Users must
+inspect their local GitHub PWA Info.plist configuration to replace it
+accordingly."
+  (let* ((issue (if (not issue)
+                    (vtable-current-object)
+                  issue))
+         (url (map-elt issue "url")))
+    (cond
+     ((or (eq window-system 'ns) (eq window-system 'mac))
+      (github url))
+
+     (t
+      (browse-url url)))))
+
+(advice-add 'gah-browse-url :override 'cc/gah-browse-url)
+
+
 (if (and (eq window-system 'ns)
          (string-equal (system-name) "bingsu.local"))
     (add-hook 'window-setup-hook #'cc/workplace))
-
 
 ;; (password-store-menu-enable)
 

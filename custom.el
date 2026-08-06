@@ -12,6 +12,7 @@
  '(anju-help-menu-remove-emacs-tutorial t)
  '(anju-reconfigure-main-menu-hook
    '(anju-main-menu--reconfigure-file anju-main-menu--reconfigure-edit
+                                      anju-main-menu--reconfigure-registers
                                       anju-main-menu--reconfigure-options
                                       anju-main-menu--reconfigure-bookmarks
                                       anju-main-menu--reconfigure-text-mode
@@ -140,16 +141,15 @@
  '(case-fold-search t)
  '(casual-lib-use-unicode t)
  '(casual-timezone-datestamp-format "%a %b %-e %Y, %k:%M")
- '(cc-gh-username "kickingvegas")
  '(column-number-mode t)
  '(company-dabbrev-downcase nil)
  '(compilation-auto-jump-to-first-error 'first-known)
  '(compilation-scroll-output t)
  '(context-menu-functions
-   '(anju-context-menu-elisp anju-context-menu-edebug-eval
+   '(anju-context-menu-elisp anju-context-menu-edebug-eval anju-context-menu-xref
                              anju-context-menu-compile anju-context-menu-dired
-                             cc/context-menu-dired cc/context-menu-org-agenda
-                             anju-context-menu-org-mode
+                             cc/context-menu-dired anju-context-menu-org-mode
+                             anju-context-menu-org-agenda
                              anju-context-menu-info-mode
                              anju-context-menu-make-mode cc/context-menu-journal
                              anju-context-menu-buffers anju-context-menu-region
@@ -192,7 +192,10 @@
      ("\\*Occur\\*" (display-buffer-reuse-window display-buffer-below-selected)
       (dedicated . t) (body-function . select-window))
      ("\\*grep\\*" nil (body-function . select-window))
-     ("\\*shell\\*" (display-buffer-reuse-window display-buffer-below-selected))))
+     ("\\*shell\\*" (display-buffer-reuse-window display-buffer-below-selected))
+     ("\\*Async Shell Command\\*"
+      (display-buffer-reuse-window display-buffer-below-selected)
+      (window-height . 0.1))))
  '(display-time-day-and-date t)
  '(display-time-mode t)
  '(ebib-bibtex-dialect 'biblatex)
@@ -264,6 +267,7 @@
  '(eshell-visual-options '(("git" "--help" "--paginate") ("ps" "-ef")))
  '(eshell-visual-subcommands '(("git" "log" "diff" "show") ("swift" "repl")))
  '(fill-column 80)
+ '(gah-username "kickingvegas")
  '(git-link-open-in-browser t)
  '(global-auto-revert-mode t)
  '(global-auto-revert-non-file-buffers t)
@@ -285,6 +289,11 @@
                         try-complete-lisp-symbol))
  '(holiday-other-holidays '((holiday-fixed 6 19 "Juneteenth")))
  '(ibuffer-deletion-char 10005)
+ '(ibuffer-formats
+   '((mark modified read-only locked " " (name 25 25 :left :elide) " "
+           (size 9 -1 :right) " " (mode 16 16 :left :elide) " "
+           filename-and-process)
+     (mark " " (name 16 -1) " " filename)))
  '(ibuffer-locked-char 119923)
  '(ibuffer-marked-char 10095)
  '(ibuffer-modified-char 9998)
@@ -300,6 +309,7 @@
        (or (name . "*pelican-devnull*")
            (directory . "Projects/pelican/devnull/")
            (directory . "Projects/devnull/")))
+      ("now-playing" (directory . "Projects/elisp/now-playing/"))
       ("cclisp" (directory . "emacs/cclisp/"))
       ("casual-gnuplot project" (directory . "Projects/casual-gnuplot/"))
       ("erc" (mode . erc-mode))
@@ -328,6 +338,10 @@
        (or (name . "*pelican-devnull*")
            (directory . "Projects/pelican/devnull/")
            (directory . "Projects/devnull/")))
+      ("now-playing" (directory . "Projects/elisp/now-playing/"))
+      ("gah" (directory . "Projects/elisp/gah/"))
+      ("triode" (directory . "Projects/elisp/triode/"))
+      ("shazam" (directory . "Projects/elisp/shazam/"))
       ("cclisp" (directory . "emacs/cclisp/")) ("erc" (mode . erc-mode))
       ("desktop" (directory . "Desktop/"))
       ("downloads" (directory . "Downloads/"))
@@ -390,13 +404,13 @@
  '(lunar-phase-names '("🌑 New" "🌓 First Quarter" "🌕 Full" "🌗 Last Quarter"))
  '(magit-copy-revision-abbreviated t)
  '(magit-save-repository-buffers 'dontask)
- '(major-mode-remap-alist '((css-mode . css-ts-mode)))
  '(mark-ring-max 6)
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
  '(mouse-autoselect-window nil)
  '(mouse-wheel-progressive-speed t)
  '(mouse-yank-at-point t)
+ '(now-playing-dismiss-menu-for-playpause t)
  '(ns-alternate-modifier 'super)
  '(ns-right-alternate-modifier 'hyper)
  '(org-agenda-files '("~/org/"))
@@ -524,24 +538,24 @@
      ("melpa" . "https://melpa.org/packages/")))
  '(package-install-upgrade-built-in t)
  '(package-selected-packages
-   '(anju async auto-complete bind-key calfw calle24 casual-suite citeproc company
-          company-org-block countdown csv-mode debbugs diff-hl
-          dired-rsync-transient disk-usage ebib edit-indirect editorconfig eglot
-          eldoc elfeed erc eshell-git-prompt expand-region faceup fireplace
-          flycheck-package git-link gnuplot go-mode good-scroll google-this
-          google-translate graphviz-dot-mode helm-bibtex helm-pass helm-swoop
-          htmlize idlwave iedit js2-mode json-mode jsonian jsonrpc kanban
-          ledger-mode magit markdown-mode math-symbol-lists neotree numeri
-          ob-swift ob-swiftui org-outline-numbering org-ql org-re-reveal
-          org-superstar osx-dictionary ox-gfm ox-gist ox-jira ox-slack ox-trac
-          package-lint paredit password-store pbcopy pkg-info plantuml-mode
-          project python rainbow-mode reveal-in-folder scpaste show-font
-          smart-mode-line-powerline-theme soap-client solarized-theme
-          sqlite-mode-extras sr-speedbar svg-clock swift-mode symbol-overlay
-          tj3-mode toc-org track-changes tramp transmission transpose-frame
-          treemacs use-package verilog-mode visual-regexp visual-regexp-steroids
-          vtable webpaste wgrep which-key window-tool-bar xref yaml-mode
-          yasnippet yasnippet-snippets ztree))
+   '(async auto-complete bind-key calfw calle24 citeproc company company-org-block
+           countdown csv-mode debbugs diff-hl dired-rsync-transient disk-usage
+           ebib edit-indirect editorconfig eglot eldoc elfeed erc
+           eshell-git-prompt expand-region faceup fireplace flycheck-package
+           git-link gnuplot go-mode good-scroll google-this google-translate
+           graphviz-dot-mode helm-bibtex helm-pass helm-swoop htmlize idlwave
+           iedit js2-mode json-mode jsonian jsonrpc kanban ledger-mode
+           lorem-ipsum magit markdown-mode math-symbol-lists neotree numeri
+           ob-swift ob-swiftui org-outline-numbering org-ql org-re-reveal
+           org-superstar osx-dictionary ox-gfm ox-gist ox-jira ox-slack ox-trac
+           package-lint paredit password-store pbcopy pkg-info plantuml-mode
+           project python pyvenv rainbow-mode reveal-in-folder rfc-mode scpaste
+           show-font smart-mode-line-powerline-theme soap-client solarized-theme
+           sqlite-mode-extras sr-speedbar svg-clock swift-mode swift-ts-mode
+           symbol-overlay tj3-mode toc-org track-changes tramp transmission
+           transpose-frame treemacs use-package verilog-mode visual-regexp
+           visual-regexp-steroids vtable webpaste wgrep which-key
+           window-tool-bar xref yaml-mode yasnippet yasnippet-snippets ztree))
  '(pages-directory-for-adding-new-page-before-current-page-p nil)
  '(plantuml-default-exec-mode 'executable)
  '(plantuml-executable-path "/opt/local/bin/plantuml")
@@ -572,6 +586,7 @@
  '(sentence-end-double-space nil)
  '(server-use-tcp t)
  '(set-mark-command-repeat-pop t)
+ '(shazam-log-file "~/org/songs/shazam.org")
  '(show-paren-context-when-offscreen 'overlay)
  '(speedbar-show-unknown-files t)
  '(split-width-threshold nil)
@@ -580,7 +595,10 @@
  '(tool-bar-style 'image)
  '(tramp-terminal-type "tramp")
  '(transient-align-variable-pitch t)
+ '(transmission-host "192.168.1.207")
+ '(transmission-rpc-auth '(:username "transmission" :password "gahgahgah"))
  '(trash-directory "~/.Trash")
+ '(triode-dismiss-menu-for-actions t)
  '(use-file-dialog nil)
  '(use-short-answers t)
  '(user-mail-address "kickingvegas@gmail.com")

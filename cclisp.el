@@ -249,11 +249,32 @@ URL `;https://gist.github.com/danielmartin/3c5d3a3a8cd24a3556379c5251651748'."
       (delete-region start end)
       (insert insertion)))
 
+
+(defvar cc/say-process nil
+  "Say process.")
+
 (defun cc/say-region (&optional start end)
   "Pass region bounded by START and END to macOS say command."
   (interactive "r")
-  (shell-command-on-region start end "say"))
+  (let* ((buf (buffer-substring-no-properties start end))
+         (proc (start-process "say"
+                              nil
+                              "say"
+                              buf)))
+    (setq cc/say-process proc)
+    (set-process-filter proc (lambda (_process _output)))
+    (set-process-sentinel proc (lambda (process signal)
+                                 (when (string-match-p "finished\\|exited" signal)
+                                   (let ((exit-code (process-exit-status process)))
+                                     (if (not (= exit-code 0))
+                                         (message "Unable to complete" ))
+                                     (setq cc/say-process nil)))))))
 
+(defun cc/say-cancel ()
+  "Kill say process."
+  (interactive)
+  (if cc/say-process
+      (kill-process cc/say-process)))
 
 (defgroup kickingvegas nil
   "Settings for kickingvegas."
@@ -694,6 +715,18 @@ V is either nil or non-nil."
   (interactive)
   (delete-overlay mouse-secondary-overlay))
 
+(defun cc/toggle-tty ()
+  "Toggle Unicode and prettify symbols."
+  (interactive)
+
+  (if casual-lib-use-unicode
+      (setopt casual-lib-use-unicode nil)
+    (setopt casual-lib-use-unicode t))
+
+  (if prettify-symbols-mode
+      (prettify-symbols-mode -1)
+    (prettify-symbols-mode 1)))
+
 (defun cc/toggle-unicode ()
   "Toggle Unicode and prettify symbols."
   (interactive)
@@ -805,51 +838,61 @@ installed."
   (process-lines "killall" "corespeechd"))
 
 (defun cc/info-compile ()
-  "Build Info file from an Org file."
+  "Build Info file for project Org file."
   (interactive)
-  (let ((outfile (expand-file-name (file-name-with-extension buffer-file-name "info")))
-        ;; (texi (file-name-with-extension buffer-file-name "texi"))
-        )
+  (let* ((proot (thread-first (project-current)
+                              (project-root)
+                              (expand-file-name)))
+         (pname (thread-first proot
+                              (directory-file-name)
+                              (file-name-nondirectory)))
+         (infile (file-name-concat proot "docs" (format "%s.org" pname)))
+         (outfile (file-name-concat proot "docs" (format "%s.info" pname)))
+         (wincnt (length (window-list))))
 
+    (if (= wincnt 1)
+        (split-window-right))
+
+    (other-window 1)
+
+    (find-file infile)
     (org-texinfo-export-to-info)
-    ;;(org-export-to-file 'texinfo texi)
-    ;;(process-lines "make" "run")
     (if (get-buffer "*info*")
         (kill-buffer "*info*"))
     (info outfile)
     (info-initialize)))
 
-(defun cc/casual-info-compile ()
-  "Build Casual Info file."
-  (interactive)
-  (let* ((outfile "~/Projects/elisp/casual/docs/casual.info")
-         (current (current-buffer)))
-    (find-file "~/Projects/elisp/casual/docs/casual.org")
-    (org-texinfo-export-to-info)
-    (if (get-buffer "*info*")
-        (kill-buffer "*info*"))
-    (info outfile)
-    (info-initialize)
-    (switch-to-buffer current)))
+;; (defun cc/casual-info-compile ()
+;;   "Build Casual Info file."
+;;   (interactive)
+;;   (let* ((outfile "~/Projects/elisp/casual/docs/casual.info")
+;;          (current (current-buffer)))
+;;     (find-file "~/Projects/elisp/casual/docs/casual.org")
+;;     (org-texinfo-export-to-info)
+;;     (if (get-buffer "*info*")
+;;         (kill-buffer "*info*"))
+;;     (info outfile)
+;;     (info-initialize)
+;;     (switch-to-buffer current)))
 
-(defun cc/anju-info-compile ()
-  "Build Anju Info file."
-  (interactive)
-  (let* ((outfile "~/Projects/elisp/anju/docs/anju.info")
-         (current (current-buffer)))
-    (find-file "~/Projects/elisp/anju/docs/anju.org")
-    (org-texinfo-export-to-info)
-    (if (get-buffer "*info*")
-        (kill-buffer "*info*"))
-    (info outfile)
-    (info-initialize)
-    (switch-to-buffer current)))
+;; (defun cc/anju-info-compile ()
+;;   "Build Anju Info file."
+;;   (interactive)
+;;   (let* ((outfile "~/Projects/elisp/anju/docs/anju.info")
+;;          (current (current-buffer)))
+;;     (find-file "~/Projects/elisp/anju/docs/anju.org")
+;;     (org-texinfo-export-to-info)
+;;     (if (get-buffer "*info*")
+;;         (kill-buffer "*info*"))
+;;     (info outfile)
+;;     (info-initialize)
+;;     (switch-to-buffer current)))
 
-(defun cc/load-casual-info ()
-  "Load Casual info file."
-  (interactive)
-  (info "~/Projects/elisp/casual/docs/casual.info")
-  (info-initialize))
+;; (defun cc/load-casual-info ()
+;;   "Load Casual info file."
+;;   (interactive)
+;;   (info "~/Projects/elisp/casual/docs/casual.info")
+;;   (info-initialize))
 
 (defun cc/show-global-map-keys (keypath)
   "Show formatted keys for keymap in `global-map' given KEYPATH."
@@ -1175,6 +1218,18 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
                  msg)
 
     (message "Show notification “%s” in/at %s" msg start-time)))
+
+
+
+
+(defun cc/osascript (arg)
+  "Run osascript with ARG."
+  (interactive "sOSAScript: ")
+  (cc/--osascript arg))
+
+(defun cc/--osascript (arg)
+  "Process ARG with OSAscript."
+  (process-lines "osascript" "-e" arg))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

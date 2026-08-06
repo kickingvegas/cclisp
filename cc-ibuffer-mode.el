@@ -62,6 +62,8 @@
 (keymap-set ibuffer-mode-map "$" #'ibuffer-toggle-filter-group)
 (keymap-set ibuffer-mode-map "J" #'ibuffer-jump-to-filter-group)
 
+(keymap-set ibuffer-mode-map "SPC" #'ibuffer-visit-buffer-other-window-noselect)
+
 ;; (defun cc/context-menu-ibuffer (menu click)
 ;;   "Context menu hook function for Ibuffer commands.
 

@@ -70,7 +70,7 @@
 (keymap-global-set "<f4>" #'bookmark-jump)
 (keymap-global-set "S-<f5>" #'cc/select-journal-file)
 (keymap-global-set "<f5>" #'journal)
-(keymap-global-set "s-<f5>" #'cc/org-search)
+;; (keymap-global-set "s-<f5>" #'cc/org-search)
 (keymap-global-set "<f6>" #'osx-dictionary-search-input)
 ;; (keymap-global-set "<f7>" #'repeat)
 ;; (keymap-global-set "<f7>" #'ace-window)
@@ -83,16 +83,19 @@
 (keymap-global-set "<f8>" #'org-capture)
 (keymap-global-set "<f9>" #'compile)
 (keymap-global-set "<f11>" #'bookmark-set-no-overwrite)
+;;(keymap-global-set "M-<f11>" #'now-playing-tmenu)
 
 ;; (keymap-global-set "M-<f1>" #'cc/open-url)
 ;;(keymap-global-set "M-<f2>" #'google-this)
 ;;(keymap-global-set "C-c C-;" #'shell-command)
 (keymap-global-set "M-<f4>" #'google-this)
 
-(keymap-global-set "<f13>" #'google-this)
+(keymap-global-set "M-<f1>" #'google-this)
+(keymap-global-set "<f13>" #'eshell)
+
 (keymap-global-set "M-<f13>" #'neotree-toggle)
 (keymap-global-set "C-<f13>" #'treemacs)
-(keymap-global-set "<f14>" #'eshell) ;regular
+
 ;;(keymap-global-set (kbd "<f14>") 'save-buffer) ;logitech
 (keymap-global-set "<f15>" #'casual-ediff-revision)
 (keymap-global-set "M-<f12>" #'casual-ediff-revision)
@@ -190,6 +193,7 @@
 (keymap-global-set "M-<kp-6>" #'windmove-swap-states-right)
 
 (keymap-global-set "C-<kp-0>" #'ace-select-window)
+(keymap-global-set "M-<kp-0>" #'ace-swap-window)
 (keymap-global-set "C-<kp-divide>" #'transpose-frame)
 
 (keymap-global-set "C-c w" #'casual-editkit-windows-tmenu)
@@ -226,8 +230,6 @@
 (keymap-global-set "<mode-line> C-<mouse-1>" #'cc/toggle-pane)
 
 (keymap-global-set "C-x 1" #'anju-toggle-one-window)
-
-(anju-init)
 
 (provide 'cc-global-keybindings)
 ;;; cc-global-keybindings.el ends here

@@ -42,13 +42,27 @@
 (defvar eshell-visual-subcommands)
 (declare-function eshell/pwd "pwd" ())
 
+(defun cc/eshell-top-marker (path)
+  "Top marker for prompt given PATH."
+  ;; Possible 􀡥􀢹􀟛􀈕􀪯􁕔􁟬􀨺
+
+  (let* ((sfsymbols-test (and (display-graphic-p) (eq system-type 'darwin)))
+         (ssh-test (string-search "/ssh:" path)))
+
+    (if sfsymbols-test
+        (cond
+         ((and ssh-test (= ssh-test 0)) "\n┏􀧘")
+         (t "\n┏􀟛"))
+      "\n┏━")))
+
 (defun cc/prompt-function ()
   "Eshell prompt function for Charles Choi."
 
   (let* ((uname (user-login-name))
          (sysname (system-name))
          (user-at-sys (format "%s@%s" uname sysname))
-         (curdir (propertize (casual-eshell-tilde-path (eshell/pwd))
+         (path (eshell/pwd))
+         (curdir (propertize (casual-eshell-tilde-path path)
                              'face `(:foreground "orange red")))
          (branch-name (eshell-git-prompt--branch-name))
          (git-branch (if branch-name
@@ -56,7 +70,7 @@
                        ""))
 
          (prompt-symbol (if (= (user-uid) 0) "# " "$ "))
-         (top-marker "\n┏━")
+         (top-marker (cc/eshell-top-marker path))
          (bottom-marker "\n┗━━"))
 
     (format "%s %s:%s%s%s%s"
@@ -90,17 +104,6 @@
 
 (keymap-set eshell-mode-map "C-o" #'casual-eshell-tmenu)
 
-(defun cc/eshell-copy-last-output ()
-  "Copy output from last command issued."
-  (interactive)
-  (save-excursion
-    (eshell-mark-output)
-    (let* ((start (point))
-           (end (point-max))
-           (output (substring-no-properties (buffer-substring start end)))
-           (prompt (funcall eshell-prompt-function))
-           (output (string-replace prompt "" output)))
-      (kill-new output))))
 
 (defun eshell/bufcat (&rest args)
   "Support cat on a buffer specified in ARGS.

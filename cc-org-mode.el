@@ -203,6 +203,9 @@ SUFFIX - string appended to prefix
 (keymap-set org-mode-map "s-r" #'anju-style-remove)
 (keymap-set org-mode-map "s-s" #'anju-style-strike-through)
 (keymap-set org-mode-map "s-<tab>" #'completion-at-point)
+(keymap-set org-mode-map "M-[" #'backward-sexp)
+(keymap-set org-mode-map "M-]" #'forward-sexp)
+
 
 (keymap-set org-mode-map "C-6" #'org-goto)
 ;; (keymap-set org-read-date-minibuffer-local-map "C-o" #'casual-calendar)

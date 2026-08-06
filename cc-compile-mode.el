@@ -42,5 +42,43 @@
 (keymap-set compilation-mode-map "[" #'compilation-previous-file)
 (keymap-set compilation-mode-map "]" #'compilation-next-file)
 
+(defcustom cc-compile-project-root
+  nil
+  "Project root variable for predicate."
+  :type '(choice (const :tag "None (nil)" nil)
+                 (directory))
+
+  :group 'kickingvegas)
+
+(defun cc/set-cc-compile-project-root (proj-root)
+  "Set `cc-compile-project-root' to PROJ-ROOT."
+  (setopt cc-compile-project-root proj-root))
+
+(defun cc/autoset-cc-compile-project-root ()
+  "Configure `cc-compile-project-root' with project root directory."
+  (interactive)
+  (let* ((project (project-current))
+         (proj-root (if project
+                        (project-root project))))
+
+    (setopt cc-compile-project-root proj-root)
+    (message "Set cc-compile-project-root to ‘%s’" proj-root)))
+
+(defun cc-compilation-save-buffers-predicate ()
+  "Save buffers predicate."
+
+  (if cc-compile-project-root
+      (string-prefix-p (expand-file-name cc-compile-project-root)
+                       (file-truename (buffer-file-name)))
+    ;; otherwise set t to always save regardless of project.
+    t))
+
+;; (setopt compilation-save-buffers-predicate
+;;         #'cc-compilation-save-buffers-predicate)
+
+;; (advice-add 'project-switch-project :after #'cc/set-cc-compile-project-root)
+
+(setopt save-some-buffers-default-predicate #'save-some-buffers-root)
+
 (provide 'cc-compile-mode)
 ;;; cc-compile-mode.el ends here
