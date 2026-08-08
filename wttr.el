@@ -26,33 +26,17 @@
 ;;
 
 ;;; Code:
-(require 'url)
-(require 'url-http)
-(require 'map)
+(require 'restlib)
 
 (defvar url-http-end-of-headers)        ; needed for clean byte-compile
 
-(defun fetch-json-as-hash-table (url)
-  "Fetch URL with expected JSON response and return a `hash-table'."
-  (let ((data-buffer (url-retrieve-synchronously url)))
-    (if (not data-buffer)
-        (error "Failed to fetch data from %s" url)
-      (unwind-protect
-          (with-current-buffer data-buffer
-            ;; Move point past the HTTP metadata headers
-            (goto-char url-http-end-of-headers)
-            ;; Parse the remaining JSON buffer into a hash-table
-            (json-parse-buffer :object-type 'hash-table))
-        ;; Always kill the downloaded network buffer to prevent memory leaks
-        (kill-buffer data-buffer)))))
-
 (defun wttr--request-url (location)
   "Construct wttr.in URL with LOCATION."
-  (let* ((base-url (url-generic-parse-url "https://wttr.in"))
-         (encoded-location (string-replace " " "+" location))
-         (query (format "/%s?0&format=j1" encoded-location))
-         (_dummy (setf (url-filename base-url) query)))
-    (url-recreate-url base-url)))
+  (restlib-url-add-query-items (format "%s/%s"
+                                  "https://wttr.in"
+                                  (string-replace " " "+" location))
+                          '(("0")
+                            ("format" "j1"))))
 
 (defun wttr--get-first (dict key)
   "Get first object DICT with KEY."
@@ -101,13 +85,20 @@ Result is also stored in `kill-ring'."
   (interactive "sWhere (default: local): ")
 
   (condition-case err
-      (let* ((location (if location location ""))
+      (let* ((location (cond
+                        ((or (not location)
+                             (and (stringp location)
+                                  (string-equal location "")
+                                  calendar-latitude
+                                  calendar-longitude))
+                         (format "%s,%s" calendar-latitude calendar-longitude))
+                        (t
+                         location)))
              (url (wttr--request-url location))
-             (jsondb (fetch-json-as-hash-table url))
+             (jsondb (restlib-fetch-json url))
              (msg (wttr--report-message jsondb)))
         (kill-new msg)
         (message "%s" msg))
-
     (error (message "ERROR: %s" (cdr err)))))
 
 

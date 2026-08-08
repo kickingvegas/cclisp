@@ -169,6 +169,7 @@
   (require 'cc-music))
 (require 'anju)
 (require 'wttr)
+(require 'aqui)
 (require 'cc-global-keybindings)
 
 ;;; Configure MELPA Packages
