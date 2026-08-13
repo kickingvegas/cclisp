@@ -29,18 +29,8 @@
 (require 'hl-line)
 (require 'wgrep)
 
-(require 'casual-compile)
-(keymap-set grep-mode-map "C-o" #'casual-compile-tmenu)
-(keymap-set grep-mode-map "M-m" #'casual-compile-tmenu)
-
-(keymap-set grep-mode-map "k" #'compilation-previous-error)
-(keymap-set grep-mode-map "j" #'compilation-next-error)
-(keymap-set grep-mode-map "o" #'compilation-display-error)
-(keymap-set grep-mode-map "[" #'compilation-previous-file)
-(keymap-set grep-mode-map "]" #'compilation-next-file)
-
 (easy-menu-define cc/wgrep-menu nil
-  "Keymap for wgrep menu"
+  "Keymap for wgrep menu."
   '("Writeable Grep"
     :visible (eq (current-local-map) wgrep-mode-map)
     :enable (not buffer-read-only)

@@ -1,6 +1,6 @@
 ;;; cc-csv-mode.el --- CSV Mode Customization        -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2025  Charles Choi
+;; Copyright (C) 2025, 2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -24,17 +24,15 @@
 
 ;;; Code:
 
-(require 'casual-csv)
+(require 'csv-mode)
+
+(add-hook 'csv-mode-hook #'csv-guess-set-separator)
+(add-hook 'csv-mode-hook #'csv-align-mode)
 
 (add-hook 'csv-mode-hook
           (lambda ()
             (visual-line-mode -1)
             (toggle-truncate-lines 1)))
-
-(add-hook 'csv-mode-hook #'csv-guess-set-separator)
-(add-hook 'csv-mode-hook #'csv-align-mode)
-
-(keymap-set csv-mode-map "M-m" #'casual-csv-tmenu)
 
 (provide 'cc-csv-mode)
 ;;; cc-csv-mode.el ends here

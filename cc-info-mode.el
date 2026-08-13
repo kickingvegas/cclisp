@@ -1,6 +1,6 @@
 ;;; cc-info-mode.el --- Info mode customization      -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024-2025  Charles Choi
+;; Copyright (C) 2024-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -24,8 +24,6 @@
 
 ;;; Code:
 (require 'info)
-(require 'casual-info)
-(require 'casual-editkit)
 
 (defun cc/clone-in-new-tab ()
   (interactive)
@@ -41,9 +39,6 @@
   (unless (derived-mode-p 'Info-mode) (error "Error: can only run in Info buffer."))
   (let ((manual-name (file-name-nondirectory Info-current-file)))
     (rename-buffer (format "*info %s*" manual-name))))
-
-(keymap-set Info-mode-map "C-o" #'casual-info-tmenu)
-(keymap-set Info-mode-map "C-M-o" #'casual-editkit-main-tmenu)
 
 (keymap-set Info-mode-map "<mouse-5>" #'Info-history-forward)
 (keymap-set Info-mode-map "<mouse-4>" #'Info-history-back)

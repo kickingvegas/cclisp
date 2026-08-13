@@ -1,6 +1,6 @@
 ;;; cc-calc-mode.el --- Calc customization           -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024-2025  Charles Choi
+;; Copyright (C) 2024-2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -25,17 +25,17 @@
 ;;; Code:
 
 (require 'calc)
-(require 'calc-ext)
+;; (require 'calc-ext)
 (require 'casual-calc)
 
-(add-hook 'calc-mode-hook (lambda () (setq calc-gnuplot-default-device "aqua")))
+(defun cc-calc-setup ()
+  "Setup function for `calc-mode'."
 
-(keymap-set calc-mode-map "C-o" #'casual-calc-tmenu)
-(keymap-set calc-mode-map "C-c v" #'casual-calc-variable-crud-tmenu)
-(keymap-set calc-mode-map "<clear>" #'calc-pop)
+  (setq calc-gnuplot-default-device "aqua")
+  (keymap-set calc-mode-map "<clear>" #'calc-pop)
+  (keymap-set calc-mode-map "s-v" #'casual-calc-variable-crud-tmenu))
 
-(keymap-set calc-alg-map "C-o" #'casual-calc-tmenu)
-
+(add-hook 'calc-mode-hook #'cc-calc-setup)
 
 (defun cc/ptop ()
   "Print top of Calc stack."

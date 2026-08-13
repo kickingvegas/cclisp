@@ -24,9 +24,6 @@
 
 ;;; Code:
 (require 'ediff)
-(require 'casual-ediff)
-
-(casual-ediff-install)
 
 (defvar cc/--ediff-refresh nil
   "Refresh variable to test if update is required.")
@@ -74,9 +71,6 @@
 (add-hook 'ediff-prepare-buffer-hook #'cc/ediff-prepare-buffer)
 (add-hook 'ediff-startup-hook #'cc/ediff-startup)
 
-(add-hook 'ediff-keymap-setup-hook
-          (lambda ()
-            (keymap-set ediff-mode-map "C-o" #'casual-ediff-tmenu)))
 
 (provide 'cc-ediff-mode)
 ;;; cc-ediff-mode.el ends here

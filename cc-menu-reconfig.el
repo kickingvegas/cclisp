@@ -31,10 +31,8 @@
 (require 'cc-region-operations-menu)
 (require 'cc-truth-table)
 (require 'eww)
-(require 'casual-bookmarks)
 (require 'anju-main-menu)
 (require 'anju-mode-line)
-
 
 (defun cc/dired-side-right (path)
   "Side-by-side layout with Dired buffer on the right set to PATH."

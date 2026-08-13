@@ -1217,5 +1217,15 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
   "Process ARG with OSAscript."
   (process-lines "osascript" "-e" arg))
 
+
+
+
+(defun cc/casual-gen-autoload-file ()
+  "Generate autoload file for Casual."
+  (interactive)
+  (loaddefs-generate "~/Projects/elisp/casual/lisp/"
+                     "~/emacs/cclisp/casual-autoload.el"))
+
+
 (provide 'cclisp)
 ;;; cclisp.el ends here

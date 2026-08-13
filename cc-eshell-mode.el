@@ -102,8 +102,7 @@
                               (setenv "NO_COLOR" "1")
                               (setenv "CLICOLOR" "0")))
 
-(keymap-set eshell-mode-map "C-o" #'casual-eshell-tmenu)
-
+;; (keymap-set eshell-mode-map "C-o" #'casual-eshell-tmenu)
 
 (defun eshell/bufcat (&rest args)
   "Support cat on a buffer specified in ARGS.

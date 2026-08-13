@@ -27,6 +27,7 @@
 (require 'org-capture)
 (require 'org-agenda)
 (require 'org-mouse)
+(require 'org-clock)
 (require 'org-superstar)
 (require 'face-remap)
 (require 'org-ql)
@@ -37,7 +38,7 @@
 (require 'prog-mode)
 (require 'cc-org-smart-quotes)
 (require 'imenu)
-(require 'casual-agenda)
+;; (require 'casual-agenda)
 (require 'org-protocol)
 (require 'casual-org)
 (require 'anju-style-text)
@@ -206,7 +207,6 @@ SUFFIX - string appended to prefix
 (keymap-set org-mode-map "M-[" #'backward-sexp)
 (keymap-set org-mode-map "M-]" #'forward-sexp)
 
-
 (keymap-set org-mode-map "C-6" #'org-goto)
 ;; (keymap-set org-read-date-minibuffer-local-map "C-o" #'casual-calendar)
 
@@ -219,7 +219,7 @@ SUFFIX - string appended to prefix
 (keymap-set org-agenda-mode-map "<f1>" #'org-save-all-org-buffers)
 (keymap-set org-agenda-mode-map "M-p" #'org-agenda-previous-date-line)
 (keymap-set org-agenda-mode-map "M-n" #'org-agenda-next-date-line)
-(keymap-set org-agenda-mode-map "." #'casual-agenda-goto-now)
+;; (keymap-set org-agenda-mode-map "." #'casual-agenda-goto-now)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -286,8 +286,8 @@ SUFFIX - string appended to prefix
 ;; -------------------------------------------------------------------
 ;; Transients
 
-(keymap-set org-mode-map "M-m" #'casual-org-tmenu)
-(keymap-set org-table-fedit-map "M-m" #'casual-org-table-fedit-tmenu)
+;; (keymap-set org-mode-map "M-m" #'casual-org-tmenu)
+;; (keymap-set org-table-fedit-map "M-m" #'casual-org-table-fedit-tmenu)
 (keymap-set org-table-fedit-map "<f1>" #'casual-org-table-fedit-tmenu)
 
 

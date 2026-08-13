@@ -23,19 +23,20 @@
 ;;
 
 ;;; Code:
-(require 'make-mode)
-(require 'compile)
+;; (require 'make-mode)
+;; (require 'compile)
+(require 'imenu)
 (require 'casual-make)
 
-(keymap-set makefile-mode-map "<f9>" #'compile)
-(keymap-set makefile-mode-map "C-6" #'imenu)
+(defun cc-make-setup ()
+  "Setup function for Make."
 
-(add-hook 'makefile-mode-hook
-          (lambda ()
-            (setq-local imenu-sort-function #'imenu--sort-by-name)))
+  (setq-local imenu-sort-function #'imenu--sort-by-name)
+  (keymap-set makefile-mode-map "<f9>" #'compile)
+  (keymap-set makefile-mode-map "C-6" #'imenu)
+  (keymap-set makefile-mode-map "C-c m" #'casual-make-tmenu))
 
-(keymap-set makefile-mode-map "M-m" #'casual-make-tmenu)
-(keymap-set makefile-mode-map "C-c m" #'casual-make-tmenu)
+(add-hook 'makefile-mode-hook #'cc-make-setup)
 
 (provide 'cc-make-mode)
 ;;; cc-make-mode.el ends here

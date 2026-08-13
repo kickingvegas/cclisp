@@ -76,7 +76,7 @@
 ;; (keymap-global-set "<f7>" #'ace-window)
 (keymap-global-set "<f7>" #'avy-goto-char-timer)
 (keymap-global-set "M-<f7>" #'repeat-complex-command)
-(keymap-global-set "C-o" #'casual-editkit-main-tmenu)
+;; (keymap-global-set "C-o" #'casual-editkit-main-tmenu)
 ;; (if (string-equal (window-system) "mac")
 ;;     (keymap-global-set "<f10>" #'casual-editkit-main-tmenu))
 
