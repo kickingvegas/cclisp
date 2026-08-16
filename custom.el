@@ -130,6 +130,17 @@
  '(bibtex-dialect 'biblatex)
  '(bookmark-automatically-show-annotations nil)
  '(bookmark-save-flag 1)
+ '(browse-url-handlers
+   '(("^https?://github\\.com" lambda (url &rest args) (pwa "github" url))
+     ("^https?://\\(youtube\\.com\\|youtu\\.be\\|www\\.youtube\\.com\\)" lambda
+      (url &rest args) (pwa "youtube" url))
+     ("^https?://www\\.twitch\\.tv" lambda (url &rest args) (pwa "twitch" url))
+     ("^https?://www\\.kanopy\\.com" lambda (url &rest args) (pwa "kanopy" url))
+     ("^https?://www\\.peacocktv\\.com" lambda (url &rest args)
+      (pwa "peacock" url))
+     ("^https?://www\\.reddit\\.com" lambda (url &rest args) (pwa "reddit" url))
+     ("^https?://www\\.netflix\\.com" lambda (url &rest args)
+      (pwa "netflix" url))))
  '(calc-kill-line-numbering nil)
  '(calendar-latitude 37.7641666667)
  '(calendar-location-name '(format "%s, San Francisco" "Inner Sunset"))

@@ -290,26 +290,6 @@ If prefix ARG is non-nil, then the computed result is stored in the
     (switch-to-buffer (format-time-string "%Y_%m_%d.org"))
     (setq cc--workplace-initialized t)))
 
-;; Reconfigure gah browse-url
-(defun cc/gah-browse-url (&optional issue)
-  "Open URL in ISSUE.
-
-Note that UUID in ‘app-id’ is locally defined by macOS. Users must
-inspect their local GitHub PWA Info.plist configuration to replace it
-accordingly."
-  (let* ((issue (if (not issue)
-                    (vtable-current-object)
-                  issue))
-         (url (map-elt issue "url")))
-    (cond
-     ((or (eq window-system 'ns) (eq window-system 'mac))
-      (github url))
-
-     (t
-      (browse-url url)))))
-
-(advice-add 'gah-browse-url :override 'cc/gah-browse-url)
-
 
 (if (and t
          (eq window-system 'ns)
