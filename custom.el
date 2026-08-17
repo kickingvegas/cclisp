@@ -21,6 +21,7 @@
                                       anju-main-menu--reconfigure-imenu
                                       cc/reconfigure-tools-menu))
  '(apropos-do-all t)
+ '(aqui-source :shortcuts)
  '(auto-insert-alist
    '((("\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'" . "C / C++ header")
       (replace-regexp-in-string "[^A-Z0-9]" "_"
@@ -419,9 +420,11 @@
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
  '(mouse-autoselect-window nil)
+ '(mouse-wheel-flip-direction t)
  '(mouse-wheel-progressive-speed t)
+ '(mouse-wheel-tilt-scroll t)
  '(mouse-yank-at-point t)
- '(now-playing-dismiss-menu-for-playpause t)
+ '(now-playing-dismiss-menu-for-playpause nil)
  '(ns-alternate-modifier 'super)
  '(ns-right-alternate-modifier 'hyper)
  '(org-agenda-files '("~/org/"))
