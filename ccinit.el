@@ -100,7 +100,6 @@
   (setq mac-command-modifier 'meta))
 
 (require 'casual-autoload)
-(casual-init)
 (require 'cclisp)
 (require 'cc-ibuffer-mode)
 (require 'cc-prog-mode)
@@ -173,13 +172,7 @@
 (require 'wttr)
 (require 'aqui)
 (require 'cc-global-keybindings)
-;;; Configure MELPA Packages
-;; (require 'casual-isearch)
-;; (keymap-set isearch-mode-map "C-o" #'casual-isearch-tmenu)
-
-;; (require 'casual)
-
-;; (casual-init)
+(require 'casual)
 
 ;; calle24 config
 (when (featurep 'calle24)
@@ -192,6 +185,7 @@
   :hook ((bookmark-bmenu-mode . hl-line-mode)
          (ibuffer-mode . hl-line-mode)))
 
+(casual-init)
 (anju-init)
 
 ;;; Local Customizations
