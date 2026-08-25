@@ -173,7 +173,7 @@
                              anju-context-menu-rectangle context-menu-undo
                              context-menu-region
                              anju-context-menu-region-extension
-                             anju-context-menu-window))
+                             anju-context-menu-window context-menu-send-to))
  '(current-language-environment "English")
  '(cursor-type 'bar)
  '(custom-safe-themes
@@ -394,6 +394,7 @@
      ("gnus"
       (or (mode . message-mode) (mode . mail-mode) (mode . gnus-group-mode)
           (mode . gnus-summary-mode) (mode . gnus-article-mode)))))
+ '(ibuffer-use-header-line t)
  '(ignored-local-variable-values
    '((vc-prepare-patches-separately) (diff-add-log-use-relative-names . t)
      (vc-git-annotate-switches . "-w")))
@@ -622,6 +623,7 @@
  '(warning-suppress-types '((comp)))
  '(wdired-allow-to-change-permissions t)
  '(wgrep-auto-save-buffer t)
+ '(window-resize-pixelwise t)
  '(world-clock-list
    '(("Pacific/Honolulu" "Honolulu") ("America/Los_Angeles" "San Francisco")
      ("America/Denver" "Denver") ("America/Chicago" "Chicago")
@@ -652,6 +654,7 @@
  '(font-lock-string-face ((((class grayscale) (background light)) (:foreground "DimGray" :slant italic)) (((class grayscale) (background dark)) (:foreground "LightGray" :slant italic)) (((type x w32 ns pgtk) (class color) (min-colors 88) (background light)) (:foreground "VioletRed4")) (((type x w32 ns pgtk) (class color) (min-colors 88) (background dark)) (:foreground "LightSalmon")) (((type tty) (class color) (min-colors 16) (background light)) (:foreground "RosyBrown")) (((type tty) (class color) (min-colors 16) (background dark)) (:foreground "LightSalmon")) (((class color) (min-colors 8)) (:foreground "green")) (t (:slant italic))))
  '(highlight ((((type x ns pgtk) (class color) (background light)) (:background "alice blue")) (((type x ns pgtk) (class color) (background dark)) (:background "gray20")) (((type tty) (class color)) (:background "gray20")) (t (:inverse-video t))))
  '(hl-line ((t (:inherit highlight :extend t))))
+ '(ibuffer-title ((t (:inherit fixed-pitch :slant italic))))
  '(magit-section-highlight ((((type x w32 ns haiku) (class color) (background light)) (:extend t :background "grey95")) (((type x w32 ns pgtk) (class color) (background dark)) (:extend t :background "grey20")) (((type tty) (class color)) (:extend t :background "grey20"))))
  '(markdown-code-face ((t (:inherit fixed-pitch))))
  '(markdown-header-delimiter-face ((t (:inherit outline-1))))

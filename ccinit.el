@@ -99,7 +99,7 @@
 (when (and (eq window-system 'ns) (boundp 'mac-command-modifier))
   (setq mac-command-modifier 'meta))
 
-(require 'casual-autoload)
+;;(require 'casual-autoload)
 (require 'cclisp)
 (require 'cc-ibuffer-mode)
 (require 'cc-prog-mode)
