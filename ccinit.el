@@ -171,6 +171,7 @@
 (require 'anju)
 (require 'wttr)
 (require 'aqui)
+(require 'mdired)
 (require 'cc-global-keybindings)
 (require 'casual)
 
