@@ -608,7 +608,7 @@ point is in.
 Thanks to mwnaylor, PropagandaOfTheDude, and deaddyfreddy for
 helping write this function."
   (interactive)
-  (when-let ((interned (intern-soft (which-function))))
+  (when-let* ((interned (intern-soft (which-function))))
     (describe-function interned)))
 
 (defun cc/repunctuate-and-fill-paragraph ()
@@ -642,24 +642,6 @@ then you should put a ‘q’ at the end of the key macro string."
   (kill-sexp))
 
 ;; Transient Labels
-
-;; TODO: obsolete
-(defun cc/--variable-to-checkbox (v)
-  "Checkbox string representation of variable V.
-V is either nil or non-nil."
-  (if (display-graphic-p)
-      (if v "☑︎" "◻︎")
-    (if v "[x]" "[ ]")))
-
-;; TODO: obsolete
-(defun cc/--prefix-label (label prefix)
-  "Label constructed with PREFIX and LABEL separated by a space."
-  (format "%s %s" prefix label))
-
-;; TODO: obsolete
-(defun cc/--checkbox-label (v label)
-  "Checkbox label using variable V and LABEL."
-  (cc/--prefix-label label (cc/--variable-to-checkbox v)))
 
 (defun cc/smart-single-quote-region (start end)
   "Enclose region within START and END in smart single quotes."
