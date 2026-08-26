@@ -140,11 +140,7 @@
 (require 'cc-digital-logic)
 (require 'cc-package-menu-mode)
 (require 'cc-calc-mode)
-;;(require 'cc-re-builder)
-(require 'cc-symbol-overlay)
-;; (require 'cc-calendar-mode)
 ;; (require 'password-store-menu)
-;; (require 'cc-image-mode)
 (require 'cc-make-mode)
 (require 'cc-csv-mode)
 (require 'cc-main-tmenu)
@@ -156,8 +152,6 @@
 (require 'cc-eww-mode)
 (require 'cc-debbugs-mode)
 (require 'cc-blog-utils)
-;; (require 'cc-css-mode)
-;; (require 'cc-html-mode)
 (require 'cc-macros)
 (require 'ffap)
 (require 'calle24)
@@ -186,7 +180,7 @@
   :hook ((bookmark-bmenu-mode . hl-line-mode)
          (ibuffer-mode . hl-line-mode)))
 
-(casual-init)
+(casual-suite-init)
 (anju-init)
 
 ;;; Local Customizations
