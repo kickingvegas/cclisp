@@ -26,9 +26,10 @@
 (require 'info)
 
 (defun cc/clone-in-new-tab ()
+  "Clone in new tab."
   (interactive)
-  (unless (fboundp #'tab-bar-mode) (error "Error: tab-bar-mode not available."))
-  (unless (derived-mode-p 'Info-mode) (error "Error: must only be run in Info."))
+  (unless (fboundp #'tab-bar-mode) (error "Error: tab-bar-mode not available"))
+  (unless (derived-mode-p 'Info-mode) (error "Error: must only be run in Info"))
   (tab-new-to -1)
   (clone-buffer nil t)
   (delete-other-windows))
@@ -36,15 +37,19 @@
 (defun cc/rename-to-info-manual ()
   "Rename buffer to *info <manual name>*."
   (interactive)
-  (unless (derived-mode-p 'Info-mode) (error "Error: can only run in Info buffer."))
+  (unless (derived-mode-p 'Info-mode) (error "Error: can only run in Info buffer"))
   (let ((manual-name (file-name-nondirectory Info-current-file)))
     (rename-buffer (format "*info %s*" manual-name))))
 
-(keymap-set Info-mode-map "<mouse-5>" #'Info-history-forward)
-(keymap-set Info-mode-map "<mouse-4>" #'Info-history-back)
-(keymap-set Info-mode-map "s-<tab>" #'cc/clone-in-new-tab)
-(keymap-set Info-mode-map "M-t" #'cc/clone-in-new-tab)
-(keymap-set Info-mode-map "." #'Info-up)
+(defun cc/info-mode-hook ()
+  "Configuration for Info mode."
+  (keymap-set Info-mode-map "<mouse-5>" #'Info-history-forward)
+  (keymap-set Info-mode-map "<mouse-4>" #'Info-history-back)
+  (keymap-set Info-mode-map "s-<tab>" #'cc/clone-in-new-tab)
+  (keymap-set Info-mode-map "M-t" #'cc/clone-in-new-tab)
+  (keymap-set Info-mode-map "." #'Info-up))
+
+(add-hook 'Info-mode-hook #'cc/info-mode-hook)
 
 (provide 'cc-info-mode)
 ;;; cc-info-mode.el ends here
