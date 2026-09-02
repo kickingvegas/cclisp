@@ -99,5 +99,10 @@
                   (map-insert cc/pwa-table x (cc/pwa-extract-bundleid x)))))
           pwa-paths)))
 
+(defun ghp ()
+  "Load GitHub projects."
+  (interactive)
+  (browse-url "https://github.com/users/kickingvegas/projects/5"))
+
 (provide 'cc-pwa)
 ;;; cc-pwa.el ends here
