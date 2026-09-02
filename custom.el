@@ -157,6 +157,7 @@
  '(company-dabbrev-downcase nil)
  '(compilation-auto-jump-to-first-error 'first-known)
  '(compilation-scroll-output t)
+ '(compile-command "make -k ")
  '(context-menu-functions
    '(anju-context-menu-elisp anju-context-menu-edebug-eval anju-context-menu-xref
                              anju-context-menu-compile anju-context-menu-dired
