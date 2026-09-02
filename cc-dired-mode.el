@@ -31,44 +31,36 @@
 (require 'image-dired)
 (require 'image-dired-dired)
 (require 'casual-dired)
-(require 'casual-editkit)
-(require 'dired-rsync-transient)
-(require 'avy)
+;;(require 'casual-editkit)
+;;(require 'dired-rsync-transient)
+;;(require 'avy)
 (require 'diff-hl-dired)
+(require 'dired-rsync-transient)
 
 (add-hook 'dired-mode-hook #'hl-line-mode)
 (add-hook 'dired-mode-hook #'dired-async-mode)
 (add-hook 'dired-mode-hook #'diff-hl-dired-mode)
 
-(add-hook
- 'dired-mode-hook
- (lambda ()
-   (setq-local mouse-1-click-follows-link 'double)))
 
-(keymap-set dired-mode-map "M-o" #'dired-omit-mode)
-(keymap-set dired-mode-map "C-M-o" #'casual-editkit-main-tmenu)
-(keymap-set dired-mode-map "E" #'wdired-change-to-wdired-mode)
-(keymap-set dired-mode-map "C-o" #'casual-dired-tmenu)
-(keymap-set dired-mode-map "s" #'casual-dired-sort-by-tmenu)
-(keymap-set dired-mode-map "/" #'casual-dired-search-replace-tmenu)
-(keymap-set dired-mode-map "M-n" #'dired-next-dirline)
-(keymap-set dired-mode-map "M-p" #'dired-prev-dirline)
-(keymap-set dired-mode-map "]" #'dired-next-subdir)
-(keymap-set dired-mode-map "[" #'dired-prev-subdir)
-(keymap-set dired-mode-map "M-]" #'dired-next-marked-file)
-(keymap-set dired-mode-map "M-[" #'dired-prev-marked-file)
-(keymap-set dired-mode-map "M-j" #'dired-goto-subdir)
-(keymap-set dired-mode-map ";" #'image-dired-dired-toggle-marked-thumbs)
-(keymap-set dired-mode-map "<f1>" #'avy-goto-end-of-line)
-(keymap-set dired-mode-map "." #'dired-up-directory)
-(keymap-set dired-mode-map "M-m" #'dired-rsync-transient)
-(keymap-set dired-mode-map "M-l" #'dired-other-window)
-(keymap-set dired-mode-map "C-c e" #'casual-dired-elisp-tmenu)
-(keymap-set dired-mode-map "SPC" #'dired-display-file)
+(defun cc-dired-setup ()
+  "Setup function for Dired."
 
-;; Added to be consistent with IBuffer
-(keymap-set dired-mode-map "<backtab>" #'dired-prev-subdir)
-(keymap-set dired-mode-map "TAB" #'dired-next-subdir)
+  (setq-local mouse-1-click-follows-link 'double)
+  (keymap-set dired-mode-map "M-o" #'dired-omit-mode)
+  ;;(keymap-set dired-mode-map "C-M-o" #'casual-editkit-main-tmenu)
+  (keymap-set dired-mode-map "<f1>" #'avy-goto-end-of-line)
+  (keymap-set dired-mode-map "." #'dired-up-directory)
+  (keymap-set dired-mode-map "M-m" #'dired-rsync-transient)
+  (keymap-set dired-mode-map "M-l" #'dired-other-window)
+  (keymap-set dired-mode-map "C-c e" #'casual-dired-elisp-tmenu)
+  (keymap-set dired-mode-map "SPC" #'dired-display-file)
+
+  ;; Added to be consistent with IBuffer
+  (keymap-set dired-mode-map "<backtab>" #'dired-prev-subdir)
+  (keymap-set dired-mode-map "TAB" #'dired-next-subdir)
+
+  (keymap-set dired-mode-map "A-M-<mouse-1>" #'browse-url-of-dired-file)
+  (keymap-set dired-mode-map "M-<mouse-1>" #'cc/dired-mouse-toggle-mark))
 
 (defun cc/dired-mouse-toggle-mark ()
   "Toggle mark of a Dired item via mouse."
@@ -79,8 +71,7 @@
         (call-interactively #'dired-unmark)
       (call-interactively #'dired-mark))))
 
-(keymap-set dired-mode-map "A-M-<mouse-1>" #'browse-url-of-dired-file)
-(keymap-set dired-mode-map "M-<mouse-1>" #'cc/dired-mouse-toggle-mark)
+(add-hook 'dired-mode-hook #'cc-dired-setup)
 
 (keymap-set image-dired-thumbnail-mode-map "n" #'image-dired-display-next)
 (keymap-set image-dired-thumbnail-mode-map "p" #'image-dired-display-previous)
@@ -95,6 +86,17 @@
     (if (get-buffer bname)
         (kill-buffer bname))
     (find-file "~/Projects/elisp/casual")
+    (casual-dired-find-dired-regexp pattern)
+    (rename-buffer bname)))
+
+(defun cc/casual-modules-list ()
+  "Create Dired buffer in Casual project filtering SUBSYSTEM."
+  (interactive)
+  (let* ((pattern "casual-[[:alpha:]]*\\.el")
+         (bname "*casual modules*"))
+    (if (get-buffer bname)
+        (kill-buffer bname))
+    (find-file "~/Projects/elisp/casual/lisp")
     (casual-dired-find-dired-regexp pattern)
     (rename-buffer bname)))
 

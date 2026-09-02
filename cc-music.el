@@ -83,7 +83,7 @@ Alternate bindings: s-<f8>"
 
 (shazam-init "M-<f19>")
 (keymap-global-set "s-<f5>" #'shazam)
-(keymap-global-set "s-<f19>" #'shazam-find-log)
+(keymap-global-set "s-<f19>" #'shazam-history)
 
 (provide 'cc-music)
 ;;; cc-music.el ends here

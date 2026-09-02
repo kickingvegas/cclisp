@@ -99,18 +99,19 @@
 (when (and (eq window-system 'ns) (boundp 'mac-command-modifier))
   (setq mac-command-modifier 'meta))
 
+;;(require 'casual-autoload)
 (require 'cclisp)
 (require 'cc-ibuffer-mode)
 (require 'cc-prog-mode)
 (require 'cc-emacs-lisp-mode)
 (require 'cc-text-mode)
 (require 'cc-org-mode)
-(require 'cc-org-agenda)
+;; (require 'cc-org-agenda)
 (require 'cc-markdown-mode)
 (require 'cc-objc-mode)
 (require 'cc-nxml-mode)
 (require 'cc-sgml-mode)
-(require 'cc-bookmarks-bmenu-mode)
+;; (require 'cc-bookmarks-bmenu-mode)
 (require 'cc-dired-mode)
 (require 'cc-js-mode)
 (require 'cc-tetris-mode)
@@ -139,11 +140,7 @@
 (require 'cc-digital-logic)
 (require 'cc-package-menu-mode)
 (require 'cc-calc-mode)
-(require 'cc-re-builder)
-(require 'cc-symbol-overlay)
-(require 'cc-calendar-mode)
 ;; (require 'password-store-menu)
-(require 'cc-image-mode)
 (require 'cc-make-mode)
 (require 'cc-csv-mode)
 (require 'cc-main-tmenu)
@@ -155,8 +152,6 @@
 (require 'cc-eww-mode)
 (require 'cc-debbugs-mode)
 (require 'cc-blog-utils)
-(require 'cc-css-mode)
-(require 'cc-html-mode)
 (require 'cc-macros)
 (require 'ffap)
 (require 'calle24)
@@ -169,11 +164,10 @@
   (require 'cc-music))
 (require 'anju)
 (require 'wttr)
+(require 'aqui)
+(require 'mdired)
 (require 'cc-global-keybindings)
-
-;;; Configure MELPA Packages
-(require 'casual-isearch)
-(keymap-set isearch-mode-map "C-o" #'casual-isearch-tmenu)
+(require 'casual)
 
 ;; calle24 config
 (when (featurep 'calle24)
@@ -186,6 +180,7 @@
   :hook ((bookmark-bmenu-mode . hl-line-mode)
          (ibuffer-mode . hl-line-mode)))
 
+(casual-suite-init)
 (anju-init)
 
 ;;; Local Customizations
@@ -284,28 +279,9 @@ If prefix ARG is non-nil, then the computed result is stored in the
     (switch-to-buffer (format-time-string "%Y_%m_%d.org"))
     (setq cc--workplace-initialized t)))
 
-;; Reconfigure gah browse-url
-(defun cc/gah-browse-url (&optional issue)
-  "Open URL in ISSUE.
 
-Note that UUID in ‘app-id’ is locally defined by macOS. Users must
-inspect their local GitHub PWA Info.plist configuration to replace it
-accordingly."
-  (let* ((issue (if (not issue)
-                    (vtable-current-object)
-                  issue))
-         (url (map-elt issue "url")))
-    (cond
-     ((or (eq window-system 'ns) (eq window-system 'mac))
-      (github url))
-
-     (t
-      (browse-url url)))))
-
-(advice-add 'gah-browse-url :override 'cc/gah-browse-url)
-
-
-(if (and (eq window-system 'ns)
+(if (and t
+         (eq window-system 'ns)
          (string-equal (system-name) "bingsu.local"))
     (add-hook 'window-setup-hook #'cc/workplace))
 

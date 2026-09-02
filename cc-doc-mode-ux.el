@@ -1,6 +1,6 @@
 ;;; cc-doc-mode-ux.el --- Doc Mode UX Mods -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023-2024  Charles Choi
+;; Copyright (C) 2023-2024, 2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 
@@ -31,9 +31,6 @@
 (require 'hl-line)
 (require 'simple)
 (require 'cclisp)
-(require 'casual-lib)
-(require 'casual-man)
-(require 'casual-help)
 
 (defun cc/confirm-before-quit-window ()
   "Raise confirm prompt before invoking `quit-window'."
@@ -45,24 +42,8 @@
 ;; # Info
 ;; Prompt before quitting
 ;;(keymap-set Info-mode-map "q" 'cc/confirm-before-quit-window)
-;; Use web-browser history navigation bindings
-(keymap-set Info-mode-map "M-[" #'Info-history-back)
-(keymap-set Info-mode-map "M-]" #'Info-history-forward)
-;; Bind p and n to paragraph navigation
-(keymap-set Info-mode-map "p" #'casual-lib-browse-backward-paragraph)
-(keymap-set Info-mode-map "n" #'casual-lib-browse-forward-paragraph)
 ;; Bind <f1> to help
 (keymap-set Info-mode-map "<f1>" #'Info-help)
-;; Bind h and l to navigate to previous and next nodes
-;; Bind j and k to navigate to next and previous references
-(keymap-set Info-mode-map "h" #'Info-prev)
-(keymap-set Info-mode-map "j" #'Info-next-reference)
-(keymap-set Info-mode-map "k" #'Info-prev-reference)
-(keymap-set Info-mode-map "l" #'Info-next)
-;; Bind / to search
-(keymap-set Info-mode-map "/" #'Info-search)
-;; Set Bookmark
-(keymap-set Info-mode-map "B" #'bookmark-set)
 ;; Bind side mouse buttons on Logitech mouse
 (keymap-set Info-mode-map "<mouse-5>" #'Info-history-forward)
 (keymap-set Info-mode-map "<mouse-4>" #'Info-history-back)
@@ -71,28 +52,15 @@
 (add-hook 'Info-mode-hook #'scroll-lock-mode)
 
 ;; # Help
-;; Use web-browser history navigation bindings
-(keymap-set help-mode-map "M-[" #'help-go-back)
-(keymap-set help-mode-map "M-]" #'help-go-forward)
-;; Bind p and n to paragraph navigation
-(keymap-set help-mode-map "p" #'casual-lib-browse-backward-paragraph)
-(keymap-set help-mode-map "n" #'casual-lib-browse-forward-paragraph)
-(keymap-set help-mode-map "P" #'help-goto-previous-page)
-(keymap-set help-mode-map "N" #'help-goto-next-page)
 ;; Bind <f1> to help
 (keymap-set help-mode-map "<f1>" #'describe-mode)
 ;; Bind M-j, M-k to scrolling up/down line
 (keymap-set help-mode-map "M-j" #'scroll-up-line)
 (keymap-set help-mode-map "M-k" #'scroll-down-line)
-;; Bind j and k to navigate to forward and backward buttons
-(keymap-set help-mode-map "j" #'forward-button)
-(keymap-set help-mode-map "k" #'backward-button)
 ;; Bind side mouse buttons on Logitech mouse
 (keymap-set help-mode-map "<mouse-5>" #'help-go-forward)
 (keymap-set help-mode-map "<mouse-4>" #'help-go-back)
 
-;; Add Casual Help
-(keymap-set help-mode-map "C-o" #'casual-help-tmenu)
 
 (add-hook 'help-mode-hook #'hl-line-mode)
 (add-hook 'help-mode-hook #'scroll-lock-mode)
@@ -119,18 +87,6 @@
 ;; Bind M-j, M-k to scrolling up/down line
 (keymap-set Man-mode-map "M-j" #'scroll-up-line)
 (keymap-set Man-mode-map "M-k" #'scroll-down-line)
-;; Bind j and k to navigate forward and backward paragraphs
-(keymap-set Man-mode-map "n" #'casual-lib-browse-forward-paragraph)
-(keymap-set Man-mode-map "p" #'casual-lib-browse-backward-paragraph)
-(keymap-set Man-mode-map "[" #'Man-previous-section)
-(keymap-set Man-mode-map "]" #'Man-next-section)
-;; Bind K to kill buffer to replace override of default k above
-(keymap-set Man-mode-map "j" #'next-line)
-(keymap-set Man-mode-map "k" #'previous-line)
-(keymap-set Man-mode-map "o" #'casual-man-occur-options)
-
-(keymap-set Man-mode-map "K" #'Man-kill)
-(keymap-set Man-mode-map "C-o" #'casual-man-tmenu)
 
 (add-hook 'Man-mode-hook #'hl-line-mode)
 (add-hook 'Man-mode-hook #'scroll-lock-mode)

@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -21,6 +22,7 @@
                                       anju-main-menu--reconfigure-imenu
                                       cc/reconfigure-tools-menu))
  '(apropos-do-all t)
+ '(aqui-source :shortcuts)
  '(auto-insert-alist
    '((("\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'" . "C / C++ header")
       (replace-regexp-in-string "[^A-Z0-9]" "_"
@@ -130,6 +132,17 @@
  '(bibtex-dialect 'biblatex)
  '(bookmark-automatically-show-annotations nil)
  '(bookmark-save-flag 1)
+ '(browse-url-handlers
+   '(("^https?://github\\.com" lambda (url &rest args) (pwa "github" url))
+     ("^https?://\\(youtube\\.com\\|youtu\\.be\\|www\\.youtube\\.com\\)" lambda
+      (url &rest args) (pwa "youtube" url))
+     ("^https?://www\\.twitch\\.tv" lambda (url &rest args) (pwa "twitch" url))
+     ("^https?://www\\.kanopy\\.com" lambda (url &rest args) (pwa "kanopy" url))
+     ("^https?://www\\.peacocktv\\.com" lambda (url &rest args)
+      (pwa "peacock" url))
+     ("^https?://www\\.reddit\\.com" lambda (url &rest args) (pwa "reddit" url))
+     ("^https?://www\\.netflix\\.com" lambda (url &rest args)
+      (pwa "netflix" url))))
  '(calc-kill-line-numbering nil)
  '(calendar-latitude 37.7641666667)
  '(calendar-location-name '(format "%s, San Francisco" "Inner Sunset"))
@@ -145,6 +158,7 @@
  '(company-dabbrev-downcase nil)
  '(compilation-auto-jump-to-first-error 'first-known)
  '(compilation-scroll-output t)
+ '(compile-command "make -k ")
  '(context-menu-functions
    '(anju-context-menu-elisp anju-context-menu-edebug-eval anju-context-menu-xref
                              anju-context-menu-compile anju-context-menu-dired
@@ -161,7 +175,7 @@
                              anju-context-menu-rectangle context-menu-undo
                              context-menu-region
                              anju-context-menu-region-extension
-                             anju-context-menu-window))
+                             anju-context-menu-window context-menu-send-to))
  '(current-language-environment "English")
  '(cursor-type 'bar)
  '(custom-safe-themes
@@ -382,6 +396,7 @@
      ("gnus"
       (or (mode . message-mode) (mode . mail-mode) (mode . gnus-group-mode)
           (mode . gnus-summary-mode) (mode . gnus-article-mode)))))
+ '(ibuffer-use-header-line t)
  '(ignored-local-variable-values
    '((vc-prepare-patches-separately) (diff-add-log-use-relative-names . t)
      (vc-git-annotate-switches . "-w")))
@@ -408,9 +423,11 @@
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
  '(mouse-autoselect-window nil)
+ '(mouse-wheel-flip-direction t)
  '(mouse-wheel-progressive-speed t)
+ '(mouse-wheel-tilt-scroll t)
  '(mouse-yank-at-point t)
- '(now-playing-dismiss-menu-for-playpause t)
+ '(now-playing-dismiss-menu-for-playpause nil)
  '(ns-alternate-modifier 'super)
  '(ns-right-alternate-modifier 'hyper)
  '(org-agenda-files '("~/org/"))
@@ -550,11 +567,11 @@
            org-superstar osx-dictionary ox-gfm ox-gist ox-jira ox-slack ox-trac
            package-lint paredit password-store pbcopy pkg-info plantuml-mode
            project python pyvenv rainbow-mode reveal-in-folder rfc-mode scpaste
-           show-font smart-mode-line-powerline-theme soap-client solarized-theme
-           sqlite-mode-extras sr-speedbar svg-clock swift-mode swift-ts-mode
-           symbol-overlay tj3-mode toc-org track-changes tramp transmission
-           transpose-frame treemacs use-package verilog-mode visual-regexp
-           visual-regexp-steroids vtable webpaste wgrep which-key
+           shazam show-font smart-mode-line-powerline-theme soap-client
+           solarized-theme sqlite-mode-extras sr-speedbar svg-clock swift-mode
+           swift-ts-mode symbol-overlay tj3-mode toc-org track-changes tramp
+           transmission transpose-frame treemacs use-package verilog-mode
+           visual-regexp visual-regexp-steroids vtable webpaste wgrep which-key
            window-tool-bar xref yaml-mode yasnippet yasnippet-snippets ztree))
  '(pages-directory-for-adding-new-page-before-current-page-p nil)
  '(plantuml-default-exec-mode 'executable)
@@ -608,6 +625,7 @@
  '(warning-suppress-types '((comp)))
  '(wdired-allow-to-change-permissions t)
  '(wgrep-auto-save-buffer t)
+ '(window-resize-pixelwise t)
  '(world-clock-list
    '(("Pacific/Honolulu" "Honolulu") ("America/Los_Angeles" "San Francisco")
      ("America/Denver" "Denver") ("America/Chicago" "Chicago")
@@ -638,6 +656,7 @@
  '(font-lock-string-face ((((class grayscale) (background light)) (:foreground "DimGray" :slant italic)) (((class grayscale) (background dark)) (:foreground "LightGray" :slant italic)) (((type x w32 ns pgtk) (class color) (min-colors 88) (background light)) (:foreground "VioletRed4")) (((type x w32 ns pgtk) (class color) (min-colors 88) (background dark)) (:foreground "LightSalmon")) (((type tty) (class color) (min-colors 16) (background light)) (:foreground "RosyBrown")) (((type tty) (class color) (min-colors 16) (background dark)) (:foreground "LightSalmon")) (((class color) (min-colors 8)) (:foreground "green")) (t (:slant italic))))
  '(highlight ((((type x ns pgtk) (class color) (background light)) (:background "alice blue")) (((type x ns pgtk) (class color) (background dark)) (:background "gray20")) (((type tty) (class color)) (:background "gray20")) (t (:inverse-video t))))
  '(hl-line ((t (:inherit highlight :extend t))))
+ '(ibuffer-title ((t (:inherit fixed-pitch :slant italic))))
  '(magit-section-highlight ((((type x w32 ns haiku) (class color) (background light)) (:extend t :background "grey95")) (((type x w32 ns pgtk) (class color) (background dark)) (:extend t :background "grey20")) (((type tty) (class color)) (:extend t :background "grey20"))))
  '(markdown-code-face ((t (:inherit fixed-pitch))))
  '(markdown-header-delimiter-face ((t (:inherit outline-1))))

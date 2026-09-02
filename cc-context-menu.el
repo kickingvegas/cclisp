@@ -35,7 +35,6 @@
 (require 'osx-dictionary)
 (require 'ox-slack)
 (require 'compile)
-(require 'casual-agenda)
 (require 'anju)
 
 (easy-menu-define cc/context-menu-journal-menu nil
@@ -43,7 +42,7 @@
   '("Planner"
 
     ["Agenda - All TODOs"
-     (lambda () (interactive)(org-agenda nil "n"))
+     (lambda () (interactive) (org-agenda nil "n"))
      :help "Show Org agenda with all TODO tasks"]
 
     ["Workflow…"
@@ -72,7 +71,7 @@ This function is intended to be hooked into `context-menu-functions'."
                                   :help "Go to current day journal"])
 
     (easy-menu-add-item menu nil ["Add Note"
-                                  (lambda () (interactive)(org-capture nil "j"))
+                                  (lambda () (interactive) (org-capture nil "j"))
                                   :help "Add journal note"])
 
     (easy-menu-add-item menu nil cc/context-menu-journal-menu))

@@ -26,21 +26,13 @@
 
 (require 'compile)
 (require 'hl-line)
-(require 'casual-compile)
 (require 'goto-addr)
-(require 'anju)
+(require 'project)
+;; (require 'anju)
 
 (add-hook 'compilation-mode-hook #'hl-line-mode)
 (add-hook 'compilation-mode-hook #'goto-address-mode)
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
-
-(keymap-set compilation-mode-map "C-o" #'casual-compile-tmenu)
-(keymap-set compilation-mode-map "M-m" #'casual-compile-tmenu)
-(keymap-set compilation-mode-map "k" #'compilation-previous-error)
-(keymap-set compilation-mode-map "j" #'compilation-next-error)
-(keymap-set compilation-mode-map "o" #'compilation-display-error)
-(keymap-set compilation-mode-map "[" #'compilation-previous-file)
-(keymap-set compilation-mode-map "]" #'compilation-next-file)
 
 (defcustom cc-compile-project-root
   nil

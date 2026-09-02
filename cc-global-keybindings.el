@@ -41,7 +41,6 @@
 (require 'python)
 (require 'ibuffer)
 (require 'magit-status)
-(require 'casual-avy)
 (require 'casual-editkit)
 (require 'minibuffer)
 (require 'recent-rgrep)
@@ -76,7 +75,7 @@
 ;; (keymap-global-set "<f7>" #'ace-window)
 (keymap-global-set "<f7>" #'avy-goto-char-timer)
 (keymap-global-set "M-<f7>" #'repeat-complex-command)
-(keymap-global-set "C-o" #'casual-editkit-main-tmenu)
+;; (keymap-global-set "C-o" #'casual-editkit-main-tmenu)
 ;; (if (string-equal (window-system) "mac")
 ;;     (keymap-global-set "<f10>" #'casual-editkit-main-tmenu))
 
@@ -101,9 +100,6 @@
 (keymap-global-set "M-<f12>" #'casual-ediff-revision)
 
 (keymap-substitute (current-global-map) #'list-buffers #'ibuffer)
-
-;; Avy
-(keymap-global-set "M-g" #'casual-avy-tmenu)
 
 ;; Terminal
 ;; (unless (display-graphic-p)
@@ -228,6 +224,7 @@
 (keymap-global-set "s-SPC" #'cycle-spacing)
 (keymap-global-set "<mode-line> C-<mouse-3>" #'tear-off-window)
 (keymap-global-set "<mode-line> C-<mouse-1>" #'cc/toggle-pane)
+(keymap-global-set "C-x !" #'cc/toggle-pane)
 
 (keymap-global-set "C-x 1" #'anju-toggle-one-window)
 

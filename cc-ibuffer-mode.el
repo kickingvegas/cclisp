@@ -28,9 +28,7 @@
 (require 'ibuf-ext)
 (require 'hl-line)
 (require 'mouse)
-(require 'casual-ibuffer)
 (require 'avy)
-;; (require 'anju)
 
 (add-hook 'ibuffer-mode-hook #'hl-line-mode)
 (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)
@@ -51,10 +49,6 @@
 (keymap-set ibuffer-mode-map "s-<f1>" #'ibuffer-jump-to-filter-group)
 (keymap-set ibuffer-mode-map "<f2>" #'avy-goto-line)
 
-(keymap-set ibuffer-mode-map "C-o" #'casual-ibuffer-tmenu)
-(keymap-set ibuffer-mode-map "F" #'casual-ibuffer-filter-tmenu)
-(keymap-set ibuffer-mode-map "s" #'casual-ibuffer-sortby-tmenu)
-
 (keymap-set ibuffer-mode-map "{" #'ibuffer-backwards-next-marked)
 (keymap-set ibuffer-mode-map "}" #'ibuffer-forward-next-marked)
 (keymap-set ibuffer-mode-map "[" #'ibuffer-backward-filter-group)
@@ -64,23 +58,6 @@
 
 (keymap-set ibuffer-mode-map "SPC" #'ibuffer-visit-buffer-other-window-noselect)
 
-;; (defun cc/context-menu-ibuffer (menu click)
-;;   "Context menu hook function for Ibuffer commands.
-
-;; - MENU: menu
-;; - CLICK: event
-
-;; This function is intended to be hooked into `context-menu-functions'."
-
-;;   (mouse-set-point click)
-
-;;   (save-excursion
-;;     (when (derived-mode-p 'ibuffer-mode)
-;;       (easy-menu-add-item menu nil ["Switch to filter group…"
-;;                                     casual-ibuffer-switch-to-saved-filter-groups
-;;                                     :help "Switch to Ibuffer filter group"])
-;;       ))
-;;   menu)
 
 (provide 'cc-ibuffer-mode)
 ;;; cc-ibuffer-mode.el ends here

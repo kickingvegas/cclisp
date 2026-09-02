@@ -27,7 +27,6 @@
 (require 'hl-line)
 (require 'bookmark)
 (require 'avy)
-(require 'casual-eww)
 
 (add-hook 'eww-mode-hook #'hl-line-mode)
 (add-hook 'eww-bookmark-mode-hook #'hl-line-mode)
@@ -70,35 +69,12 @@ This function taken via GitHub Copilot query."
         (eww-bookmark-yank)
         (forward-line -1))))
 
-(keymap-set eww-bookmark-mode-map "C-o" #'casual-eww-bookmarks-tmenu)
-(keymap-set eww-bookmark-mode-map "p" #'previous-line)
-(keymap-set eww-bookmark-mode-map "n" #'next-line)
+
+(keymap-set eww-bookmark-mode-map "<double-mouse-1>" #'eww-bookmark-browse)
 (keymap-set eww-bookmark-mode-map "M-p" #'cc/eww-bookmark-reorder-up)
 (keymap-set eww-bookmark-mode-map "M-n" #'cc/eww-bookmark-reorder-down)
 
-(keymap-set eww-bookmark-mode-map "<double-mouse-1>" #'eww-bookmark-browse)
-
-(keymap-set eww-mode-map "C-o" #'casual-eww-tmenu)
-(keymap-set eww-mode-map "C-c C-o" #'eww-browse-with-external-browser)
-
-(keymap-set eww-mode-map "j" #'shr-next-link)
-(keymap-set eww-mode-map "k" #'shr-previous-link)
-
-(keymap-set eww-mode-map "[" #'eww-previous-url)
-(keymap-set eww-mode-map "]" #'eww-next-url)
-
-(keymap-set eww-mode-map "M-]" #'eww-forward-url)
-(keymap-set eww-mode-map "M-[" #'eww-back-url)
-
 (keymap-set eww-mode-map "<f1>" #'avy-goto-char-timer)
-
-(keymap-set eww-mode-map "n" #'casual-lib-browse-forward-paragraph)
-(keymap-set eww-mode-map "p" #'casual-lib-browse-backward-paragraph)
-
-(keymap-set eww-mode-map "P" #'casual-eww-backward-paragraph-link)
-(keymap-set eww-mode-map "N" #'casual-eww-forward-paragraph-link)
-
-(keymap-set eww-mode-map "M-l" #'eww)
 
 (provide 'cc-eww-mode)
 ;;; cc-eww-mode.el ends here

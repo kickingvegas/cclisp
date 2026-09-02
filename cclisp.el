@@ -608,7 +608,7 @@ point is in.
 Thanks to mwnaylor, PropagandaOfTheDude, and deaddyfreddy for
 helping write this function."
   (interactive)
-  (when-let ((interned (intern-soft (which-function))))
+  (when-let* ((interned (intern-soft (which-function))))
     (describe-function interned)))
 
 (defun cc/repunctuate-and-fill-paragraph ()
@@ -642,24 +642,6 @@ then you should put a ‘q’ at the end of the key macro string."
   (kill-sexp))
 
 ;; Transient Labels
-
-;; TODO: obsolete
-(defun cc/--variable-to-checkbox (v)
-  "Checkbox string representation of variable V.
-V is either nil or non-nil."
-  (if (display-graphic-p)
-      (if v "☑︎" "◻︎")
-    (if v "[x]" "[ ]")))
-
-;; TODO: obsolete
-(defun cc/--prefix-label (label prefix)
-  "Label constructed with PREFIX and LABEL separated by a space."
-  (format "%s %s" prefix label))
-
-;; TODO: obsolete
-(defun cc/--checkbox-label (v label)
-  "Checkbox label using variable V and LABEL."
-  (cc/--prefix-label label (cc/--variable-to-checkbox v)))
 
 (defun cc/smart-single-quote-region (start end)
   "Enclose region within START and END in smart single quotes."
@@ -1119,20 +1101,6 @@ This command is tuned for macOS using a single display."
         ;; (message "ERT: %s" test-name)
     (ert test-name)))
 
-(defun cc/update-location ()
-  "Update calendar location from macOS Shortcuts."
-  (interactive)
-  (let* ((location-request "shortcuts run getCurrentLocation | cat")
-         (response (shell-command-to-string location-request))
-         (location-map (json-parse-string response))
-         (latitude (gethash "latitude" location-map))
-         (longitude (gethash "longitude" location-map))
-         (city (gethash "city" location-map)))
-    (setopt calendar-latitude latitude)
-    (setopt calendar-longitude longitude)
-    (setopt calendar-location-name city)
-    (message "Updated location: %s (%.5f, %.5f)" city latitude longitude)))
-
 (defun cc/three-pane-layout ()
   "Layout frame in three panes."
   (interactive)
@@ -1230,6 +1198,16 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
 (defun cc/--osascript (arg)
   "Process ARG with OSAscript."
   (process-lines "osascript" "-e" arg))
+
+
+
+
+(defun cc/casual-gen-autoload-file ()
+  "Generate autoload file for Casual."
+  (interactive)
+  (loaddefs-generate "~/Projects/elisp/casual/lisp/"
+                     "~/emacs/cclisp/casual-autoload.el"))
+
 
 (provide 'cclisp)
 ;;; cclisp.el ends here

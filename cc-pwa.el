@@ -27,6 +27,23 @@
 ;;; PWA
 (require 'map)
 
+(defcustom cc-pwa-apps
+  '(("connect" . "~/Applications/Connect.app")
+    ("github" . "~/Applications/GitHub.app")
+    ("google-translate" . "~/Applications/Google Translate.app")
+    ("instagram" . "~/Applications/Instagram.app")
+    ("kanopy" . "~/Applications/Kanopy.app")
+    ("netflix" . "~/Applications/Netflix.app")
+    ("peacock" . "~/Applications/Peacock.app")
+    ("reddit" . "~/Applications/Reddit.app")
+    ("sfba" . "~/Applications/SFBA.social.app")
+    ("twitch" . "~/Applications/Twitch.app")
+    ("youtube" . "~/Applications/YouTube.app"))
+  "List of PWAs."
+  :type '(alist :key-type (string :tag "Name")
+                :value-type (file :tag "Bundle Path"))
+  :group 'kickingvegas)
+
 (defvar cc/pwa-table nil
   "Alist for Safari PWA entries.")
 
@@ -44,40 +61,19 @@
         (process-lines "open" "-b" safari-id url)
       (process-lines "open" "-b" safari-id))))
 
-(defun youtube (&optional url)
-  "Launch YouTube Safari PWA with URL."
+(defun pwa (&optional key url)
+  "Launch PWA with KEY and URL."
   (interactive)
-  (cc/open-safari-pwa "~/Applications/YouTube.app" url))
+  (let* ((key (if (not key)
+                  (completing-read "App: " (map-keys cc-pwa-apps))
+                key))
+         (bundle-path (if (map-contains-key cc-pwa-apps key)
+                          (map-elt cc-pwa-apps key)
+                        nil)))
+    (if bundle-path
+        (cc/open-safari-pwa bundle-path url)
+      (error "Invalid app name: %s" key))))
 
-(defun instagram (&optional url)
-  "Launch Instagram Safari PWA with URL."
-  (interactive)
-  (cc/open-safari-pwa "~/Applications/Instagram.app" url))
-
-(defun reddit (&optional url)
-  "Launch Reddit Safari PWA with URL."
-  (interactive)
-  (cc/open-safari-pwa "~/Applications/Reddit.app"
-                      url))
-(defun sfba ()
-  "Launch SFBA Mastodon Safari PWA."
-  (interactive)
-  (cc/open-safari-pwa "~/Applications/SFBA.social.app"))
-
-(defun twitch (&optional url)
-  "Launch Twitch Safari PWA with URL."
-  (interactive)
-  (cc/open-safari-pwa "~/Applications/Twitch.app" url))
-
-(defun github (&optional url)
-  "Launch GitHub Safari PWA with URL."
-  (interactive)
-  (cc/open-safari-pwa "~/Applications/GitHub.app" url))
-
-(defun peacock (&optional url)
-  "Launch Peacock TV Safari PWA with URL."
-  (interactive)
-  (cc/open-safari-pwa "~/Applications/Peacock.app" url))
 
 (defun cc/pwa-extract-bundleid (pwa-path)
   "Extract Bundle ID from PWA-PATH."
@@ -96,19 +92,17 @@
 (defun cc/pwa-load-table ()
   "Initialize `cc/pwa-table'."
   (interactive)
-  (let ((pwa-paths '("~/Applications/GitHub.app"
-                     "~/Applications/Reddit.app"
-                     "~/Applications/Instagram.app"
-                     "~/Applications/SFBA.social.app"
-                     "~/Applications/Twitch.app"
-                     "~/Applications/YouTube.app"
-                     "~/Applications/Google Translate.app")))
+  (let ((pwa-paths (map-values cc-pwa-apps)))
     (mapc (lambda (x)
             (unless (map-elt cc/pwa-table x)
               (setq cc/pwa-table
                   (map-insert cc/pwa-table x (cc/pwa-extract-bundleid x)))))
           pwa-paths)))
 
+(defun ghp ()
+  "Load GitHub projects."
+  (interactive)
+  (browse-url "https://github.com/users/kickingvegas/projects/5"))
 
 (provide 'cc-pwa)
 ;;; cc-pwa.el ends here

@@ -30,7 +30,11 @@
   (kmacro "C-<down> C-<right> C-<right> C-o c C-<up> C-e <return> ( c a s u a l t - m o c k SPC # ' C-y C-<up> C-p C-<down> : b i n d i n g SPC C-<right> C-o k : c o m m a n d C-<up>"))
 
 (defalias 'cc/casual-unicode-to-test
-   (kmacro "C-a C-<down> C-o m ( c a s u a l - o r g - u n i c o d e - g e t SPC C-<up> C-o k C-<up> M-] <return> C-y C-a C-o m ( s t r i n g - e q u a l SPC C-<up> C-o m ( s h o u l d SPC C-<up> C-o e D <return> C-p C-<down> C-o k C-<down> C-o k C-<up> C-<up> C-n C-n C-<down> C-<down> C-<right> C-<right> SPC C-y C-<up> C-<up> C-p C-p C-<down> C-<down> C-o k C-<up> C-<up> C-n C-<down> C-<down> C-<right> C-<right> C-y C-<up> C-<up> C-p C-k C-k TAB"))
+  (kmacro "C-a C-<down> C-o m ( c a s u a l - o r g - u n i c o d e - g e t SPC C-<up> C-o k C-<up> M-] <return> C-y C-a C-o m ( s t r i n g - e q u a l SPC C-<up> C-o m ( s h o u l d SPC C-<up> C-o e D <return> C-p C-<down> C-o k C-<down> C-o k C-<up> C-<up> C-n C-n C-<down> C-<down> C-<right> C-<right> SPC C-y C-<up> C-<up> C-p C-p C-<down> C-<down> C-o k C-<up> C-<up> C-n C-<down> C-<down> C-<right> C-<right> C-y C-<up> C-<up> C-p C-k C-k TAB"))
+
+(defalias 'cc/keybind-convert
+  (kmacro "C-<down> k e y m a p - s e t SPC C-o k s-SPC C-<right> C-o e d p M-d s-SPC C-<up>"))
+
 
 (provide 'cc-macros)
 ;;; cc-macros.el ends here

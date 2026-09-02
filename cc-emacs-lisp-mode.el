@@ -29,7 +29,6 @@
 (require 'cclisp)
 (require 'calle24-edebug)
 (require 'hideshow)
-(require 'casual-elisp)
 (require 'anju)
 
 ;;; Code:
@@ -221,8 +220,6 @@
   [("C-g" "Dismiss" ignore :transient transient-quit-one)])
 
 (keymap-set edebug-eval-mode-map "<f8>" #'cc/edebug-watch-tmenu)
-(keymap-set emacs-lisp-mode-map "M-m" #'casual-elisp-tmenu)
-(keymap-set emacs-lisp-mode-map "C-c m" #'casual-elisp-tmenu)
 
 
 ;;; Calle 24 Config
