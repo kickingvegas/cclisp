@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -566,11 +567,11 @@
            org-superstar osx-dictionary ox-gfm ox-gist ox-jira ox-slack ox-trac
            package-lint paredit password-store pbcopy pkg-info plantuml-mode
            project python pyvenv rainbow-mode reveal-in-folder rfc-mode scpaste
-           show-font smart-mode-line-powerline-theme soap-client solarized-theme
-           sqlite-mode-extras sr-speedbar svg-clock swift-mode swift-ts-mode
-           symbol-overlay tj3-mode toc-org track-changes tramp transmission
-           transpose-frame treemacs use-package verilog-mode visual-regexp
-           visual-regexp-steroids vtable webpaste wgrep which-key
+           shazam show-font smart-mode-line-powerline-theme soap-client
+           solarized-theme sqlite-mode-extras sr-speedbar svg-clock swift-mode
+           swift-ts-mode symbol-overlay tj3-mode toc-org track-changes tramp
+           transmission transpose-frame treemacs use-package verilog-mode
+           visual-regexp visual-regexp-steroids vtable webpaste wgrep which-key
            window-tool-bar xref yaml-mode yasnippet yasnippet-snippets ztree))
  '(pages-directory-for-adding-new-page-before-current-page-p nil)
  '(plantuml-default-exec-mode 'executable)
