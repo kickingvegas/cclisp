@@ -1209,5 +1209,23 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
                      "~/emacs/cclisp/casual-autoload.el"))
 
 
+
+(defun cc/cookiecutter ()
+  "Open shell for cookiecutter."
+  (interactive)
+  (let* ((work-path "~/Projects/pfactory/")
+         (work-buffer "*cookiecutter*")
+         (cd-work-path (format "cd %s\n" work-path)))
+
+    (if (get-buffer work-buffer)
+        (switch-to-buffer work-buffer)
+      (progn
+        (shell-new)
+        (rename-buffer work-buffer)
+        (process-send-string (get-buffer-process work-buffer) cd-work-path)
+        (process-send-string (get-buffer-process work-buffer) "source .venv/bin/activate\n")
+        (setq-local default-directory work-path)))))
+
+
 (provide 'cclisp)
 ;;; cclisp.el ends here
