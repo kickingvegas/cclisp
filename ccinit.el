@@ -182,6 +182,8 @@
 (casual-suite-init)
 (anju-init)
 
+;; (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
+
 ;;; Local Customizations
 
 (when (and (string= (system-name) "bingsu.local") (display-graphic-p))
