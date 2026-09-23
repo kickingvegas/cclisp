@@ -22,6 +22,8 @@
                                       anju-main-menu--reconfigure-imenu
                                       cc/reconfigure-tools-menu))
  '(apropos-do-all t)
+ '(aqui-glyph "􀋒")
+ '(aqui-inactive-glyph "􀋑")
  '(aqui-source :shortcuts)
  '(auto-insert-alist
    '((("\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'" . "C / C++ header")
@@ -331,6 +333,7 @@
       ("scrim" (directory . "Projects/scrim/Development/scrim/"))
       ("restlib" (directory . "Projects/elisp/restlib/"))
       ("aqui" (directory . "Projects/elisp/aqui/"))
+      ("triode" (directory . "Projects/elisp/triode/"))
       ("mdired" (directory . "Projects/elisp/mdired/"))
       ("casual-gnuplot" (directory . "Projects/elisp/casual-gnuplot/"))
       ("casual-suite" (directory . "Projects/elisp/casual-suite/"))
@@ -612,6 +615,7 @@
  '(split-width-threshold nil)
  '(switch-to-buffer-obey-display-actions t)
  '(text-scale-mode-step 1.05)
+ '(tool-bar-mode nil)
  '(tool-bar-style 'image)
  '(tramp-terminal-type "tramp")
  '(transient-align-variable-pitch t)
