@@ -550,6 +550,14 @@ SOUND - sound file (optional)"
   (switch-to-buffer "*terminal*")
   (rename-buffer (format "*ssh %s*" target)))
 
+(defun cc/dev7 ()
+  "Launch dev7 terminal."
+  (interactive)
+  (let* ((cmd "tell app \"Terminal\"
+do script \"ssh home -t /home/cchoi/bin/emacsctl client\"
+end tell"))
+    (ns-do-applescript cmd)))
+
 (defun cc/browse-backward-paragraph ()
   "Move point backward paragraph such that the first line is highlighted.
 \nThis function is intended to be used with `hl-line-mode'."
