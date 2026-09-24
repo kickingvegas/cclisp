@@ -1,6 +1,6 @@
 ;;; cc-digital-logic.el --- Digital Boolean Operations  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024  Charles Choi
+;; Copyright (C) 2024, 2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -85,30 +85,30 @@
         (j (digital-value-to-bool b)))
     (digital-bool-to-value (xor i j))))
 
-(define-short-documentation-group digital-logic
-  "Digital Logic Operations"
-  (digital-and
-   :eval (digital-and 0 0 0 0 )
-   :eval (digital-and 1 1 1 1)
-   :no-manual)
-  (digital-or
-   :eval (digital-or 0 0 0 0 )
-   :eval (digital-or 1 1 1 1)
-   :no-manual)
-  (digital-nand
-   :eval (digital-nand 0 0 0 0 )
-   :eval (digital-nand 1 1 1 1)
-   :no-manual)
-  (digital-nor
-   :eval (digital-nor 0 0 0 0)
-   :eval (digital-nor 1 1 1 1)
-   :no-manual)
-  (digital-xor
-   :eval (digital-xor 0 0)
-   :eval (digital-xor 0 1)
-   :eval (digital-xor 1 0)
-   :eval (digital-xor 1 1)
-   :no-manual))
+;; (define-short-documentation-group digital-logic
+;;   "Digital Logic Operations"
+;;   (digital-and
+;;    :eval (digital-and 0 0 0 0 )
+;;    :eval (digital-and 1 1 1 1)
+;;    :no-manual)
+;;   (digital-or
+;;    :eval (digital-or 0 0 0 0 )
+;;    :eval (digital-or 1 1 1 1)
+;;    :no-manual)
+;;   (digital-nand
+;;    :eval (digital-nand 0 0 0 0 )
+;;    :eval (digital-nand 1 1 1 1)
+;;    :no-manual)
+;;   (digital-nor
+;;    :eval (digital-nor 0 0 0 0)
+;;    :eval (digital-nor 1 1 1 1)
+;;    :no-manual)
+;;   (digital-xor
+;;    :eval (digital-xor 0 0)
+;;    :eval (digital-xor 0 1)
+;;    :eval (digital-xor 1 0)
+;;    :eval (digital-xor 1 1)
+;;    :no-manual))
 
 (provide 'cc-digital-logic)
 ;;; cc-digital-logic.el ends here
