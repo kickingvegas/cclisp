@@ -572,8 +572,8 @@
            ob-swift ob-swiftui org-outline-numbering org-ql org-re-reveal
            org-superstar osx-dictionary ox-gfm ox-gist ox-jira ox-slack ox-trac
            package-lint paredit password-store pbcopy pkg-info plantuml-mode
-           project python pyvenv rainbow-mode reveal-in-folder rfc-mode scpaste
-           shazam show-font smart-mode-line-powerline-theme soap-client
+           project python pyvenv rainbow-mode restlib reveal-in-folder rfc-mode
+           scpaste shazam show-font smart-mode-line-powerline-theme soap-client
            solarized-theme sqlite-mode-extras sr-speedbar svg-clock swift-mode
            swift-ts-mode symbol-overlay tj3-mode toc-org track-changes tramp
            transmission transpose-frame treemacs use-package verilog-mode
