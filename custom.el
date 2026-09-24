@@ -22,6 +22,8 @@
                                       anju-main-menu--reconfigure-imenu
                                       cc/reconfigure-tools-menu))
  '(apropos-do-all t)
+ '(aqui-glyph "􀋒")
+ '(aqui-inactive-glyph "􀋑")
  '(aqui-source :shortcuts)
  '(auto-insert-alist
    '((("\\.\\([Hh]\\|hh\\|hpp\\|hxx\\|h\\+\\+\\)\\'" . "C / C++ header")
@@ -329,6 +331,10 @@
       ("erc" (mode . erc-mode))
       ("numeri" (directory . "Projects/elisp/numeri/"))
       ("scrim" (directory . "Projects/scrim/Development/scrim/"))
+      ("restlib" (directory . "Projects/elisp/restlib/"))
+      ("aqui" (directory . "Projects/elisp/aqui/"))
+      ("triode" (directory . "Projects/elisp/triode/"))
+      ("mdired" (directory . "Projects/elisp/mdired/"))
       ("casual-gnuplot" (directory . "Projects/elisp/casual-gnuplot/"))
       ("casual-suite" (directory . "Projects/elisp/casual-suite/"))
       ("casual-avy" (directory . "Projects/elisp/casual-avy/"))
@@ -566,8 +572,8 @@
            ob-swift ob-swiftui org-outline-numbering org-ql org-re-reveal
            org-superstar osx-dictionary ox-gfm ox-gist ox-jira ox-slack ox-trac
            package-lint paredit password-store pbcopy pkg-info plantuml-mode
-           project python pyvenv rainbow-mode reveal-in-folder rfc-mode scpaste
-           shazam show-font smart-mode-line-powerline-theme soap-client
+           project python pyvenv rainbow-mode restlib reveal-in-folder rfc-mode
+           scpaste shazam show-font smart-mode-line-powerline-theme soap-client
            solarized-theme sqlite-mode-extras sr-speedbar svg-clock swift-mode
            swift-ts-mode symbol-overlay tj3-mode toc-org track-changes tramp
            transmission transpose-frame treemacs use-package verilog-mode
@@ -609,6 +615,7 @@
  '(split-width-threshold nil)
  '(switch-to-buffer-obey-display-actions t)
  '(text-scale-mode-step 1.05)
+ '(tool-bar-mode nil)
  '(tool-bar-style 'image)
  '(tramp-terminal-type "tramp")
  '(transient-align-variable-pitch t)

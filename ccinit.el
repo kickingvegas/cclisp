@@ -164,7 +164,6 @@
   (require 'cc-music))
 (require 'anju)
 (require 'wttr)
-(require 'aqui)
 (require 'mdired)
 (require 'cc-global-keybindings)
 (require 'casual)
@@ -182,6 +181,8 @@
 
 (casual-suite-init)
 (anju-init)
+
+;; (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 
 ;;; Local Customizations
 

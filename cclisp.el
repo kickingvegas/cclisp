@@ -550,6 +550,14 @@ SOUND - sound file (optional)"
   (switch-to-buffer "*terminal*")
   (rename-buffer (format "*ssh %s*" target)))
 
+(defun cc/dev7 ()
+  "Launch dev7 terminal."
+  (interactive)
+  (let* ((cmd "tell app \"Terminal\"
+do script \"ssh home -t /home/cchoi/bin/emacsctl client\"
+end tell"))
+    (ns-do-applescript cmd)))
+
 (defun cc/browse-backward-paragraph ()
   "Move point backward paragraph such that the first line is highlighted.
 \nThis function is intended to be used with `hl-line-mode'."
@@ -1207,6 +1215,24 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
   (interactive)
   (loaddefs-generate "~/Projects/elisp/casual/lisp/"
                      "~/emacs/cclisp/casual-autoload.el"))
+
+
+
+(defun cc/cookiecutter ()
+  "Open shell for cookiecutter."
+  (interactive)
+  (let* ((work-path "~/Projects/pfactory/")
+         (work-buffer "*cookiecutter*")
+         (cd-work-path (format "cd %s\n" work-path)))
+
+    (if (get-buffer work-buffer)
+        (switch-to-buffer work-buffer)
+      (progn
+        (shell-new)
+        (rename-buffer work-buffer)
+        (process-send-string (get-buffer-process work-buffer) cd-work-path)
+        (process-send-string (get-buffer-process work-buffer) "source .venv/bin/activate\n")
+        (setq-local default-directory work-path)))))
 
 
 (provide 'cclisp)
