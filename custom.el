@@ -316,9 +316,11 @@
  '(ibuffer-read-only-char 8856)
  '(ibuffer-saved-filter-groups
    '(("main" ("org-agenda" (name . "Org Agenda"))
-      ("posts" (directory . "org/posts"))
+      ("erc" (mode . erc-mode))
       ("documentation"
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
+      ("posts" (directory . "org/posts/"))
+      ("presentations" (directory . "org/presentations/"))
       ("anju" (directory . "Projects/elisp/anju/"))
       ("casual" (directory . "Projects/elisp/casual/"))
       ("devnull"
@@ -328,7 +330,6 @@
       ("now-playing" (directory . "Projects/elisp/now-playing/"))
       ("cclisp" (directory . "emacs/cclisp/"))
       ("casual-gnuplot project" (directory . "Projects/casual-gnuplot/"))
-      ("erc" (mode . erc-mode))
       ("numeri" (directory . "Projects/elisp/numeri/"))
       ("scrim" (directory . "Projects/scrim/Development/scrim/"))
       ("restlib" (directory . "Projects/elisp/restlib/"))
@@ -347,33 +348,7 @@
       ("elisp"
        (or (directory . ".config/emacs/elpa/")
            (directory . "Emacs.app/Contents/Resources/lisp/")))
-      ("org" (and (directory . "org/") (mode . org-mode))))
-     ("work" ("org-agenda" (name . "Org Agenda"))
-      ("posts" (directory . "org/posts"))
-      ("documentation"
-       (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
-      ("anju" (directory . "Projects/elisp/anju/"))
-      ("casual" (directory . "Projects/elisp/casual/"))
-      ("devnull"
-       (or (name . "*pelican-devnull*")
-           (directory . "Projects/pelican/devnull/")
-           (directory . "Projects/devnull/")))
-      ("now-playing" (directory . "Projects/elisp/now-playing/"))
-      ("gah" (directory . "Projects/elisp/gah/"))
-      ("triode" (directory . "Projects/elisp/triode/"))
-      ("shazam" (directory . "Projects/elisp/shazam/"))
-      ("cclisp" (directory . "emacs/cclisp/")) ("erc" (mode . erc-mode))
-      ("desktop" (directory . "Desktop/"))
-      ("downloads" (directory . "Downloads/"))
-      ("elisp"
-       (or (directory . ".config/emacs/elpa/")
-           (directory . "Emacs.app/Contents/Resources/lisp/")))
-      ("org" (and (directory . "org/") (mode . org-mode))))
-     ("planning" ("Org Agenda" (name . "Org Agenda"))
-      ("Documentation"
-       (or (mode . Man-mode) (mode . Info-mode) (mode . help-mode)))
-      ("cclisp" (directory . "emacs/cclisp/"))
-      ("Org Files" (and (directory . "org/") (mode . org-mode))))))
+      ("org" (and (directory . "org/") (mode . org-mode))))))
  '(ibuffer-saved-filters
    '(("numeri" (directory . "Projects/elisp/numeri"))
      ("Org Agenda" (name . "Org Agenda"))
@@ -402,6 +377,7 @@
      ("gnus"
       (or (mode . message-mode) (mode . mail-mode) (mode . gnus-group-mode)
           (mode . gnus-summary-mode) (mode . gnus-article-mode)))))
+ '(ibuffer-show-empty-filter-groups nil)
  '(ibuffer-use-header-line t)
  '(ignored-local-variable-values
    '((vc-prepare-patches-separately) (diff-add-log-use-relative-names . t)
