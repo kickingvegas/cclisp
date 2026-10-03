@@ -185,6 +185,46 @@ If prefix ARG is invoked, then macOS open is used to open the PDF file."
             (replace-regexp-in-string "-" "_" (org-read-date))
             ".org"))))
 
+
+(defun cc/quotify-words (a b)
+    "Double quote each word in the region A B."
+    (interactive "R")
+    (let* ((sep (read-string "Separator: " nil nil " "))
+           (buf (substring-no-properties
+                 (buffer-substring a b)))
+           (buflist (string-split buf))
+           (newlist (mapcar (lambda (x)
+                              (format "\"%s\"" x))
+                            buflist))
+
+           (msg (string-join newlist sep)))
+
+      (delete-region a b)
+      (insert msg)
+      (deactivate-mark)))
+
+(defun cc/unquotify-words (a b)
+    "Remove double quotes for each word in region A B."
+    (interactive "R")
+    (let* ((sep (read-string "Separator: " nil nil " "))
+           (buf (substring-no-properties
+                 (buffer-substring a b)))
+           (buflist (string-split buf sep))
+           (newlist (mapcar (lambda (x)
+                              (string-replace "\"" "" x))
+                            buflist))
+
+           (msg (seq-reduce (lambda (a b)
+                              (concat a " " b))
+                            newlist
+                            "")))
+
+      (delete-region a b)
+      (insert msg)
+      (deactivate-mark)))
+
+
+
 ;; This is a copy from s.el to enable early loading
 (defun s-replace (old new s)
   "Replace OLD with NEW in S."
