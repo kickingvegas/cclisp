@@ -35,6 +35,17 @@
 (defalias 'cc/keybind-convert
   (kmacro "C-<down> k e y m a p - s e t SPC C-o k s-SPC C-<right> C-o e d p M-d s-SPC C-<up>"))
 
+;; Convert Transient suffix to Org texinfo list item
+(defalias 'cc/calc-convert-transient-suffix-to-org-list-item
+  (kmacro
+   "C-f C-M-f C-M-f SPC : : S-SPC DEL C-M-f C-o e d z ) C-a C-f C-o m ( C-b C-o m { C-b C-o m { C-b C-o m { C-f C-f k b d C-f C-o e d p C-a C-o e d p - SPC C-a C-n"))
+
+
+;; Inflate Org texinfo list item with Calc info.
+(defalias 'cc/calc-inflate-command-with-info
+  (kmacro
+   "C-e M-x c c / g e t <tab> <return> <return> C-y M-x b a c k w a r d SPC p a r a SPC <return> s-SPC s-SPC M-x u n f i l l SPC p SPC <return> <backspace> <return> C-n"))
+
 
 (provide 'cc-macros)
 ;;; cc-macros.el ends here

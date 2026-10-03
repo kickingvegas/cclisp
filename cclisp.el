@@ -1275,6 +1275,18 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
         (process-send-string (get-buffer-process work-buffer) "source .venv/bin/activate\n")
         (setq-local default-directory work-path)))))
 
+
+;; Documentation Assists
+(defun cc/get-info-symbol ()
+  "Get info doc for symbol."
+  (interactive)
+  (let* ((symname (thing-at-point 'symbol))
+         (symname (substring-no-properties symname)))
+    (save-window-excursion
+      (info "(calc) Command Index")
+      (Info-menu symname)
+      (mark-paragraph)
+      (copy-region-as-kill (region-beginning) (region-end)))))
 
 (provide 'cclisp)
 ;;; cclisp.el ends here
