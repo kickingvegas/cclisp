@@ -190,7 +190,50 @@
 
 (keymap-global-set "C-<kp-0>" #'ace-select-window)
 (keymap-global-set "M-<kp-0>" #'ace-swap-window)
-(keymap-global-set "C-<kp-divide>" #'transpose-frame)
+(keymap-global-set "C-<kp-divide>" #'window-layout-transpose)
+
+(keymap-global-set "H-<up>" #'windmove-swap-states-up)
+(keymap-global-set "H-<down>" #'windmove-swap-states-down)
+(keymap-global-set "H-<left>" #'windmove-swap-states-left)
+(keymap-global-set "H-<right>" #'windmove-swap-states-right)
+
+(keymap-global-set "H-/" #'window-layout-transpose)
+(keymap-global-set "H-\\" #'ace-select-window)
+(keymap-global-set "H-1" #'cc/toggle-pane)
+
+(defvar-keymap cc-window-management-map
+  :doc "Extended keymap for window management."
+  :repeat t
+
+  "\\" #'ace-select-window
+  "H-\\" #'ace-swap-window
+  "/" #'window-layout-transpose
+  "1" #'cc/toggle-pane
+
+  "s" #'window-configuration-to-register
+  "j" #'jump-to-register
+
+  "C-<up>" #'windmove-up
+  "C-<down>" #'windmove-down
+  "C-<left>" #'windmove-left
+  "C-<right>" #'windmove-right
+
+  "<up>" #'windmove-swap-states-up
+  "<down>" #'windmove-swap-states-down
+  "<left>" #'windmove-swap-states-left
+  "<right>" #'windmove-swap-states-right
+
+  "M-<left>" #'window-layout-rotate-anticlockwise
+  "M-<right>" #'window-layout-rotate-clockwise)
+
+;; (defun cc/swap-menu ()
+;;   "Popup swap menu."
+;;   (interactive)
+;;   (x-popup-menu t anju-window-swap-menu))
+
+;; (keymap-global-set "H-<return>" #'cc/swap-menu)
+
+(keymap-global-set "H-<return>" cc-window-management-map)
 
 (keymap-global-set "C-c w" #'casual-editkit-windows-tmenu)
 (keymap-global-set "C-c r" #'casual-editkit-rectangle-tmenu)
