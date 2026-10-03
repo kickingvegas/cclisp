@@ -28,10 +28,8 @@
 (require 'shazam)
 (require 'triode)
 
-(defcustom cc-music-player-binding "<f14>"
-  "Key binding for music player.
-
-Alternate bindings: s-<f8>"
+(defcustom cc-music-player-binding-desktop "<f14>"
+  "Primary key binding for music player."
   :type 'string
   :group 'kickingvegas)
 
@@ -39,15 +37,13 @@ Alternate bindings: s-<f8>"
 
 (defun cc/music-init (&optional a b)
   "Initialize music players with bindings A and B."
-  (let* ((a (if a a cc-music-player-binding))
-         (b (if b b (concat "s-" cc-music-player-binding))))
-    (now-playing-init a)
-    (triode-init b)))
+  (now-playing-init a)
+  (triode-init b))
 
 (defun cc/music-swap-player ()
   "Swap music player."
   (interactive)
-  (let* ((b cc-music-player-binding)
+  (let* ((b "<f14>")
          (current-player (key-binding (kbd b))))
 
     (cond
@@ -63,27 +59,14 @@ Alternate bindings: s-<f8>"
       (keymap-global-set b #'now-playing-tmenu)
       (message "Set %s to Now Playing" b)))))
 
-(defun cc/music-switch-player ()
-  "Switch Music Player."
-  (interactive)
-  (let* ((choice (completing-read "Player: " '("music" "triode"))))
-    (cond
-     ((string-equal choice "music")
-      (keymap-global-set cc-music-player-binding #'now-playing-tmenu))
+(cc/music-init "H-[" "H-]")
 
-     ((string-equal choice "triode")
-      (keymap-global-set cc-music-player-binding #'triode-tmenu))
+(keymap-global-set "<f14>" #'triode-tmenu)
 
-     (t
-      (keymap-global-set cc-music-player-binding #'now-playing-tmenu)))))
+(keymap-global-set "H-<f14>" #'cc/music-swap-player)
 
-(cc/music-init cc-music-player-binding "s-<f8>")
-(keymap-global-set "M-<f14>" #'cc/music-swap-player)
-(keymap-global-set "M-s-<f8>" #'cc/music-swap-player)
-
-(shazam-init "M-<f19>")
-(keymap-global-set "s-<f5>" #'shazam)
-(keymap-global-set "s-<f19>" #'shazam-history)
+(shazam-init "s-<f5>")
+(keymap-global-set "H-<f5>" #'shazam-history)
 
 (provide 'cc-music)
 ;;; cc-music.el ends here
