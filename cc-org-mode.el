@@ -141,6 +141,7 @@ SUFFIX - string appended to prefix
                              "example"
                              "export"
                              "quote"
+                             "notes"
                              "src"
                              "verse"
                              "minipage"
