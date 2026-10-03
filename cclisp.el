@@ -1026,6 +1026,71 @@ This command is tuned for macOS using a single display."
      (t
       (error "Unknown display size")))))
 
+(defun cc/frame-maximize-and-column-windows ()
+  "Maximize frame for monitor and segment into side-by-side windows.
+
+Given the current buffer (`current-buffer'), this command maximizes the
+frame to the size of the monitor and then segments the frame into
+side-by-side windows all holding the aforementioned buffer.
+
+The monitor width determines how many windows are laid out using a
+computed width of 80 characters, with a maximum of three windows being
+created.
+
+If multiple monitors are available, then a prompt will be raised to
+select one."
+  (interactive)
+
+  (let* ((current (selected-frame))
+         (monitor-attributes (display-monitor-attributes-list))
+         (names (mapcar (lambda (x)
+                          (map-elt x 'name))
+                        monitor-attributes))
+         (monitor-name (if (length> names 1)
+                           (completing-read "Monitor: " names nil t (car names))
+                         (car names)))
+
+         (mattr (seq-find (lambda (x)
+                            (if (string-equal (map-elt x 'name) monitor-name)
+                                x))
+                          monitor-attributes))
+         (workarea (map-elt mattr 'workarea))
+
+         (c-width (frame-char-width))
+         ;; (c-height (frame-char-height))
+
+         (f-x (nth 0 workarea))
+         (f-y (nth 1 workarea))
+
+         (f-w (- (nth 2 workarea) (* c-width 5)))
+         (f-h (nth 3 workarea))
+         (fcw (/ f-w c-width))
+         (panels (/ fcw 80)))
+
+    ;; (message "Selected: %s" monitor-name)
+    (set-frame-size current f-w f-h t)
+    (set-frame-position current f-x f-y)
+
+    (cond
+     ((<= panels 1)
+      ;; do nothing
+      )
+
+     ((= panels 2)
+      (delete-other-windows)
+      (split-window-horizontally))
+
+     ;; three only
+     (t
+      (let* ((pane-width-1 100)
+             (pane-width-2 140))
+        (delete-other-windows)
+        (split-window-right)
+        (split-window-right)
+        (window-resize nil (- pane-width-1 (window-width)) t)
+        (other-window 1)
+        (window-resize nil (- pane-width-2 (window-width)) t))))))
+
 (defun cc/--dired-kill-image-buffer-before-delete (file &rest rest)
   "Kill buffer associated with image FILE if necessary, ignoring REST."
   (ignore rest)
