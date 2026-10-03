@@ -1322,6 +1322,11 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
   (loaddefs-generate "~/Projects/elisp/casual/lisp/"
                      "~/emacs/cclisp/casual-autoload.el"))
 
+(defun cc/today-analytics ()
+  "Open today analytics."
+  (interactive)
+  (browse-url "http://yms.dyndns.biz:8080/analytics/report-today.html"))
+
 
 
 (defun cc/cookiecutter ()
