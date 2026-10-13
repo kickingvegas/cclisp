@@ -259,6 +259,7 @@
      ("https://www.avclub.com/rss" media)
      ("https://sf.eater.com/rss/index.xml" sf food)
      ("https://missionlocal.org/feed" sf) ("https://sfstandard.com/feed/" sf)))
+ '(enable-recursive-minibuffers t)
  '(erc-autojoin-channels-alist
    '((Libera.Chat "#scrim" "#iphonedev" "#pelican" "#macports" "#emacs-til"
                   "#org-mode" "#emacs" "#python")))
@@ -321,14 +322,14 @@
  '(ibuffer-modified-char 9998)
  '(ibuffer-read-only-char 8856)
  '(ibuffer-saved-filter-groups
-   '(("main" ("org-agenda" (name . "Org Agenda"))
-      ("erc" (mode . erc-mode))
+   '(("main" ("org-agenda" (name . "Org Agenda")) ("erc" (mode . erc-mode))
       ("documentation"
        (or (mode . makefile-mode) (mode . Info-mode) (mode . help-mode)))
       ("posts" (directory . "org/posts/"))
       ("presentations" (directory . "org/presentations/"))
       ("anju" (directory . "Projects/elisp/anju/"))
       ("casual" (directory . "Projects/elisp/casual/"))
+      ("burnish" (directory . "Projects/elisp/burnish/"))
       ("devnull"
        (or (name . "*pelican-devnull*")
            (directory . "Projects/pelican/devnull/")
@@ -410,6 +411,7 @@
  '(mark-ring-max 6)
  '(markdown-command "multimarkdown")
  '(markdown-header-scaling nil)
+ '(minibuffer-depth-indicate-mode t)
  '(mouse-autoselect-window nil)
  '(mouse-wheel-flip-direction t)
  '(mouse-wheel-progressive-speed t)
@@ -495,7 +497,7 @@
      ("plantuml" . plantuml) ("swift" . swift) ("swiftui" . swift)
      ("graphviz" . graphviz) ("mscgen" . mscgen)))
  '(org-startup-folded 'nofold)
- '(org-startup-with-inline-images t)
+ '(org-startup-with-link-previews t)
  '(org-superstar-headline-bullets-list '(10687 10070 10040 10047))
  '(org-superstar-leading-bullet 32)
  '(org-support-shift-select t)
@@ -613,6 +615,7 @@
  '(use-short-answers t)
  '(user-mail-address "kickingvegas@gmail.com")
  '(vc-follow-symlinks nil)
+ '(vc-handled-backends '(SVN Git Hg))
  '(vc-make-backup-files nil)
  '(view-read-only t)
  '(warning-suppress-types '((comp)))
