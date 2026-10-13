@@ -214,6 +214,18 @@ SUFFIX - string appended to prefix
 (keymap-set org-mode-map "C-6" #'org-goto)
 ;; (keymap-set org-read-date-minibuffer-local-map "C-o" #'casual-calendar)
 
+(defun cc/org-insert-last-stored-link (arg)
+  "Insert the last link stored in `org-stored-links' with prefix ARG."
+  (interactive "p")
+  (let* ((suffix-map '(("space" . " ")
+                       ("none" . "")
+                       ("newline" . "\n")))
+         (key (completing-read "Suffix: " (map-keys suffix-map) nil t "space"))
+         (suffix (map-elt suffix-map key)))
+    (org-insert-all-links arg "" suffix)))
+
+(keymap-set org-mode-map "C-c M-l" #'cc/org-insert-last-stored-link)
+
 (add-hook 'org-agenda-finalize-hook 'hl-line-mode)
 (add-hook 'org-agenda-finalize-hook
           (lambda ()
@@ -282,6 +294,7 @@ SUFFIX - string appended to prefix
 (require 'cc-org-capture)
 
 (defun cc/disable-flycheck-in-org-src-block ()
+  "Disable flycheck in Org src block."
   (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 
 (add-hook 'org-src-mode-hook 'cc/disable-flycheck-in-org-src-block)
