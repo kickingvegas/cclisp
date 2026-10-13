@@ -932,18 +932,30 @@ installed."
           (mapcar (lambda (x) (if (listp x) (car x)))
                   (cdr (lookup-key global-map keypath)))))
 
-(defun cc/whitespace-cleanup (&optional disable)
-  "Turn on whitespace cleanup with optional DISABLE."
-  (interactive)
+;; (defun cc/whitespace-cleanup (&optional disable)
+;;   "Turn on whitespace cleanup with optional DISABLE."
+;;   (interactive "P")
 
-  (if disable
+;;   (if disable
+;;       (progn
+;;         (setopt-local show-trailing-whitespace nil)
+;;         (remove-hook 'before-save-hook #'whitespace-cleanup t))
+
+;;     (progn
+;;       (setopt-local show-trailing-whitespace t)
+;;       (add-hook 'before-save-hook #'whitespace-cleanup 0 t))))
+
+(define-minor-mode cc-whitespace-cleanup-mode
+  "Minor mode to enable whitespace cleanup."
+  :init-value nil
+  :lighter "  ⋈ "
+  (if cc-whitespace-cleanup-mode
       (progn
-        (setopt show-trailing-whitespace nil)
-        (remove-hook 'before-save-hook #'whitespace-cleanup))
-
+        (setopt-local show-trailing-whitespace nil)
+        (remove-hook 'before-save-hook #'whitespace-cleanup t))
     (progn
-      (setopt show-trailing-whitespace t)
-      (add-hook 'before-save-hook #'whitespace-cleanup))))
+      (setopt-local show-trailing-whitespace t)
+      (add-hook 'before-save-hook #'whitespace-cleanup 0 t))))
 
 (defun cc/toggle-scrolling-config ()
   "Tune scrolling behavior to support mouse or text based scrolling."
