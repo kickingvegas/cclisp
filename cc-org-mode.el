@@ -42,6 +42,7 @@
 (require 'org-protocol)
 (require 'casual-org)
 (require 'anju-style-text)
+(require 'burnish)
 
 (if (eq system-type 'darwin)
     (require 'ob-swiftui))
@@ -85,6 +86,8 @@ which is done with `org-ctrl-c-ctrl-c'."
 
 (add-hook 'org-mode-hook (lambda ()
                            (cc/reconfig-org-smart-quotes-lang "en")))
+
+(add-hook 'org-mode-hook #'burnish-mode)
 
 (add-hook
  'org-mode-hook
@@ -333,6 +336,94 @@ If prefix ARG is non-nil, then the computed result is stored in the
 ;; ox-gfm init is so broken. need to load it manually.
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
+
+(eval-after-load "org"
+  '(require 'org-re-reveal nil t))
+
+(defun cc/burnish-export-re-reveal ()
+  "Export Org file to re-reveal presentation and view."
+  (when (and (featurep 'org-re-reveal)
+             (fboundp 'org-re-reveal-export-to-html-and-browse))
+    (org-re-reveal-export-to-html-and-browse)))
+
+(defun cc/burnish-export-gfm ()
+  "Export Org file to GFM and view."
+
+  (when (and (featurep 'ox-gfm)
+             (fboundp 'org-gfm-export-to-markdown))
+
+    (let ((basename (file-name-sans-extension (buffer-file-name))))
+      (org-gfm-export-to-markdown)
+      (find-file-other-window (file-name-with-extension basename "md")))))
+
+(defun cc/burnish-export-kvtexinfo ()
+  "Export Org file to kickingvegas project texinfo and view."
+  (cc/info-compile))
+
+;; (defvar cc-org-preview-on-save nil
+;;   "If set, then preview on save.
+;; - reveal-js
+;; - html
+;; - md
+;; - gfm
+;; - texinfo
+;; - latex")
+
+;; (defun cc/org-after-save-preview-hook ()
+;;   "After save preview hook for Org mode."
+;;   (interactive)
+
+;;   (when (and (derived-mode-p 'org-mode)
+;;              (local-variable-if-set-p 'cc-org-preview-on-save)
+;;              cc-org-preview-on-save)
+
+;;     (let ((basename (file-name-sans-extension (buffer-file-name))))
+;;       (cond
+;;        ((eq cc-org-preview-on-save 'reveal-js)
+;;         (when (and (featurep 'org-re-reveal)
+;;                    (fboundp 'org-re-reveal-export-to-html-and-browse))
+;;           (org-re-reveal-export-to-html-and-browse)))
+
+;;        ((eq cc-org-preview-on-save 'html)
+;;         ;; no function to directly open?
+;;         (org-html-export-to-html)
+;;         (browse-url (file-name-with-extension basename "html")))
+
+;;        ((eq cc-org-preview-on-save 'texinfo)
+;;         (cc/info-compile)
+;;         ;; (org-texinfo-export-to-info)
+;;         ;; (info-other-window (file-name-with-extension basename "info"))
+;;         )
+
+;;        ((eq cc-org-preview-on-save 'md)
+;;         (org-md-export-to-markdown)
+;;         (find-file-other-window (file-name-with-extension basename "md")))
+
+;;        ((eq cc-org-preview-on-save 'gfm)
+;;         (when (and (featurep 'ox-gfm)
+;;                    (fboundp 'org-gfm-export-to-markdown))
+;;           (org-gfm-export-to-markdown)
+;;           (find-file-other-window (file-name-with-extension basename "md"))))
+
+;;        (t
+;;         (error
+;;          "cc-org-preview-on-save value %s undefined"
+;;          cc-org-preview-on-save))))))
+
+;; (defun cc/bind-org-preview ()
+;;   "Bind Org preview."
+;;   (interactive)
+;;   (keymap-set org-mode-map "C-<f5>" #'cc/org-after-save-preview-hook)
+;;   (add-hook 'after-save-hook #'cc/org-after-save-preview-hook))
+
+;; (defun cc/unbind-org-preview ()
+;;   "Unbind Org preview."
+;;   (interactive)
+;;   (keymap-unset org-mode-map "C-<f5>")
+;;   (remove-hook 'after-save-hook #'cc/org-after-save-preview-hook))
+
+;; (add-hook 'org-mode-hook #'cc/bind-org-preview)
+
 
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here
