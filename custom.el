@@ -10,17 +10,6 @@
  '(Info-scroll-prefer-subnodes nil)
  '(Man-notify-method 'aggressive)
  '(Man-switches "-a")
- '(anju-help-menu-remove-emacs-tutorial t)
- '(anju-reconfigure-main-menu-hook
-   '(anju-main-menu--reconfigure-file anju-main-menu--reconfigure-edit
-                                      anju-main-menu--reconfigure-registers
-                                      anju-main-menu--reconfigure-options
-                                      anju-main-menu--reconfigure-bookmarks
-                                      anju-main-menu--reconfigure-text-mode
-                                      anju-main-menu--reconfigure-tools
-                                      anju-main-menu--reconfigure-help
-                                      anju-main-menu--reconfigure-imenu
-                                      cc/reconfigure-tools-menu))
  '(apropos-do-all t)
  '(aqui-glyph "􀋒")
  '(aqui-inactive-glyph "􀋑")
@@ -167,23 +156,6 @@
  '(compilation-auto-jump-to-first-error 'first-known)
  '(compilation-scroll-output t)
  '(compile-command "make -k ")
- '(context-menu-functions
-   '(anju-context-menu-elisp anju-context-menu-edebug-eval anju-context-menu-xref
-                             anju-context-menu-compile anju-context-menu-dired
-                             cc/context-menu-dired anju-context-menu-org-mode
-                             anju-context-menu-org-agenda
-                             anju-context-menu-info-mode
-                             anju-context-menu-make-mode cc/context-menu-journal
-                             anju-context-menu-buffers anju-context-menu-region
-                             cc/context-menu-dictionary cc/context-menu-region
-                             anju-context-menu-narrow anju-context-menu-open-in
-                             cc/context-menu-open-in anju-context-menu-vc
-                             anju-context-menu-markup
-                             anju-context-menu-wordcount
-                             anju-context-menu-rectangle context-menu-undo
-                             context-menu-region
-                             anju-context-menu-region-extension
-                             anju-context-menu-window context-menu-send-to))
  '(current-language-environment "English")
  '(cursor-type 'bar)
  '(custom-safe-themes
@@ -620,6 +592,30 @@
  '(view-read-only t)
  '(warning-suppress-types '((comp)))
  '(wdired-allow-to-change-permissions t)
+ '(webjump-sites
+   '(("GNU Project FTP Archive"
+      . [mirrors "https://ftp.gnu.org/pub/gnu/" "https://ftpmirror.gnu.org"])
+     ("GNU Project Website" . "https://www.gnu.org")
+     ("Emacs Website" . "https://www.gnu.org/software/emacs/emacs.html")
+     ("Savannah Emacs page" . "https://savannah.gnu.org/projects/emacs")
+     ("Emacs Wiki"
+      . [simple-query "https://www.emacswiki.org"
+         "https://www.emacswiki.org/cgi-bin/wiki/" ""])
+     ("DuckDuckGo"
+      . [simple-query "https://duckduckgo.com" "https://duckduckgo.com/?q=" ""])
+     ("Wikipedia"
+      . [simple-query "https://wikipedia.org" "https://wikipedia.org/wiki/" ""])
+     ("Association for Computing Machinery" . "https://www.acm.org")
+     ("Computer Professionals for Social Responsibility" . "http://www.cpsr.org")
+     ("Electronic Frontier Foundation" . "https://www.eff.org")
+     ("IEEE Computer Society" . "https://www.computer.org")
+     ("Risks Digest" . webjump-to-risks)
+     ("Supplemental Web site list for webjump"
+      . "https://www.neilvandyke.org/webjump/")
+     ("youtube" . "https://www.youtube.com")
+     ("twitch" . "https://www.twitch.tv") ("github" . "https://github.com")
+     ("sfba" . "https://sfba.social")
+     ("kanopy" . "https://www.kanopy.com/en/milibrary/")))
  '(wgrep-auto-save-buffer t)
  '(window-resize-pixelwise t)
  '(world-clock-list
