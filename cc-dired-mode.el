@@ -39,8 +39,7 @@
 
 (add-hook 'dired-mode-hook #'hl-line-mode)
 (add-hook 'dired-mode-hook #'dired-async-mode)
-(add-hook 'dired-mode-hook #'diff-hl-dired-mode)
-
+;; (add-hook 'dired-mode-hook #'diff-hl-dired-mode)
 
 (defun cc-dired-setup ()
   "Setup function for Dired."
