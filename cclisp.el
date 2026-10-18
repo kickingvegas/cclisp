@@ -1000,7 +1000,7 @@ This command is tuned for macOS using a single display."
   (let* ((choice
           (completing-read "Display Configuration: "
                            '("desktop" "macbook" "tty" "standard" "focus"
-                             "video"
+                             "video" "emacs-video"
                              "lg-full")
                            nil nil "standard"))
          (move (not arg)))
@@ -1014,6 +1014,11 @@ This command is tuned for macOS using a single display."
       (cc/--resize-frame 164 49)
       (if move
           (set-frame-position (selected-frame) 0 38)))
+
+     ((string-equal choice "emacs-video")
+      (cc/--resize-frame 137 36)
+      (if move
+          (set-frame-position (selected-frame) 0 25)))
 
      ((string-equal choice "video")
       (cc/--resize-frame 108 39))
