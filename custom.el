@@ -620,6 +620,32 @@
  '(view-read-only t)
  '(warning-suppress-types '((comp)))
  '(wdired-allow-to-change-permissions t)
+ '(webjump-sites
+   '(("GNU Project FTP Archive"
+      . [mirrors "https://ftp.gnu.org/pub/gnu/" "https://ftpmirror.gnu.org"])
+     ("GNU Project Website" . "https://www.gnu.org")
+     ("Emacs Website" . "https://www.gnu.org/software/emacs/emacs.html")
+     ("Savannah Emacs page" . "https://savannah.gnu.org/projects/emacs")
+     ("Emacs Wiki"
+      . [simple-query "https://www.emacswiki.org"
+         "https://www.emacswiki.org/cgi-bin/wiki/" ""])
+     ("DuckDuckGo"
+      . [simple-query "https://duckduckgo.com" "https://duckduckgo.com/?q=" ""])
+     ("Wikipedia"
+      . [simple-query "https://wikipedia.org" "https://wikipedia.org/wiki/" ""])
+     ("Association for Computing Machinery" . "https://www.acm.org")
+     ("Computer Professionals for Social Responsibility" . "http://www.cpsr.org")
+     ("Electronic Frontier Foundation" . "https://www.eff.org")
+     ("IEEE Computer Society" . "https://www.computer.org")
+     ("Risks Digest" . webjump-to-risks)
+     ("Supplemental Web site list for webjump"
+      . "https://www.neilvandyke.org/webjump/")
+     ("youtube" . "https://www.youtube.com")
+     ("twitch" . "https://www.twitch.tv") ("github" . "https://github.com")
+     ("sfba" . "https://sfba.social")
+     ("kanopy" . "https://www.kanopy.com/en/milibrary/")
+     ("Anju User Guide" . "https://kickingvegas.github.io/anju/")
+     ("MELPA stats" . "https://melpa.org/#/?q=kickingvegas")))
  '(wgrep-auto-save-buffer t)
  '(window-resize-pixelwise t)
  '(world-clock-list

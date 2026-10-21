@@ -152,6 +152,7 @@
 (require 'cc-eww-mode)
 (require 'cc-debbugs-mode)
 (require 'cc-blog-utils)
+(require 'cc-webjump)
 (require 'cc-macros)
 (require 'ffap)
 (require 'calle24)
