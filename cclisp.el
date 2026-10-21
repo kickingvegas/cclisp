@@ -1376,59 +1376,5 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
       (mark-paragraph)
       (copy-region-as-kill (region-beginning) (region-end)))))
 
-(defun cc/extract-notes ()
-  "Extract Org notes."
-  (interactive)
-
-  (save-excursion
-    (goto-char (point-min))
-
-    (let* ((pat-begin "^[[:space:]]*\\#\\+begin_notes")
-           (pat-end "^[[:space:]]*\\#\\+end_notes")
-           (start 0)
-           (end 0)
-           (buflist ()))
-      (while (re-search-forward pat-begin nil t)
-        (setq start (point))
-        (re-search-forward pat-end nil t)
-        (beginning-of-line)
-        (setq end (point))
-        (push (string-trim (buffer-substring-no-properties start end)) buflist))
-
-      (kill-new (string-join (reverse buflist) "\n\n#\n\n")))))
-
-(defun cc/almanac ()
-  "Show almanac for today."
-  (interactive)
-  (let* ((bname "*almanac*")
-         (buf (get-buffer-create bname)))
-
-    (with-current-buffer buf
-      (cc/--almanac-refresh)
-      ;; (keymap-local-set "g" (lambda ()
-      ;;                         (interactive)
-      ;;                         (cc/--almanac-refresh)
-      ;;                         (goto-char (point-min))))
-      (when (and (not (get-buffer-window buf))
-                 (eq (current-buffer) buf))
-        (switch-to-buffer-other-window buf)
-        (fit-window-to-buffer))
-
-      (goto-char (point-min)))))
-
-(defun cc/--almanac-refresh ()
-  "Refresh almanac buffer."
-  (if buffer-read-only
-      (setq buffer-read-only nil))
-
-  (erase-buffer)
-  (insert (format "%s\n" (format-time-string "%a %h %H:%M:%S %d, %Y")))
-  (insert (format "%s\n" (sunrise-sunset)))
-  (insert (format "wttr: %s" (wttr)))
-  (if (not (derived-mode-p 'special-mode))
-      (special-mode))
-  (if (not (derived-mode-p 'hl-line-mode))
-      (hl-line-mode)))
-
 (provide 'cclisp)
 ;;; cclisp.el ends here

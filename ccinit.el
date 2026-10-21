@@ -281,6 +281,38 @@ If prefix ARG is non-nil, then the computed result is stored in the
     (switch-to-buffer (format-time-string "%Y_%m_%d.org"))
     (setq cc--workplace-initialized t)))
 
+(defun cc/almanac ()
+  "Show almanac for today."
+  (interactive)
+  (let* ((bname "*almanac*")
+         (buf (get-buffer-create bname)))
+
+    (with-current-buffer buf
+      (cc/--almanac-refresh)
+      ;; (keymap-local-set "g" (lambda ()
+      ;;                         (interactive)
+      ;;                         (cc/--almanac-refresh)
+      ;;                         (goto-char (point-min))))
+      (when (and (not (get-buffer-window buf))
+                 (eq (current-buffer) buf))
+        (switch-to-buffer-other-window buf)
+        (fit-window-to-buffer))
+
+      (goto-char (point-min)))))
+
+(defun cc/--almanac-refresh ()
+  "Refresh almanac buffer."
+  (if buffer-read-only
+      (setq buffer-read-only nil))
+
+  (erase-buffer)
+  (insert (format "%s\n" (format-time-string "%a %h %H:%M:%S %d, %Y")))
+  (insert (format "%s\n" (sunrise-sunset)))
+  (insert (format "wttr: %s" (wttr)))
+  (if (not (derived-mode-p 'special-mode))
+      (special-mode))
+  (if (not (derived-mode-p 'hl-line-mode))
+      (hl-line-mode)))
 
 (if (and t
          (eq window-system 'ns)
