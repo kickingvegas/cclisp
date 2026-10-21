@@ -1320,7 +1320,7 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
 
 
 
-
+;; osascript routines
 (defun cc/osascript (arg)
   "Run osascript with ARG."
   (interactive "sOSAScript: ")
@@ -1332,7 +1332,7 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
 
 
 
-
+;; Autoload casual (obsolete now with user-lisp)
 (defun cc/casual-gen-autoload-file ()
   "Generate autoload file for Casual."
   (interactive)
@@ -1346,6 +1346,7 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
 
 
 
+;; Cookie cutter command
 (defun cc/cookiecutter ()
   "Open shell for cookiecutter."
   (interactive)
@@ -1363,9 +1364,9 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
         (setq-local default-directory work-path)))))
 
 
-;; Documentation Assists
-(defun cc/get-info-symbol ()
-  "Get info doc for symbol."
+;; Documentation Helper Commands
+(defun cc/get-calc-info-symbol ()
+  "Get info doc for calc symbol."
   (interactive)
   (let* ((symname (thing-at-point 'symbol))
          (symname (substring-no-properties symname)))
@@ -1404,10 +1405,10 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
 
     (with-current-buffer buf
       (cc/--almanac-refresh)
-      (keymap-local-set "g" (lambda ()
-                              (interactive)
-                              (cc/--almanac-refresh)
-                              (goto-char (point-min))))
+      ;; (keymap-local-set "g" (lambda ()
+      ;;                         (interactive)
+      ;;                         (cc/--almanac-refresh)
+      ;;                         (goto-char (point-min))))
       (when (and (not (get-buffer-window buf))
                  (eq (current-buffer) buf))
         (switch-to-buffer-other-window buf)
