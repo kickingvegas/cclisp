@@ -152,6 +152,7 @@
 (require 'cc-eww-mode)
 (require 'cc-debbugs-mode)
 (require 'cc-blog-utils)
+(require 'cc-webjump)
 (require 'cc-macros)
 (require 'ffap)
 (require 'calle24)
@@ -234,24 +235,24 @@ If prefix ARG is non-nil, then the computed result is stored in the
     (message msg)))
 
 (defun cc/days-until-mothers (arg)
-  "Days until Mother's Day 2026.
+  "Days until Mother's Day 2027.
 
 If prefix ARG is non-nil, then the computed result is stored in the
 `kill-ring'."
   (interactive "P")
-  (let* ((mother (cc/--days-until "2026-05-10" "%d days until Mother's Day"))
+  (let* ((mother (cc/--days-until "2027-05-09" "%d days until Mother's Day"))
          (msg (format "%s" mother)))
     (if arg
         (kill-new msg))
     (message msg)))
 
-(defun cc/days-until-next-gig (arg)
-  "Days until next gig.
+(defun cc/days-until-nye (arg)
+  "Days until New Year's Eve.
 
 If prefix ARG is non-nil, then the computed result is stored in the
 `kill-ring'."
   (interactive "P")
-  (let* ((event (cc/--days-until "2026-06-07" "%d days until next gig"))
+  (let* ((event (cc/--days-until "2026-12-31" "%d days until NYE"))
          (msg (format "%s" event)))
     (if arg
         (kill-new msg))
@@ -280,6 +281,38 @@ If prefix ARG is non-nil, then the computed result is stored in the
     (switch-to-buffer (format-time-string "%Y_%m_%d.org"))
     (setq cc--workplace-initialized t)))
 
+(defun cc/almanac ()
+  "Show almanac for today."
+  (interactive)
+  (let* ((bname "*almanac*")
+         (buf (get-buffer-create bname)))
+
+    (with-current-buffer buf
+      (cc/--almanac-refresh)
+      ;; (keymap-local-set "g" (lambda ()
+      ;;                         (interactive)
+      ;;                         (cc/--almanac-refresh)
+      ;;                         (goto-char (point-min))))
+      (when (and (not (get-buffer-window buf))
+                 (eq (current-buffer) buf))
+        (switch-to-buffer-other-window buf)
+        (fit-window-to-buffer))
+
+      (goto-char (point-min)))))
+
+(defun cc/--almanac-refresh ()
+  "Refresh almanac buffer."
+  (if buffer-read-only
+      (setq buffer-read-only nil))
+
+  (erase-buffer)
+  (insert (format "%s\n" (format-time-string "%a %h %H:%M:%S %d, %Y")))
+  (insert (format "%s\n" (sunrise-sunset)))
+  (insert (format "wttr: %s" (wttr)))
+  (if (not (derived-mode-p 'special-mode))
+      (special-mode))
+  (if (not (derived-mode-p 'hl-line-mode))
+      (hl-line-mode)))
 
 (if (and t
          (eq window-system 'ns)

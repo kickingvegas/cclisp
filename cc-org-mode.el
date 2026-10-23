@@ -437,6 +437,26 @@ If prefix ARG is non-nil, then the computed result is stored in the
 
 ;; (add-hook 'org-mode-hook #'cc/bind-org-preview)
 
+(defun cc/org-extract-notes ()
+  "Extract Org notes."
+  (interactive)
+
+  (save-excursion
+    (goto-char (point-min))
+
+    (let* ((pat-begin "^[[:space:]]*\\#\\+begin_notes")
+           (pat-end "^[[:space:]]*\\#\\+end_notes")
+           (start 0)
+           (end 0)
+           (buflist ()))
+      (while (re-search-forward pat-begin nil t)
+        (setq start (point))
+        (re-search-forward pat-end nil t)
+        (beginning-of-line)
+        (setq end (point))
+        (push (string-trim (buffer-substring-no-properties start end)) buflist))
+
+      (kill-new (string-join (reverse buflist) "\n\n#\n\n")))))
 
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here

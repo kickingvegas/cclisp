@@ -932,24 +932,24 @@ installed."
           (mapcar (lambda (x) (if (listp x) (car x)))
                   (cdr (lookup-key global-map keypath)))))
 
-(defun cc/whitespace-cleanup (&optional disable)
-  "Turn on whitespace cleanup with optional DISABLE."
-  (interactive "P")
+;; (defun cc/whitespace-cleanup (&optional disable)
+;;   "Turn on whitespace cleanup with optional DISABLE."
+;;   (interactive "P")
 
-  (if disable
-      (progn
-        (setopt-local show-trailing-whitespace nil)
-        (remove-hook 'before-save-hook #'whitespace-cleanup t))
+;;   (if disable
+;;       (progn
+;;         (setopt-local show-trailing-whitespace nil)
+;;         (remove-hook 'before-save-hook #'whitespace-cleanup t))
 
-    (progn
-      (setopt-local show-trailing-whitespace t)
-      (add-hook 'before-save-hook #'whitespace-cleanup 0 t))))
+;;     (progn
+;;       (setopt-local show-trailing-whitespace t)
+;;       (add-hook 'before-save-hook #'whitespace-cleanup 0 t))))
 
 (define-minor-mode cc-whitespace-cleanup-mode
   "Minor mode to enable whitespace cleanup."
   :init-value nil
-  :lighter " ⋈"
-  (if cc-whitespace-cleanup-mode
+  :lighter "  ⋈ "
+  (if (not cc-whitespace-cleanup-mode)
       (progn
         (setopt-local show-trailing-whitespace nil)
         (remove-hook 'before-save-hook #'whitespace-cleanup t))
@@ -1000,7 +1000,7 @@ This command is tuned for macOS using a single display."
   (let* ((choice
           (completing-read "Display Configuration: "
                            '("desktop" "macbook" "tty" "standard" "focus"
-                             "video"
+                             "video" "emacs-video"
                              "lg-full")
                            nil nil "standard"))
          (move (not arg)))
@@ -1014,6 +1014,11 @@ This command is tuned for macOS using a single display."
       (cc/--resize-frame 164 49)
       (if move
           (set-frame-position (selected-frame) 0 38)))
+
+     ((string-equal choice "emacs-video")
+      (cc/--resize-frame 137 36)
+      (if move
+          (set-frame-position (selected-frame) 0 25)))
 
      ((string-equal choice "video")
       (cc/--resize-frame 108 39))
@@ -1315,7 +1320,7 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
 
 
 
-
+;; osascript routines
 (defun cc/osascript (arg)
   "Run osascript with ARG."
   (interactive "sOSAScript: ")
@@ -1327,7 +1332,7 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
 
 
 
-
+;; Autoload casual (obsolete now with user-lisp)
 (defun cc/casual-gen-autoload-file ()
   "Generate autoload file for Casual."
   (interactive)
@@ -1341,6 +1346,7 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
 
 
 
+;; Cookie cutter command
 (defun cc/cookiecutter ()
   "Open shell for cookiecutter."
   (interactive)
@@ -1358,9 +1364,9 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
         (setq-local default-directory work-path)))))
 
 
-;; Documentation Assists
-(defun cc/get-info-symbol ()
-  "Get info doc for symbol."
+;; Documentation Helper Commands
+(defun cc/get-calc-info-symbol ()
+  "Get info doc for calc symbol."
   (interactive)
   (let* ((symname (thing-at-point 'symbol))
          (symname (substring-no-properties symname)))
