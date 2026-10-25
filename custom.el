@@ -144,7 +144,8 @@
       (pwa "peacock" url))
      ("^https?://www\\.reddit\\.com" lambda (url &rest args) (pwa "reddit" url))
      ("^https?://www\\.netflix\\.com" lambda (url &rest args)
-      (pwa "netflix" url))))
+      (pwa "netflix" url))
+     ("^https?://sfba\\.social" lambda (url &rest args) (pwa "sfba" url))))
  '(burnish-export-functions
    '((html . burnish-export-html) (md . burnish-export-md)
      (odt . burnish-export-odt) (gfm . cc/burnish-export-gfm)
@@ -645,7 +646,9 @@
      ("sfba" . "https://sfba.social")
      ("kanopy" . "https://www.kanopy.com/en/milibrary/")
      ("Anju User Guide" . "https://kickingvegas.github.io/anju/")
-     ("MELPA stats" . "https://melpa.org/#/?q=kickingvegas")))
+     ("MELPA stats" . "https://melpa.org/#/?q=kickingvegas")
+     ("kvdev" . "https://github.com/users/kickingvegas/projects/5")
+     ("web analytics" . "http://yms.dyndns.biz:8080/analytics/report-today.html")))
  '(wgrep-auto-save-buffer t)
  '(window-resize-pixelwise t)
  '(world-clock-list
