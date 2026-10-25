@@ -216,11 +216,11 @@ SUFFIX - string appended to prefix
 
 (defun cc/org-insert-last-stored-link (arg)
   "Insert the last link stored in `org-stored-links' with prefix ARG."
-  (interactive "p")
+  (interactive "p" org-mode)
   (let* ((suffix-map '(("space" . " ")
                        ("none" . "")
                        ("newline" . "\n")))
-         (key (completing-read "Suffix: " (map-keys suffix-map) nil t "space"))
+         (key (completing-read "Suffix: " (map-keys suffix-map) nil t "none"))
          (suffix (map-elt suffix-map key)))
     (org-insert-all-links arg "" suffix)))
 
