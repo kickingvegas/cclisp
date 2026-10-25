@@ -31,9 +31,6 @@
 (require 'image-dired)
 (require 'image-dired-dired)
 (require 'casual-dired)
-;;(require 'casual-editkit)
-;;(require 'dired-rsync-transient)
-;;(require 'avy)
 (require 'diff-hl-dired)
 (require 'dired-rsync-transient)
 
@@ -58,7 +55,7 @@
   (keymap-set dired-mode-map "<backtab>" #'dired-prev-subdir)
   (keymap-set dired-mode-map "TAB" #'dired-next-subdir)
 
-  (keymap-set dired-mode-map "A-M-<mouse-1>" #'browse-url-of-dired-file)
+  (keymap-set dired-mode-map "C-M-<mouse-1>" #'browse-url-of-dired-file)
   (keymap-set dired-mode-map "M-<mouse-1>" #'cc/dired-mouse-toggle-mark))
 
 (defun cc/dired-mouse-toggle-mark ()
