@@ -114,6 +114,7 @@
 ;; (require 'cc-bookmarks-bmenu-mode)
 (require 'cc-dired-mode)
 (require 'cc-js-mode)
+(require 'cc-bmark)
 (require 'cc-tetris-mode)
 (require 'cc-eshell-mode)
 (require 'cc-shell-mode)
