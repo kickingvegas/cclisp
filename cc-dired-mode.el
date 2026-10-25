@@ -63,9 +63,10 @@
   (interactive)
   (unless (use-region-p)
     (mouse-set-point last-input-event)
-    (if (char-equal (char-after (line-beginning-position)) dired-marker-char)
+    (save-excursion
+      (if (char-equal (char-after (line-beginning-position)) dired-marker-char)
         (call-interactively #'dired-unmark)
-      (call-interactively #'dired-mark))))
+      (call-interactively #'dired-mark)))))
 
 (add-hook 'dired-mode-hook #'cc-dired-setup)
 

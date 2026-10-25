@@ -33,30 +33,37 @@
 (add-hook 'ibuffer-mode-hook #'hl-line-mode)
 (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)
 
-(keymap-set ibuffer-name-map "<mouse-1>" #'mouse-set-point)
-(keymap-set ibuffer-name-map "<double-mouse-1>" #'ibuffer-mouse-visit-buffer)
-(keymap-set ibuffer-name-map "<mouse-2>" #'ibuffer-mouse-toggle-mark)
+(defun cc-ibuffer-setup ()
+  "Setup IBuffer."
+  ;;(setq-local mouse-1-click-follows-link 'double)
 
-(keymap-set ibuffer-mode-filter-group-map
-            "<mouse-1>" #'mouse-set-point)
-(keymap-set ibuffer-mode-filter-group-map
-            "<double-mouse-1>" #'ibuffer-mouse-toggle-filter-group)
-(keymap-set ibuffer-mode-filter-group-map
-            "<mouse-2>" #'ibuffer-mouse-toggle-mark)
+  (keymap-set ibuffer-name-map "<mouse-1>" #'mouse-set-point)
+  (keymap-set ibuffer-name-map "<double-mouse-1>" #'ibuffer-mouse-visit-buffer)
+  (keymap-set ibuffer-name-map "M-<mouse-1>" #'ibuffer-mouse-toggle-mark)
 
-(keymap-set ibuffer-mode-map "<f1>" #'avy-goto-line)
-(keymap-set ibuffer-mode-map "M-<f1>" #'ibuffer-jump-to-buffer)
-(keymap-set ibuffer-mode-map "s-<f1>" #'ibuffer-jump-to-filter-group)
-(keymap-set ibuffer-mode-map "<f2>" #'avy-goto-line)
+  (keymap-set ibuffer-mode-filter-group-map
+              "<mouse-1>" #'mouse-set-point)
+  (keymap-set ibuffer-mode-filter-group-map
+              "<double-mouse-1>" #'ibuffer-mouse-toggle-filter-group)
+  (keymap-set ibuffer-mode-filter-group-map
+              "M-<mouse-1>" #'ibuffer-mouse-toggle-mark)
 
-(keymap-set ibuffer-mode-map "{" #'ibuffer-backwards-next-marked)
-(keymap-set ibuffer-mode-map "}" #'ibuffer-forward-next-marked)
-(keymap-set ibuffer-mode-map "[" #'ibuffer-backward-filter-group)
-(keymap-set ibuffer-mode-map "]" #'ibuffer-forward-filter-group)
-(keymap-set ibuffer-mode-map "$" #'ibuffer-toggle-filter-group)
-(keymap-set ibuffer-mode-map "J" #'ibuffer-jump-to-filter-group)
+  (keymap-set ibuffer-mode-map "<f1>" #'avy-goto-line)
+  (keymap-set ibuffer-mode-map "M-<f1>" #'ibuffer-jump-to-buffer)
+  (keymap-set ibuffer-mode-map "s-<f1>" #'ibuffer-jump-to-filter-group)
+  (keymap-set ibuffer-mode-map "<f2>" #'avy-goto-line)
 
-(keymap-set ibuffer-mode-map "SPC" #'ibuffer-visit-buffer-other-window-noselect)
+  (keymap-set ibuffer-mode-map "{" #'ibuffer-backwards-next-marked)
+  (keymap-set ibuffer-mode-map "}" #'ibuffer-forward-next-marked)
+  (keymap-set ibuffer-mode-map "[" #'ibuffer-backward-filter-group)
+  (keymap-set ibuffer-mode-map "]" #'ibuffer-forward-filter-group)
+  (keymap-set ibuffer-mode-map "$" #'ibuffer-toggle-filter-group)
+  (keymap-set ibuffer-mode-map "J" #'ibuffer-jump-to-filter-group)
+
+  (keymap-set ibuffer-mode-map "SPC" #'ibuffer-visit-buffer-other-window-noselect))
+
+(add-hook 'ibuffer-mode-hook #'cc-ibuffer-setup)
+
 
 
 (provide 'cc-ibuffer-mode)
