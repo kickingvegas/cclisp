@@ -281,7 +281,7 @@ If prefix ARG is non-nil, then the computed result is stored in the
     (switch-to-buffer (format-time-string "%Y_%m_%d.org"))
     (setq cc--workplace-initialized t)))
 
-(defun cc/almanac ()
+(defun almanac ()
   "Show almanac for today."
   (interactive)
   (let* ((bname "*almanac*")
