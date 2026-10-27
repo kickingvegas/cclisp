@@ -1,6 +1,6 @@
 ;;; cc-erc-mode.el --- ERC customization             -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2025  Charles Choi
+;; Copyright (C) 2025, 2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -44,33 +44,30 @@
     ("e" "Edit›" casual-editkit-edit-tmenu)
     ("E" "Emoji & Symbols›" casual-editkit-emoji-symbols-tmenu
      :if-not casual-editkit-buffer-read-only-p)
-    ("B" "Bookmarks›" casual-editkit-bookmarks-tmenu)
-    ]
+    ("B" "Bookmarks›" casual-editkit-bookmarks-tmenu)]
 
    ["Sexp"
     ("m" "Mark" mark-sexp)
     ("c" "Copy" casual-editkit-copy-sexp)
     ("k" "Kill (Cut)" kill-sexp
-     :if-not casual-editkit-buffer-read-only-p)
-    ("t" "Transpose" transpose-sexps
      :if-not casual-editkit-buffer-read-only-p)]
 
-   ["Navigation"
-    ("<prior>" "Page Up" scroll-down-command :transient t)
-    ("<next>" "Page Down" scroll-up-command :transient t)]
-
-   ["Misc"
-    ("n" "Names" erc-channel-names :transient t)
-    ("f" "Toggle Flood" erc-toggle-flood-control :transient t)
-    ("b" "Toggle Bufbar" erc-bufbar-mode :transient t)]]
-
-  [("J" "Jump to Bookmark…" bookmark-jump)]
+   [""
+    ("t" "Transpose" transpose-sexps
+     :if-not casual-editkit-buffer-read-only-p)]]
 
   [:class transient-row
-          (casual-lib-quit-one)
-          ("RET" "Dismiss" transient-quit-all)
-          (casual-lib-quit-all)
-          ("Q" "Quit" erc-quit-server)])
+   ("J" "Jump to Bookmark…" bookmark-jump)
+   ("n" "Names" erc-channel-names :transient t)
+   ("f" "Toggle Flood" erc-toggle-flood-control :transient t)
+   ("b" "Toggle Bufbar" erc-bufbar-mode :transient t)
+   ]
+
+  [:class transient-row
+   (casual-lib-quit-one)
+   ("RET" "Dismiss" transient-quit-all)
+   (casual-lib-quit-all)
+   ("Q" "Quit" erc-quit-server)])
 
 (defun cc/configure-erc-tty ()
   "Set ERC nickname background to black on TTY."
