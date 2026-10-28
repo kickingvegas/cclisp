@@ -30,29 +30,6 @@
 (require 'org-element)
 (require 'org-element-ast)
 
-
-
-;; bookmark-bmenu setup
-
-(defun cc-bookmark-bmenu-mouse-mark ()
-  "Mark bookmark with mouse."
-  (interactive)
-  (mouse-set-point last-input-event)
-  (save-excursion
-    (forward-line 0)
-    (if (looking-at-p ">")              ; oof this check is fragile
-        (bookmark-bmenu-unmark)
-      (bookmark-bmenu-mark)
-      (forward-line -1))))
-
-(defun cc-bookmark-bmenu-setup ()
-  "Setup function for bookmarks list editor."
-  (setq-local mouse-1-click-follows-link 'double)
-  (keymap-set bookmark-bmenu-mode-map "M-<mouse-1>" #'cc-bookmark-bmenu-mouse-mark))
-
-
-(add-hook 'bookmark-bmenu-mode-hook #'cc-bookmark-bmenu-setup)
-
 
 ;; URL Bookmark Support
 

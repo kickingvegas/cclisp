@@ -41,9 +41,8 @@
 (defun cc-dired-setup ()
   "Setup function for Dired."
 
-  (setq-local mouse-1-click-follows-link 'double)
+  (keymap-set dired-mode-map "s-<mouse-1>" #'browse-url-of-dired-file)
   (keymap-set dired-mode-map "M-o" #'dired-omit-mode)
-  ;;(keymap-set dired-mode-map "C-M-o" #'casual-editkit-main-tmenu)
   (keymap-set dired-mode-map "<f1>" #'avy-goto-end-of-line)
   (keymap-set dired-mode-map "." #'dired-up-directory)
   (keymap-set dired-mode-map "M-m" #'dired-rsync-transient)
@@ -53,20 +52,7 @@
 
   ;; Added to be consistent with IBuffer
   (keymap-set dired-mode-map "<backtab>" #'dired-prev-subdir)
-  (keymap-set dired-mode-map "TAB" #'dired-next-subdir)
-
-  (keymap-set dired-mode-map "C-M-<mouse-1>" #'browse-url-of-dired-file)
-  (keymap-set dired-mode-map "M-<mouse-1>" #'cc/dired-mouse-toggle-mark))
-
-(defun cc/dired-mouse-toggle-mark ()
-  "Toggle mark of a Dired item via mouse."
-  (interactive)
-  (unless (use-region-p)
-    (mouse-set-point last-input-event)
-    (save-excursion
-      (if (char-equal (char-after (line-beginning-position)) dired-marker-char)
-        (call-interactively #'dired-unmark)
-      (call-interactively #'dired-mark)))))
+  (keymap-set dired-mode-map "TAB" #'dired-next-subdir))
 
 (add-hook 'dired-mode-hook #'cc-dired-setup)
 
