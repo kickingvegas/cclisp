@@ -458,5 +458,13 @@ If prefix ARG is non-nil, then the computed result is stored in the
 
       (kill-new (string-join (reverse buflist) "\n\n#\n\n")))))
 
+
+
+;; HTML Export
+
+(setopt org-html-head-extra (with-temp-buffer
+                              (insert-file-contents "~/emacs/cclisp/cc-org-html.css")
+                              (buffer-string)))
+
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here
