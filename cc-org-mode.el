@@ -464,7 +464,7 @@ If prefix ARG is non-nil, then the computed result is stored in the
 
 (setopt org-html-head-extra (with-temp-buffer
                               (insert-file-contents "~/emacs/cclisp/cc-org-html.css")
-                              (buffer-string)))
+                              (format "<style>\n%s\n</style>" (buffer-string))))
 
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here
