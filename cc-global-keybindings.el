@@ -92,8 +92,9 @@
 (keymap-global-set "M-<f1>" #'google-this)
 (keymap-global-set "<f13>" #'eshell)
 
-(keymap-global-set "M-<f13>" #'neotree-toggle)
-(keymap-global-set "C-<f13>" #'treemacs)
+(keymap-global-set "s-<f13>" #'neotree-toggle)
+(keymap-global-set "M-<f13>" #'sr-speedbar-toggle)
+2(keymap-global-set "C-<f13>" #'treemacs)
 
 ;;(keymap-global-set (kbd "<f14>") 'save-buffer) ;logitech
 (keymap-global-set "<f15>" #'casual-ediff-revision)

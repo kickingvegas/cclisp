@@ -613,6 +613,7 @@
  '(show-paren-context-when-offscreen 'overlay)
  '(speedbar-show-unknown-files t)
  '(split-width-threshold nil)
+ '(sr-speedbar-right-side nil)
  '(switch-to-buffer-obey-display-actions t)
  '(text-scale-mode-step 1.05)
  '(tool-bar-mode nil)
