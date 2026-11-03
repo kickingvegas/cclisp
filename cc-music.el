@@ -59,14 +59,17 @@
       (keymap-global-set b #'now-playing-tmenu)
       (message "Set %s to Now Playing" b)))))
 
-(cc/music-init "H-[" "H-]")
+(when (eq system-type 'darwin)
+  (cc/music-init "H-[" "H-]")
 
-(keymap-global-set "<f14>" #'triode-tmenu)
+  (keymap-global-set "<f14>" #'triode-tmenu)
+  (keymap-global-set "H-<f14>" #'cc/music-swap-player)
+  (keymap-global-set "M-<f14>" #'cc/music-swap-player)
 
-(keymap-global-set "H-<f14>" #'cc/music-swap-player)
+  (shazam-init "s-<f5>")
+  (keymap-global-set "H-<f5>" #'shazam-history)
+  (keymap-global-set "M-<f19>" #'shazam))
 
-(shazam-init "s-<f5>")
-(keymap-global-set "H-<f5>" #'shazam-history)
 
 (provide 'cc-music)
 ;;; cc-music.el ends here

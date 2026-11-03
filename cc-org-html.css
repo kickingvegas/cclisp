@@ -1,0 +1,74 @@
+/* Copyright 2026 Charles Y. Choi */
+
+:root {
+    color-scheme: light dark;
+    --light-bg: #f9f9f9;
+    --light-color: black;
+    --light-code-bg: #f9f9f9;
+    --light-code-color: black;
+
+    --dark-bg: #1c1c1c;
+    --dark-color: #f0f0f0;
+    --dark-code-bg: #2f2f2f;
+    --dark-code-color: #f0f0f0;
+}
+
+@media only screen and (max-device-width: 500px) {
+    body {
+        margin: 0pt;
+        padding-top: 0.05in;
+        padding-left: 0.15in;
+        padding-right: 0.15in;
+        padding-bottom: 0.05in;
+        font-family: Optima, Constantia, 'Linux Biolinum O', 'Linux Libertine Display O', 'Times New Roman', Arial;
+        font-size: 14pt;
+    }
+}
+
+@media only screen and (width > 500px) {
+    body {
+        margin: 0pt;
+        padding-top: 0.25in;
+        padding-left: 0.5in;
+        padding-right: 0.5in;
+        padding-bottom: 0.25in;
+        font-family: Optima, Constantia, 'Linux Biolinum O', 'Linux Libertine Display O', 'Times New Roman', Arial;
+        font-size: 14pt;
+    }
+}
+
+body {
+    background-color: light-dark(var(--light-bg), (var --dark-bg));
+    color: light-dark(var(--light-color), (var --dark-color));
+}
+
+code {
+    font-family: Menlo, Consolas, 'Noto Mono', monospace, Monaco, 'Courier New', Courier;
+    font-size: 90%;
+}
+
+pre.src {
+    background-color: light-dark(var(--light-code-bg), (--dark-code-bg));
+    color: light-dark(var(--light-code-color), (--dark-code-color));
+    font-family: Menlo, Consolas, 'Noto Mono', monospace, Monaco, 'Courier New', Courier;
+    font-size: 90%;
+    padding: 8pt;
+}
+
+pre.example {
+    background-color: light-dark(var(--light-code-bg), (--dark-code-bg));
+    color: light-dark(var(--light-code-color), (--dark-code-color));
+    font-family: Menlo, Consolas, 'Noto Mono', monospace, Monaco, 'Courier New', Courier;
+    font-size: 90%;
+    padding: 8pt;
+}
+
+a:link, a:visited {
+    color: light-dark(blue, #3287a8);
+    text-decoration: none;
+}
+
+a:hover, a:active {
+    color: light-dark(#1593F5, #32a885);
+    text-decoration: underline;
+}

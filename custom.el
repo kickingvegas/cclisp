@@ -138,13 +138,25 @@
    '(("^https?://github\\.com" lambda (url &rest args) (pwa "github" url))
      ("^https?://\\(youtube\\.com\\|youtu\\.be\\|www\\.youtube\\.com\\)" lambda
       (url &rest args) (pwa "youtube" url))
-     ("^https?://www\\.twitch\\.tv" lambda (url &rest args) (pwa "twitch" url))
+     ("^https?://\\(twitch\\.tv\\|www\\.twitch\\.tv\\)" lambda (url &rest args)
+      (pwa "twitch" url))
      ("^https?://www\\.kanopy\\.com" lambda (url &rest args) (pwa "kanopy" url))
      ("^https?://www\\.peacocktv\\.com" lambda (url &rest args)
       (pwa "peacock" url))
      ("^https?://www\\.reddit\\.com" lambda (url &rest args) (pwa "reddit" url))
      ("^https?://www\\.netflix\\.com" lambda (url &rest args)
-      (pwa "netflix" url))))
+      (pwa "netflix" url))
+     ("^https?://sfba\\.social" lambda (url &rest args) (pwa "sfba" url))
+     ("^https?://\\(instagram\\.com\\|www\\.instagram\\.com\\)" lambda
+      (url &rest args) (pwa "instagram" url))
+     ("^https?://\\(peacocktv\\.com\\|www\\.peacocktv\\.com\\)" lambda
+      (url &rest args) (pwa "peacock" url))
+     ("^https?://\\(netflix\\.com\\|www\\.netflix\\.com\\)" lambda
+      (url &rest args) (pwa "netflix" url))
+     ("^https?://appstoreconnect\\.apple\\.com" lambda (url &rest args)
+      (pwa "connect" url))
+     ("^https?://\\(reddit\\.com\\|www\\.reddit\\.com\\)" lambda
+      (url &rest args) (pwa "reddit" url))))
  '(burnish-export-functions
    '((html . burnish-export-html) (md . burnish-export-md)
      (odt . burnish-export-odt) (gfm . cc/burnish-export-gfm)
@@ -167,6 +179,7 @@
  '(compilation-auto-jump-to-first-error 'first-known)
  '(compilation-scroll-output t)
  '(compile-command "make -k ")
+ '(confirm-kill-emacs 'y-or-n-p)
  '(context-menu-functions
    '(anju-context-menu-elisp anju-context-menu-edebug-eval anju-context-menu-xref
                              anju-context-menu-compile anju-context-menu-dired
@@ -601,6 +614,7 @@
  '(show-paren-context-when-offscreen 'overlay)
  '(speedbar-show-unknown-files t)
  '(split-width-threshold nil)
+ '(sr-speedbar-right-side nil)
  '(switch-to-buffer-obey-display-actions t)
  '(text-scale-mode-step 1.05)
  '(tool-bar-mode nil)
@@ -620,32 +634,6 @@
  '(view-read-only t)
  '(warning-suppress-types '((comp)))
  '(wdired-allow-to-change-permissions t)
- '(webjump-sites
-   '(("GNU Project FTP Archive"
-      . [mirrors "https://ftp.gnu.org/pub/gnu/" "https://ftpmirror.gnu.org"])
-     ("GNU Project Website" . "https://www.gnu.org")
-     ("Emacs Website" . "https://www.gnu.org/software/emacs/emacs.html")
-     ("Savannah Emacs page" . "https://savannah.gnu.org/projects/emacs")
-     ("Emacs Wiki"
-      . [simple-query "https://www.emacswiki.org"
-         "https://www.emacswiki.org/cgi-bin/wiki/" ""])
-     ("DuckDuckGo"
-      . [simple-query "https://duckduckgo.com" "https://duckduckgo.com/?q=" ""])
-     ("Wikipedia"
-      . [simple-query "https://wikipedia.org" "https://wikipedia.org/wiki/" ""])
-     ("Association for Computing Machinery" . "https://www.acm.org")
-     ("Computer Professionals for Social Responsibility" . "http://www.cpsr.org")
-     ("Electronic Frontier Foundation" . "https://www.eff.org")
-     ("IEEE Computer Society" . "https://www.computer.org")
-     ("Risks Digest" . webjump-to-risks)
-     ("Supplemental Web site list for webjump"
-      . "https://www.neilvandyke.org/webjump/")
-     ("youtube" . "https://www.youtube.com")
-     ("twitch" . "https://www.twitch.tv") ("github" . "https://github.com")
-     ("sfba" . "https://sfba.social")
-     ("kanopy" . "https://www.kanopy.com/en/milibrary/")
-     ("Anju User Guide" . "https://kickingvegas.github.io/anju/")
-     ("MELPA stats" . "https://melpa.org/#/?q=kickingvegas")))
  '(wgrep-auto-save-buffer t)
  '(window-resize-pixelwise t)
  '(world-clock-list

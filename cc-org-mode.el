@@ -216,11 +216,11 @@ SUFFIX - string appended to prefix
 
 (defun cc/org-insert-last-stored-link (arg)
   "Insert the last link stored in `org-stored-links' with prefix ARG."
-  (interactive "p")
+  (interactive "p" org-mode)
   (let* ((suffix-map '(("space" . " ")
                        ("none" . "")
                        ("newline" . "\n")))
-         (key (completing-read "Suffix: " (map-keys suffix-map) nil t "space"))
+         (key (completing-read "Suffix: " (map-keys suffix-map) nil t "none"))
          (suffix (map-elt suffix-map key)))
     (org-insert-all-links arg "" suffix)))
 
@@ -457,6 +457,14 @@ If prefix ARG is non-nil, then the computed result is stored in the
         (push (string-trim (buffer-substring-no-properties start end)) buflist))
 
       (kill-new (string-join (reverse buflist) "\n\n#\n\n")))))
+
+
+
+;; HTML Export
+
+(setopt org-html-head-extra (with-temp-buffer
+                              (insert-file-contents "~/emacs/cclisp/cc-org-html.css")
+                              (format "<style>\n%s\n</style>" (buffer-string))))
 
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here
