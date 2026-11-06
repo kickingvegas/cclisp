@@ -38,8 +38,8 @@
 }
 
 body {
-    background-color: light-dark(var(--light-bg), (var --dark-bg));
-    color: light-dark(var(--light-color), (var --dark-color));
+    background-color: light-dark(var(--light-bg), var(--dark-bg));
+    color: light-dark(var(--light-color), var(--dark-color));
 }
 
 code {
@@ -48,16 +48,16 @@ code {
 }
 
 pre.src {
-    background-color: light-dark(var(--light-code-bg), (--dark-code-bg));
-    color: light-dark(var(--light-code-color), (--dark-code-color));
+    background-color: light-dark(var(--light-code-bg), var(--dark-code-bg));
+    color: light-dark(var(--light-code-color), var(--dark-code-color));
     font-family: Menlo, Consolas, 'Noto Mono', monospace, Monaco, 'Courier New', Courier;
     font-size: 90%;
     padding: 8pt;
 }
 
 pre.example {
-    background-color: light-dark(var(--light-code-bg), (--dark-code-bg));
-    color: light-dark(var(--light-code-color), (--dark-code-color));
+    background-color: light-dark(var(--light-code-bg), var(--dark-code-bg));
+    color: light-dark(var(--light-code-color), var(--dark-code-color));
     font-family: Menlo, Consolas, 'Noto Mono', monospace, Monaco, 'Courier New', Courier;
     font-size: 90%;
     padding: 8pt;
