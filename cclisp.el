@@ -1376,5 +1376,23 @@ This command invokes `cc/run-nota' with MSG at START-TIME passed into
       (mark-paragraph)
       (copy-region-as-kill (region-beginning) (region-end)))))
 
+
+
+;; Reload commands for truename
+
+(defun reload-file-from-truename ()
+  "Reload current buffer from `buffer-file-truename` instead of symlink."
+  (interactive)
+  (when buffer-file-truename
+    (find-alternate-file buffer-file-truename)))
+
+
+(defun reload-revert-from-truename ()
+  "Switch buffer's visited file to its truename and revert."
+  (interactive)
+  (when buffer-file-truename
+    (set-visited-file-name buffer-file-truename 'no-query)
+    (revert-buffer t t)))
+
 (provide 'cclisp)
 ;;; cclisp.el ends here
