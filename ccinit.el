@@ -222,42 +222,6 @@
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line)))
 
-(defun cc/days-until-voting (arg)
-  "Days until U.S. elections in 2026 and 2028.
-
-If prefix ARG is non-nil, then the computed result is stored in the
- `kill-ring'."
-  (interactive "P")
-  (let* ((midterms (cc/--days-until "2026-11-03" "%d days until 2026 midterms"))
-         (election (cc/--days-until "2028-11-07" "%d days until 2028 presidential election"))
-         (msg (format "%s, %s" midterms election)))
-    (if arg
-        (kill-new msg))
-    (message msg)))
-
-(defun cc/days-until-mothers (arg)
-  "Days until Mother's Day 2027.
-
-If prefix ARG is non-nil, then the computed result is stored in the
-`kill-ring'."
-  (interactive "P")
-  (let* ((mother (cc/--days-until "2027-05-09" "%d days until Mother's Day"))
-         (msg (format "%s" mother)))
-    (if arg
-        (kill-new msg))
-    (message msg)))
-
-(defun cc/days-until-nye (arg)
-  "Days until New Year's Eve.
-
-If prefix ARG is non-nil, then the computed result is stored in the
-`kill-ring'."
-  (interactive "P")
-  (let* ((event (cc/--days-until "2026-12-31" "%d days until NYE"))
-         (msg (format "%s" event)))
-    (if arg
-        (kill-new msg))
-    (message msg)))
 
 (defvar cc--workplace-initialized nil
   "If non-nil then workplace is initialized.")

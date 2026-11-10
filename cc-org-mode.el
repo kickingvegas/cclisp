@@ -324,7 +324,34 @@ used."
          (msg (format template days)))
     msg))
 
+(defcustom cc/days-until-db nil
+  "Database of days until targets."
+  :group 'kickingvegas
+  :type '(alist :key-type symbol
+                :value-type (repeat string)))
+
 (defun cc/days-until (arg)
+  "Prompt user for date and show days until in the mini-buffer.
+
+Use `org-read-date' to compute days until to display in the mini-buffer.
+
+If prefix ARG is non-nil, then the computed result is stored in the
+ `kill-ring'."
+  (interactive "P")
+
+  (let* ((keys (map-keys cc/days-until-db))
+         (key (completing-read-default "Target Date: "  keys nil t))
+         (entry (map-elt cc/days-until-db (intern key)))
+         (template (if entry (nth 1 entry)))
+         (target (if (string-equal (string-trim key) "")
+                     (org-read-date)
+                   (car entry)))
+         (msg (cc/--days-until target template)))
+    (if arg
+        (kill-new msg))
+    (message msg)))
+
+(defun cc/days-until-date (arg)
   "Prompt user for date and show days until in the mini-buffer.
 
 Use `org-read-date' to compute days until to display in the mini-buffer.
