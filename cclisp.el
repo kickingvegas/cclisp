@@ -494,49 +494,6 @@ SOUND - sound file (optional)"
     (rgrep query "*.org" "~/org/" nil)
     (switch-to-buffer-other-window "*grep*")))
 
-(defun cc/list-bookmarks-transient ()
-  "Transient supporting version of `bookmark-bmenu-list'."
-  (interactive)
-  (bookmark-maybe-load-default-file)
-  (let ((buf (get-buffer-create bookmark-bmenu-buffer)))
-    (switch-to-buffer buf))
-  (bookmark-bmenu-mode)
-  (bookmark-bmenu--revert))
-
-(defun cc/copy-word ()
-  "Copy word after point."
-  (interactive)
-  (mark-word)
-  (kill-ring-save (region-beginning) (region-end)))
-
-(defun cc/copy-sentence ()
-  "Copy sentence after point."
-  (interactive)
-  (save-excursion
-    (set-mark (point))
-    (forward-sentence)
-    (kill-ring-save (region-beginning) (region-end))))
-
-(defun cc/copy-paragraph ()
-  "Copy paragraph point is in."
-  (interactive)
-  (save-excursion
-    (mark-paragraph)
-    (kill-ring-save (region-beginning) (region-end))))
-
-(defun cc/copy-defun ()
-  "Copy defun point is in."
-  (interactive)
-  (save-excursion
-    (mark-defun)
-    (kill-ring-save (region-beginning) (region-end))))
-
-(defun cc/copy-sexp ()
-  "Copy sexp after point."
-  (interactive)
-  (mark-sexp)
-  (kill-ring-save (region-beginning) (region-end)))
-
 (defun cc/html-quote-entities-to-utf8 ()
   "Convert HTML quote entities to UTF8 in buffer."
   (interactive)
@@ -566,21 +523,6 @@ SOUND - sound file (optional)"
         (goto-char (point-min))
         (while (search-forward (car e) nil t)
           (replace-match (cdr e) nil t))))))
-
-;; TODO: obsolete
-;; (defun cc/dired-image-file-p ()
-;;   "Predicate if current file in Dired is an image file."
-;;   (string-match-p (image-dired--file-name-regexp) (dired-get-filename)))
-
-;; TODO: obsolete
-;; (defun cc/--image-info (filename)
-;;   "Get image information of FILENAME via Imagemagick identify utility."
-;;   (car
-;;    (process-lines
-;;     "identify"
-;;     "-format"
-;;     "%m %wx%h %b"
-;;     (expand-file-name filename))))
 
 (defun ssh (target)
   "Create ssh `term' to TARGET."
@@ -893,37 +835,6 @@ installed."
     (info outfile)
     (info-initialize)))
 
-;; (defun cc/casual-info-compile ()
-;;   "Build Casual Info file."
-;;   (interactive)
-;;   (let* ((outfile "~/Projects/elisp/casual/docs/casual.info")
-;;          (current (current-buffer)))
-;;     (find-file "~/Projects/elisp/casual/docs/casual.org")
-;;     (org-texinfo-export-to-info)
-;;     (if (get-buffer "*info*")
-;;         (kill-buffer "*info*"))
-;;     (info outfile)
-;;     (info-initialize)
-;;     (switch-to-buffer current)))
-
-;; (defun cc/anju-info-compile ()
-;;   "Build Anju Info file."
-;;   (interactive)
-;;   (let* ((outfile "~/Projects/elisp/anju/docs/anju.info")
-;;          (current (current-buffer)))
-;;     (find-file "~/Projects/elisp/anju/docs/anju.org")
-;;     (org-texinfo-export-to-info)
-;;     (if (get-buffer "*info*")
-;;         (kill-buffer "*info*"))
-;;     (info outfile)
-;;     (info-initialize)
-;;     (switch-to-buffer current)))
-
-;; (defun cc/load-casual-info ()
-;;   "Load Casual info file."
-;;   (interactive)
-;;   (info "~/Projects/elisp/casual/docs/casual.info")
-;;   (info-initialize))
 
 (defun cc/show-global-map-keys (keypath)
   "Show formatted keys for keymap in `global-map' given KEYPATH."
@@ -932,23 +843,11 @@ installed."
           (mapcar (lambda (x) (if (listp x) (car x)))
                   (cdr (lookup-key global-map keypath)))))
 
-;; (defun cc/whitespace-cleanup (&optional disable)
-;;   "Turn on whitespace cleanup with optional DISABLE."
-;;   (interactive "P")
-
-;;   (if disable
-;;       (progn
-;;         (setopt-local show-trailing-whitespace nil)
-;;         (remove-hook 'before-save-hook #'whitespace-cleanup t))
-
-;;     (progn
-;;       (setopt-local show-trailing-whitespace t)
-;;       (add-hook 'before-save-hook #'whitespace-cleanup 0 t))))
 
 (define-minor-mode cc-whitespace-cleanup-mode
   "Minor mode to enable whitespace cleanup."
   :init-value nil
-  :lighter "  ⋈ "
+  :lighter " ⋈"
   (if (not cc-whitespace-cleanup-mode)
       (progn
         (setopt-local show-trailing-whitespace nil)
