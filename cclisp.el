@@ -582,7 +582,7 @@ SOUND - sound file (optional)"
 ;;     "%m %wx%h %b"
 ;;     (expand-file-name filename))))
 
-(defun cc/ssh (target)
+(defun ssh (target)
   "Create ssh `term' to TARGET."
   (interactive "suser@host: ")
   (term
