@@ -354,40 +354,30 @@ The voice and speech rate are configurable with the following variables:
     ;; (shell-command cmd)
     (shell-command-on-region start end cmd)))
 
-(defun cc/ellipsis()
-  "Insert an ellipsis."
-  (interactive)
-  (insert "…"))
 
-(defun cc/triangular-bullet ()
-  "Insert a triangular bullet."
-  (interactive)
-  (insert "‣"))
+(defcustom cc/glyph-db '((ellipsis . "…")
+                         (triangular-bullet . "‣")
+                         (menu-suffix "›")
+                         (casual-prefix "✦")
+                         (info . "ⓘ")
+                         (option . "⌥")
+                         (command . "⌘"))
+  "Glyph alist."
+  :group 'kickingvegas
+  :type '(alist :key-type symbol
+                :value-type string))
 
-(defun cc/menu-symbol ()
-  "Insert a menu symbol."
-  (interactive)
-  (insert "›"))
 
-(defun cc/prefix-symbol ()
-  "Insert a prefix symbol."
+(defun cc/glyph-insert ()
+  "Insert glyph."
   (interactive)
-  (insert "✦"))
 
-(defun cc/info-symbol ()
-  "Insert an info symbol."
-  (interactive)
-  (insert "ⓘ"))
+  (let* ((keys (map-keys cc/glyph-db))
+         (key (completing-read "Glyph: " keys nil t))
+         (glyph (map-elt cc/glyph-db (intern key))))
 
-(defun cc/option-symbol ()
-  "Insert an option symbol."
-  (interactive)
-  (insert "⌥"))
-
-(defun cc/command-symbol ()
-  "Insert an option symbol."
-  (interactive)
-  (insert "⌘"))
+    (when glyph
+      (insert glyph))))
 
 (defun cc/apple-maps-search(&optional input)
   "Search Apple Maps with INPUT.
