@@ -30,8 +30,6 @@
 
 (add-hook 'eww-mode-hook #'hl-line-mode)
 (add-hook 'eww-bookmark-mode-hook #'hl-line-mode)
-(add-hook 'eww-mode-hook (lambda ()
-                           (setq-local scroll-margin 12)))
 
 (defun cc/eww-point-on-first-line-p ()
   "Return t if the point is on the first line, nil otherwise.
@@ -69,12 +67,16 @@ This function taken via GitHub Copilot query."
         (eww-bookmark-yank)
         (forward-line -1))))
 
+(defun cc/eww-mode-setup ()
+  "Setup `eww-mode'."
 
-(keymap-set eww-bookmark-mode-map "<double-mouse-1>" #'eww-bookmark-browse)
-(keymap-set eww-bookmark-mode-map "M-p" #'cc/eww-bookmark-reorder-up)
-(keymap-set eww-bookmark-mode-map "M-n" #'cc/eww-bookmark-reorder-down)
+  (setq-local scroll-margin 12)
+  (keymap-set eww-bookmark-mode-map "<double-mouse-1>" #'eww-bookmark-browse)
+  (keymap-set eww-bookmark-mode-map "M-p" #'cc/eww-bookmark-reorder-up)
+  (keymap-set eww-bookmark-mode-map "M-n" #'cc/eww-bookmark-reorder-down)
+  (keymap-set eww-mode-map "<f1>" #'avy-goto-char-timer))
 
-(keymap-set eww-mode-map "<f1>" #'avy-goto-char-timer)
+(add-hook 'eww-mode-hook #'cc/eww-mode-setup)
 
 (provide 'cc-eww-mode)
 ;;; cc-eww-mode.el ends here

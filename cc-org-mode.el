@@ -178,41 +178,51 @@ SUFFIX - string appended to prefix
   (org-forward-paragraph)
   (forward-line))
 
-(keymap-set org-mode-map "M-<f8>" #'datestamp)
-;; (keymap-set org-mode-map "<f9>" 'avy-goto-word-1)
-(keymap-set org-mode-map "M-<f9>" #'casual-org-checkbox-in-progress)
-(keymap-set org-mode-map "C-<f9>" #'casual-org-toggle-list-to-checkbox)
-(keymap-set org-mode-map "<f9>" #'org-ctrl-c-ctrl-c)
-(keymap-set org-mode-map "M-<f6>" #'casual-org-toggle-images)
-(keymap-set org-mode-map "C-c t" #'cc/org-time-stamp-inactive)
-(keymap-set org-mode-map "C-<home>" #'org-beginning-of-line)
-(keymap-set org-mode-map "C-<end>" #'org-end-of-line)
-(keymap-set org-mode-map "<home>" #'beginning-of-buffer)
-(keymap-set org-mode-map "<end>" #'end-of-buffer)
-(keymap-set org-mode-map "A-<left>" #'org-backward-sentence)
-(keymap-set org-mode-map "A-<right>" #'org-forward-sentence)
-(keymap-set org-mode-map "M-p" #'cc/org-backward-paragraph)
-(keymap-set org-mode-map "M-n" #'cc/org-forward-paragraph)
-(keymap-set org-mode-map "C-<up>" #'org-previous-visible-heading)
-(keymap-set org-mode-map "C-<down>" #'org-next-visible-heading)
-(keymap-set org-mode-map "M-v" #'org-previous-visible-heading)
-(keymap-set org-mode-map "M-j" #'cc/journal-entry)
-(keymap-set org-mode-map "C-v" #'org-next-visible-heading)
-(keymap-set org-mode-map "C-/" #'anju-style-dwim)
-(keymap-set org-mode-map "C-_" #'anju-style-dwim)
-(keymap-set org-mode-map "s-e" #'anju-style-dwim)
-(keymap-set org-mode-map "s-b" #'anju-style-bold)
-(keymap-set org-mode-map "s-i" #'anju-style-italic)
-(keymap-set org-mode-map "s-c" #'anju-style-code)
-(keymap-set org-mode-map "s-u" #'anju-style-underline)
-(keymap-set org-mode-map "s-r" #'anju-style-remove)
-(keymap-set org-mode-map "s-s" #'anju-style-strike-through)
-(keymap-set org-mode-map "s-<tab>" #'completion-at-point)
-(keymap-set org-mode-map "M-[" #'backward-sexp)
-(keymap-set org-mode-map "M-]" #'forward-sexp)
+(defun cc/org-mode-setup ()
+  "Initialize `org-mode'."
+  (keymap-set org-mode-map "M-<f8>" #'datestamp)
+  ;; (keymap-set org-mode-map "<f9>" 'avy-goto-word-1)
+  (keymap-set org-mode-map "M-<f9>" #'casual-org-checkbox-in-progress)
+  (keymap-set org-mode-map "C-<f9>" #'casual-org-toggle-list-to-checkbox)
+  (keymap-set org-mode-map "<f9>" #'org-ctrl-c-ctrl-c)
+  (keymap-set org-mode-map "M-<f6>" #'casual-org-toggle-images)
+  (keymap-set org-mode-map "C-c t" #'cc/org-time-stamp-inactive)
+  (keymap-set org-mode-map "C-<home>" #'org-beginning-of-line)
+  (keymap-set org-mode-map "C-<end>" #'org-end-of-line)
+  (keymap-set org-mode-map "<home>" #'beginning-of-buffer)
+  (keymap-set org-mode-map "<end>" #'end-of-buffer)
+  (keymap-set org-mode-map "A-<left>" #'org-backward-sentence)
+  (keymap-set org-mode-map "A-<right>" #'org-forward-sentence)
+  (keymap-set org-mode-map "M-p" #'cc/org-backward-paragraph)
+  (keymap-set org-mode-map "M-n" #'cc/org-forward-paragraph)
+  (keymap-set org-mode-map "C-<up>" #'org-previous-visible-heading)
+  (keymap-set org-mode-map "C-<down>" #'org-next-visible-heading)
+  (keymap-set org-mode-map "M-v" #'org-previous-visible-heading)
+  (keymap-set org-mode-map "M-j" #'cc/journal-entry)
+  (keymap-set org-mode-map "C-v" #'org-next-visible-heading)
+  (keymap-set org-mode-map "C-/" #'anju-style-dwim)
+  (keymap-set org-mode-map "C-_" #'anju-style-dwim)
+  (keymap-set org-mode-map "s-e" #'anju-style-dwim)
+  (keymap-set org-mode-map "s-b" #'anju-style-bold)
+  (keymap-set org-mode-map "s-i" #'anju-style-italic)
+  (keymap-set org-mode-map "s-c" #'anju-style-code)
+  (keymap-set org-mode-map "s-u" #'anju-style-underline)
+  (keymap-set org-mode-map "s-r" #'anju-style-remove)
+  (keymap-set org-mode-map "s-s" #'anju-style-strike-through)
+  (keymap-set org-mode-map "s-<tab>" #'completion-at-point)
+  (keymap-set org-mode-map "M-[" #'backward-sexp)
+  (keymap-set org-mode-map "M-]" #'forward-sexp)
 
-(keymap-set org-mode-map "C-6" #'org-goto)
-;; (keymap-set org-read-date-minibuffer-local-map "C-o" #'casual-calendar)
+  (keymap-set org-mode-map "C-6" #'org-goto)
+  ;; (keymap-set org-read-date-minibuffer-local-map "C-o" #'casual-calendar)
+
+  (keymap-set org-mode-map "C-c M-l" #'cc/org-insert-last-stored-link)
+
+  (when (fboundp 'ob-swiftui-setup)
+    (ob-swiftui-setup)))
+
+(add-hook 'org-mode-hook #'cc/org-mode-setup)
+
 
 (defun cc/org-insert-last-stored-link (arg)
   "Insert the last link stored in `org-stored-links' with prefix ARG."
@@ -224,7 +234,6 @@ SUFFIX - string appended to prefix
          (suffix (map-elt suffix-map key)))
     (org-insert-all-links arg "" suffix)))
 
-(keymap-set org-mode-map "C-c M-l" #'cc/org-insert-last-stored-link)
 
 (add-hook 'org-agenda-finalize-hook 'hl-line-mode)
 (add-hook 'org-agenda-finalize-hook
@@ -232,10 +241,17 @@ SUFFIX - string appended to prefix
             (define-key org-agenda-mode-map
               [(double-mouse-1)] 'org-agenda-goto-mouse)))
 
-(keymap-set org-agenda-mode-map "<f1>" #'org-save-all-org-buffers)
-(keymap-set org-agenda-mode-map "M-p" #'org-agenda-previous-date-line)
-(keymap-set org-agenda-mode-map "M-n" #'org-agenda-next-date-line)
-;; (keymap-set org-agenda-mode-map "." #'casual-agenda-goto-now)
+(defun cc/org-agenda-mode-init ()
+  "Initialize `org-agenda-mode'."
+
+ (keymap-set org-agenda-mode-map "<f1>" #'org-save-all-org-buffers)
+ (keymap-set org-agenda-mode-map "M-p" #'org-agenda-previous-date-line)
+ (keymap-set org-agenda-mode-map "M-n" #'org-agenda-next-date-line)
+ ;; (keymap-set org-agenda-mode-map "." #'casual-agenda-goto-now)
+ )
+
+
+(add-hook 'org-agenda-mode-hook #'cc/org-agenda-mode-init)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -250,8 +266,7 @@ SUFFIX - string appended to prefix
    (gnuplot . t)
    (swift . t)))
 
-(when (fboundp 'ob-swiftui-setup)
-  (ob-swiftui-setup))
+
 
 (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
 

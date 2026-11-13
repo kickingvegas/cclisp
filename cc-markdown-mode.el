@@ -43,14 +43,18 @@
 
 (add-hook 'markdown-mode-hook #'turn-on-orgtbl)
 
-(keymap-set markdown-mode-map "C-<up>" #'markdown-backward-same-level)
-(keymap-set markdown-mode-map "C-<down>" #'markdown-forward-same-level)
-(keymap-set markdown-mode-map "M-v" #'markdown-outline-previous)
-(keymap-set markdown-mode-map "C-v" #'markdown-outline-next)
-(keymap-set markdown-mode-map "M-<f6>" #'markdown-toggle-inline-images)
-(keymap-set markdown-mode-map "C-/" #'anju-style-dwim)
-;; (define-key markdown-mode-map [f13] 'markdown-preview)
+(defun cc/markdown-mode-setup ()
+  "Setup `markdown-mode'."
+ (keymap-set markdown-mode-map "C-<up>" #'markdown-backward-same-level)
+ (keymap-set markdown-mode-map "C-<down>" #'markdown-forward-same-level)
+ (keymap-set markdown-mode-map "M-v" #'markdown-outline-previous)
+ (keymap-set markdown-mode-map "C-v" #'markdown-outline-next)
+ (keymap-set markdown-mode-map "M-<f6>" #'markdown-toggle-inline-images)
+ (keymap-set markdown-mode-map "C-/" #'anju-style-dwim)
+ ;; (define-key markdown-mode-map [f13] 'markdown-preview)
+ )
 
+(add-hook 'markdown-mode-hook #'cc/markdown-mode-setup)
 (add-hook 'markdown-mode-hook #'cc/save-hook-delete-trailing-whitespace)
 
 (transient-define-prefix cc/markdown-mode-tmenu ()

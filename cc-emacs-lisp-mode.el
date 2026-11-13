@@ -59,28 +59,35 @@
                          (list "Transient Groups" "(transient-define-group \\([[:alnum:]-]*\\)" 1)
                          imenu-generic-expression))))
 
-(keymap-set emacs-lisp-mode-map "M-[" #'backward-sexp)
-(keymap-set emacs-lisp-mode-map "M-]" #'forward-sexp)
-(keymap-set emacs-lisp-mode-map "<f6>" #'cc/describe-function-point-is-in)
-(keymap-set emacs-lisp-mode-map "M-j" #'fill-paragraph)
-(keymap-set emacs-lisp-mode-map "M-n" #'cc/next-sexp)
-(keymap-set emacs-lisp-mode-map "M-p" #'backward-sexp)
-(keymap-set emacs-lisp-mode-map "C-<up>" #'backward-up-list)
-(keymap-set emacs-lisp-mode-map "C-<down>" #'down-list)
-(keymap-set emacs-lisp-mode-map "C-<left>" #'backward-sexp)
-(keymap-set emacs-lisp-mode-map "C-<right>" #'cc/next-sexp)
+(defun cc/emacs-lisp-mode-setup ()
+  "Initialization for `emacs-lisp-mode'."
+  (keymap-set emacs-lisp-mode-map "M-[" #'backward-sexp)
+  (keymap-set emacs-lisp-mode-map "M-]" #'forward-sexp)
+  (keymap-set emacs-lisp-mode-map "<f6>" #'cc/describe-function-point-is-in)
+  (keymap-set emacs-lisp-mode-map "M-j" #'fill-paragraph)
+  (keymap-set emacs-lisp-mode-map "M-n" #'cc/next-sexp)
+  (keymap-set emacs-lisp-mode-map "M-p" #'backward-sexp)
+  (keymap-set emacs-lisp-mode-map "C-<up>" #'backward-up-list)
+  (keymap-set emacs-lisp-mode-map "C-<down>" #'down-list)
+  (keymap-set emacs-lisp-mode-map "C-<left>" #'backward-sexp)
+  (keymap-set emacs-lisp-mode-map "C-<right>" #'cc/next-sexp)
 
-(keymap-set emacs-lisp-mode-map "M-b" #'backward-sexp)
-(keymap-set emacs-lisp-mode-map "M-f" #'cc/next-sexp)
-(keymap-set emacs-lisp-mode-map "C-M-b" #'backward-word)
-(keymap-set emacs-lisp-mode-map "C-M-f" #'forward-word)
+  (keymap-set emacs-lisp-mode-map "M-b" #'backward-sexp)
+  (keymap-set emacs-lisp-mode-map "M-f" #'cc/next-sexp)
+  (keymap-set emacs-lisp-mode-map "C-M-b" #'backward-word)
+  (keymap-set emacs-lisp-mode-map "C-M-f" #'forward-word)
 
-(keymap-set emacs-lisp-mode-map "M-<prior>" #'cc/backward-page-at-top)
-(keymap-set emacs-lisp-mode-map "M-<next>" #'cc/forward-page-at-top)
+  (keymap-set emacs-lisp-mode-map "M-<prior>" #'cc/backward-page-at-top)
+  (keymap-set emacs-lisp-mode-map "M-<next>" #'cc/forward-page-at-top)
 
-(keymap-set emacs-lisp-mode-map "C-<prior>" #'pages-previous-page)
-(keymap-set emacs-lisp-mode-map "C-<next>" #'pages-next-page)
-(keymap-set emacs-lisp-mode-map "M-RET" #'pages-add-new-page)
+  (keymap-set emacs-lisp-mode-map "C-<prior>" #'pages-previous-page)
+  (keymap-set emacs-lisp-mode-map "C-<next>" #'pages-next-page)
+  (keymap-set emacs-lisp-mode-map "M-RET" #'pages-add-new-page)
+
+  (keymap-set emacs-lisp-mode-map "<f8>" #'cc/edebug-tmenu))
+
+(add-hook 'emacs-lisp-mode-hook #'cc/emacs-lisp-mode-setup)
+
 
 
 ;;; Edebug Transients
@@ -203,7 +210,6 @@
 ;; (advice-add #'edebug-default-enter :after #'cc/edebug-default-enter)
 
 ;;(keymap-set edebug-mode-map "C-<f9>" #'cc/edebug-tmenu)
-(keymap-set emacs-lisp-mode-map "<f8>" #'cc/edebug-tmenu)
 
 (transient-define-prefix cc/edebug-watch-tmenu ()
   [["Expression"
