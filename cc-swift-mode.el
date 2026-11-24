@@ -26,26 +26,29 @@
 
 (require 'swift-mode)
 (require 'swift-ts-mode)
-(require 'cclisp)
 (require 'eglot)
+(require 'casual-elisp-utils)
 
-(keymap-set swift-ts-mode-map "M-[" #'backward-sexp)
-(keymap-set swift-ts-mode-map "M-]" #'forward-sexp)
-(keymap-set swift-ts-mode-map "M-j" #'fill-paragraph)
-(keymap-set swift-ts-mode-map "M-n" #'cc/next-sexp)
-(keymap-set swift-ts-mode-map "M-p" #'backward-sexp)
-(keymap-set swift-ts-mode-map "C-<up>" #'backward-up-list)
-(keymap-set swift-ts-mode-map "C-<down>" #'down-list)
-(keymap-set swift-ts-mode-map "C-<left>" #'backward-sexp)
-(keymap-set swift-ts-mode-map "C-<right>" #'cc/next-sexp)
+(defun cc/swift-mode-setup ()
+  "Initialization for `swift-ts-mode'."
+  (setq fill-column 120)
 
-(keymap-set swift-ts-mode-map "M-b" #'backward-sexp)
-(keymap-set swift-ts-mode-map "M-f" #'cc/next-sexp)
-(keymap-set swift-ts-mode-map "C-M-b" #'backward-word)
-(keymap-set swift-ts-mode-map "C-M-f" #'forward-word)
+  (keymap-set swift-ts-mode-map "M-[" #'backward-sexp)
+  (keymap-set swift-ts-mode-map "M-]" #'forward-sexp)
+  (keymap-set swift-ts-mode-map "M-j" #'fill-paragraph)
+  (keymap-set swift-ts-mode-map "M-n" #'casual-elisp-next-sexp)
+  (keymap-set swift-ts-mode-map "M-p" #'backward-sexp)
+  (keymap-set swift-ts-mode-map "C-<up>" #'backward-up-list)
+  (keymap-set swift-ts-mode-map "C-<down>" #'down-list)
+  (keymap-set swift-ts-mode-map "C-<left>" #'backward-sexp)
+  (keymap-set swift-ts-mode-map "C-<right>" #'casual-elisp-next-sexp)
 
-(add-hook 'swift-mode-hook (lambda ()
-                             (setq fill-column 120)))
+  (keymap-set swift-ts-mode-map "M-b" #'backward-sexp)
+  (keymap-set swift-ts-mode-map "M-f" #'casual-elisp-next-sexp)
+  (keymap-set swift-ts-mode-map "C-M-b" #'backward-word)
+  (keymap-set swift-ts-mode-map "C-M-f" #'forward-word))
+
+(add-hook 'swift-ts-mode-hook #'cc/swift-mode-setup)
 
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs

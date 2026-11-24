@@ -27,6 +27,7 @@
 (require 'term)
 (require 'with-editor)
 (require 'goto-addr)
+(require 'casual-elisp-utils)
 
 (add-hook 'shell-mode-hook #'with-editor-export-editor)
 (add-hook 'shell-mode-hook #'goto-address-mode)
@@ -35,9 +36,9 @@
 (keymap-set shell-mode-map "C-n" #'comint-next-input)
 
 (keymap-set shell-mode-map "M-b" #'backward-sexp)
-(keymap-set shell-mode-map "M-f" #'cc/next-sexp)
+(keymap-set shell-mode-map "M-f" #'casual-elisp-next-sexp)
 (keymap-set shell-mode-map "C-<left>" #'backward-sexp)
-(keymap-set shell-mode-map "C-<right>" #'cc/next-sexp)
+(keymap-set shell-mode-map "C-<right>" #'casual-elisp-next-sexp)
 ;; (keymap-set shell-mode-map "C-<up>" #'backward-up-list)
 ;; (keymap-set shell-mode-map "C-<down>" #'down-list)
 

@@ -1,6 +1,6 @@
 ;;; cc-python-mode.el --- Python mode configuration  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2024  Charles Choi
+;; Copyright (C) 2024, 2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
@@ -24,9 +24,20 @@
 
 ;;; Code:
 (require 'python)
+(require 'casual-elisp-utils)
 
-(keymap-set python-mode-map "M-[" #'backward-sexp)
-(keymap-set python-mode-map "M-]" #'forward-sexp)
+(defun cc/python-mode-setup ()
+  "Initialization for `python-mode'."
+
+  (keymap-set python-mode-map "M-[" #'backward-sexp)
+  (keymap-set python-mode-map "M-]" #'forward-sexp)
+
+  (keymap-set python-mode-map "C-<up>" #'backward-up-list)
+  (keymap-set python-mode-map "C-<down>" #'down-list)
+  (keymap-set python-mode-map "C-<left>" #'backward-sexp)
+  (keymap-set python-mode-map "C-<right>" #'casual-elisp-next-sexp))
+
+(add-hook 'python-mode-hook #'cc/python-mode-setup)
 
 (provide 'cc-python-mode)
 ;;; cc-python-mode.el ends here
