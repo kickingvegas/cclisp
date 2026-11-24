@@ -351,6 +351,7 @@
       ("anju" (directory . "Projects/elisp/anju/"))
       ("casual" (directory . "Projects/elisp/casual/"))
       ("burnish" (directory . "Projects/elisp/burnish/"))
+      ("counterpart" (directory . "Projects/counterpart/"))
       ("devnull"
        (or (name . "*pelican-devnull*")
            (directory . "Projects/pelican/devnull/")
@@ -364,6 +365,7 @@
       ("aqui" (directory . "Projects/elisp/aqui/"))
       ("triode" (directory . "Projects/elisp/triode/"))
       ("mdired" (directory . "Projects/elisp/mdired/"))
+      ("shazam" (directory . "Projects/elisp/shazam/"))
       ("casual-gnuplot" (directory . "Projects/elisp/casual-gnuplot/"))
       ("casual-suite" (directory . "Projects/elisp/casual-suite/"))
       ("casual-avy" (directory . "Projects/elisp/casual-avy/"))
