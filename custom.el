@@ -162,7 +162,8 @@
      (odt . burnish-export-odt) (gfm . cc/burnish-export-gfm)
      (info . burnish-export-info) (latex-pdf . burnish-export-latex-pdf)
      (re-reveal . cc/burnish-export-re-reveal)
-     (kvtexinfo . cc/burnish-export-kvtexinfo)))
+     (kvtexinfo . cc/burnish-export-kvtexinfo)
+     (yms-dashboard . cc/yms-dashboard-publish)))
  '(calc-kill-line-numbering nil)
  '(calendar-latitude 37.7641666667)
  '(calendar-location-name '(format "%s, San Francisco" "Inner Sunset"))
@@ -372,6 +373,7 @@
       ("casual-symbol-overlay"
        (directory . "Projects/elisp/casual-symbol-overlay/"))
       ("calle24" (directory . "Projects/elisp/calle24/"))
+      ("yms-dashboard" (directory . "Projects/yms-dashboard/"))
       ("desktop" (directory . "Desktop/"))
       ("downloads" (directory . "Downloads/"))
       ("worg" (directory . "Projects/vendor/worg/"))
@@ -598,7 +600,8 @@
  '(require-final-newline t)
  '(safe-local-variable-directories '("/Users/cchoi/Projects/vendor/worg/"))
  '(safe-local-variable-values
-   '((burnish-backend . kvtexinfo) (burnish-backend . md) (burnish-backend . gfm)
+   '((burnish-backend . yms-dashboard) (burnish-backend . kvtexinfo)
+     (burnish-backend . md) (burnish-backend . gfm)
      (burnish-backend . re-reveal) (burnish-backend . html)
      (burnish-backend . odt) (burnish-backend . info)
      (burnish-backend . latex-pdf)

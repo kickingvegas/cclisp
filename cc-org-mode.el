@@ -278,14 +278,14 @@ SUFFIX - string appended to prefix
 (require 'ox-publish)
 
 (setopt org-publish-project-alist
-      `(("pages"
+      `(("captee-pages"
          :base-directory "~/Projects/Captee/Development/Captee/docs/help"
          :base-extension "org"
          :recursive t
          :publishing-directory "~/Projects/Captee/Development/Captee/Captee.help/Contents/Resources/en.lproj"
          :publishing-function org-html-publish-to-html)
 
-        ("static"
+        ("captee-static"
          :base-directory "~/Projects/Captee/Development/Captee/docs/help"
          :base-extension "css\\|txt\\|jpg\\|gif\\|png\\|svg\\|helpindex\\|cshelpindex"
          :recursive t
@@ -293,7 +293,31 @@ SUFFIX - string appended to prefix
          :publishing-function org-publish-attachment)
 
         ("captee-help-book"
-         :components ("pages" "static"))))
+         :components ("captee-pages" "captee-static"))
+
+        ("yms-dashboard-pages"
+         :base-directory "~/Projects/yms-dashboard/docs"
+         :base-extension "org"
+         :publishing-directory "~/Projects/yms-dashboard/output"
+         :section-numbers nil
+         :with-toc nil)
+
+        ("yms-dashboard-images"
+         :base-directory "~/Projects/yms-dashboard/docs/images"
+         :base-extension any
+         :recursive t
+         :publishing-directory "~/Projects/yms-dashboard/output/images"
+         :publishing-function org-publish-attachment)
+
+        ("yms-dashboard-css"
+         :base-directory "~/Projects/yms-dashboard/docs/css"
+         :base-extension any
+         :recursive t
+         :publishing-directory "~/Projects/yms-dashboard/output/css"
+         :publishing-function org-publish-attachment)
+
+        ("yms-dashboard"
+         :components ("yms-dashboard-pages" "yms-dashboard-images" "yms-dashboard-css"))))
 
 ;; (use-package ox-gfm
 ;;   :defer 3
@@ -507,6 +531,18 @@ If prefix ARG is non-nil, then the computed result is stored in the
 (setopt org-html-head-extra (with-temp-buffer
                               (insert-file-contents "~/emacs/cclisp/cc-org-html.css")
                               (format "<style>\n%s\n</style>" (buffer-string))))
+
+
+(defun cc/yms-dashboard-publish ()
+  "Publish YMS Dashboard."
+  (interactive)
+  (let* ((project (project-current))
+         (proj-root (if project
+                        (project-root project)))
+         (url (expand-file-name (file-name-concat proj-root "output" "index.html"))))
+
+    (org-publish "yms-dashboard")
+    (browse-url url)))
 
 (provide 'cc-org-mode)
 ;;; cc-org-mode.el ends here
